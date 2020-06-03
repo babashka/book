@@ -8,6 +8,7 @@ Michiel Borkent
 :icons: font
 :toc: left
 
+include::license.adoc[]
 include::intro.adoc[]
 include::getting_started.adoc[]
 include::child_processes.adoc[]
