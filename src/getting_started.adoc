@@ -5,7 +5,7 @@
 
 Installing babashka is as simple as downloading the binary for your platform and placing it on your path. Pre-built binaries are provided on the https://github.com/borkdude/babashka/releases[releases] page of babashka's https://github.com/borkdude/babashka[Github repo]. Babashka is also available in various package managers like `brew` for macOS and linux and `scoop` for Windows. See https://github.com/borkdude/babashka#installation[here] for details.
 
-==== Building from source
+=== Building from source
 
 If you would rather build babashka from source, download a copy of GraalVM and set the `GRAALVM_HOME` environment variable. Also make sure you have https://leiningen.org[lein] installed. Then run:
 
@@ -13,6 +13,8 @@ If you would rather build babashka from source, download a copy of GraalVM and s
 $ git clone https://github.com/borkdude/babashka --recursive
 $ script/compile
 ```
+
+See the babashka https://github.com/borkdude/babashka/blob/master/doc/build.md[build.md] page for details.
 
 === Running babashka
 

@@ -10,11 +10,13 @@ Michiel Borkent
 
 include::intro.adoc[]
 include::getting_started.adoc[]
-include::shell_integration.adoc[]
+include::child_processes.adoc[]
 
-== TODO
+//include::shell_integration.adoc[]
 
-- Command line arguments
-- Creating child processes
-- HTTP requests
-- XML
+// == TODO
+
+// - Command line arguments
+// - Creating child processes
+// - HTTP requests
+// - XML
