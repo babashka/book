@@ -1,4 +1,4 @@
-# Contributing to Babashka Cookbook
+# Contributing to Babashka cookbook
 
 ## Licensing
 

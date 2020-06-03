@@ -1,4 +1,4 @@
-# Babashka Cookbook
+# Babashka cookbook
 
 ## Build
 
