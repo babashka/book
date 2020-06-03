@@ -1,8 +1,8 @@
-Babashka cookbook
+Babashka book
 =================
 Michiel Borkent
 :doctype: book
-:description: A cookbook with scripting recipes for babashka
+:description: A book with scripting recipes for babashka
 :source-highlighter: coderay
 :coderay-css: class
 :icons: font

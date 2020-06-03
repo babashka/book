@@ -5,7 +5,7 @@ Copyright © 2020 Michiel Borkent
 
 image::http://i.creativecommons.org/l/by-nc-nd/3.0/88x31.png[Creative Commons License,rel=rel="license",link="http://creativecommons.org/licenses/by-nc-nd/3.0/deed.en_US"]
 
-This draft of Babashka cookbook is licensed under a
+This draft of Babashka book is licensed under a
 http://creativecommons.org/licenses/by-nc-nd/3.0/deed.en_US[Creative Commons
 License].
 
