@@ -457,9 +457,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#getting_started">Getting started</a>
 <ul class="sectlevel2">
 <li><a href="#_installation">Installation</a></li>
+<li><a href="#_building_from_source">Building from source</a></li>
 <li><a href="#_running_babashka">Running babashka</a></li>
 </ul>
 </li>
+<li><a href="#child_processes">Child processes</a></li>
 </ul>
 </div>
 </div>
@@ -493,8 +495,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="paragraph">
 <p>Installing babashka is as simple as downloading the binary for your platform and placing it on your path. Pre-built binaries are provided on the <a href="https://github.com/borkdude/babashka/releases">releases</a> page of babashka&#8217;s <a href="https://github.com/borkdude/babashka">Github repo</a>. Babashka is also available in various package managers like <code>brew</code> for macOS and linux and <code>scoop</code> for Windows. See <a href="https://github.com/borkdude/babashka#installation">here</a> for details.</p>
 </div>
-<div class="sect3">
-<h4 id="_building_from_source">Building from source</h4>
+</div>
+<div class="sect2">
+<h3 id="_building_from_source">Building from source</h3>
 <div class="paragraph">
 <p>If you would rather build babashka from source, download a copy of GraalVM and set the <code>GRAALVM_HOME</code> environment variable. Also make sure you have <a href="https://leiningen.org">lein</a> installed. Then run:</p>
 </div>
@@ -506,7 +509,6 @@ $ script/compile</code></pre>
 </div>
 <div class="paragraph">
 <p>See the babashka <a href="https://github.com/borkdude/babashka/blob/master/doc/build.md">build.md</a> page for details.</p>
-</div>
 </div>
 </div>
 <div class="sect2">
@@ -566,10 +568,46 @@ $ script/compile</code></pre>
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="child_processes">Child processes</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>There are several ways of creating child processes in babashka, but all of them
+are implemented using the <code>java.lang.ProcessBuilder</code> and <code>java.lang.Process</code>
+classes. The easiest way to create a process is via <code>clojure.java.shell</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="clojure">user=&gt; (<span class="keyword">require</span> '[clojure.java.shell <span class="symbol">:refer</span> [sh]])
+<span class="predefined-constant">nil</span>
+user=&gt; (sh <span class="string"><span class="delimiter">&quot;</span><span class="content">ls</span><span class="delimiter">&quot;</span></span>)
+{<span class="symbol">:exit</span> <span class="integer">0</span>, <span class="symbol">:out</span> <span class="string"><span class="delimiter">&quot;</span><span class="content">README.md</span><span class="content">\n</span><span class="content">dist</span><span class="content">\n</span><span class="content">gh-pages</span><span class="content">\n</span><span class="content">script</span><span class="content">\n</span><span class="content">src</span><span class="content">\n</span><span class="delimiter">&quot;</span></span>, <span class="symbol">:err</span> <span class="string"><span class="delimiter">&quot;</span><span class="delimiter">&quot;</span></span>}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>As you can see the result of <code>:out</code> are the lines of text produced by <code>ls</code>. The
+<code>:exit</code> code was <code>0</code> and there was no output on stderr.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="clojure">user=&gt; (sh <span class="string"><span class="delimiter">&quot;</span><span class="content">ls</span><span class="delimiter">&quot;</span></span> <span class="string"><span class="delimiter">&quot;</span><span class="content">foo</span><span class="delimiter">&quot;</span></span>)
+{<span class="symbol">:exit</span> <span class="integer">1</span>, <span class="symbol">:out</span> <span class="string"><span class="delimiter">&quot;</span><span class="delimiter">&quot;</span></span>, <span class="symbol">:err</span> <span class="string"><span class="delimiter">&quot;</span><span class="content">ls: foo: No such file or directory</span><span class="content">\n</span><span class="delimiter">&quot;</span></span>}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If we invoke <code>ls</code> with a non-existing file, there is error output, but not
+output on stdout and the <code>:exit</code> code is <code>1</code>.</p>
+</div>
+<div class="paragraph">
+<p>For more information on <code>clojure.java.shell</code>, read the [API
+documentation](<a href="https://clojure.github.io/clojure/clojure.java.shell-api.html" class="bare">https://clojure.github.io/clojure/clojure.java.shell-api.html</a>).</p>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-06-03 17:30:55 +0200
+Last updated 2020-06-03 17:34:41 +0200
 </div>
 </div>
 <style>
