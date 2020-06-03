@@ -1,0 +1,21 @@
+Babashka cookbook
+=================
+Michiel Borkent
+# v0.0.1, April 2020
+:doctype: book
+:description: A cookbook with scripting recipes for babashka
+:source-highlighter: coderay
+:coderay-css: class
+:icons: font
+:toc: left
+
+include::intro.adoc[]
+include::getting_started.adoc[]
+include::shell_integration.adoc[]
+
+== TODO
+
+- Command line arguments
+- Creating child processes
+- HTTP requests
+- XML

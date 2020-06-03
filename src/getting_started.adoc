@@ -1,0 +1,64 @@
+[[getting_started]]
+== Getting started
+
+=== Installation
+
+Installing babashka is as simple as downloading the binary for your platform and placing it on your path. Pre-built binaries are provided on the https://github.com/borkdude/babashka/releases[releases] page of babashka's https://github.com/borkdude/babashka[Github repo]. Babashka is also available in various package managers like `brew` for macOS and linux and `scoop` for Windows. See https://github.com/borkdude/babashka#installation[here] for details.
+
+==== Building from source
+
+If you would rather build babashka from source, download a copy of GraalVM and set the `GRAALVM_HOME` environment variable. Also make sure you have https://leiningen.org[lein] installed. Then run:
+
+```
+$ git clone https://github.com/borkdude/babashka --recursive
+$ script/compile
+```
+
+=== Running babashka
+
+The babashka executable is called `bb`. You can either provide it with a Clojure expression directly:
+
+[source,clojure]
+----
+$ bb -e '(+ 1 2 3)'
+6
+----
+
+or run a script:
+
+.script.clj
+[source,clojure]
+----
+(+ 1 2 3)
+----
+
+[source,clojure]
+----
+$ bb -f script.clj
+6
+----
+
+The `-e` flag is optional when the argument starts with a paren. In that case babashka will treat it automatically as an expression:
+
+[source,clojure]
+----
+$ bb '(+ 1 2 3)'
+6
+----
+
+Similarly, the `-f` flag is optional when the argument is a filename:
+
+[source,clojure]
+----
+$ bb script.clj
+6
+----
+
+Commonly, scripts have shebangs so you can invoke them with their filename only:
+
+.script.clj
+[source,clojure]
+----
+#!/usr/bin/env bb
+(+ 1 2 3)
+----
