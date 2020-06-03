@@ -25,4 +25,4 @@ user=> (sh "ls" "foo")
 If we invoke `ls` with a non-existing file, there is error output, but not
 output on stdout and the `:exit` code is `1`.
 
-For more information on `clojure.java.shell`, read the https://clojure.github.io/clojure/clojure.java.shell-api.html[API documentation].
+For more information on `clojure.java.shell`, read the https://clojure.github.io/clojure/clojure.java.shell-api.html[API documentation]
