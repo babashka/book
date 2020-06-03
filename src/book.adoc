@@ -9,6 +9,7 @@ Michiel Borkent
 :toc: left
 
 include::license.adoc[]
+include::contributing.adoc[]
 include::intro.adoc[]
 include::getting_started.adoc[]
 include::child_processes.adoc[]

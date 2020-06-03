@@ -1,0 +1,6 @@
+[[contributing]]
+== Contributing
+
+Visit Babashka cookbook's Github repository and read
+https://github.com/babashka/cookbook/blob/master/CONTRIBUTING.md[CONTRIBUTING.md]
+on how to contribute.
