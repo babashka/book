@@ -1,7 +1,6 @@
 Babashka cookbook
 =================
 Michiel Borkent
-# v0.0.1, April 2020
 :doctype: book
 :description: A cookbook with scripting recipes for babashka
 :source-highlighter: coderay

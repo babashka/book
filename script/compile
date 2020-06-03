@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+asciidoctor src/book.adoc -o gh-pages/index.html

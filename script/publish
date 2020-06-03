@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+cd gh-pages
+git commit -am "update"
+git push
+
