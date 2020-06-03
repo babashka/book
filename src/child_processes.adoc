@@ -1,8 +1,8 @@
 [[child_processes]]
 == Child processes
 
-There are several ways of creating child processes in babashka, but all of them
-are implemented using the `java.lang.ProcessBuilder` and `java.lang.Process`
+There are several ways of creating child processes in babashka. All of them are
+implemented using the `java.lang.ProcessBuilder` and `java.lang.Process`
 classes. The easiest way to create a process is via `clojure.java.shell`:
 
 [source,clojure]
