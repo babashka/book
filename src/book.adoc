@@ -1,4 +1,4 @@
-Babashka cookbook
+Babashka Cookbook
 =================
 Michiel Borkent
 :doctype: book
