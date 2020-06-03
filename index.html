@@ -5,7 +5,9 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.10">
-<title>Untitled</title>
+<meta name="description" content="A book with scripting recipes for babashka">
+<meta name="author" content="Michiel Borkent">
+<title>Babashka book</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -435,28 +437,40 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 #footer-text{color:rgba(0,0,0,.6);font-size:.9em}}
 @media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
 </style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
-<body class="article">
+<body class="book toc2 toc-left">
 <div id="header">
+<h1>Babashka book</h1>
+<div class="details">
+<span id="author" class="author">Michiel Borkent</span><br>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#license">License</a></li>
+<li><a href="#contributing">Contributing</a></li>
+<li><a href="#introduction">Introduction</a>
+<ul class="sectlevel2">
+<li><a href="#_target_audience">Target audience</a></li>
+<li><a href="#_compatibility">Compatibility</a></li>
+</ul>
+</li>
+<li><a href="#getting_started">Getting started</a>
+<ul class="sectlevel2">
+<li><a href="#_installation">Installation</a></li>
+<li><a href="#_building_from_source">Building from source</a></li>
+<li><a href="#_running_babashka">Running babashka</a></li>
+</ul>
+</li>
+<li><a href="#child_processes">Child processes</a></li>
+</ul>
+</div>
 </div>
 <div id="content">
-<div class="paragraph">
-<p>Babashka book</p>
-</div>
-<div class="exampleblock">
-<div class="content">
-<div class="paragraph">
-<p>Michiel Borkent
-:doctype: book
-:description: A book with scripting recipes for babashka
-:source-highlighter: coderay
-:coderay-css: class
-:icons: font
-:toc: left</p>
-</div>
-<div id="license" class="paragraph">
-<p>== License</p>
-</div>
+<div class="sect1">
+<h2 id="license">License</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>Copyright © 2020 Michiel Borkent</p>
 </div>
@@ -474,67 +488,72 @@ License</a>.</p>
 <p>Please note that because this is a <strong>No Derivatives</strong> license, you may <strong>not</strong> use
 this repository as a basis for creating your own book based on this one.</p>
 </div>
-<div id="contributing" class="paragraph">
-<p>== Contributing</p>
 </div>
+</div>
+<div class="sect1">
+<h2 id="contributing">Contributing</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>Visit Babashka book&#8217;s Github repository and read
 <a href="https://github.com/babashka/book/blob/master/CONTRIBUTING.md">CONTRIBUTING.md</a>
 on how to contribute.</p>
 </div>
-<div id="introduction" class="paragraph">
-<p>== Introduction</p>
 </div>
+</div>
+<div class="sect1">
+<h2 id="introduction">Introduction</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>Welcome reader! This is a book about scripting with Clojure and babashka.
 <a href="https://www.clojure.org">Clojure</a> is a functional, dynamic programming language from the Lisp family which runs on the JVM. Babashka is a scripting environment made with Clojure, compiled to native with <a href="https://www.graalvm.org">GraalVM</a>. The primary benefits of using babashka for scripting compared to the JVM are fast startup time and low memory consumption. Babashka comes with batteries included and packs libraries like <code>clojure.tools.cli</code> for parsing command line arguments and <code>cheshire</code> for working with JSON. Moreover, it can be installed just by downloading a self-contained binary.</p>
 </div>
-<div class="paragraph">
-<p>=== Target audience</p>
-</div>
+<div class="sect2">
+<h3 id="_target_audience">Target audience</h3>
 <div class="paragraph">
 <p>Babashka is written for developers who are familiar with Clojure on the JVM. This book assumes familiarity with Clojure and is not a Clojure tutorial. If you aren&#8217;t that familiar with Clojure but you&#8217;re curious to learn, check out <a href="https://gist.github.com/yogthos/be323be0361c589570a6da4ccc85f58f">this</a> list of beginner resources.</p>
 </div>
-<div class="paragraph">
-<p>=== Compatibility</p>
 </div>
+<div class="sect2">
+<h3 id="_compatibility">Compatibility</h3>
 <div class="paragraph">
 <p>Babashka uses the Small Clojure Interpreter, or <a href="https://github.com/borkdude/sci/">sci</a> for short to run programs within a GraalVM-compiled binary. GraalVM gives it it&#8217;s fast startup and low memory usage characteristics. Source code is not compiled to JVM-byte code first, like in Clojure on the JVM. Despite this difference, babashka aims to be as compatible as possible with the semantics of Clojure. It supports a sufficiently large subset of Clojure: functions, macros, multi-methods, namespaces, most of it is there. At the moment, the main difference with Clojure is lack of support for <code>defrecord</code>, <code>defprotocol</code> and <code>reify</code>. Like a JVM programmer would expect, babashka has support for multi-threading and provides access to commonly used Java packages and classes like <code>File</code>, <code>System</code>, <code>java.io</code> and <code>java.net</code>. Because babashka uses interpretation instead of compilation, some longer running programs may be slower, despite the benefit of fast startup. If that turns out to be the case, your efforts are not in vain: the code you wrote still runs with Clojure!</p>
 </div>
-<div id="getting_started" class="paragraph">
-<p>== Getting started</p>
 </div>
-<div class="paragraph">
-<p>=== Installation</p>
 </div>
+</div>
+<div class="sect1">
+<h2 id="getting_started">Getting started</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_installation">Installation</h3>
 <div class="paragraph">
 <p>Installing babashka is as simple as downloading the binary for your platform and placing it on your path. Pre-built binaries are provided on the <a href="https://github.com/borkdude/babashka/releases">releases</a> page of babashka&#8217;s <a href="https://github.com/borkdude/babashka">Github repo</a>. Babashka is also available in various package managers like <code>brew</code> for macOS and linux and <code>scoop</code> for Windows. See <a href="https://github.com/borkdude/babashka#installation">here</a> for details.</p>
 </div>
-<div class="paragraph">
-<p>=== Building from source</p>
 </div>
+<div class="sect2">
+<h3 id="_building_from_source">Building from source</h3>
 <div class="paragraph">
 <p>If you would rather build babashka from source, download a copy of GraalVM and set the <code>GRAALVM_HOME</code> environment variable. Also make sure you have <a href="https://leiningen.org">lein</a> installed. Then run:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>$ git clone https://github.com/borkdude/babashka --recursive
+<pre class="CodeRay highlight"><code>$ git clone https://github.com/borkdude/babashka --recursive
 $ script/compile</code></pre>
 </div>
 </div>
 <div class="paragraph">
 <p>See the babashka <a href="https://github.com/borkdude/babashka/blob/master/doc/build.md">build.md</a> page for details.</p>
 </div>
-<div class="paragraph">
-<p>=== Running babashka</p>
 </div>
+<div class="sect2">
+<h3 id="_running_babashka">Running babashka</h3>
 <div class="paragraph">
 <p>The babashka executable is called <code>bb</code>. You can either provide it with a Clojure expression directly:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-clojure" data-lang="clojure">$ bb -e '(+ 1 2 3)'
-6</code></pre>
+<pre class="CodeRay highlight"><code data-lang="clojure">$ bb -e '(<span class="keyword">+</span> <span class="integer">1</span> <span class="integer">2</span> <span class="integer">3</span>)'
+<span class="integer">6</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -543,13 +562,13 @@ $ script/compile</code></pre>
 <div class="listingblock">
 <div class="title">script.clj</div>
 <div class="content">
-<pre class="highlight"><code class="language-clojure" data-lang="clojure">(+ 1 2 3)</code></pre>
+<pre class="CodeRay highlight"><code data-lang="clojure">(<span class="keyword">+</span> <span class="integer">1</span> <span class="integer">2</span> <span class="integer">3</span>)</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-clojure" data-lang="clojure">$ bb -f script.clj
-6</code></pre>
+<pre class="CodeRay highlight"><code data-lang="clojure">$ bb -f script.clj
+<span class="integer">6</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -557,8 +576,8 @@ $ script/compile</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-clojure" data-lang="clojure">$ bb '(+ 1 2 3)'
-6</code></pre>
+<pre class="CodeRay highlight"><code data-lang="clojure">$ bb '(<span class="keyword">+</span> <span class="integer">1</span> <span class="integer">2</span> <span class="integer">3</span>)'
+<span class="integer">6</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -566,8 +585,8 @@ $ script/compile</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-clojure" data-lang="clojure">$ bb script.clj
-6</code></pre>
+<pre class="CodeRay highlight"><code data-lang="clojure">$ bb script.clj
+<span class="integer">6</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -576,13 +595,16 @@ $ script/compile</code></pre>
 <div class="listingblock">
 <div class="title">script.clj</div>
 <div class="content">
-<pre class="highlight"><code class="language-clojure" data-lang="clojure">#!/usr/bin/env bb
-(+ 1 2 3)</code></pre>
+<pre class="CodeRay highlight"><code data-lang="clojure"><span class="error">#</span>!/usr/bin/env bb
+(<span class="keyword">+</span> <span class="integer">1</span> <span class="integer">2</span> <span class="integer">3</span>)</code></pre>
 </div>
 </div>
-<div id="child_processes" class="paragraph">
-<p>== Child processes</p>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="child_processes">Child processes</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>There are several ways of creating child processes in babashka. All of them are
 implemented using the <code>java.lang.ProcessBuilder</code> and <code>java.lang.Process</code>
@@ -590,10 +612,10 @@ classes. The easiest way to create a process is via <code>clojure.java.shell</co
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-clojure" data-lang="clojure">user=&gt; (require '[clojure.java.shell :refer [sh]])
-nil
-user=&gt; (sh "ls")
-{:exit 0, :out "README.md\ndist\ngh-pages\nscript\nsrc\n", :err ""}</code></pre>
+<pre class="CodeRay highlight"><code data-lang="clojure">user=&gt; (<span class="keyword">require</span> '[clojure.java.shell <span class="symbol">:refer</span> [sh]])
+<span class="predefined-constant">nil</span>
+user=&gt; (sh <span class="string"><span class="delimiter">&quot;</span><span class="content">ls</span><span class="delimiter">&quot;</span></span>)
+{<span class="symbol">:exit</span> <span class="integer">0</span>, <span class="symbol">:out</span> <span class="string"><span class="delimiter">&quot;</span><span class="content">README.md</span><span class="content">\n</span><span class="content">dist</span><span class="content">\n</span><span class="content">gh-pages</span><span class="content">\n</span><span class="content">script</span><span class="content">\n</span><span class="content">src</span><span class="content">\n</span><span class="delimiter">&quot;</span></span>, <span class="symbol">:err</span> <span class="string"><span class="delimiter">&quot;</span><span class="delimiter">&quot;</span></span>}</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -602,8 +624,8 @@ user=&gt; (sh "ls")
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-clojure" data-lang="clojure">user=&gt; (sh "ls" "foo")
-{:exit 1, :out "", :err "ls: foo: No such file or directory\n"}</code></pre>
+<pre class="CodeRay highlight"><code data-lang="clojure">user=&gt; (sh <span class="string"><span class="delimiter">&quot;</span><span class="content">ls</span><span class="delimiter">&quot;</span></span> <span class="string"><span class="delimiter">&quot;</span><span class="content">foo</span><span class="delimiter">&quot;</span></span>)
+{<span class="symbol">:exit</span> <span class="integer">1</span>, <span class="symbol">:out</span> <span class="string"><span class="delimiter">&quot;</span><span class="delimiter">&quot;</span></span>, <span class="symbol">:err</span> <span class="string"><span class="delimiter">&quot;</span><span class="content">ls: foo: No such file or directory</span><span class="content">\n</span><span class="delimiter">&quot;</span></span>}</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -618,8 +640,97 @@ output on stdout and the <code>:exit</code> code is <code>1</code>.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-06-03 21:02:46 +0200
+Last updated 2020-06-03 21:05:11 +0200
 </div>
 </div>
+<style>
+/* Stylesheet for CodeRay to match GitHub theme | MIT License | http://foundation.zurb.com */
+pre.CodeRay{background:#f7f7f8}
+.CodeRay .line-numbers{border-right:1px solid currentColor;opacity:.35;padding:0 .5em 0 0}
+.CodeRay span.line-numbers{display:inline-block;margin-right:.75em}
+.CodeRay .line-numbers strong{color:#000}
+table.CodeRay{border-collapse:separate;border:0;margin-bottom:0;background:none}
+table.CodeRay td{vertical-align:top;line-height:inherit}
+table.CodeRay td.line-numbers{text-align:right}
+table.CodeRay td.code{padding:0 0 0 .75em}
+.CodeRay .debug{color:#fff !important;background:#000080 !important}
+.CodeRay .annotation{color:#007}
+.CodeRay .attribute-name{color:#000080}
+.CodeRay .attribute-value{color:#700}
+.CodeRay .binary{color:#509}
+.CodeRay .comment{color:#998;font-style:italic}
+.CodeRay .char{color:#04d}
+.CodeRay .char .content{color:#04d}
+.CodeRay .char .delimiter{color:#039}
+.CodeRay .class{color:#458;font-weight:bold}
+.CodeRay .complex{color:#a08}
+.CodeRay .constant,.CodeRay .predefined-constant{color:#008080}
+.CodeRay .color{color:#099}
+.CodeRay .class-variable{color:#369}
+.CodeRay .decorator{color:#b0b}
+.CodeRay .definition{color:#099}
+.CodeRay .delimiter{color:#000}
+.CodeRay .doc{color:#970}
+.CodeRay .doctype{color:#34b}
+.CodeRay .doc-string{color:#d42}
+.CodeRay .escape{color:#666}
+.CodeRay .entity{color:#800}
+.CodeRay .error{color:#808}
+.CodeRay .exception{color:inherit}
+.CodeRay .filename{color:#099}
+.CodeRay .function{color:#900;font-weight:bold}
+.CodeRay .global-variable{color:#008080}
+.CodeRay .hex{color:#058}
+.CodeRay .integer,.CodeRay .float{color:#099}
+.CodeRay .include{color:#555}
+.CodeRay .inline{color:#000}
+.CodeRay .inline .inline{background:#ccc}
+.CodeRay .inline .inline .inline{background:#bbb}
+.CodeRay .inline .inline-delimiter{color:#d14}
+.CodeRay .inline-delimiter{color:#d14}
+.CodeRay .important{color:#555;font-weight:bold}
+.CodeRay .interpreted{color:#b2b}
+.CodeRay .instance-variable{color:#008080}
+.CodeRay .label{color:#970}
+.CodeRay .local-variable{color:#963}
+.CodeRay .octal{color:#40e}
+.CodeRay .predefined{color:#369}
+.CodeRay .preprocessor{color:#579}
+.CodeRay .pseudo-class{color:#555}
+.CodeRay .directive{font-weight:bold}
+.CodeRay .type{font-weight:bold}
+.CodeRay .predefined-type{color:inherit}
+.CodeRay .reserved,.CodeRay .keyword {color:#000;font-weight:bold}
+.CodeRay .key{color:#808}
+.CodeRay .key .delimiter{color:#606}
+.CodeRay .key .char{color:#80f}
+.CodeRay .value{color:#088}
+.CodeRay .regexp .delimiter{color:#808}
+.CodeRay .regexp .content{color:#808}
+.CodeRay .regexp .modifier{color:#808}
+.CodeRay .regexp .char{color:#d14}
+.CodeRay .regexp .function{color:#404;font-weight:bold}
+.CodeRay .string{color:#d20}
+.CodeRay .string .string .string{background:#ffd0d0}
+.CodeRay .string .content{color:#d14}
+.CodeRay .string .char{color:#d14}
+.CodeRay .string .delimiter{color:#d14}
+.CodeRay .shell{color:#d14}
+.CodeRay .shell .delimiter{color:#d14}
+.CodeRay .symbol{color:#990073}
+.CodeRay .symbol .content{color:#a60}
+.CodeRay .symbol .delimiter{color:#630}
+.CodeRay .tag{color:#008080}
+.CodeRay .tag-special{color:#d70}
+.CodeRay .variable{color:#036}
+.CodeRay .insert{background:#afa}
+.CodeRay .delete{background:#faa}
+.CodeRay .change{color:#aaf;background:#007}
+.CodeRay .head{color:#f8f;background:#505}
+.CodeRay .insert .insert{color:#080}
+.CodeRay .delete .delete{color:#800}
+.CodeRay .change .change{color:#66f}
+.CodeRay .head .head{color:#f4f}
+</style>
 </body>
 </html>
