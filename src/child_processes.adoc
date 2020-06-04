@@ -43,18 +43,45 @@ has a few drawbacks:
 Using `java.lang.ProcessBuilder` and `java.lang.Process` gives us the extra
 power we need to overcome these limitations.
 
+.test_runner_watch.clj
 [source,clojure]
 ----
 #!/usr/bin/env bb
 
+(import java.lang.ProcessBuilder$Redirect)
+
 (defn test-runner-watch []
-  (let [cmd ["clojure" "-A:kaocha" "-m" "kaocha.runner" "--watch"]
-        pb (doto (ProcessBuilder. cmd)
-             (.inheritIO))
-        proc (.start pb)]
+  (let [cmd ["clojure" "-A:kaocha" "-m" "kaocha.runner" "--watch"] <1>
+        pb (doto (ProcessBuilder. cmd) <2>
+             (.redirectOutput ProcessBuilder$Redirect/INHERIT)) <3>
+        proc (.start pb)] <4>
     (-> (Runtime/getRuntime)
-        (.addShutdownHook (Thread. #(.destroy proc))))
+        (.addShutdownHook (Thread. #(.destroy proc)))) <5>
     proc))
 
-(.waitFor (test-runner-watch))
+(.waitFor (test-runner-watch)) <6>
+----
+
+<1> The command and its arguments
+
+<2> Construction of a `Process` is done using `ProcessBuilder`
+
+<3> This sends the output of the child process directly to the parent process's
+standard out.
+
+<4> Calling `start` on a `ProcessBuilder` instance starts the process and gives
+us a `Process` instance.
+
+<5> This line will destroy the child process before the parent process exits.
+
+<6> `waitFor` waits until the child process ends and returns its exit code. If
+we would not include this, our script would end without waiting for the watcher.
+
+When calling the script, we can see output from the test runner while it is running:
+
+[source,shell]
+----
+$ test_runner_watch.clj
+[(.................)(..)]
+7 tests, 19 assertions, 0 failures.
 ----
