@@ -1,9 +1,12 @@
 [[child_processes]]
 == Child processes
 
-There are several ways of creating child processes in babashka. All of them are
-implemented using the `java.lang.ProcessBuilder` and `java.lang.Process`
-classes. The easiest way to create a process is via `clojure.java.shell`:
+There are several ways of creating child processes in babashka. Let's start with
+the easiest one.
+
+=== clojure.java.shell
+
+A common way to shell out to another process is via `clojure.java.shell`:
 
 [source,clojure]
 ----
@@ -25,4 +28,33 @@ user=> (sh "ls" "foo")
 If we invoke `ls` with a non-existing file, there is error output, but not
 output on stdout and the `:exit` code is `1`.
 
-For more information on `clojure.java.shell`, read the https://clojure.github.io/clojure/clojure.java.shell-api.html[API documentation]
+For more information on `clojure.java.shell`, read the
+https://clojure.github.io/clojure/clojure.java.shell-api.html[API documentation]
+
+=== java.lang.Process
+
+What if we wanted to start a test runner that watches a source directory and
+executes tests whenever a file changes? Using `clojure.java.shell/sh` for this
+has a few drawbacks:
+
+- We have no control over stopping the watcher process
+- We can't see any output from the test runner until the process finishes
+
+Using `java.lang.ProcessBuilder` and `java.lang.Process` gives us the extra
+power we need to overcome these limitations.
+
+[source,clojure]
+----
+#!/usr/bin/env bb
+
+(defn test-runner-watch []
+  (let [cmd ["clojure" "-A:kaocha" "-m" "kaocha.runner" "--watch"]
+        pb (doto (ProcessBuilder. cmd)
+             (.inheritIO))
+        proc (.start pb)]
+    (-> (Runtime/getRuntime)
+        (.addShutdownHook (Thread. #(.destroy proc))))
+    proc))
+
+(.waitFor (test-runner-watch))
+----
