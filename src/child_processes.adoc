@@ -85,3 +85,6 @@ $ test_runner_watch.clj
 [(.................)(..)]
 7 tests, 19 assertions, 0 failures.
 ----
+
+// TODO https://github.com/borkdude/babashka/issues/299 infinite stream
+// TODO https://github.com/borkdude/babashka/issues/299 reading input
