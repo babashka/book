@@ -668,19 +668,63 @@ has a few drawbacks:</p>
 power we need to overcome these limitations.</p>
 </div>
 <div class="listingblock">
+<div class="title">test_runner_watch.clj</div>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="clojure"><span class="error">#</span>!/usr/bin/env bb
 
+(<span class="keyword">import</span> java.lang.ProcessBuilder$Redirect)
+
 (<span class="keyword">defn</span> <span class="function">test-runner-watch</span> []
-  (<span class="keyword">let</span> [cmd [<span class="string"><span class="delimiter">&quot;</span><span class="content">clojure</span><span class="delimiter">&quot;</span></span> <span class="string"><span class="delimiter">&quot;</span><span class="content">-A:kaocha</span><span class="delimiter">&quot;</span></span> <span class="string"><span class="delimiter">&quot;</span><span class="content">-m</span><span class="delimiter">&quot;</span></span> <span class="string"><span class="delimiter">&quot;</span><span class="content">kaocha.runner</span><span class="delimiter">&quot;</span></span> <span class="string"><span class="delimiter">&quot;</span><span class="content">--watch</span><span class="delimiter">&quot;</span></span>]
-        pb (<span class="keyword">doto</span> (ProcessBuilder. cmd)
-             (<span class="keyword">.</span>inheritIO))
-        proc (<span class="keyword">.</span>start pb)]
+  (<span class="keyword">let</span> [cmd [<span class="string"><span class="delimiter">&quot;</span><span class="content">clojure</span><span class="delimiter">&quot;</span></span> <span class="string"><span class="delimiter">&quot;</span><span class="content">-A:kaocha</span><span class="delimiter">&quot;</span></span> <span class="string"><span class="delimiter">&quot;</span><span class="content">-m</span><span class="delimiter">&quot;</span></span> <span class="string"><span class="delimiter">&quot;</span><span class="content">kaocha.runner</span><span class="delimiter">&quot;</span></span> <span class="string"><span class="delimiter">&quot;</span><span class="content">--watch</span><span class="delimiter">&quot;</span></span>] <i class="conum" data-value="1"></i><b>(1)</b>
+        pb (<span class="keyword">doto</span> (ProcessBuilder. cmd) <i class="conum" data-value="2"></i><b>(2)</b>
+             (<span class="keyword">.</span>redirectOutput ProcessBuilder$Redirect/INHERIT)) <i class="conum" data-value="3"></i><b>(3)</b>
+        proc (<span class="keyword">.</span>start pb)] <i class="conum" data-value="4"></i><b>(4)</b>
     (<span class="keyword">-&gt;</span> (Runtime/getRuntime)
-        (<span class="keyword">.</span>addShutdownHook (Thread. #(<span class="keyword">.</span>destroy proc))))
+        (<span class="keyword">.</span>addShutdownHook (Thread. #(<span class="keyword">.</span>destroy proc)))) <i class="conum" data-value="5"></i><b>(5)</b>
     proc))
 
-(<span class="keyword">.</span>waitFor (test-runner-watch))</code></pre>
+(<span class="keyword">.</span>waitFor (test-runner-watch)) <i class="conum" data-value="6"></i><b>(6)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The command and its arguments</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Construction of a <code>Process</code> is done using <code>ProcessBuilder</code></td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>This sends the output of the child process directly to the parent process&#8217;s
+standard out.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Calling <code>start</code> on a <code>ProcessBuilder</code> instance starts the process and gives
+us a <code>Process</code> instance.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>This line will destroy the child process before the parent process exits.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="6"></i><b>6</b></td>
+<td><code>waitFor</code> waits until the child process ends and returns its exit code. If
+we would not include this, our script would end without waiting for the watcher.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>When calling the script, we can see output from the test runner while it is running:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="shell">$ test_runner_watch.clj
+[(.................)(..)]
+7 tests, 19 assertions, 0 failures.</code></pre>
 </div>
 </div>
 </div>
