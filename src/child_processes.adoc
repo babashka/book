@@ -86,5 +86,54 @@ $ test_runner_watch.clj
 7 tests, 19 assertions, 0 failures.
 ----
 
-// TODO https://github.com/borkdude/babashka/issues/299 infinite stream
-// TODO https://github.com/borkdude/babashka/issues/299 reading input
+When we change a file in a source directory, the watcher is triggered and the
+tests run again.
+
+What if we want to parse the output of the test runner and do something with it?
+Instead of sending the output of the child process to stdout we will have to get
+a hold of it. This is possible via https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Process.html#getInputStream()[`getInputStream`].
+
+
+.test_runner_watch.clj
+[source,clojure]
+----
+#!/usr/bin/env bb
+
+(defn test-runner-watch []
+  (let [cmd ["clojure" "-A:kaocha"
+             "-m" "kaocha.runner" "--watch"
+             "--no-color"] <1>
+        pb (ProcessBuilder. cmd)
+        proc (.start pb)
+        out (.getInputStream proc)] <2>
+    (-> (Runtime/getRuntime)
+        (.addShutdownHook (Thread. #(.destroy proc))))
+    {:proc proc
+     :out out}))
+
+(require '[clojure.java.io :as io])
+
+(let [runner (test-runner-watch)]
+  (with-open [reader (io/reader (:out runner))]
+    (binding [*in* reader]
+      (loop []
+        (when-let [line (read-line)]
+          (when-let [[_ tests assertions failures]
+                     (re-find #"^(\d+) tests, (\d+) assertions, (\d+) failures" line)] <3>
+            (prn {:tests (Integer. tests)
+                  :assertions (Integer. assertions)
+                  :failures (Integer. failures)}))
+          (recur))))))
+----
+
+<1> We ask the test runner not to output ANSI color codes which makes parsing the output easier
+<2> Instead of forwarding the output of the child process to stdout we now grab it as a `java.lang.InputStream`
+<3> Here we parse the output of the test runner and then print it as EDN data
+
+Running this script will now print EDN data instead of text:
+
+[source,shell]
+----
+$ test_runner_watch.clj
+{:tests 7, :failures 0, :assertions 19}
+----
