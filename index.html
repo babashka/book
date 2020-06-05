@@ -727,6 +727,72 @@ we would not include this, our script would end without waiting for the watcher.
 7 tests, 19 assertions, 0 failures.</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>When we change a file in a source directory, the watcher is triggered and the
+tests run again.</p>
+</div>
+<div class="paragraph">
+<p>What if we want to parse the output of the test runner and do something with it?
+Instead of sending the output of the child process to stdout we will have to get
+a hold of it. This is possible via <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Process.html#getInputStream()"><code>getInputStream</code></a>.</p>
+</div>
+<div class="listingblock">
+<div class="title">test_runner_watch.clj</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="clojure"><span class="error">#</span>!/usr/bin/env bb
+
+(<span class="keyword">defn</span> <span class="function">test-runner-watch</span> []
+  (<span class="keyword">let</span> [cmd [<span class="string"><span class="delimiter">&quot;</span><span class="content">clojure</span><span class="delimiter">&quot;</span></span> <span class="string"><span class="delimiter">&quot;</span><span class="content">-A:kaocha</span><span class="delimiter">&quot;</span></span>
+             <span class="string"><span class="delimiter">&quot;</span><span class="content">-m</span><span class="delimiter">&quot;</span></span> <span class="string"><span class="delimiter">&quot;</span><span class="content">kaocha.runner</span><span class="delimiter">&quot;</span></span> <span class="string"><span class="delimiter">&quot;</span><span class="content">--watch</span><span class="delimiter">&quot;</span></span>
+             <span class="string"><span class="delimiter">&quot;</span><span class="content">--no-color</span><span class="delimiter">&quot;</span></span>] <i class="conum" data-value="1"></i><b>(1)</b>
+        pb (ProcessBuilder. cmd)
+        proc (<span class="keyword">.</span>start pb)
+        out (<span class="keyword">.</span>getInputStream proc)] <i class="conum" data-value="2"></i><b>(2)</b>
+    (<span class="keyword">-&gt;</span> (Runtime/getRuntime)
+        (<span class="keyword">.</span>addShutdownHook (Thread. #(<span class="keyword">.</span>destroy proc))))
+    {<span class="symbol">:proc</span> proc
+     <span class="symbol">:out</span> out}))
+
+(<span class="keyword">require</span> '[clojure.java.io <span class="symbol">:as</span> io])
+
+(<span class="keyword">let</span> [runner (test-runner-watch)]
+  (<span class="keyword">with-open</span> [reader (io/reader (<span class="symbol">:out</span> runner))]
+    (<span class="keyword">binding</span> [<span class="predefined-constant">*in*</span> reader]
+      (<span class="keyword">loop</span> []
+        (<span class="keyword">when-let</span> [line (<span class="keyword">read-line</span>)]
+          (<span class="keyword">when-let</span> [[_ tests assertions failures]
+                     (<span class="keyword">re-find</span> <span class="regexp"><span class="delimiter">#&quot;</span><span class="content">^(</span><span class="content">\d</span><span class="content">+) tests, (</span><span class="content">\d</span><span class="content">+) assertions, (</span><span class="content">\d</span><span class="content">+) failures</span><span class="delimiter">&quot;</span></span> line)] <i class="conum" data-value="3"></i><b>(3)</b>
+            (<span class="keyword">prn</span> {<span class="symbol">:tests</span> (Integer. tests)
+                  <span class="symbol">:assertions</span> (Integer. assertions)
+                  <span class="symbol">:failures</span> (Integer. failures)}))
+          (<span class="keyword">recur</span>))))))</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>We ask the test runner not to output ANSI color codes which makes parsing the output easier</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Instead of forwarding the output of the child process to stdout we now grab it as a <code>java.lang.InputStream</code></td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Here we parse the output of the test runner and then print it as EDN data</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Running this script will now print EDN data instead of text:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="shell">$ test_runner_watch.clj
+{:tests 7, :failures 0, :assertions 19}</code></pre>
+</div>
+</div>
 </div>
 </div>
 </div>
