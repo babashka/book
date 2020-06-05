@@ -94,62 +94,44 @@ Instead of sending the output of the child process to stdout we will have to get
 a hold of it. This is possible via https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Process.html#getInputStream()[`getInputStream`].
 
 
-.test_runner_watch.clj
+.test_runner_2.clj
 [source,clojure]
 ----
-#!/usr/bin/env bb
-
-(defn test-runner-watch []
-  (let [cmd ["clojure" "-A:kaocha"
-             "-m" "kaocha.runner" "--watch"
-             "--no-color"] <1>
-        pb (ProcessBuilder. cmd)
-        proc (.start pb)
-        out (.getInputStream proc)] <2>
-    (-> (Runtime/getRuntime)
-        (.addShutdownHook (Thread. #(.destroy proc))))
-    {:proc proc
-     :out out}))
-
-(require '[clojure.java.io :as io])
-
-(let [runner (test-runner-watch)]
-  (with-open [reader (io/reader (:out runner))]
-    (binding [*in* reader]
-      (loop []
-        (when-let [line (read-line)]
-          (when-let [[_ tests assertions failures]
-                     (re-find #"^(\d+) tests, (\d+) assertions, (\d+) failures" line)] <3>
-            (prn {:tests (Integer. tests)
-                  :assertions (Integer. assertions)
-                  :failures (Integer. failures)}))
-          (recur))))))
+include::test_runner_2.clj[]
 ----
 
-<1> We ask the test runner not to output ANSI color codes which makes parsing the output easier
-<2> Instead of forwarding the output of the child process to stdout we now grab it as a `java.lang.InputStream`
-<3> Here we parse the output of the test runner and then print it as EDN data
+<1> We ask the test runner not to output ANSI color codes which makes parsing
+the output easier
 
-Running this script will now print EDN data instead of text:
+<2> Instead of forwarding the output of the child process to stdout we now grab
+it as a `java.lang.InputStream`
+
+<3> The function `process-line` parses a line of output of the test runner and returns it as EDN data
+
+<4> The function `stderr` prints the line to stderr and returns it.
+
+<5> The function `watch` starts the test-runner in watch mode and applies the
+`callback` function on succesfully parsed lines
+
+<6> Finally we call the `watch` function with `prn` as the callback function.
+
+Running this script prints EDN data to stdout and the rest of the output goes to stderr:
 
 [source,shell]
 ----
-$ test_runner_watch.clj
-{:tests 7, :failures 0, :assertions 19}
+[(.................)(..)]
+7 tests, 19 assertions, 0 failures.
+{:errors 0, :failures 0, :tests 7, :assertions 19}
 ----
 
-// TODO: maybe use line-seq in the above example?
-// $ bb '(let [pb (ProcessBuilder. ["yes"]) p (.start pb) out (.getInputStream p)] (take 10 (line-seq (io/reader out))))'
-// ("y" "y" "y" "y" "y" "y" "y" "y" "y" "y")
+A more interesting callback could be one that calls a notifier like https://github.com/tonsky/AnyBar[AnyBar] or https://github.com/limpbrains/somebar[somebar]:
 
-// TODO: interactive program example?
+.test_runner_3.clj
+[source,clojure]
+----
+include::test_runner_3.clj[lines=47..]
+----
 
-// (let [program ["bash" "-c"
-//                "echo \"type something!\"; read input; echo \"you typed: $input\""]
-//       pb (doto (ProcessBuilder. program)
-//            (.inheritIO))
-//       p (.start pb)]
-//   (.waitFor p) nil)
-// type something!
-// 1
-// you typed: 1
+<1> `1738` is the default AnyBar UDP port
+<2> In case of failures or errors we set AnyBar to red, else to green.
+
