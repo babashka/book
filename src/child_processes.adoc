@@ -155,3 +155,11 @@ standard I/O to be the same as those of the current Java process.
 <4> Here we set the child process' environment variable `CI` to `false`
 
 <5> We wait for the process to end and exit with its exit code.
+
+[source,shell]
+----
+$ test_runner_4.clj ~/projects/carve --watch
+[(.................)(..)]
+7 tests, 19 assertions, 0 failures.
+{:errors 0, :failures 0, :tests 7, :assertions 19}
+----
