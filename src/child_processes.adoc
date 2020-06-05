@@ -137,3 +137,19 @@ Running this script will now print EDN data instead of text:
 $ test_runner_watch.clj
 {:tests 7, :failures 0, :assertions 19}
 ----
+
+// TODO: maybe use line-seq in the above example?
+// $ bb '(let [pb (ProcessBuilder. ["yes"]) p (.start pb) out (.getInputStream p)] (take 10 (line-seq (io/reader out))))'
+// ("y" "y" "y" "y" "y" "y" "y" "y" "y" "y")
+
+// TODO: interactive program example?
+
+// (let [program ["bash" "-c"
+//                "echo \"type something!\"; read input; echo \"you typed: $input\""]
+//       pb (doto (ProcessBuilder. program)
+//            (.inheritIO))
+//       p (.start pb)]
+//   (.waitFor p) nil)
+// type something!
+// 1
+// you typed: 1
