@@ -737,11 +737,11 @@ Instead of sending the output of the child process to stdout we will have to get
 a hold of it. This is possible via <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Process.html#getInputStream()"><code>getInputStream</code></a>.</p>
 </div>
 <div class="listingblock">
-<div class="title">test_runner_watch.clj</div>
+<div class="title">test_runner_2.clj</div>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="clojure"><span class="error">#</span>!/usr/bin/env bb
 
-(<span class="keyword">defn</span> <span class="function">test-runner-watch</span> []
+(<span class="keyword">defn</span> <span class="function">test-runner</span> []
   (<span class="keyword">let</span> [cmd [<span class="string"><span class="delimiter">&quot;</span><span class="content">clojure</span><span class="delimiter">&quot;</span></span> <span class="string"><span class="delimiter">&quot;</span><span class="content">-A:kaocha</span><span class="delimiter">&quot;</span></span>
              <span class="string"><span class="delimiter">&quot;</span><span class="content">-m</span><span class="delimiter">&quot;</span></span> <span class="string"><span class="delimiter">&quot;</span><span class="content">kaocha.runner</span><span class="delimiter">&quot;</span></span> <span class="string"><span class="delimiter">&quot;</span><span class="content">--watch</span><span class="delimiter">&quot;</span></span>
              <span class="string"><span class="delimiter">&quot;</span><span class="content">--no-color</span><span class="delimiter">&quot;</span></span>] <i class="conum" data-value="1"></i><b>(1)</b>
@@ -753,45 +753,121 @@ a hold of it. This is possible via <a href="https://docs.oracle.com/en/java/java
     {<span class="symbol">:proc</span> proc
      <span class="symbol">:out</span> out}))
 
+(<span class="keyword">require</span> '[clojure.string <span class="symbol">:as</span> <span class="keyword">str</span>])
+
+(<span class="keyword">defn</span> <span class="function">process-line</span> <i class="conum" data-value="3"></i><b>(3)</b>
+  <span class="string"><span class="delimiter">&quot;</span><span class="content">Returns EDN representation of test runner output.</span><span class="delimiter">&quot;</span></span>
+  [line]
+  (<span class="keyword">when</span> (<span class="keyword">re-matches</span> <span class="regexp"><span class="delimiter">#&quot;</span><span class="content">\d</span><span class="content">+ tests.*</span><span class="delimiter">&quot;</span></span> line)
+    (<span class="keyword">let</span> [splits (str/split line <span class="regexp"><span class="delimiter">#&quot;</span><span class="content">[,.]</span><span class="content">\s</span><span class="content">*</span><span class="delimiter">&quot;</span></span>)
+          keyvals (<span class="keyword">map</span> (<span class="keyword">fn</span> [s]
+                         (<span class="keyword">let</span> [[n k] (str/split s <span class="regexp"><span class="delimiter">#&quot;</span><span class="content"> </span><span class="delimiter">&quot;</span></span>)]
+                           [(<span class="keyword">keyword</span> k) (Integer. n)]))
+                       splits)]
+      (<span class="keyword">into</span> {<span class="symbol">:failures</span> <span class="integer">0</span> <span class="symbol">:errors</span> <span class="integer">0</span>} <span class="comment">;; defaults</span>
+            keyvals))))
+
+(<span class="keyword">defn</span> <span class="function">stderr</span> <i class="conum" data-value="4"></i><b>(4)</b>
+  <span class="string"><span class="delimiter">&quot;</span><span class="content">Prints line to stderr and returns line.</span><span class="delimiter">&quot;</span></span>
+  [line]
+  (<span class="keyword">binding</span> [<span class="predefined-constant">*out*</span> <span class="predefined-constant">*err*</span>]
+    (<span class="keyword">println</span> line))
+  line)
+
 (<span class="keyword">require</span> '[clojure.java.io <span class="symbol">:as</span> io])
 
-(<span class="keyword">let</span> [runner (test-runner-watch)]
-  (<span class="keyword">with-open</span> [reader (io/reader (<span class="symbol">:out</span> runner))]
-    (<span class="keyword">binding</span> [<span class="predefined-constant">*in*</span> reader]
-      (<span class="keyword">loop</span> []
-        (<span class="keyword">when-let</span> [line (<span class="keyword">read-line</span>)]
-          (<span class="keyword">when-let</span> [[_ tests assertions failures]
-                     (<span class="keyword">re-find</span> <span class="regexp"><span class="delimiter">#&quot;</span><span class="content">^(</span><span class="content">\d</span><span class="content">+) tests, (</span><span class="content">\d</span><span class="content">+) assertions, (</span><span class="content">\d</span><span class="content">+) failures</span><span class="delimiter">&quot;</span></span> line)] <i class="conum" data-value="3"></i><b>(3)</b>
-            (<span class="keyword">prn</span> {<span class="symbol">:tests</span> (Integer. tests)
-                  <span class="symbol">:assertions</span> (Integer. assertions)
-                  <span class="symbol">:failures</span> (Integer. failures)}))
-          (<span class="keyword">recur</span>))))))</code></pre>
+(<span class="keyword">defn</span> <span class="function">watch</span> <i class="conum" data-value="5"></i><b>(5)</b>
+  <span class="string"><span class="delimiter">&quot;</span><span class="content">Starts test-runner and calls `callback` on EDN representation of output.</span><span class="delimiter">&quot;</span></span>
+  [callback]
+  (<span class="keyword">let</span> [runner (test-runner)]
+    (<span class="keyword">with-open</span> [reader (io/reader (<span class="symbol">:out</span> runner))]
+      (<span class="keyword">let</span> [lines (<span class="keyword">line-seq</span> reader)
+            lines (keep (<span class="keyword">comp</span> process-line stderr) lines)]
+        (run! callback lines)))))
+
+(watch <span class="keyword">prn</span>) <i class="conum" data-value="6"></i><b>(6)</b></code></pre>
 </div>
 </div>
 <div class="colist arabic">
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>We ask the test runner not to output ANSI color codes which makes parsing the output easier</td>
+<td>We ask the test runner not to output ANSI color codes which makes parsing
+the output easier</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Instead of forwarding the output of the child process to stdout we now grab it as a <code>java.lang.InputStream</code></td>
+<td>Instead of forwarding the output of the child process to stdout we now grab
+it as a <code>java.lang.InputStream</code></td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>Here we parse the output of the test runner and then print it as EDN data</td>
+<td>The function <code>process-line</code> parses a line of output of the test runner and returns it as EDN data</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>The function <code>stderr</code> prints the line to stderr and returns it.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>The function <code>watch</code> starts the test-runner in watch mode and applies the
+<code>callback</code> function on succesfully parsed lines</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="6"></i><b>6</b></td>
+<td>Finally we call the <code>watch</code> function with <code>prn</code> as the callback function.</td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>Running this script will now print EDN data instead of text:</p>
+<p>Running this script prints EDN data to stdout and the rest of the output goes to stderr:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="shell">$ test_runner_watch.clj
-{:tests 7, :failures 0, :assertions 19}</code></pre>
+<pre class="CodeRay highlight"><code data-lang="shell">[(.................)(..)]
+7 tests, 19 assertions, 0 failures.
+{:errors 0, :failures 0, :tests 7, :assertions 19}</code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>A more interesting callback could be one that calls a notifier like <a href="https://github.com/tonsky/AnyBar">AnyBar</a> or <a href="https://github.com/limpbrains/somebar">somebar</a>:</p>
+</div>
+<div class="listingblock">
+<div class="title">test_runner_3.clj</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="clojure">(<span class="keyword">defn</span> <span class="function">packet</span>
+  <span class="string"><span class="delimiter">&quot;</span><span class="content">Returns UDP packet</span><span class="delimiter">&quot;</span></span>
+  [data port]
+  (<span class="keyword">let</span> [<span class="keyword">bytes</span> (<span class="keyword">.</span>getBytes data)
+        host (java.net.InetAddress/getByName <span class="string"><span class="delimiter">&quot;</span><span class="content">localhost</span><span class="delimiter">&quot;</span></span>)]
+    (java.net.DatagramPacket. <span class="keyword">bytes</span> (<span class="keyword">count</span> <span class="keyword">bytes</span>)
+                              host
+                              port)))
+
+(<span class="keyword">defn</span> <span class="function">send-data</span> [data]
+  (<span class="keyword">.</span><span class="keyword">send</span> (java.net.DatagramSocket.)
+         (packet data <span class="integer">1738</span>))) <i class="conum" data-value="1"></i><b>(1)</b>
+
+(<span class="keyword">defn</span> <span class="function">callback</span> [{<span class="symbol">:keys</span> [<span class="symbol">:failures</span> <span class="symbol">:errors</span>]}]
+  (<span class="keyword">if</span> (<span class="keyword">or</span> (<span class="keyword">pos?</span> failures)
+          (<span class="keyword">pos?</span> errors))
+    (send-data <span class="string"><span class="delimiter">&quot;</span><span class="content">red</span><span class="delimiter">&quot;</span></span>) <i class="conum" data-value="2"></i><b>(2)</b>
+    (send-data <span class="string"><span class="delimiter">&quot;</span><span class="content">green</span><span class="delimiter">&quot;</span></span>)))
+
+(watch callback)</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td><code>1738</code> is the default AnyBar UDP port</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>In case of failures or errors we set AnyBar to red, else to green.</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
