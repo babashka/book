@@ -43,7 +43,7 @@ has a few drawbacks:
 Using `java.lang.ProcessBuilder` and `java.lang.Process` gives us the extra
 power we need to overcome these limitations.
 
-.test_runner_watch.clj
+.test_runner_1.clj
 [source,clojure]
 ----
 #!/usr/bin/env bb
@@ -135,3 +135,23 @@ include::test_runner_3.clj[lines=47..]
 <1> `1738` is the default AnyBar UDP port
 <2> In case of failures or errors we set AnyBar to red, else to green.
 
+In some scripts it might be desirable to set the working directory and
+environment variables of the child process. Also it might be the last step in a
+script and you just want to let it run until it finishes:
+
+.test_runner_4.clj
+[source,clojure]
+----
+include::test_runner_4.clj[]
+----
+
+<1> We interpret the first command line arg as the working directory for the test runner
+
+<2> Remaining args are passed through to the test runner
+
+<3> https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/ProcessBuilder.html#inheritIO()[`.inheritIO`] is a convenience method. According to its documentation: Sets the source and destination for subprocess
+standard I/O to be the same as those of the current Java process.
+
+<4> Here we set the child process' environment variable `CI` to `false`
+
+<5> We wait for the process to end and exit with its exit code.
