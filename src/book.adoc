@@ -19,6 +19,5 @@ include::child_processes.adoc[]
 // == TODO
 
 // - Command line arguments
-// - Creating child processes
 // - HTTP requests
 // - XML
