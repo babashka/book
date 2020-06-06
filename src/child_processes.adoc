@@ -31,7 +31,7 @@ output on stdout and the `:exit` code is `1`.
 For more information on `clojure.java.shell`, read the
 https://clojure.github.io/clojure/clojure.java.shell-api.html[API documentation]
 
-=== java.lang.Process
+=== java.lang.Process(Builder)
 
 What if we wanted to start a test runner that watches a source directory and
 executes tests whenever a file changes? Using `clojure.java.shell/sh` for this
