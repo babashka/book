@@ -175,4 +175,3 @@ $ test_runner_4.clj ~/projects/carve --watch
 * https://github.com/borkdude/deps.clj/blob/5d51b80176bdcb96927ce5e6aedb25581db0e2e0/deps.clj#L18[deps.clj]
   uses `ProcessBuilder` to interact with `java`, e.g. to start a Clojure REPL or
   compute a classpath using tools.deps
-* https://github.com/lambdaisland/open-source/blob/1034bb607f5535c3089437069abbbfbe82cc4cec/src/lioss/subshell.clj#L10[lambdaisland/open-source]
