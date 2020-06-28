@@ -466,7 +466,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#child_processes">Child processes</a>
 <ul class="sectlevel2">
 <li><a href="#_clojure_java_shell">clojure.java.shell</a></li>
-<li><a href="#_java_lang_processbuilder">java.lang.Process(Builder)</a></li>
+<li><a href="#_java_lang_processbuilder">java.lang.Process(Builder)</a>
+<ul class="sectlevel3">
+<li><a href="#_real_life_examples">Real life examples</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -521,7 +525,7 @@ on how to contribute.</p>
 <div class="sect2">
 <h3 id="_compatibility">Compatibility</h3>
 <div class="paragraph">
-<p>Babashka uses the Small Clojure Interpreter, or <a href="https://github.com/borkdude/sci/">sci</a> for short to run programs within a GraalVM-compiled binary. GraalVM gives it it&#8217;s fast startup and low memory usage characteristics. Source code is not compiled to JVM-byte code first, like in Clojure on the JVM. Despite this difference, babashka aims to be as compatible as possible with the semantics of Clojure. It supports a sufficiently large subset of Clojure: functions, macros, multi-methods, namespaces, most of it is there. At the moment, the main difference with Clojure is lack of support for <code>defrecord</code>, <code>defprotocol</code> and <code>reify</code>. Like a JVM programmer would expect, babashka has support for multi-threading and provides access to commonly used Java packages and classes like <code>File</code>, <code>System</code>, <code>java.io</code> and <code>java.net</code>. Because babashka uses interpretation instead of compilation, some longer running programs may be slower, despite the benefit of fast startup. If that turns out to be the case, your efforts are not in vain: the code you wrote still runs with Clojure!</p>
+<p>Babashka uses the Small Clojure Interpreter, or <a href="https://github.com/borkdude/sci/">sci</a> for short to run programs within a GraalVM-compiled binary. GraalVM gives it its fast startup and low memory usage characteristics. Source code is not compiled to JVM bytecode first, like in Clojure on the JVM. Despite this difference, babashka aims to be as compatible as possible with the semantics of Clojure. It supports a sufficiently large subset of Clojure: functions, macros, multi-methods, namespaces, most of it is there. At the moment, the main difference with Clojure is lack of support for <code>deftype</code>, <code>definterface</code>, and <code>reify</code>. Like a JVM programmer would expect, babashka has support for multi-threading and provides access to commonly used Java packages and classes like <code>File</code>, <code>System</code>, <code>java.io</code> and <code>java.net</code>. Because babashka uses interpretation instead of compilation, some longer running programs may be slower, despite the benefit of fast startup. If that turns out to be the case, your efforts are not in vain: the code you wrote still runs with Clojure!</p>
 </div>
 </div>
 </div>
@@ -961,7 +965,7 @@ compute a classpath using tools.deps</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-06-05 20:52:51 +0200
+Last updated 2020-06-28 23:05:52 +0200
 </div>
 </div>
 <style>
