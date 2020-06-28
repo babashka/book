@@ -33,6 +33,10 @@ https://clojure.github.io/clojure/clojure.java.shell-api.html[API documentation]
 
 === java.lang.Process(Builder)
 
+Creating a child process with `clojure.java.shell/sh` is convenient and
+sufficient in 90% of the scripts you're going to write with babashka. For the
+remaining 10% you're going to need something slightly more powerful.
+
 What if we wanted to start a test runner that watches a source directory and
 executes tests whenever a file changes? Using `clojure.java.shell/sh` for this
 has a few drawbacks:
@@ -162,3 +166,13 @@ $ test_runner_4.clj ~/projects/carve --watch
 [(.................)(..)]
 7 tests, 19 assertions, 0 failures.
 ----
+
+==== Real life examples
+
+* The https://github.com/borkdude/babashka/blob/5608f935cd28c777cf7d16243574558e2203872e/script/bump_version.clj#L9[babashka] repo uses `ProcessBuilder` to invoke git to make a commit after bumping the version.
+  It redirects the output from `git` directly to stdout of the parent process.
+* https://github.com/borkdude/babashka.curl/blob/53b5b9d98f2e594384f628b0deee76b53bea5062/src/babashka/curl.clj#L17[babashka.curl] uses `ProcessBuilder` to interact with the `curl` executable
+* https://github.com/borkdude/deps.clj/blob/5d51b80176bdcb96927ce5e6aedb25581db0e2e0/deps.clj#L18[deps.clj]
+  uses `ProcessBuilder` to interact with `java`, e.g. to start a Clojure REPL or
+  compute a classpath using tools.deps
+* https://github.com/lambdaisland/open-source/blob/1034bb607f5535c3089437069abbbfbe82cc4cec/src/lioss/subshell.clj#L10[lambdaisland/open-source]
