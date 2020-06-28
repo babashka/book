@@ -649,6 +649,11 @@ output on stdout and the <code>:exit</code> code is <code>1</code>.</p>
 <div class="sect2">
 <h3 id="_java_lang_processbuilder">java.lang.Process(Builder)</h3>
 <div class="paragraph">
+<p>Creating a child process with <code>clojure.java.shell/sh</code> is convenient and
+sufficient in 90% of the scripts you&#8217;re going to write with babashka. For the
+remaining 10% you&#8217;re going to need something slightly more powerful.</p>
+</div>
+<div class="paragraph">
 <p>What if we wanted to start a test runner that watches a source directory and
 executes tests whenever a file changes? Using <code>clojure.java.shell/sh</code> for this
 has a few drawbacks:</p>
@@ -926,6 +931,28 @@ standard I/O to be the same as those of the current Java process.</td>
 <pre class="CodeRay highlight"><code data-lang="shell">$ test_runner_4.clj ~/projects/carve --watch
 [(.................)(..)]
 7 tests, 19 assertions, 0 failures.</code></pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_real_life_examples">Real life examples</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>The <a href="https://github.com/borkdude/babashka/blob/5608f935cd28c777cf7d16243574558e2203872e/script/bump_version.clj#L9">babashka</a> repo uses <code>ProcessBuilder</code> to invoke git to make a commit after bumping the version.
+It redirects the output from <code>git</code> directly to stdout of the parent process.</p>
+</li>
+<li>
+<p><a href="https://github.com/borkdude/babashka.curl/blob/53b5b9d98f2e594384f628b0deee76b53bea5062/src/babashka/curl.clj#L17">babashka.curl</a> uses <code>ProcessBuilder</code> to interact with the <code>curl</code> executable</p>
+</li>
+<li>
+<p><a href="https://github.com/borkdude/deps.clj/blob/5d51b80176bdcb96927ce5e6aedb25581db0e2e0/deps.clj#L18">deps.clj</a>
+uses <code>ProcessBuilder</code> to interact with <code>java</code>, e.g. to start a Clojure REPL or
+compute a classpath using tools.deps</p>
+</li>
+<li>
+<p><a href="https://github.com/lambdaisland/open-source/blob/1034bb607f5535c3089437069abbbfbe82cc4cec/src/lioss/subshell.clj#L10">lambdaisland/open-source</a></p>
+</li>
+</ul>
 </div>
 </div>
 </div>
