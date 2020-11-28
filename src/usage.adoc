@@ -5,7 +5,7 @@
 
 Scripts may be executed from a file using `-f` or `--file`:
 
-[source,shellsession]
+[source,bash]
 ----
 bb -f download_html.clj
 ----
@@ -17,7 +17,7 @@ Using `bb` with a shebang also works:
 include::usage/download_html.clj[]
 ----
 
-[source,shellsession]
+[source,bash]
 ----
 $ ./download_html.clj
 Usage: <url> <file>
@@ -30,7 +30,7 @@ Writing file: /tmp/clojure.org.html
 If `/usr/bin/env` doesn't work for you, you can use the following
 workaround:
 
-[source,shellsession]
+[source,bash]
 ----
 $ cat script.clj
 #!/bin/sh
@@ -52,7 +52,7 @@ include::usage/io-flags.adoc[]
 The var `*file*` contains the full path of the file that is currently
 being executed:
 
-[source,shellsession]
+[source,bash]
 ----
 $ cat example.clj
 (prn *file*)
@@ -72,3 +72,112 @@ https://github.com/borkdude/babashka/blob/master/doc/projects.md#nubankdocopt[nu
 library.
 
 include::usage/repl.adoc[]
+
+== Preloads
+
+The environment variable `BABASHKA_PRELOADS` allows to define code that
+will be available in all subsequent usages of babashka.
+
+[source,bash]
+----
+BABASHKA_PRELOADS='(defn foo [x] (+ x 2))'
+BABASHKA_PRELOADS=$BABASHKA_PRELOADS' (defn bar [x] (* x 2))'
+export BABASHKA_PRELOADS
+----
+
+Note that you can concatenate multiple expressions. Now you can use
+these functions in babashka:
+
+[source,bash]
+----
+$ bb '(-> (foo *input*) bar)' <<< 1
+6
+----
+
+You can also preload an entire file using `load-file`:
+
+[source,bash]
+----
+export BABASHKA_PRELOADS='(load-file "my_awesome_prelude.clj")'
+----
+
+Note that `*input*` is not available in preloads.
+
+== Classpath
+
+Babashka accepts a `--classpath` option that will be used to search for
+namespaces when requiring them:
+
+[source,clojure]
+----
+$ cat src/my/namespace.clj
+(ns my.namespace)
+(defn -main [& _args]
+  (println "Hello from my namespace!"))
+
+$ bb --classpath src --main my.namespace
+Hello from my namespace!
+----
+
+If you have a larger script with a classic Clojure project layout like
+
+[source,bash]
+----
+$ tree -L 3
+├── deps.edn
+├── README
+├── src
+│   └── project_namespace
+│       ├── main.clj
+│       └── utilities.clj
+└── test
+    └── project_namespace
+        ├── test_main.clj
+        └── test_utilities.clj
+----
+
+then you can tell babashka to include both the `src` and `test` folders
+in the classpath and start a socket REPL by running:
+
+[source,bash]
+----
+$ bb --classpath src:test --socket-repl 1666
+----
+
+Note that you can use the `clojure` tool to produce classpaths and
+download dependencies:
+
+[source,bash]
+----
+$ cat deps.edn
+{:deps
+ {my_gist_script
+  {:git/url "https://gist.github.com/borkdude/263b150607f3ce03630e114611a4ef42"
+   :sha "cfc761d06dfb30bb77166b45d439fe8fe54a31b8"}}
+ :aliases {:my-script {:main-opts ["-m" "my-gist-script"]}}}
+
+$ CLASSPATH=$(clojure -Spath)
+$ bb --classpath "$CLASSPATH" --main my-gist-script
+Hello from gist script!
+----
+
+If there is no `--classpath` argument, the `BABASHKA_CLASSPATH`
+environment variable will be used:
+
+[source,bash]
+----
+$ export BABASHKA_CLASSPATH=$(clojure -Spath)
+$ export BABASHKA_PRELOADS="(require '[my-gist-script])"
+$ bb "(my-gist-script/-main)"
+Hello from gist script!
+----
+
+When invoking `bb` with a main function, the expression
+`(System/getProperty "babashka.main")` will return the name of the main
+function.
+
+Also see the link:#babashka_classpath[babashka.classpath]
+namespace which allows dynamically adding to the classpath.
+
+See link:#deps_clj[deps.clj] for a babashka script that replaces the `clojure`
+bash script.

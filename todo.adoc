@@ -1,113 +1,3 @@
-== Preloads
-
-The environment variable `BABASHKA_PRELOADS` allows to define code that
-will be available in all subsequent usages of babashka.
-
-[source,shellsession]
-----
-BABASHKA_PRELOADS='(defn foo [x] (+ x 2))'
-BABASHKA_PRELOADS=$BABASHKA_PRELOADS' (defn bar [x] (* x 2))'
-export BABASHKA_PRELOADS
-----
-
-Note that you can concatenate multiple expressions. Now you can use
-these functions in babashka:
-
-[source,shellsession]
-----
-$ bb '(-> (foo *input*) bar)' <<< 1
-6
-----
-
-You can also preload an entire file using `load-file`:
-
-[source,shellsession]
-----
-export BABASHKA_PRELOADS='(load-file "my_awesome_prelude.clj")'
-----
-
-Note that `*input*` is not available in preloads.
-
-== Classpath
-
-Babashka accepts a `--classpath` option that will be used to search for
-namespaces when requiring them:
-
-[source,clojure]
-----
-$ cat src/my/namespace.clj
-(ns my.namespace)
-(defn -main [& _args]
-  (println "Hello from my namespace!"))
-
-$ bb --classpath src --main my.namespace
-Hello from my namespace!
-----
-
-If you have a larger script with a classic Clojure project layout like
-
-[source,shellsession]
-----
-$ tree -L 3
-├── deps.edn
-├── README
-├── src
-│   └── project_namespace
-│       ├── main.clj
-│       └── utilities.clj
-└── test
-    └── project_namespace
-        ├── test_main.clj
-        └── test_utilities.clj
-----
-
-then you can tell babashka to include both the `src` and `test` folders
-in the classpath and start a socket REPL by running:
-
-[source,shellsession]
-----
-$ bb --classpath src:test --socket-repl 1666
-----
-
-Note that you can use the `clojure` tool to produce classpaths and
-download dependencies:
-
-[source,shellsession]
-----
-$ cat deps.edn
-{:deps
- {my_gist_script
-  {:git/url "https://gist.github.com/borkdude/263b150607f3ce03630e114611a4ef42"
-   :sha "cfc761d06dfb30bb77166b45d439fe8fe54a31b8"}}
- :aliases {:my-script {:main-opts ["-m" "my-gist-script"]}}}
-
-$ CLASSPATH=$(clojure -Spath)
-$ bb --classpath "$CLASSPATH" --main my-gist-script
-Hello from gist script!
-----
-
-If there is no `--classpath` argument, the `BABASHKA_CLASSPATH`
-environment variable will be used:
-
-[source,shellsession]
-----
-$ export BABASHKA_CLASSPATH=$(clojure -Spath)
-$ export BABASHKA_PRELOADS="(require '[my-gist-script])"
-$ bb "(my-gist-script/-main)"
-Hello from gist script!
-----
-
-When invoking `bb` with a main function, the expression
-`(System/getProperty "babashka.main")` will return the name of the main
-function.
-
-Also see the
-https://github.com/borkdude/babashka/#babashkaclasspath[babashka.classpath]
-namespace which allows dynamically adding to the classpath.
-
-See link:doc/deps.clj.md[deps.clj] for a babashka script that replaces
-the `clojure` bash script.
-
 == Uberscript
 
 The `--uberscript` option collects the expressions in
@@ -136,7 +26,7 @@ Write a little script, say `glob.clj`:
 
 Now we can execute the script which uses the library:
 
-[source,shellsession]
+[source,bash]
 ----
 $ time bb glob.clj '*.md'
 /Users/borkdude/Dropbox/dev/clojure/carve/README.md
@@ -145,14 +35,14 @@ bb glob.clj '*.md'   0.03s  user 0.02s system 70% cpu 0.064 total
 
 Producing an uberscript with all required code:
 
-[source,shellsession]
+[source,bash]
 ----
 $ bb -f glob.clj --uberscript glob-uberscript.clj
 ----
 
 To prove that we don't need the classpath anymore:
 
-[source,shellsession]
+[source,bash]
 ----
 $ unset BABASHKA_CLASSPATH
 $ time bb glob-uberscript.clj '*.md'
@@ -177,7 +67,7 @@ link:#uberjar[uberjar] is a good alternative.
 Uberscripts can be optimized by cutting out unused vars with
 https://github.com/borkdude/carve[carve].
 
-[source,shellsession]
+[source,bash]
 ----
 $ wc -l glob-uberscript.clj
      607 glob-uberscript.clj
@@ -189,7 +79,7 @@ $ wc -l glob-uberscript.clj
 Note that the uberscript became 72% shorter. This has a beneficial
 effect on execution time:
 
-[source,shellsession]
+[source,bash]
 ----
 $ time bb glob-uberscript.clj '*.md'
 /Users/borkdude/Dropbox/dev/clojure/carve/README.md
@@ -313,7 +203,7 @@ Babashka ships with `clojure.tools.cli`:
 (:options (parse-opts *command-line-args* cli-options))
 ----
 
-[source,shellsession]
+[source,bash]
 ----
 $ bb script.clj
 {:port 80}

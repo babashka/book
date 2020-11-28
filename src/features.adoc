@@ -7,7 +7,7 @@ Typing `bb --help` from the command line will print all the available command
 line options which should give you a sense of the available features in
 babashka.
 
-[source,shellsession]
+[source,bash]
 ----
 Babashka v0.2.3
 
@@ -114,7 +114,7 @@ A selection of Java classes are available, see
 
 === Babashka namespaces
 
-[[babashkaclasspath]]
+[[babashka_classpath]]
 ==== babashka.classpath
 
 Contains the function `add-classpath` which can be used to add to the
@@ -180,7 +180,7 @@ Contains the function `signal/pipe-signal-received?`. Usage:
 
 Returns true if `PIPE` signal was received. Example:
 
-[source,shellsession]
+[source,bash]
 ----
 $ bb '((fn [x] (println x) (when (not (signal/pipe-signal-received?)) (recur (inc x)))) 0)' | head -n2
 1

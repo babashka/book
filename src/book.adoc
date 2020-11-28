@@ -3,8 +3,7 @@ Babashka book
 Michiel Borkent
 :doctype: book
 :description: A book with scripting recipes for babashka
-:source-highlighter: coderay
-:coderay-css: class
+:source-highlighter: rouge
 :icons: font
 :toc: left
 :toclevels: 2
@@ -22,6 +21,7 @@ include::usage.adoc[]
 include::style.adoc[]
 include::features.adoc[]
 include::child_processes.adoc[]
+include::deps_clj.adoc[]
 
 //include::shell_integration.adoc[]
 
