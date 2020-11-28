@@ -682,18 +682,19 @@ pre.rouge {
 <li><a href="#_input_and_output_flags">Input and output flags</a></li>
 <li><a href="#_current_file_path">Current file path</a></li>
 <li><a href="#_command_line_arguments">Command-line arguments</a></li>
-</ul>
-</li>
-<li><a href="#repl">Running a REPL</a>
-<ul class="sectlevel2">
-<li><a href="#_repl">REPL</a></li>
-<li><a href="#_socket_repl">Socket REPL</a></li>
-<li><a href="#_prepl">pREPL</a></li>
-<li><a href="#_nrepl">nREPL</a></li>
-</ul>
-</li>
+<li><a href="#repl">Running a REPL</a></li>
 <li><a href="#_preloads">Preloads</a></li>
 <li><a href="#_classpath">Classpath</a></li>
+<li><a href="#_uberscript">Uberscript</a></li>
+<li><a href="#_uberjar">Uberjar</a></li>
+<li><a href="#_system_properties">System properties</a></li>
+<li><a href="#_data_readers">Data readers</a></li>
+<li><a href="#_parsing_command_line_arguments">Parsing command line arguments</a></li>
+<li><a href="#_reader_conditionals">Reader conditionals</a></li>
+<li><a href="#_http_requests">HTTP requests</a></li>
+<li><a href="#_jdbc">JDBC</a></li>
+</ul>
+</li>
 <li><a href="#style">Style</a>
 <ul class="sectlevel2">
 <li><a href="#_explicit_requires">Explicit requires</a></li>
@@ -712,6 +713,17 @@ pre.rouge {
 </ul>
 </li>
 <li><a href="#_deps_clj">Deps.clj</a></li>
+<li><a href="#recipes">Recipes</a>
+<ul class="sectlevel2">
+<li><a href="#_running_tests">Running tests</a></li>
+<li><a href="#main_file">Main file</a></li>
+<li><a href="#_shutdown_hook">Shutdown hook</a></li>
+<li><a href="#_printing_returned_values">Printing returned values</a></li>
+<li><a href="#_core_async">Core.async</a></li>
+<li><a href="#_http_over_unix_sockets">HTTP over Unix sockets</a></li>
+<li><a href="#_interacting_with_an_nrepl_server">Interacting with an nREPL server</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -1134,16 +1146,13 @@ or use the
 library.</p>
 </div>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="repl">Running a REPL</h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="repl">Running a REPL</h3>
 <div class="paragraph">
 <p>Babashka supports running a REPL, a socket REPL and an nREPL server.</p>
 </div>
-<div class="sect2">
-<h3 id="_repl">REPL</h3>
+<div class="sect3">
+<h4 id="_repl">REPL</h4>
 <div class="paragraph">
 <p>To start a REPL, type:</p>
 </div>
@@ -1161,8 +1170,8 @@ library.</p>
 </div>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_socket_repl">Socket REPL</h3>
+<div class="sect3">
+<h4 id="_socket_repl">Socket REPL</h4>
 <div class="paragraph">
 <p>To start a socket REPL on port <code>1666</code>:</p>
 </div>
@@ -1234,8 +1243,8 @@ Java property option in Clojure:</p>
 </ul>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_prepl">pREPL</h3>
+<div class="sect3">
+<h4 id="_prepl">pREPL</h4>
 <div class="paragraph">
 <p>Launching a prepl can be done as follows:</p>
 </div>
@@ -1255,8 +1264,8 @@ Java property option in Clojure:</p>
 </div>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_nrepl">nREPL</h3>
+<div class="sect3">
+<h4 id="_nrepl">nREPL</h4>
 <div class="paragraph">
 <p>To start an nREPL server:</p>
 </div>
@@ -1329,8 +1338,8 @@ writes the file:</p>
   </span><span class="p">(</span><span class="nf">.waitFor</span><span class="w"> </span><span class="n">proc</span><span class="p">))</span></code></pre>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_debugging_the_nrepl_server">Debugging the nREPL server</h4>
+<div class="sect4">
+<h5 id="_debugging_the_nrepl_server">Debugging the nREPL server</h5>
 <div class="paragraph">
 <p>To debug the nREPL server from the binary you can run:</p>
 </div>
@@ -1355,10 +1364,8 @@ writes the file:</p>
 </div>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_preloads">Preloads</h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="_preloads">Preloads</h3>
 <div class="paragraph">
 <p>The environment variable <code>BABASHKA_PRELOADS</code> allows to define code that
 will be available in all subsequent usages of babashka.</p>
@@ -1392,10 +1399,8 @@ these functions in babashka:</p>
 <p>Note that <code>*input*</code> is not available in preloads.</p>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_classpath">Classpath</h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="_classpath">Classpath</h3>
 <div class="paragraph">
 <p>Babashka accepts a <code>--classpath</code> option that will be used to search for
 namespaces when requiring them:</p>
@@ -1480,6 +1485,354 @@ namespace which allows dynamically adding to the classpath.</p>
 <div class="paragraph">
 <p>See <a href="#deps_clj">deps.clj</a> for a babashka script that replaces the <code>clojure</code>
 bash script.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_uberscript">Uberscript</h3>
+<div class="paragraph">
+<p>The <code>--uberscript</code> option collects the expressions in
+<code>BABASHKA_PRELOADS</code>, the command line expression or file, the main
+entrypoint and all required namespaces from the classpath into a single
+file. This can be convenient for debugging and deployment.</p>
+</div>
+<div class="paragraph">
+<p>Here is an example that uses a function from the
+<a href="https://github.com/clj-commons/fs">clj-commons/fs</a> library.</p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s first set the classpath:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="n">$</span><span class="w"> </span><span class="n">export</span><span class="w"> </span><span class="n">BABASHKA_CLASSPATH=$</span><span class="p">(</span><span class="nf">clojure</span><span class="w"> </span><span class="n">-Spath</span><span class="w"> </span><span class="n">-Sdeps</span><span class="w"> </span><span class="o">'</span><span class="p">{</span><span class="no">:deps</span><span class="w"> </span><span class="p">{</span><span class="n">clj-commons/fs</span><span class="w"> </span><span class="p">{</span><span class="no">:mvn/version</span><span class="w"> </span><span class="s">"1.5.2"</span><span class="p">}}}</span><span class="o">'</span><span class="p">)</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Write a little script, say <code>glob.clj</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">(</span><span class="nf">ns</span><span class="w"> </span><span class="n">foo</span><span class="w"> </span><span class="p">(</span><span class="no">:require</span><span class="w"> </span><span class="p">[</span><span class="n">me.raynes.fs</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">fs</span><span class="p">]))</span><span class="w">
+</span><span class="p">(</span><span class="nf">run!</span><span class="w"> </span><span class="p">(</span><span class="nb">comp</span><span class="w"> </span><span class="nb">println</span><span class="w"> </span><span class="nb">str</span><span class="p">)</span><span class="w">
+      </span><span class="p">(</span><span class="nf">fs/glob</span><span class="w"> </span><span class="p">(</span><span class="nb">first</span><span class="w"> </span><span class="n">*command-line-args*</span><span class="p">)))</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now we can execute the script which uses the library:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash"><span class="nv">$ </span><span class="nb">time </span>bb glob.clj <span class="s1">'*.md'</span>
+/Users/borkdude/Dropbox/dev/clojure/carve/README.md
+bb glob.clj <span class="s1">'*.md'</span>   0.03s  user 0.02s system 70% cpu 0.064 total</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Producing an uberscript with all required code:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash"><span class="nv">$ </span>bb <span class="nt">-f</span> glob.clj <span class="nt">--uberscript</span> glob-uberscript.clj</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To prove that we don&#8217;t need the classpath anymore:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash"><span class="nv">$ </span><span class="nb">unset </span>BABASHKA_CLASSPATH
+<span class="nv">$ </span><span class="nb">time </span>bb glob-uberscript.clj <span class="s1">'*.md'</span>
+/Users/borkdude/Dropbox/dev/clojure/carve/README.md
+bb glob-uberscript.clj <span class="s1">'*.md'</span>   0.03s  user 0.02s system 93% cpu 0.049 total</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Caveats:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><em>Dynamic requires</em>. Building uberscripts works by running top-level
+<code>ns</code> and <code>require</code> forms. The rest of the code is not evaluated. Code
+that relies on dynamic requires may not work in an uberscript.</p>
+</li>
+<li>
+<p><em>Resources</em>. The usage of <code>io/resource</code> assumes a classpath, so when
+this is used in your uberscript, you still have to set a classpath and
+bring the resources along.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>If any of the above is problematic for your project, using an
+<a href="#uberjar">uberjar</a> is a good alternative.</p>
+</div>
+<div class="sect3">
+<h4 id="_carve">Carve</h4>
+<div class="paragraph">
+<p>Uberscripts can be optimized by cutting out unused vars with
+<a href="https://github.com/borkdude/carve">carve</a>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash"><span class="nv">$ </span><span class="nb">wc</span> <span class="nt">-l</span> glob-uberscript.clj
+     607 glob-uberscript.clj
+<span class="nv">$ </span>clojure <span class="nt">-M</span>:carve <span class="nt">--opts</span> <span class="s1">'{:paths ["glob-uberscript.clj"] :aggressive true :silent true}'</span>
+<span class="nv">$ </span><span class="nb">wc</span> <span class="nt">-l</span> glob-uberscript.clj
+     172 glob-uberscript.clj</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note that the uberscript became 72% shorter. This has a beneficial
+effect on execution time:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash"><span class="nv">$ </span><span class="nb">time </span>bb glob-uberscript.clj <span class="s1">'*.md'</span>
+/Users/borkdude/Dropbox/dev/clojure/carve/README.md
+bb glob-uberscript.clj <span class="s1">'*.md'</span>   0.02s  user 0.01s system 93% cpu 0.032 total</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_uberjar">Uberjar</h3>
+<div class="paragraph">
+<p>Babashka can create uberjars from a given classpath and optionally a
+main method:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="n">$</span><span class="w"> </span><span class="n">cat</span><span class="w"> </span><span class="n">src/foo.clj</span><span class="w">
+</span><span class="p">(</span><span class="nf">ns</span><span class="w"> </span><span class="n">foo</span><span class="w"> </span><span class="p">(</span><span class="no">:gen-class</span><span class="p">))</span><span class="w"> </span><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">-main</span><span class="w"> </span><span class="p">[</span><span class="o">&amp;</span><span class="w"> </span><span class="n">args</span><span class="p">]</span><span class="w"> </span><span class="p">(</span><span class="nb">prn</span><span class="w"> </span><span class="no">:hello</span><span class="p">))</span><span class="w">
+</span><span class="n">$</span><span class="w"> </span><span class="n">bb</span><span class="w"> </span><span class="n">-cp</span><span class="w"> </span><span class="n">$</span><span class="p">(</span><span class="nf">clojure</span><span class="w"> </span><span class="n">-Spath</span><span class="p">)</span><span class="w"> </span><span class="n">-m</span><span class="w"> </span><span class="n">foo</span><span class="w"> </span><span class="n">--uberjar</span><span class="w"> </span><span class="n">foo.jar</span><span class="w">
+</span><span class="n">$</span><span class="w"> </span><span class="n">bb</span><span class="w"> </span><span class="n">foo.jar</span><span class="w">
+</span><span class="no">:hello</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>When producing a classpath using the <code>clojure</code> or <code>deps.clj</code> tool,
+Clojure itself, spec and the core specs will be on the classpath and
+will therefore be included in your uberjar, which makes it bigger than
+necessary:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash"><span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-lh</span> foo.jar
+<span class="nt">-rw-r--r--</span>  1 borkdude  staff   4.5M Aug 19 17:04 foo.jar</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To exclude these dependencies, you can use the following
+<code>:classpath-overrides</code> in your <code>deps.edn</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">{</span><span class="no">:aliases</span><span class="w"> </span><span class="p">{</span><span class="no">:remove-clojure</span><span class="w"> </span><span class="p">{</span><span class="no">:classpath-overrides</span><span class="w"> </span><span class="p">{</span><span class="n">org.clojure/clojure</span><span class="w"> </span><span class="n">nil</span><span class="w">
+                                                  </span><span class="n">org.clojure/spec.alpha</span><span class="w"> </span><span class="n">nil</span><span class="w">
+                                                  </span><span class="n">org.clojure/core.specs.alpha</span><span class="w"> </span><span class="n">nil</span><span class="p">}}}}</span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="n">$</span><span class="w"> </span><span class="n">rm</span><span class="w"> </span><span class="n">foo.jar</span><span class="w">
+</span><span class="n">$</span><span class="w"> </span><span class="n">bb</span><span class="w"> </span><span class="n">-cp</span><span class="w"> </span><span class="n">$</span><span class="p">(</span><span class="nf">clojure</span><span class="w"> </span><span class="n">-A</span><span class="no">:remove-clojure</span><span class="w"> </span><span class="n">-Spath</span><span class="p">)</span><span class="w"> </span><span class="n">-m</span><span class="w"> </span><span class="n">foo</span><span class="w"> </span><span class="n">--uberjar</span><span class="w"> </span><span class="n">foo.jar</span><span class="w">
+</span><span class="n">$</span><span class="w"> </span><span class="n">bb</span><span class="w"> </span><span class="n">foo.jar</span><span class="w">
+</span><span class="no">:hello</span><span class="w">
+</span><span class="n">$</span><span class="w"> </span><span class="n">ls</span><span class="w"> </span><span class="n">-lh</span><span class="w"> </span><span class="n">foo.jar</span><span class="w">
+</span><span class="n">-rw-r--r--</span><span class="w">  </span><span class="mi">1</span><span class="w"> </span><span class="n">borkdude</span><span class="w">  </span><span class="n">staff</span><span class="w">   </span><span class="mi">871</span><span class="n">B</span><span class="w"> </span><span class="n">Aug</span><span class="w"> </span><span class="mi">19</span><span class="w"> </span><span class="mi">17</span><span class="no">:07</span><span class="w"> </span><span class="n">foo.jar</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you want your uberjar to be compatible with the JVM, you&#8217;ll need to
+compile the main namespace. Babashka does not do compilation, so we use
+Clojure on the JVM for that part:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="n">$</span><span class="w"> </span><span class="n">rm</span><span class="w"> </span><span class="n">foo.jar</span><span class="w">
+</span><span class="n">$</span><span class="w"> </span><span class="n">mkdir</span><span class="w"> </span><span class="n">classes</span><span class="w">
+</span><span class="n">$</span><span class="w"> </span><span class="n">clojure</span><span class="w"> </span><span class="n">-e</span><span class="w"> </span><span class="s">"(require 'foo) (compile 'foo)"</span><span class="w">
+</span><span class="n">foo</span><span class="w">
+</span><span class="n">$</span><span class="w"> </span><span class="n">bb</span><span class="w"> </span><span class="n">-cp</span><span class="w"> </span><span class="n">$</span><span class="p">(</span><span class="nf">clojure</span><span class="w"> </span><span class="n">-Spath</span><span class="p">)</span><span class="no">:classes</span><span class="w"> </span><span class="n">-m</span><span class="w"> </span><span class="n">foo</span><span class="w"> </span><span class="n">--uberjar</span><span class="w"> </span><span class="n">foo.jar</span><span class="w">
+</span><span class="n">$</span><span class="w"> </span><span class="n">bb</span><span class="w"> </span><span class="n">foo.jar</span><span class="w">
+</span><span class="no">:hello</span><span class="w">
+</span><span class="n">$</span><span class="w"> </span><span class="n">java</span><span class="w"> </span><span class="n">-jar</span><span class="w"> </span><span class="n">foo.jar</span><span class="w">
+</span><span class="no">:hello</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_system_properties">System properties</h3>
+<div class="paragraph">
+<p>Babashka sets the following system properties:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>babashka.version</code>: the version string, e.g. <code>"1.2.0"</code></p>
+</li>
+<li>
+<p><code>babashka.main</code>: the <code>--main</code> argument</p>
+</li>
+<li>
+<p><code>babashka.file</code>: the <code>--file</code> argument (normalized using
+<code>.getAbsolutePath</code>)</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_data_readers">Data readers</h3>
+<div class="paragraph">
+<p>Data readers can be enabled by setting <code>*data-readers*</code> to a hashmap of
+symbols to functions or vars:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="n">$</span><span class="w"> </span><span class="n">bb</span><span class="w"> </span><span class="s">"(set! *data-readers* {'t/tag inc}) #t/tag 1"</span><span class="w">
+</span><span class="mi">2</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To preserve good startup time, babashka does not scan the classpath for
+<code>data_readers.clj</code> files.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parsing_command_line_arguments">Parsing command line arguments</h3>
+<div class="paragraph">
+<p>Babashka ships with <code>clojure.tools.cli</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">(</span><span class="nf">require</span><span class="w"> </span><span class="o">'</span><span class="p">[</span><span class="n">clojure.tools.cli</span><span class="w"> </span><span class="no">:refer</span><span class="w"> </span><span class="p">[</span><span class="n">parse-opts</span><span class="p">]])</span><span class="w">
+
+</span><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">cli-options</span><span class="w">
+  </span><span class="c1">;; An option with a required argument</span><span class="w">
+  </span><span class="p">[[</span><span class="s">"-p"</span><span class="w"> </span><span class="s">"--port PORT"</span><span class="w"> </span><span class="s">"Port number"</span><span class="w">
+    </span><span class="no">:default</span><span class="w"> </span><span class="mi">80</span><span class="w">
+    </span><span class="no">:parse-fn</span><span class="w"> </span><span class="o">#</span><span class="p">(</span><span class="nf">Integer/parseInt</span><span class="w"> </span><span class="n">%</span><span class="p">)</span><span class="w">
+    </span><span class="no">:validate</span><span class="w"> </span><span class="p">[</span><span class="o">#</span><span class="p">(</span><span class="nb">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="n">%</span><span class="w"> </span><span class="mi">0</span><span class="n">x10000</span><span class="p">)</span><span class="w"> </span><span class="s">"Must be a number between 0 and 65536"</span><span class="p">]]</span><span class="w">
+   </span><span class="p">[</span><span class="s">"-h"</span><span class="w"> </span><span class="s">"--help"</span><span class="p">]])</span><span class="w">
+
+</span><span class="p">(</span><span class="no">:options</span><span class="w"> </span><span class="p">(</span><span class="nf">parse-opts</span><span class="w"> </span><span class="n">*command-line-args*</span><span class="w"> </span><span class="n">cli-options</span><span class="p">))</span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash"><span class="nv">$ </span>bb script.clj
+<span class="o">{</span>:port 80<span class="o">}</span>
+<span class="nv">$ </span>bb script.clj <span class="nt">-h</span>
+<span class="o">{</span>:port 80, :help <span class="nb">true</span><span class="o">}</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_reader_conditionals">Reader conditionals</h3>
+<div class="paragraph">
+<p>Babashka supports reader conditionals by taking either the <code>:bb</code> or
+<code>:clj</code> branch, whichever comes first. NOTE: the <code>:clj</code> branch behavior
+was added in version 0.0.71, before that version the <code>:clj</code> branch was
+ignored.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="n">$</span><span class="w"> </span><span class="n">bb</span><span class="w"> </span><span class="s">"#?(:bb :hello :clj :bye)"</span><span class="w">
+</span><span class="no">:hello</span><span class="w">
+
+</span><span class="n">$</span><span class="w"> </span><span class="n">bb</span><span class="w"> </span><span class="s">"#?(:clj :bye :bb :hello)"</span><span class="w">
+</span><span class="no">:bye</span><span class="w">
+
+</span><span class="n">$</span><span class="w"> </span><span class="n">bb</span><span class="w"> </span><span class="s">"[1 2 #?@(:bb [] :clj [1])]"</span><span class="w">
+</span><span class="p">[</span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="p">]</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_http_requests">HTTP requests</h3>
+<div class="paragraph">
+<p>For making HTTP requests you can use:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://github.com/borkdude/babashka.curl">babashka.curl</a>. This library
+is included with babashka and aliased as <code>curl</code> in the user namespace.
+The interface is similar to that of
+<a href="https://github.com/dakrone/clj-http">clj-http</a> but it will shell out to
+<code>curl</code> to make requests.</p>
+</li>
+<li>
+<p><a href="https://github.com/http-kit/http-kit">org.httpkit.client</a></p>
+</li>
+<li>
+<p><code>slurp</code> for simple <code>GET</code> requests</p>
+</li>
+<li>
+<p><a href="https://github.com/babashka/clj-http-lite">clj-http-lite</a> as a library.</p>
+</li>
+<li>
+<p><code>clojure.java.shell</code> or <code>babashka.process</code> for shelling out to your
+favorite command line http client</p>
+</li>
+</ul>
+</div>
+<div class="sect3">
+<h4 id="_choosing_the_right_client">Choosing the right client</h4>
+<div class="paragraph">
+<p>If memory usage is a concern and you are downloading big files, choose
+<code>babashka.curl</code> with <code>:as :stream</code> over <code>org.httpkit.client</code> since
+http-kit holds the entire response in memory at once. Let&#8217;s download a
+200mb file with 10mb heap size:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="n">$</span><span class="w"> </span><span class="n">bb</span><span class="w"> </span><span class="n">-Xmx10m</span><span class="w"> </span><span class="n">-e</span><span class="w"> </span><span class="o">'</span><span class="p">(</span><span class="nf">io/copy</span><span class="w"> </span><span class="p">(</span><span class="no">:body</span><span class="w"> </span><span class="p">(</span><span class="nf">curl/get</span><span class="w"> </span><span class="s">"http://ipv4.download.thinkbroadband.com/200MB.zip"</span><span class="w"> </span><span class="p">{</span><span class="no">:as</span><span class="w"> </span><span class="no">:stream</span><span class="p">}))</span><span class="w"> </span><span class="p">(</span><span class="nf">io/file</span><span class="w"> </span><span class="s">"/tmp/200mb.zip"</span><span class="p">))</span><span class="o">'</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>With <code>babashka.curl</code> this works fine. However with <code>org.httpkit.client</code>
+that won&#8217;t work. Not even 190mb of heap will do:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="n">$</span><span class="w"> </span><span class="n">bb</span><span class="w"> </span><span class="n">-Xmx190m</span><span class="w"> </span><span class="n">-e</span><span class="w"> </span><span class="o">'</span><span class="p">(</span><span class="nf">io/copy</span><span class="w"> </span><span class="p">(</span><span class="no">:body</span><span class="w"> </span><span class="o">@</span><span class="p">(</span><span class="nf">org.httpkit.client/get</span><span class="w"> </span><span class="s">"http://ipv4.download.thinkbroadband.com/200MB.zip"</span><span class="w"> </span><span class="p">{</span><span class="no">:as</span><span class="w"> </span><span class="no">:stream</span><span class="p">}))</span><span class="w"> </span><span class="p">(</span><span class="nf">io/file</span><span class="w"> </span><span class="s">"/tmp/200mb.zip"</span><span class="p">))</span><span class="o">'</span><span class="w">
+</span><span class="n">Sun</span><span class="w"> </span><span class="n">Nov</span><span class="w"> </span><span class="mi">08</span><span class="w"> </span><span class="mi">23</span><span class="no">:01:46</span><span class="w"> </span><span class="n">CET</span><span class="w"> </span><span class="mi">2020</span><span class="w"> </span><span class="p">[</span><span class="n">client-loop</span><span class="p">]</span><span class="w"> </span><span class="n">ERROR</span><span class="w"> </span><span class="nb">-</span><span class="w"> </span><span class="nb">select</span><span class="w"> </span><span class="n">exception,</span><span class="w"> </span><span class="n">should</span><span class="w"> </span><span class="nb">not</span><span class="w"> </span><span class="n">happen</span><span class="w">
+</span><span class="n">java.lang.OutOfMemoryError</span><span class="err">:</span><span class="w"> </span><span class="n">Array</span><span class="w"> </span><span class="n">allocation</span><span class="w"> </span><span class="n">too</span><span class="w"> </span><span class="n">large.</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If your script creates many requests with relatively small payloads,
+choose <code>org.httpkit.client</code> over <code>babashka.curl</code> since <code>babashka.curl</code>
+creates a <code>curl</code> process for each request.</p>
+</div>
+<div class="paragraph">
+<p>In the future babashka (1.0.0?) may come with an HTTP client based on
+the JVM 11 <code>java.net.http</code> package that ticks all the boxes (async,
+HTTP/2, websockets, multi-part file uploads, sane memory usage) and is a
+suitable replacement for all of the above options. If you know about a
+GraalVM-friendly feature-complete well-maintained library, please reach
+out!</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_jdbc">JDBC</h3>
+<div class="paragraph">
+<p>Babashka supports the
+<a href="https://github.com/seancorfield/next-jdbc"><code>next.jdbc</code></a> library along
+with drivers for <a href="https://www.postgresql.org/">PostgresQL</a> and
+<a href="http://hsqldb.org/">HSQLDB</a>. These features are not part of the standard
+<code>bb</code> distribution but available via feature flags. See doc/build.md for
+details on how to build babashka with these features. See this
+<a href="test-resources/babashka/postgres_test.clj">test</a> for an example how
+to use this.</p>
+</div>
+<div class="paragraph">
+<p>Interacting with <code>psql</code>, <code>mysql</code> and the <code>sqlite</code> CLIs can be achieved
+by shelling out. See the examples directory.</p>
+</div>
 </div>
 </div>
 </div>
@@ -2161,10 +2514,172 @@ evaluated and made available through the symbol <code>util</code>.</p>
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="recipes">Recipes</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_running_tests">Running tests</h3>
+<div class="paragraph">
+<p>Babashka bundles <code>clojure.test</code>. To make CI scripts fail you can use a
+simple runner like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="c">#!/usr/bin/env bash</span>
+bb <span class="nt">-cp</span> <span class="s2">"src:test:resources"</span> <span class="se">\</span>
+   <span class="nt">-e</span> <span class="s2">"(require '[clojure.test :as t] '[borkdude.deps-test])
+       (let [{:keys [:fail :error]} (t/run-tests 'borkdude.deps-test)]
+         (System/exit (+ fail error)))"</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="main_file">Main file</h3>
+<div class="paragraph">
+<p>In Python scripts there is a well-known pattern to check if the current
+file was the file invoked from the command line, or loaded from another
+file: the <code>__name__ == "__main__"</code> pattern. In babashka this pattern can
+be implemented with:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">(</span><span class="nb">=</span><span class="w"> </span><span class="n">*file*</span><span class="w"> </span><span class="p">(</span><span class="nf">System/getProperty</span><span class="w"> </span><span class="s">"babashka.file"</span><span class="p">)</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_shutdown_hook">Shutdown hook</h3>
+<div class="paragraph">
+<p>Adding a shutdown hook allows you to execute some code before the script
+exits.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="n">$</span><span class="w"> </span><span class="n">bb</span><span class="w"> </span><span class="n">-e</span><span class="w"> </span><span class="o">'</span><span class="p">(</span><span class="nb">-&gt;</span><span class="w"> </span><span class="p">(</span><span class="nf">Runtime/getRuntime</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nf">.addShutdownHook</span><span class="w"> </span><span class="p">(</span><span class="nf">Thread.</span><span class="w"> </span><span class="o">#</span><span class="p">(</span><span class="nb">println</span><span class="w"> </span><span class="s">"bye"</span><span class="p">))))</span><span class="o">'</span><span class="w">
+</span><span class="n">bye</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This also works when the script is interrupted with ctrl-c.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_printing_returned_values">Printing returned values</h3>
+<div class="paragraph">
+<p>Babashka doesn&#8217;t print a returned <code>nil</code> as lots of scripts end in
+something side-effecting.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>bb <span class="s1">'(:a {:a 5})'</span>
+5
+<span class="nv">$ </span>bb <span class="s1">'(:b {:a 5})'</span>
+<span class="err">$</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you really want to print the nil, you can use <code>(prn ..)</code> instead.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_core_async">Core.async</h3>
+<div class="paragraph">
+<p>In addition to <code>future</code>, <code>pmap</code>, <code>promise</code> and friends, you may use the
+<code>clojure.core.async</code> namespace for asynchronous scripting. The following
+example shows how to get first available value from two different
+processes:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="n">bb</span><span class="w"> </span><span class="o">'</span><span class="w">
+</span><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">async-command</span><span class="w"> </span><span class="p">[</span><span class="o">&amp;</span><span class="w"> </span><span class="n">args</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nf">async/thread</span><span class="w"> </span><span class="p">(</span><span class="nb">apply</span><span class="w"> </span><span class="n">shell/sh</span><span class="w"> </span><span class="s">"bash"</span><span class="w"> </span><span class="s">"-c"</span><span class="w"> </span><span class="n">args</span><span class="p">)))</span><span class="w">
+
+</span><span class="p">(</span><span class="nb">-&gt;</span><span class="w"> </span><span class="p">(</span><span class="nf">async/alts!!</span><span class="w"> </span><span class="p">[(</span><span class="nf">async-command</span><span class="w"> </span><span class="s">"sleep 2 &amp;&amp; echo process 1"</span><span class="p">)</span><span class="w">
+                   </span><span class="p">(</span><span class="nf">async-command</span><span class="w"> </span><span class="s">"sleep 1 &amp;&amp; echo process 2"</span><span class="p">)])</span><span class="w">
+    </span><span class="nb">first</span><span class="w"> </span><span class="no">:out</span><span class="w"> </span><span class="n">str/trim</span><span class="w"> </span><span class="nb">println</span><span class="p">)</span><span class="o">'</span><span class="w">
+</span><span class="n">process</span><span class="w"> </span><span class="mi">2</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Caveat: currently the <code>go</code> macro is available for compatibility with JVM
+programs, but the implementation maps to <code>clojure.core.async/thread</code> and
+the single exclamation mark operations (<code>&lt;!</code>, <code>&gt;!</code>, etc.) map to the
+double exclamation mark operations (<code>&lt;!!</code>, <code>&gt;!!</code>, etc.). It will not
+"park" threads, like on the JVM.</p>
+</div>
+<div class="paragraph">
+<p>Examples like the following may still work, but will take a lot more
+system resources than on the JVM and will break down for some high value
+of <code>n</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">(</span><span class="nf">require</span><span class="w"> </span><span class="o">'</span><span class="p">[</span><span class="n">clojure.core.async</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">async</span><span class="p">])</span><span class="w">
+
+</span><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="mi">1000</span><span class="p">)</span><span class="w">
+
+</span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[</span><span class="n">cs</span><span class="w"> </span><span class="p">(</span><span class="nf">repeatedly</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="n">async/chan</span><span class="p">)</span><span class="w">
+      </span><span class="n">begin</span><span class="w"> </span><span class="p">(</span><span class="nf">System/currentTimeMillis</span><span class="p">)]</span><span class="w">
+  </span><span class="p">(</span><span class="nb">doseq</span><span class="w"> </span><span class="p">[</span><span class="n">c</span><span class="w"> </span><span class="n">cs</span><span class="p">]</span><span class="w"> </span><span class="p">(</span><span class="nf">async/go</span><span class="w"> </span><span class="p">(</span><span class="nf">async/&gt;!</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="s">"hi"</span><span class="p">)))</span><span class="w">
+  </span><span class="p">(</span><span class="nb">dotimes</span><span class="w"> </span><span class="p">[</span><span class="n">_</span><span class="w"> </span><span class="n">n</span><span class="p">]</span><span class="w">
+    </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[[</span><span class="n">v</span><span class="w"> </span><span class="n">_</span><span class="p">]</span><span class="w"> </span><span class="p">(</span><span class="nf">async/alts!!</span><span class="w"> </span><span class="n">cs</span><span class="p">)]</span><span class="w">
+      </span><span class="p">(</span><span class="nb">assert</span><span class="w"> </span><span class="p">(</span><span class="nb">=</span><span class="w"> </span><span class="s">"hi"</span><span class="w"> </span><span class="n">v</span><span class="p">))))</span><span class="w">
+  </span><span class="p">(</span><span class="nb">println</span><span class="w"> </span><span class="s">"Read"</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="s">"msgs in"</span><span class="w"> </span><span class="p">(</span><span class="nb">-</span><span class="w"> </span><span class="p">(</span><span class="nf">System/currentTimeMillis</span><span class="p">)</span><span class="w"> </span><span class="n">begin</span><span class="p">)</span><span class="w"> </span><span class="s">"ms"</span><span class="p">))</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_http_over_unix_sockets">HTTP over Unix sockets</h3>
+<div class="paragraph">
+<p>This can be useful for talking to Docker:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">(</span><span class="nf">require</span><span class="w"> </span><span class="o">'</span><span class="p">[</span><span class="n">clojure.java.shell</span><span class="w"> </span><span class="no">:refer</span><span class="w"> </span><span class="p">[</span><span class="n">sh</span><span class="p">]])</span><span class="w">
+</span><span class="p">(</span><span class="nf">require</span><span class="w"> </span><span class="o">'</span><span class="p">[</span><span class="n">cheshire.core</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">json</span><span class="p">])</span><span class="w">
+</span><span class="p">(</span><span class="nb">-&gt;</span><span class="w"> </span><span class="p">(</span><span class="nf">sh</span><span class="w"> </span><span class="s">"curl"</span><span class="w"> </span><span class="s">"--silent"</span><span class="w">
+        </span><span class="s">"--no-buffer"</span><span class="w"> </span><span class="s">"--unix-socket"</span><span class="w">
+        </span><span class="s">"/var/run/docker.sock"</span><span class="w">
+        </span><span class="s">"http://localhost/images/json"</span><span class="p">)</span><span class="w">
+    </span><span class="no">:out</span><span class="w">
+    </span><span class="p">(</span><span class="nf">json/parse-string</span><span class="w"> </span><span class="n">true</span><span class="p">)</span><span class="w">
+    </span><span class="nb">first</span><span class="w">
+    </span><span class="no">:RepoTags</span><span class="p">)</span><span class="w"> </span><span class="c1">;;=&gt; ["borkdude/babashka:latest"]</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_interacting_with_an_nrepl_server">Interacting with an nREPL server</h3>
+<div class="paragraph">
+<p>Babashka comes with the <a href="https://github.com/nrepl/bencode">nrepl/bencode</a>
+library which allows you to read and write bencode messages to a socket.
+A simple example which evaluates a Clojure expression on an nREPL server
+started with <code>lein repl</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">(</span><span class="nf">ns</span><span class="w"> </span><span class="n">nrepl-client</span><span class="w">
+  </span><span class="p">(</span><span class="no">:require</span><span class="w"> </span><span class="p">[</span><span class="n">bencode.core</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">b</span><span class="p">]))</span><span class="w">
+
+</span><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">nrepl-eval</span><span class="w"> </span><span class="p">[</span><span class="n">port</span><span class="w"> </span><span class="n">expr</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[</span><span class="n">s</span><span class="w"> </span><span class="p">(</span><span class="nf">java.net.Socket.</span><span class="w"> </span><span class="s">"localhost"</span><span class="w"> </span><span class="n">port</span><span class="p">)</span><span class="w">
+        </span><span class="n">out</span><span class="w"> </span><span class="p">(</span><span class="nf">.getOutputStream</span><span class="w"> </span><span class="n">s</span><span class="p">)</span><span class="w">
+        </span><span class="n">in</span><span class="w"> </span><span class="p">(</span><span class="nf">java.io.PushbackInputStream.</span><span class="w"> </span><span class="p">(</span><span class="nf">.getInputStream</span><span class="w"> </span><span class="n">s</span><span class="p">))</span><span class="w">
+        </span><span class="n">_</span><span class="w"> </span><span class="p">(</span><span class="nf">b/write-bencode</span><span class="w"> </span><span class="n">out</span><span class="w"> </span><span class="p">{</span><span class="s">"op"</span><span class="w"> </span><span class="s">"eval"</span><span class="w"> </span><span class="s">"code"</span><span class="w"> </span><span class="n">expr</span><span class="p">})</span><span class="w">
+        </span><span class="n">bytes</span><span class="w"> </span><span class="p">(</span><span class="nb">get</span><span class="w"> </span><span class="p">(</span><span class="nf">b/read-bencode</span><span class="w"> </span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="s">"value"</span><span class="p">)]</span><span class="w">
+    </span><span class="p">(</span><span class="nf">String.</span><span class="w"> </span><span class="n">bytes</span><span class="p">)))</span><span class="w">
+
+</span><span class="p">(</span><span class="nf">nrepl-eval</span><span class="w"> </span><span class="mi">52054</span><span class="w"> </span><span class="s">"(+ 1 2 3)"</span><span class="p">)</span><span class="w"> </span><span class="c1">;;=&gt; "6"</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-11-28 20:55:32 +0100
+Last updated 2020-11-28 21:11:03 +0100
 </div>
 </div>
 </body>
