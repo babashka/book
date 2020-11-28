@@ -46,3 +46,27 @@ $ cat script.clj
 ----
 
 include::usage/io-flags.adoc[]
+
+=== Current file path
+
+The var `*file*` contains the full path of the file that is currently
+being executed:
+
+[source,shellsession]
+----
+$ cat example.clj
+(prn *file*)
+
+$ bb example.clj
+"/Users/borkdude/example.clj"
+----
+
+=== Command-line arguments
+
+Command-line arguments can be retrieved using `*command-line-args*`. If
+you want to parse command line arguments, you may use the built-in
+`clojure.tools.cli` namespace (see
+https://github.com/borkdude/babashka#parsing-command-line-arguments[docs])
+or use the
+https://github.com/borkdude/babashka/blob/master/doc/projects.md#nubankdocopt[nubank/docopt]
+library.

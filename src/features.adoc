@@ -1,4 +1,6 @@
 [[features]]
+// why do I need a new line here to make TOC work properly?
+
 == Features
 
 Typing `bb --help` from the command line will print all the available command
@@ -109,3 +111,94 @@ you want to compile babashka yourself.
 
 A selection of Java classes are available, see
 `babashka/impl/classes.clj` in babashka's git repo.
+
+=== Babashka namespaces
+
+[[babashkaclasspath]]
+==== babashka.classpath
+
+Contains the function `add-classpath` which can be used to add to the
+classpath dynamically:
+
+[source,clojure]
+----
+(require '[babashka.classpath :refer [add-classpath]]
+         '[clojure.java.shell :refer [sh]]
+         '[clojure.string :as str])
+
+(def medley-dep '{:deps {medley {:git/url "https://github.com/borkdude/medley"
+                                 :sha "91adfb5da33f8d23f75f0894da1defe567a625c0"}}})
+(def cp (-> (sh "clojure" "-Spath" "-Sdeps" (str medley-dep)) :out str/trim))
+(add-classpath cp)
+(require '[medley.core :as m])
+(m/index-by :id [{:id 1} {:id 2}]) ;;=> {1 {:id 1}, 2 {:id 2}}
+----
+
+[[babashkawait]]
+==== babashka.wait
+
+Contains the functions: `wait-for-port` and `wait-for-path`.
+
+Usage of `wait-for-port`:
+
+[source,clojure]
+----
+(wait/wait-for-port "localhost" 8080)
+(wait/wait-for-port "localhost" 8080 {:timeout 1000 :pause 1000})
+----
+
+Waits for TCP connection to be available on host and port. Options map
+supports `:timeout` and `:pause`. If `:timeout` is provided and reached,
+`:default`'s value (if any) is returned. The `:pause` option determines
+the time waited between retries.
+
+Usage of `wait-for-path`:
+
+[source,clojure]
+----
+(wait/wait-for-path "/tmp/wait-path-test")
+(wait/wait-for-path "/tmp/wait-path-test" {:timeout 1000 :pause 1000})
+----
+
+Waits for file path to be available. Options map supports `:default`,
+`:timeout` and `:pause`. If `:timeout` is provided and reached,
+`:default`'s value (if any) is returned. The `:pause` option determines
+the time waited between retries.
+
+The namespace `babashka.wait` is aliased as `wait` in the `user`
+namespace.
+
+[[babashkasignal]]
+==== babashka.signal
+
+Contains the function `signal/pipe-signal-received?`. Usage:
+
+[source,clojure]
+----
+(signal/pipe-signal-received?)
+----
+
+Returns true if `PIPE` signal was received. Example:
+
+[source,shellsession]
+----
+$ bb '((fn [x] (println x) (when (not (signal/pipe-signal-received?)) (recur (inc x)))) 0)' | head -n2
+1
+2
+----
+
+The namespace `babashka.signal` is aliased as `signal` in the `user`
+namespace.
+
+[[babashkacurl]]
+==== babashka.curl
+
+The namespace `babashka.curl` is a tiny wrapper around curl. It's aliased as
+`curl` in the user namespace. See
+https://github.com/borkdude/babashka.curl[babashka.curl] for how to use it.
+
+[[babashkaprocess]]
+==== babashka.process
+
+The `babashka.process` process library. See the
+https://github.com/babashka/process[process] repo for API docs.
