@@ -157,3 +157,12 @@ https://github.com/borkdude/babashka.curl[babashka.curl] for how to use it.
 
 The `babashka.process` process library. See the
 https://github.com/babashka/process[process] repo for API docs.
+
+=== Projects
+
+Babashka is able to run Clojure projects from source, if they are compatible
+with the subset of Clojure that sci is capable of running.
+
+Check this
+https://github.com/borkdude/babashka/blob/master/doc/projects.md[page] for
+projects that are known to work with babashka.
