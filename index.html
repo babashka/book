@@ -718,7 +718,6 @@ pre.rouge {
 <li><a href="#_printing_returned_values">Printing returned values</a></li>
 <li><a href="#_http_requests">HTTP requests</a></li>
 <li><a href="#core_async">Core.async</a></li>
-<li><a href="#_http_over_unix_sockets">HTTP over Unix sockets</a></li>
 <li><a href="#_interacting_with_an_nrepl_server">Interacting with an nREPL server</a></li>
 </ul>
 </li>
@@ -2533,6 +2532,26 @@ GraalVM-friendly feature-complete well-maintained library, please reach
 out!</p>
 </div>
 </div>
+<div class="sect3">
+<h4 id="_http_over_unix_sockets">HTTP over Unix sockets</h4>
+<div class="paragraph">
+<p>This can be useful for talking to Docker:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">(</span><span class="nf">require</span><span class="w"> </span><span class="o">'</span><span class="p">[</span><span class="n">clojure.java.shell</span><span class="w"> </span><span class="no">:refer</span><span class="w"> </span><span class="p">[</span><span class="n">sh</span><span class="p">]])</span><span class="w">
+</span><span class="p">(</span><span class="nf">require</span><span class="w"> </span><span class="o">'</span><span class="p">[</span><span class="n">cheshire.core</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">json</span><span class="p">])</span><span class="w">
+</span><span class="p">(</span><span class="nb">-&gt;</span><span class="w"> </span><span class="p">(</span><span class="nf">sh</span><span class="w"> </span><span class="s">"curl"</span><span class="w"> </span><span class="s">"--silent"</span><span class="w">
+        </span><span class="s">"--no-buffer"</span><span class="w"> </span><span class="s">"--unix-socket"</span><span class="w">
+        </span><span class="s">"/var/run/docker.sock"</span><span class="w">
+        </span><span class="s">"http://localhost/images/json"</span><span class="p">)</span><span class="w">
+    </span><span class="no">:out</span><span class="w">
+    </span><span class="p">(</span><span class="nf">json/parse-string</span><span class="w"> </span><span class="n">true</span><span class="p">)</span><span class="w">
+    </span><span class="nb">first</span><span class="w">
+    </span><span class="no">:RepoTags</span><span class="p">)</span><span class="w"> </span><span class="c1">;;=&gt; ["borkdude/babashka:latest"]</span></code></pre>
+</div>
+</div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="core_async">Core.async</h3>
@@ -2579,26 +2598,6 @@ of <code>n</code>:</p>
     </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[[</span><span class="n">v</span><span class="w"> </span><span class="n">_</span><span class="p">]</span><span class="w"> </span><span class="p">(</span><span class="nf">async/alts!!</span><span class="w"> </span><span class="n">cs</span><span class="p">)]</span><span class="w">
       </span><span class="p">(</span><span class="nb">assert</span><span class="w"> </span><span class="p">(</span><span class="nb">=</span><span class="w"> </span><span class="s">"hi"</span><span class="w"> </span><span class="n">v</span><span class="p">))))</span><span class="w">
   </span><span class="p">(</span><span class="nb">println</span><span class="w"> </span><span class="s">"Read"</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="s">"msgs in"</span><span class="w"> </span><span class="p">(</span><span class="nb">-</span><span class="w"> </span><span class="p">(</span><span class="nf">System/currentTimeMillis</span><span class="p">)</span><span class="w"> </span><span class="n">begin</span><span class="p">)</span><span class="w"> </span><span class="s">"ms"</span><span class="p">))</span></code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_http_over_unix_sockets">HTTP over Unix sockets</h3>
-<div class="paragraph">
-<p>This can be useful for talking to Docker:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="clojure"><span class="p">(</span><span class="nf">require</span><span class="w"> </span><span class="o">'</span><span class="p">[</span><span class="n">clojure.java.shell</span><span class="w"> </span><span class="no">:refer</span><span class="w"> </span><span class="p">[</span><span class="n">sh</span><span class="p">]])</span><span class="w">
-</span><span class="p">(</span><span class="nf">require</span><span class="w"> </span><span class="o">'</span><span class="p">[</span><span class="n">cheshire.core</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">json</span><span class="p">])</span><span class="w">
-</span><span class="p">(</span><span class="nb">-&gt;</span><span class="w"> </span><span class="p">(</span><span class="nf">sh</span><span class="w"> </span><span class="s">"curl"</span><span class="w"> </span><span class="s">"--silent"</span><span class="w">
-        </span><span class="s">"--no-buffer"</span><span class="w"> </span><span class="s">"--unix-socket"</span><span class="w">
-        </span><span class="s">"/var/run/docker.sock"</span><span class="w">
-        </span><span class="s">"http://localhost/images/json"</span><span class="p">)</span><span class="w">
-    </span><span class="no">:out</span><span class="w">
-    </span><span class="p">(</span><span class="nf">json/parse-string</span><span class="w"> </span><span class="n">true</span><span class="p">)</span><span class="w">
-    </span><span class="nb">first</span><span class="w">
-    </span><span class="no">:RepoTags</span><span class="p">)</span><span class="w"> </span><span class="c1">;;=&gt; ["borkdude/babashka:latest"]</span></code></pre>
 </div>
 </div>
 </div>
