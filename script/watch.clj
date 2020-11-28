@@ -7,11 +7,12 @@
 (pods/load-pod "pod-babashka-etaoin")
 (require '[pod.babashka.etaoin :as eta])
 
-(require '[clojure.java.shell :refer [sh]])
+(require '[babashka.process :as p])
 
 (defn asciidoc []
   (println "Compiling asciidoc")
-  (sh "script/compile")
+  (-> (p/process ["script/compile"] {:inherit true})
+      p/check)
   (println "Done"))
 
 (asciidoc)
