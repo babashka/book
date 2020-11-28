@@ -94,18 +94,17 @@ include::process/prepl_2.clj[]
 
 <1> A writer that we will use to send input to the pREPL
 
-<2> We read user input via `clojure.core/read-line`
-
-<3> Here we binding `*out*` to the input writer so we can use `println` to write
-to it.
-
-<4> A reader that reads from the pREPL output. pREPL returns EDN and
+<2> A reader that reads from the pREPL output. pREPL returns EDN and
 `clojure.edn/read` needs a `PushbackReader`.
+
+<3> We read user input via `clojure.core/read-line`
+
+<4> Here we binding `*out*` to the input writer so we can use `println` to write
+to it.
 
 <5> Read the next EDN value.
 
-<6> If it's not the end of the input, then we print the output using our custom
-formatting.
+<6> Print the output using our custom formatting.
 
 Here is an example run:
 
@@ -115,10 +114,6 @@ $ bb src/process/prepl_2.clj
 Type an expression to evaluate:
 (+ 1 2 3)
 (+ 1 2 3) evaluates to 6
-Type an expression to evaluate:
-(/ 1 2 3)
-(/ 1 2 3) evaluates to 1/6
-Type an expression to evaluate:
 :repl/quit
 ---
 

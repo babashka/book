@@ -14,25 +14,20 @@
 
 (require '[clojure.java.io :as io])
 
-(def input-writer (io/writer (:in prepl-process)))         ;; <1>
-
-(future
-  (loop []
-    (when-let [v (read-line)]                              ;; <2>
-      (binding [*out* input-writer]                        ;; <3>
-        (println v))
-      (recur))))
+(def input-writer (io/writer (:in prepl-process)))     ;; <1>
+(def output-reader (java.io.PushbackReader.
+                    (io/reader (:out prepl-process)))) ;; <2>
 
 (require '[clojure.edn :as edn])
 
-(def output-reader (java.io.PushbackReader.
-                    (io/reader (:out prepl-process))))     ;; <4>
-
 (loop []
   (println "Type an expression to evaluate:")
-  (let [next-val (edn/read {:eof ::EOF} output-reader)] ;; <5>
-    (when-not (identical? ::EOF next-val)
-      (println (:form next-val)                         ;; <6>
-               "evaluates to"
-               (:val next-val))
-      (recur))))
+  (when-let [v (read-line)]                               ;; <3>
+    (binding [*out* input-writer]                         ;; <4>
+      (println v))
+    (let [next-val (edn/read {:eof ::EOF} output-reader)] ;; <5>
+      (when-not (identical? ::EOF next-val)
+        (println (:form next-val)                         ;; <6>
+                 "evaluates to"
+                 (:val next-val))
+        (recur)))))
