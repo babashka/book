@@ -441,93 +441,215 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
-/* Stylesheet for CodeRay to match GitHub theme | MIT License | http://foundation.zurb.com */
-pre.CodeRay{background:#f7f7f8}
-.CodeRay .line-numbers{border-right:1px solid currentColor;opacity:.35;padding:0 .5em 0 0}
-.CodeRay span.line-numbers{display:inline-block;margin-right:.75em}
-.CodeRay .line-numbers strong{color:#000}
-table.CodeRay{border-collapse:separate;border:0;margin-bottom:0;background:none}
-table.CodeRay td{vertical-align:top;line-height:inherit}
-table.CodeRay td.line-numbers{text-align:right}
-table.CodeRay td.code{padding:0 0 0 .75em}
-.CodeRay .debug{color:#fff !important;background:#000080 !important}
-.CodeRay .annotation{color:#007}
-.CodeRay .attribute-name{color:#000080}
-.CodeRay .attribute-value{color:#700}
-.CodeRay .binary{color:#509}
-.CodeRay .comment{color:#998;font-style:italic}
-.CodeRay .char{color:#04d}
-.CodeRay .char .content{color:#04d}
-.CodeRay .char .delimiter{color:#039}
-.CodeRay .class{color:#458;font-weight:bold}
-.CodeRay .complex{color:#a08}
-.CodeRay .constant,.CodeRay .predefined-constant{color:#008080}
-.CodeRay .color{color:#099}
-.CodeRay .class-variable{color:#369}
-.CodeRay .decorator{color:#b0b}
-.CodeRay .definition{color:#099}
-.CodeRay .delimiter{color:#000}
-.CodeRay .doc{color:#970}
-.CodeRay .doctype{color:#34b}
-.CodeRay .doc-string{color:#d42}
-.CodeRay .escape{color:#666}
-.CodeRay .entity{color:#800}
-.CodeRay .error{color:#808}
-.CodeRay .exception{color:inherit}
-.CodeRay .filename{color:#099}
-.CodeRay .function{color:#900;font-weight:bold}
-.CodeRay .global-variable{color:#008080}
-.CodeRay .hex{color:#058}
-.CodeRay .integer,.CodeRay .float{color:#099}
-.CodeRay .include{color:#555}
-.CodeRay .inline{color:#000}
-.CodeRay .inline .inline{background:#ccc}
-.CodeRay .inline .inline .inline{background:#bbb}
-.CodeRay .inline .inline-delimiter{color:#d14}
-.CodeRay .inline-delimiter{color:#d14}
-.CodeRay .important{color:#555;font-weight:bold}
-.CodeRay .interpreted{color:#b2b}
-.CodeRay .instance-variable{color:#008080}
-.CodeRay .label{color:#970}
-.CodeRay .local-variable{color:#963}
-.CodeRay .octal{color:#40e}
-.CodeRay .predefined{color:#369}
-.CodeRay .preprocessor{color:#579}
-.CodeRay .pseudo-class{color:#555}
-.CodeRay .directive{font-weight:bold}
-.CodeRay .type{font-weight:bold}
-.CodeRay .predefined-type{color:inherit}
-.CodeRay .reserved,.CodeRay .keyword {color:#000;font-weight:bold}
-.CodeRay .key{color:#808}
-.CodeRay .key .delimiter{color:#606}
-.CodeRay .key .char{color:#80f}
-.CodeRay .value{color:#088}
-.CodeRay .regexp .delimiter{color:#808}
-.CodeRay .regexp .content{color:#808}
-.CodeRay .regexp .modifier{color:#808}
-.CodeRay .regexp .char{color:#d14}
-.CodeRay .regexp .function{color:#404;font-weight:bold}
-.CodeRay .string{color:#d20}
-.CodeRay .string .string .string{background:#ffd0d0}
-.CodeRay .string .content{color:#d14}
-.CodeRay .string .char{color:#d14}
-.CodeRay .string .delimiter{color:#d14}
-.CodeRay .shell{color:#d14}
-.CodeRay .shell .delimiter{color:#d14}
-.CodeRay .symbol{color:#990073}
-.CodeRay .symbol .content{color:#a60}
-.CodeRay .symbol .delimiter{color:#630}
-.CodeRay .tag{color:#008080}
-.CodeRay .tag-special{color:#d70}
-.CodeRay .variable{color:#036}
-.CodeRay .insert{background:#afa}
-.CodeRay .delete{background:#faa}
-.CodeRay .change{color:#aaf;background:#007}
-.CodeRay .head{color:#f8f;background:#505}
-.CodeRay .insert .insert{color:#080}
-.CodeRay .delete .delete{color:#800}
-.CodeRay .change .change{color:#66f}
-.CodeRay .head .head{color:#f4f}
+pre.rouge table td { padding: 5px; }
+pre.rouge table pre { margin: 0; }
+pre.rouge .cm {
+  color: #999988;
+  font-style: italic;
+}
+pre.rouge .cp {
+  color: #999999;
+  font-weight: bold;
+}
+pre.rouge .c1 {
+  color: #999988;
+  font-style: italic;
+}
+pre.rouge .cs {
+  color: #999999;
+  font-weight: bold;
+  font-style: italic;
+}
+pre.rouge .c, pre.rouge .ch, pre.rouge .cd, pre.rouge .cpf {
+  color: #999988;
+  font-style: italic;
+}
+pre.rouge .err {
+  color: #a61717;
+  background-color: #e3d2d2;
+}
+pre.rouge .gd {
+  color: #000000;
+  background-color: #ffdddd;
+}
+pre.rouge .ge {
+  color: #000000;
+  font-style: italic;
+}
+pre.rouge .gr {
+  color: #aa0000;
+}
+pre.rouge .gh {
+  color: #999999;
+}
+pre.rouge .gi {
+  color: #000000;
+  background-color: #ddffdd;
+}
+pre.rouge .go {
+  color: #888888;
+}
+pre.rouge .gp {
+  color: #555555;
+}
+pre.rouge .gs {
+  font-weight: bold;
+}
+pre.rouge .gu {
+  color: #aaaaaa;
+}
+pre.rouge .gt {
+  color: #aa0000;
+}
+pre.rouge .kc {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .kd {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .kn {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .kp {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .kr {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .kt {
+  color: #445588;
+  font-weight: bold;
+}
+pre.rouge .k, pre.rouge .kv {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .mf {
+  color: #009999;
+}
+pre.rouge .mh {
+  color: #009999;
+}
+pre.rouge .il {
+  color: #009999;
+}
+pre.rouge .mi {
+  color: #009999;
+}
+pre.rouge .mo {
+  color: #009999;
+}
+pre.rouge .m, pre.rouge .mb, pre.rouge .mx {
+  color: #009999;
+}
+pre.rouge .sb {
+  color: #d14;
+}
+pre.rouge .sc {
+  color: #d14;
+}
+pre.rouge .sd {
+  color: #d14;
+}
+pre.rouge .s2 {
+  color: #d14;
+}
+pre.rouge .se {
+  color: #d14;
+}
+pre.rouge .sh {
+  color: #d14;
+}
+pre.rouge .si {
+  color: #d14;
+}
+pre.rouge .sx {
+  color: #d14;
+}
+pre.rouge .sr {
+  color: #009926;
+}
+pre.rouge .s1 {
+  color: #d14;
+}
+pre.rouge .ss {
+  color: #990073;
+}
+pre.rouge .s, pre.rouge .sa, pre.rouge .dl {
+  color: #d14;
+}
+pre.rouge .na {
+  color: #008080;
+}
+pre.rouge .bp {
+  color: #999999;
+}
+pre.rouge .nb {
+  color: #0086B3;
+}
+pre.rouge .nc {
+  color: #445588;
+  font-weight: bold;
+}
+pre.rouge .no {
+  color: #008080;
+}
+pre.rouge .nd {
+  color: #3c5d5d;
+  font-weight: bold;
+}
+pre.rouge .ni {
+  color: #800080;
+}
+pre.rouge .ne {
+  color: #990000;
+  font-weight: bold;
+}
+pre.rouge .nf, pre.rouge .fm {
+  color: #990000;
+  font-weight: bold;
+}
+pre.rouge .nl {
+  color: #990000;
+  font-weight: bold;
+}
+pre.rouge .nn {
+  color: #555555;
+}
+pre.rouge .nt {
+  color: #000080;
+}
+pre.rouge .vc {
+  color: #008080;
+}
+pre.rouge .vg {
+  color: #008080;
+}
+pre.rouge .vi {
+  color: #008080;
+}
+pre.rouge .nv, pre.rouge .vm {
+  color: #008080;
+}
+pre.rouge .ow {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .o {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .w {
+  color: #bbbbbb;
+}
+pre.rouge {
+  background-color: #f8f8f8;
+}
 </style>
 </head>
 <body class="book toc2 toc-left">
@@ -570,6 +692,8 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <li><a href="#_nrepl">nREPL</a></li>
 </ul>
 </li>
+<li><a href="#_preloads">Preloads</a></li>
+<li><a href="#_classpath">Classpath</a></li>
 <li><a href="#style">Style</a>
 <ul class="sectlevel2">
 <li><a href="#_explicit_requires">Explicit requires</a></li>
@@ -587,6 +711,7 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <li><a href="#_babashka_process">babashka.process</a></li>
 </ul>
 </li>
+<li><a href="#_deps_clj">Deps.clj</a></li>
 </ul>
 </div>
 </div>
@@ -698,7 +823,7 @@ set the <code>GRAALVM_HOME</code> environment variable. Also make sure you have
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>$ git clone https://github.com/borkdude/babashka --recursive
+<pre class="rouge highlight"><code>$ git clone https://github.com/borkdude/babashka --recursive
 $ script/uberjar &amp;&amp; script/compile</code></pre>
 </div>
 </div>
@@ -714,8 +839,8 @@ expression directly:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="clojure">$ bb -e '(<span class="keyword">+</span> <span class="integer">1</span> <span class="integer">2</span> <span class="integer">3</span>)'
-<span class="integer">6</span></code></pre>
+<pre class="rouge highlight"><code data-lang="clojure"><span class="n">$</span><span class="w"> </span><span class="n">bb</span><span class="w"> </span><span class="n">-e</span><span class="w"> </span><span class="o">'</span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="o">'</span><span class="w">
+</span><span class="mi">6</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -724,13 +849,13 @@ expression directly:</p>
 <div class="listingblock">
 <div class="title">script.clj</div>
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="clojure">(<span class="keyword">+</span> <span class="integer">1</span> <span class="integer">2</span> <span class="integer">3</span>)</code></pre>
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span></code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="clojure">$ bb -f script.clj
-<span class="integer">6</span></code></pre>
+<pre class="rouge highlight"><code data-lang="clojure"><span class="n">$</span><span class="w"> </span><span class="n">bb</span><span class="w"> </span><span class="n">-f</span><span class="w"> </span><span class="n">script.clj</span><span class="w">
+</span><span class="mi">6</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -738,8 +863,8 @@ expression directly:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="clojure">$ bb '(<span class="keyword">+</span> <span class="integer">1</span> <span class="integer">2</span> <span class="integer">3</span>)'
-<span class="integer">6</span></code></pre>
+<pre class="rouge highlight"><code data-lang="clojure"><span class="n">$</span><span class="w"> </span><span class="n">bb</span><span class="w"> </span><span class="o">'</span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="o">'</span><span class="w">
+</span><span class="mi">6</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -747,8 +872,8 @@ expression directly:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="clojure">$ bb script.clj
-<span class="integer">6</span></code></pre>
+<pre class="rouge highlight"><code data-lang="clojure"><span class="n">$</span><span class="w"> </span><span class="n">bb</span><span class="w"> </span><span class="n">script.clj</span><span class="w">
+</span><span class="mi">6</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -757,8 +882,8 @@ expression directly:</p>
 <div class="listingblock">
 <div class="title">script.clj</div>
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="clojure"><span class="error">#</span>!/usr/bin/env bb
-(<span class="keyword">+</span> <span class="integer">1</span> <span class="integer">2</span> <span class="integer">3</span>)</code></pre>
+<pre class="rouge highlight"><code data-lang="clojure"><span class="o">#</span><span class="n">!/usr/bin/env</span><span class="w"> </span><span class="n">bb</span><span class="w">
+</span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span></code></pre>
 </div>
 </div>
 </div>
@@ -774,7 +899,7 @@ expression directly:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="shellsession">bb -f download_html.clj</code></pre>
+<pre class="rouge highlight"><code data-lang="bash">bb <span class="nt">-f</span> download_html.clj</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -782,31 +907,31 @@ expression directly:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="clojure"><span class="error">#</span>!/usr/bin/env bb
+<pre class="rouge highlight"><code data-lang="clojure"><span class="o">#</span><span class="n">!/usr/bin/env</span><span class="w"> </span><span class="n">bb</span><span class="w">
 
-(<span class="keyword">require</span> '[babashka.curl <span class="symbol">:as</span> curl])
+</span><span class="p">(</span><span class="nf">require</span><span class="w"> </span><span class="o">'</span><span class="p">[</span><span class="n">babashka.curl</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">curl</span><span class="p">])</span><span class="w">
 
-(<span class="keyword">defn</span> <span class="function">get-url</span> [url]
-  (<span class="keyword">println</span> <span class="string"><span class="delimiter">&quot;</span><span class="content">Downloading url:</span><span class="delimiter">&quot;</span></span> url)
-  (curl/get url))
+</span><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">get-url</span><span class="w"> </span><span class="p">[</span><span class="n">url</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nb">println</span><span class="w"> </span><span class="s">"Downloading url:"</span><span class="w"> </span><span class="n">url</span><span class="p">)</span><span class="w">
+  </span><span class="p">(</span><span class="nf">curl/get</span><span class="w"> </span><span class="n">url</span><span class="p">))</span><span class="w">
 
-(<span class="keyword">defn</span> <span class="function">write-html</span> [file html]
-  (<span class="keyword">println</span> <span class="string"><span class="delimiter">&quot;</span><span class="content">Writing file:</span><span class="delimiter">&quot;</span></span> file)
-  (spit file html))
+</span><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">write-html</span><span class="w"> </span><span class="p">[</span><span class="n">file</span><span class="w"> </span><span class="n">html</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nb">println</span><span class="w"> </span><span class="s">"Writing file:"</span><span class="w"> </span><span class="n">file</span><span class="p">)</span><span class="w">
+  </span><span class="p">(</span><span class="nf">spit</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="n">html</span><span class="p">))</span><span class="w">
 
-(<span class="keyword">let</span> [[url file] <span class="predefined-constant">*command-line-args*</span>]
-  (<span class="keyword">when</span> (<span class="keyword">or</span> (<span class="keyword">empty?</span> url) (<span class="keyword">empty?</span> file))
-    (<span class="keyword">println</span> <span class="string"><span class="delimiter">&quot;</span><span class="content">Usage: &lt;url&gt; &lt;file&gt;</span><span class="delimiter">&quot;</span></span>)
-    (System/exit <span class="integer">1</span>))
-  (write-html file (get-url url)))</code></pre>
+</span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[[</span><span class="n">url</span><span class="w"> </span><span class="n">file</span><span class="p">]</span><span class="w"> </span><span class="n">*command-line-args*</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nb">when</span><span class="w"> </span><span class="p">(</span><span class="nb">or</span><span class="w"> </span><span class="p">(</span><span class="nf">empty?</span><span class="w"> </span><span class="n">url</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nf">empty?</span><span class="w"> </span><span class="n">file</span><span class="p">))</span><span class="w">
+    </span><span class="p">(</span><span class="nb">println</span><span class="w"> </span><span class="s">"Usage: &lt;url&gt; &lt;file&gt;"</span><span class="p">)</span><span class="w">
+    </span><span class="p">(</span><span class="nf">System/exit</span><span class="w"> </span><span class="mi">1</span><span class="p">))</span><span class="w">
+  </span><span class="p">(</span><span class="nf">write-html</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="p">(</span><span class="nf">get-url</span><span class="w"> </span><span class="n">url</span><span class="p">)))</span></code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="shellsession">$ ./download_html.clj
+<pre class="rouge highlight"><code data-lang="bash"><span class="nv">$ </span>./download_html.clj
 Usage: &lt;url&gt; &lt;file&gt;
 
-$ ./download_html.clj https://www.clojure.org /tmp/clojure.org.html
+<span class="nv">$ </span>./download_html.clj https://www.clojure.org /tmp/clojure.org.html
 Fetching url: https://www.clojure.org
 Writing file: /tmp/clojure.org.html</code></pre>
 </div>
@@ -817,17 +942,17 @@ workaround:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="shellsession">$ cat script.clj
-#!/bin/sh
+<pre class="rouge highlight"><code data-lang="bash"><span class="nv">$ </span><span class="nb">cat </span>script.clj
+<span class="c">#!/bin/sh</span>
 
-#_(
-   &quot;exec&quot; &quot;bb&quot; &quot;$0&quot; hello &quot;$@&quot;
-   )
+<span class="c">#_(</span>
+   <span class="s2">"exec"</span> <span class="s2">"bb"</span> <span class="s2">"</span><span class="nv">$0</span><span class="s2">"</span> hello <span class="s2">"</span><span class="nv">$@</span><span class="s2">"</span>
+   <span class="o">)</span>
 
-(prn *command-line-args*)
+<span class="o">(</span>prn <span class="k">*</span>command-line-args<span class="k">*</span><span class="o">)</span>
 
 ./script.clj 1 2 3
-(&quot;hello&quot; &quot;1&quot; &quot;2&quot; &quot;3&quot;)</code></pre>
+<span class="o">(</span><span class="s2">"hello"</span> <span class="s2">"1"</span> <span class="s2">"2"</span> <span class="s2">"3"</span><span class="o">)</span></code></pre>
 </div>
 </div>
 </div>
@@ -919,9 +1044,9 @@ each value in the input:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="clojure">$ echo '{<span class="symbol">:a</span> <span class="integer">1</span>} {<span class="symbol">:a</span> <span class="integer">2</span>}' <span class="error">|</span> bb --stream '*input*'
-{<span class="symbol">:a</span> <span class="integer">1</span>}
-{<span class="symbol">:a</span> <span class="integer">2</span>}</code></pre>
+<pre class="rouge highlight"><code data-lang="clojure"><span class="n">$</span><span class="w"> </span><span class="n">echo</span><span class="w"> </span><span class="o">'</span><span class="p">{</span><span class="no">:a</span><span class="w"> </span><span class="mi">1</span><span class="p">}</span><span class="w"> </span><span class="p">{</span><span class="no">:a</span><span class="w"> </span><span class="mi">2</span><span class="p">}</span><span class="o">'</span><span class="w"> </span><span class="err">|</span><span class="w"> </span><span class="n">bb</span><span class="w"> </span><span class="n">--stream</span><span class="w"> </span><span class="ss">'*input*</span><span class="o">'</span><span class="w">
+</span><span class="p">{</span><span class="no">:a</span><span class="w"> </span><span class="mi">1</span><span class="p">}</span><span class="w">
+</span><span class="p">{</span><span class="no">:a</span><span class="w"> </span><span class="mi">2</span><span class="p">}</span></code></pre>
 </div>
 </div>
 <div class="sect3">
@@ -939,10 +1064,10 @@ standard Clojure code.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="clojure">(<span class="keyword">ns</span> <span class="namespace">script</span>
- (<span class="symbol">:require</span> [clojure.edn <span class="symbol">:as</span> edn]))
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">(</span><span class="nf">ns</span><span class="w"> </span><span class="n">script</span><span class="w">
+ </span><span class="p">(</span><span class="no">:require</span><span class="w"> </span><span class="p">[</span><span class="n">clojure.edn</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">edn</span><span class="p">]))</span><span class="w">
 
-(edn/read <span class="predefined-constant">*in*</span>)</code></pre>
+</span><span class="p">(</span><span class="nf">edn/read</span><span class="w"> </span><span class="n">*in*</span><span class="p">)</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -950,12 +1075,12 @@ standard Clojure code.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="clojure">(<span class="keyword">ns</span> <span class="namespace">script</span>
- (<span class="symbol">:require</span> [clojure.edn <span class="symbol">:as</span> edn]
-           [clojure.java.io <span class="symbol">:as</span> io]))
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">(</span><span class="nf">ns</span><span class="w"> </span><span class="n">script</span><span class="w">
+ </span><span class="p">(</span><span class="no">:require</span><span class="w"> </span><span class="p">[</span><span class="n">clojure.edn</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">edn</span><span class="p">]</span><span class="w">
+           </span><span class="p">[</span><span class="n">clojure.java.io</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">io</span><span class="p">]))</span><span class="w">
 
-(<span class="keyword">let</span> [reader  (java.io.PushbackReader. (io/reader <span class="predefined-constant">*in*</span>))]
-  (<span class="keyword">take-while</span> #(<span class="keyword">not</span> (<span class="keyword">identical?</span> <span class="symbol">::eof</span> %)) (<span class="keyword">repeatedly</span> #(edn/read {<span class="symbol">:eof</span> <span class="symbol">::eof</span>} reader))))</code></pre>
+</span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[</span><span class="n">reader</span><span class="w">  </span><span class="p">(</span><span class="nf">java.io.PushbackReader.</span><span class="w"> </span><span class="p">(</span><span class="nf">io/reader</span><span class="w"> </span><span class="n">*in*</span><span class="p">))]</span><span class="w">
+  </span><span class="p">(</span><span class="nb">take-while</span><span class="w"> </span><span class="o">#</span><span class="p">(</span><span class="nb">not</span><span class="w"> </span><span class="p">(</span><span class="nb">identical?</span><span class="w"> </span><span class="no">::eof</span><span class="w"> </span><span class="n">%</span><span class="p">))</span><span class="w"> </span><span class="p">(</span><span class="nf">repeatedly</span><span class="w"> </span><span class="o">#</span><span class="p">(</span><span class="nf">edn/read</span><span class="w"> </span><span class="p">{</span><span class="no">:eof</span><span class="w"> </span><span class="no">::eof</span><span class="p">}</span><span class="w"> </span><span class="n">reader</span><span class="p">))))</span></code></pre>
 </div>
 </div>
 </div>
@@ -967,10 +1092,10 @@ seq of lines (the <code>-i</code> flag), you can use:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="clojure">(<span class="keyword">ns</span> <span class="namespace">script</span>
- (<span class="symbol">:require</span> [clojure.java.io <span class="symbol">:as</span> io]))
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">(</span><span class="nf">ns</span><span class="w"> </span><span class="n">script</span><span class="w">
+ </span><span class="p">(</span><span class="no">:require</span><span class="w"> </span><span class="p">[</span><span class="n">clojure.java.io</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">io</span><span class="p">]))</span><span class="w">
 
-(<span class="keyword">line-seq</span> (io/reader <span class="predefined-constant">*in*</span>))</code></pre>
+</span><span class="p">(</span><span class="nb">line-seq</span><span class="w"> </span><span class="p">(</span><span class="nf">io/reader</span><span class="w"> </span><span class="n">*in*</span><span class="p">))</span></code></pre>
 </div>
 </div>
 </div>
@@ -989,11 +1114,11 @@ being executed:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="shellsession">$ cat example.clj
-(prn *file*)
+<pre class="rouge highlight"><code data-lang="bash"><span class="nv">$ </span><span class="nb">cat </span>example.clj
+<span class="o">(</span>prn <span class="k">*</span>file<span class="k">*</span><span class="o">)</span>
 
-$ bb example.clj
-&quot;/Users/borkdude/example.clj&quot;</code></pre>
+<span class="nv">$ </span>bb example.clj
+<span class="s2">"/Users/borkdude/example.clj"</span></code></pre>
 </div>
 </div>
 </div>
@@ -1024,7 +1149,7 @@ library.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="shell">$ bb --repl</code></pre>
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>bb <span class="nt">--repl</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1032,7 +1157,7 @@ library.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="shell">$ rlwrap bb --repl</code></pre>
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>rlwrap bb <span class="nt">--repl</span></code></pre>
 </div>
 </div>
 </div>
@@ -1043,7 +1168,7 @@ library.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="shell">$ bb --socket-repl 1666
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>bb <span class="nt">--socket-repl</span> 1666
 Babashka socket REPL started at localhost:1666</code></pre>
 </div>
 </div>
@@ -1052,15 +1177,15 @@ Babashka socket REPL started at localhost:1666</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="shell">$ rlwrap nc 127.0.0.1 1666
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>rlwrap nc 127.0.0.1 1666
 Babashka v0.0.14 REPL.
 Use :repl/quit or :repl/exit to quit the REPL.
 Clojure rocks, Bash reaches.
 
-bb=&gt; (+ 1 2 3)
+<span class="nv">bb</span><span class="o">=&gt;</span> <span class="o">(</span>+ 1 2 3<span class="o">)</span>
 6
-bb=&gt; :repl/quit
-$</code></pre>
+<span class="nv">bb</span><span class="o">=&gt;</span> :repl/quit
+<span class="err">$</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1069,7 +1194,7 @@ Java property option in Clojure:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="clojure">$ bb --socket-repl '{<span class="symbol">:address</span> <span class="string"><span class="delimiter">&quot;</span><span class="content">0.0.0.0</span><span class="delimiter">&quot;</span></span> <span class="symbol">:accept</span> clojure.core.server/repl <span class="symbol">:port</span> <span class="integer">1666</span>}'</code></pre>
+<pre class="rouge highlight"><code data-lang="clojure"><span class="n">$</span><span class="w"> </span><span class="n">bb</span><span class="w"> </span><span class="n">--socket-repl</span><span class="w"> </span><span class="o">'</span><span class="p">{</span><span class="no">:address</span><span class="w"> </span><span class="s">"0.0.0.0"</span><span class="w"> </span><span class="no">:accept</span><span class="w"> </span><span class="n">clojure.core.server/repl</span><span class="w"> </span><span class="no">:port</span><span class="w"> </span><span class="mi">1666</span><span class="p">}</span><span class="o">'</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1116,7 +1241,7 @@ Java property option in Clojure:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="clojure">$ bb --socket-repl '{<span class="symbol">:address</span> <span class="string"><span class="delimiter">&quot;</span><span class="content">0.0.0.0</span><span class="delimiter">&quot;</span></span> <span class="symbol">:accept</span> clojure.core.server/io-prepl <span class="symbol">:port</span> <span class="integer">1666</span>}'</code></pre>
+<pre class="rouge highlight"><code data-lang="clojure"><span class="n">$</span><span class="w"> </span><span class="n">bb</span><span class="w"> </span><span class="n">--socket-repl</span><span class="w"> </span><span class="o">'</span><span class="p">{</span><span class="no">:address</span><span class="w"> </span><span class="s">"0.0.0.0"</span><span class="w"> </span><span class="no">:accept</span><span class="w"> </span><span class="n">clojure.core.server/io-prepl</span><span class="w"> </span><span class="no">:port</span><span class="w"> </span><span class="mi">1666</span><span class="p">}</span><span class="o">'</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1124,9 +1249,9 @@ Java property option in Clojure:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="clojure">$ bb -e '(clojure.core.server/io-prepl)'
-(<span class="keyword">+</span> <span class="integer">1</span> <span class="integer">2</span> <span class="integer">3</span>)
-{<span class="symbol">:tag</span> <span class="symbol">:ret</span>, <span class="symbol">:val</span> <span class="string"><span class="delimiter">&quot;</span><span class="content">6</span><span class="delimiter">&quot;</span></span>, <span class="symbol">:ns</span> <span class="string"><span class="delimiter">&quot;</span><span class="content">user</span><span class="delimiter">&quot;</span></span>, <span class="symbol">:ms</span> <span class="integer">0</span>, <span class="symbol">:form</span> <span class="string"><span class="delimiter">&quot;</span><span class="content">(+ 1 2 3)</span><span class="delimiter">&quot;</span></span>}</code></pre>
+<pre class="rouge highlight"><code data-lang="clojure"><span class="n">$</span><span class="w"> </span><span class="n">bb</span><span class="w"> </span><span class="n">-e</span><span class="w"> </span><span class="o">'</span><span class="p">(</span><span class="nf">clojure.core.server/io-prepl</span><span class="p">)</span><span class="o">'</span><span class="w">
+</span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w">
+</span><span class="p">{</span><span class="no">:tag</span><span class="w"> </span><span class="no">:ret,</span><span class="w"> </span><span class="no">:val</span><span class="w"> </span><span class="s">"6"</span><span class="n">,</span><span class="w"> </span><span class="no">:ns</span><span class="w"> </span><span class="s">"user"</span><span class="n">,</span><span class="w"> </span><span class="no">:ms</span><span class="w"> </span><span class="mi">0</span><span class="n">,</span><span class="w"> </span><span class="no">:form</span><span class="w"> </span><span class="s">"(+ 1 2 3)"</span><span class="p">}</span></code></pre>
 </div>
 </div>
 </div>
@@ -1137,7 +1262,7 @@ Java property option in Clojure:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="shell">$ bb --nrepl-server 1667</code></pre>
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>bb <span class="nt">--nrepl-server</span> 1667</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1145,11 +1270,11 @@ Java property option in Clojure:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="clojure">$ lein repl <span class="symbol">:connect</span> <span class="integer">1667</span>
-Connecting to nREPL at <span class="float">127.0</span><span class="keyword">.</span><span class="float">0.1</span><span class="error">:</span><span class="integer">1667</span>
-user=&gt; (<span class="keyword">+</span> <span class="integer">1</span> <span class="integer">2</span> <span class="integer">3</span>)
-<span class="integer">6</span>
-user=&gt;</code></pre>
+<pre class="rouge highlight"><code data-lang="clojure"><span class="n">$</span><span class="w"> </span><span class="n">lein</span><span class="w"> </span><span class="n">repl</span><span class="w"> </span><span class="no">:connect</span><span class="w"> </span><span class="mi">1667</span><span class="w">
+</span><span class="n">Connecting</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">nREPL</span><span class="w"> </span><span class="n">at</span><span class="w"> </span><span class="mf">127.0</span><span class="n">.0.1</span><span class="no">:1667</span><span class="w">
+</span><span class="n">user=&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w">
+</span><span class="mi">6</span><span class="w">
+</span><span class="n">user=&gt;</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1183,25 +1308,25 @@ writes the file:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="clojure"><span class="error">#</span>!/usr/bin/env bb
+<pre class="rouge highlight"><code data-lang="clojure"><span class="o">#</span><span class="n">!/usr/bin/env</span><span class="w"> </span><span class="n">bb</span><span class="w">
 
-(<span class="keyword">import</span> [java.net ServerSocket]
-        [java.io File]
-        [java.lang ProcessBuilder$Redirect])
+</span><span class="p">(</span><span class="nb">import</span><span class="w"> </span><span class="p">[</span><span class="n">java.net</span><span class="w"> </span><span class="n">ServerSocket</span><span class="p">]</span><span class="w">
+        </span><span class="p">[</span><span class="n">java.io</span><span class="w"> </span><span class="n">File</span><span class="p">]</span><span class="w">
+        </span><span class="p">[</span><span class="n">java.lang</span><span class="w"> </span><span class="n">ProcessBuilder$Redirect</span><span class="p">])</span><span class="w">
 
-(<span class="keyword">require</span> '[babashka.wait <span class="symbol">:as</span> wait])
+</span><span class="p">(</span><span class="nf">require</span><span class="w"> </span><span class="o">'</span><span class="p">[</span><span class="n">babashka.wait</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">wait</span><span class="p">])</span><span class="w">
 
-(<span class="keyword">let</span> [nrepl-port (<span class="keyword">with-open</span> [sock (ServerSocket. <span class="integer">0</span>)] (<span class="keyword">.</span>getLocalPort sock))
-      cp (str/join File/pathSeparatorChar [<span class="string"><span class="delimiter">&quot;</span><span class="content">src</span><span class="delimiter">&quot;</span></span> <span class="string"><span class="delimiter">&quot;</span><span class="content">test</span><span class="delimiter">&quot;</span></span>])
-      pb (<span class="keyword">doto</span> (ProcessBuilder. (<span class="keyword">into</span> [<span class="string"><span class="delimiter">&quot;</span><span class="content">bb</span><span class="delimiter">&quot;</span></span> <span class="string"><span class="delimiter">&quot;</span><span class="content">--nrepl-server</span><span class="delimiter">&quot;</span></span> (<span class="keyword">str</span> nrepl-port)
-                                       <span class="string"><span class="delimiter">&quot;</span><span class="content">--classpath</span><span class="delimiter">&quot;</span></span> cp]
-                                      <span class="predefined-constant">*command-line-args*</span>))
-           (<span class="keyword">.</span>redirectOutput ProcessBuilder$Redirect/INHERIT))
-      proc (<span class="keyword">.</span>start pb)]
-  (wait/wait-for-port <span class="string"><span class="delimiter">&quot;</span><span class="content">localhost</span><span class="delimiter">&quot;</span></span> nrepl-port)
-  (spit <span class="string"><span class="delimiter">&quot;</span><span class="content">.nrepl-port</span><span class="delimiter">&quot;</span></span> nrepl-port)
-  (<span class="keyword">.</span>deleteOnExit (File. <span class="string"><span class="delimiter">&quot;</span><span class="content">.nrepl-port</span><span class="delimiter">&quot;</span></span>))
-  (<span class="keyword">.</span>waitFor proc))</code></pre>
+</span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[</span><span class="n">nrepl-port</span><span class="w"> </span><span class="p">(</span><span class="nb">with-open</span><span class="w"> </span><span class="p">[</span><span class="n">sock</span><span class="w"> </span><span class="p">(</span><span class="nf">ServerSocket.</span><span class="w"> </span><span class="mi">0</span><span class="p">)]</span><span class="w"> </span><span class="p">(</span><span class="nf">.getLocalPort</span><span class="w"> </span><span class="n">sock</span><span class="p">))</span><span class="w">
+      </span><span class="n">cp</span><span class="w"> </span><span class="p">(</span><span class="nf">str/join</span><span class="w"> </span><span class="n">File/pathSeparatorChar</span><span class="w"> </span><span class="p">[</span><span class="s">"src"</span><span class="w"> </span><span class="s">"test"</span><span class="p">])</span><span class="w">
+      </span><span class="n">pb</span><span class="w"> </span><span class="p">(</span><span class="nb">doto</span><span class="w"> </span><span class="p">(</span><span class="nf">ProcessBuilder.</span><span class="w"> </span><span class="p">(</span><span class="nb">into</span><span class="w"> </span><span class="p">[</span><span class="s">"bb"</span><span class="w"> </span><span class="s">"--nrepl-server"</span><span class="w"> </span><span class="p">(</span><span class="nb">str</span><span class="w"> </span><span class="n">nrepl-port</span><span class="p">)</span><span class="w">
+                                       </span><span class="s">"--classpath"</span><span class="w"> </span><span class="n">cp</span><span class="p">]</span><span class="w">
+                                      </span><span class="n">*command-line-args*</span><span class="p">))</span><span class="w">
+           </span><span class="p">(</span><span class="nf">.redirectOutput</span><span class="w"> </span><span class="n">ProcessBuilder$Redirect/INHERIT</span><span class="p">))</span><span class="w">
+      </span><span class="n">proc</span><span class="w"> </span><span class="p">(</span><span class="nf">.start</span><span class="w"> </span><span class="n">pb</span><span class="p">)]</span><span class="w">
+  </span><span class="p">(</span><span class="nf">wait/wait-for-port</span><span class="w"> </span><span class="s">"localhost"</span><span class="w"> </span><span class="n">nrepl-port</span><span class="p">)</span><span class="w">
+  </span><span class="p">(</span><span class="nf">spit</span><span class="w"> </span><span class="s">".nrepl-port"</span><span class="w"> </span><span class="n">nrepl-port</span><span class="p">)</span><span class="w">
+  </span><span class="p">(</span><span class="nf">.deleteOnExit</span><span class="w"> </span><span class="p">(</span><span class="nf">File.</span><span class="w"> </span><span class="s">".nrepl-port"</span><span class="p">))</span><span class="w">
+  </span><span class="p">(</span><span class="nf">.waitFor</span><span class="w"> </span><span class="n">proc</span><span class="p">))</span></code></pre>
 </div>
 </div>
 <div class="sect3">
@@ -1211,7 +1336,7 @@ writes the file:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="shell">$ BABASHKA_DEV=true bb --nrepl-server 1667</code></pre>
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ BABASHKA_DEV</span><span class="o">=</span><span class="nb">true </span>bb <span class="nt">--nrepl-server</span> 1667</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1222,12 +1347,139 @@ writes the file:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="clojure">$ git clone https<span class="symbol">://github.com/borkdude/babashka</span> --recurse-submodules
-$ cd babashka
-$ BABASHKA_DEV=true clojure -A<span class="symbol">:main</span> --nrepl-server <span class="integer">1667</span></code></pre>
+<pre class="rouge highlight"><code data-lang="clojure"><span class="n">$</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="n">clone</span><span class="w"> </span><span class="n">https</span><span class="no">://github.com/borkdude/babashka</span><span class="w"> </span><span class="n">--recurse-submodules</span><span class="w">
+</span><span class="n">$</span><span class="w"> </span><span class="n">cd</span><span class="w"> </span><span class="n">babashka</span><span class="w">
+</span><span class="n">$</span><span class="w"> </span><span class="n">BABASHKA_DEV=true</span><span class="w"> </span><span class="n">clojure</span><span class="w"> </span><span class="n">-A</span><span class="no">:main</span><span class="w"> </span><span class="n">--nrepl-server</span><span class="w"> </span><span class="mi">1667</span></code></pre>
 </div>
 </div>
 </div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_preloads">Preloads</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The environment variable <code>BABASHKA_PRELOADS</code> allows to define code that
+will be available in all subsequent usages of babashka.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash"><span class="nv">BABASHKA_PRELOADS</span><span class="o">=</span><span class="s1">'(defn foo [x] (+ x 2))'</span>
+<span class="nv">BABASHKA_PRELOADS</span><span class="o">=</span><span class="nv">$BABASHKA_PRELOADS</span><span class="s1">' (defn bar [x] (* x 2))'</span>
+<span class="nb">export </span>BABASHKA_PRELOADS</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note that you can concatenate multiple expressions. Now you can use
+these functions in babashka:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash"><span class="nv">$ </span>bb <span class="s1">'(-&gt; (foo *input*) bar)'</span> <span class="o">&lt;&lt;&lt;</span> 1
+6</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can also preload an entire file using <code>load-file</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash"><span class="nb">export </span><span class="nv">BABASHKA_PRELOADS</span><span class="o">=</span><span class="s1">'(load-file "my_awesome_prelude.clj")'</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note that <code>*input*</code> is not available in preloads.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_classpath">Classpath</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Babashka accepts a <code>--classpath</code> option that will be used to search for
+namespaces when requiring them:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="n">$</span><span class="w"> </span><span class="n">cat</span><span class="w"> </span><span class="n">src/my/namespace.clj</span><span class="w">
+</span><span class="p">(</span><span class="nf">ns</span><span class="w"> </span><span class="n">my.namespace</span><span class="p">)</span><span class="w">
+</span><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">-main</span><span class="w"> </span><span class="p">[</span><span class="o">&amp;</span><span class="w"> </span><span class="n">_args</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nb">println</span><span class="w"> </span><span class="s">"Hello from my namespace!"</span><span class="p">))</span><span class="w">
+
+</span><span class="n">$</span><span class="w"> </span><span class="n">bb</span><span class="w"> </span><span class="n">--classpath</span><span class="w"> </span><span class="n">src</span><span class="w"> </span><span class="n">--main</span><span class="w"> </span><span class="n">my.namespace</span><span class="w">
+</span><span class="n">Hello</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="n">my</span><span class="w"> </span><span class="n">namespace!</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you have a larger script with a classic Clojure project layout like</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash"><span class="nv">$ </span>tree <span class="nt">-L</span> 3
+├── deps.edn
+├── README
+├── src
+│   └── project_namespace
+│       ├── main.clj
+│       └── utilities.clj
+└── <span class="nb">test</span>
+    └── project_namespace
+        ├── test_main.clj
+        └── test_utilities.clj</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>then you can tell babashka to include both the <code>src</code> and <code>test</code> folders
+in the classpath and start a socket REPL by running:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash"><span class="nv">$ </span>bb <span class="nt">--classpath</span> src:test <span class="nt">--socket-repl</span> 1666</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note that you can use the <code>clojure</code> tool to produce classpaths and
+download dependencies:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash"><span class="nv">$ </span><span class="nb">cat </span>deps.edn
+<span class="o">{</span>:deps
+ <span class="o">{</span>my_gist_script
+  <span class="o">{</span>:git/url <span class="s2">"https://gist.github.com/borkdude/263b150607f3ce03630e114611a4ef42"</span>
+   :sha <span class="s2">"cfc761d06dfb30bb77166b45d439fe8fe54a31b8"</span><span class="o">}}</span>
+ :aliases <span class="o">{</span>:my-script <span class="o">{</span>:main-opts <span class="o">[</span><span class="s2">"-m"</span> <span class="s2">"my-gist-script"</span><span class="o">]}}}</span>
+
+<span class="nv">$ CLASSPATH</span><span class="o">=</span><span class="si">$(</span>clojure <span class="nt">-Spath</span><span class="si">)</span>
+<span class="nv">$ </span>bb <span class="nt">--classpath</span> <span class="s2">"</span><span class="nv">$CLASSPATH</span><span class="s2">"</span> <span class="nt">--main</span> my-gist-script
+Hello from gist script!</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If there is no <code>--classpath</code> argument, the <code>BABASHKA_CLASSPATH</code>
+environment variable will be used:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash"><span class="nv">$ </span><span class="nb">export </span><span class="nv">BABASHKA_CLASSPATH</span><span class="o">=</span><span class="si">$(</span>clojure <span class="nt">-Spath</span><span class="si">)</span>
+<span class="nv">$ </span><span class="nb">export </span><span class="nv">BABASHKA_PRELOADS</span><span class="o">=</span><span class="s2">"(require '[my-gist-script])"</span>
+<span class="nv">$ </span>bb <span class="s2">"(my-gist-script/-main)"</span>
+Hello from gist script!</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>When invoking <code>bb</code> with a main function, the expression
+<code>(System/getProperty "babashka.main")</code> will return the name of the main
+function.</p>
+</div>
+<div class="paragraph">
+<p>Also see the <a href="#babashka_classpath">babashka.classpath</a>
+namespace which allows dynamically adding to the classpath.</p>
+</div>
+<div class="paragraph">
+<p>See <a href="#deps_clj">deps.clj</a> for a babashka script that replaces the <code>clojure</code>
+bash script.</p>
 </div>
 </div>
 </div>
@@ -1248,8 +1500,8 @@ writing one-liners.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="shell">$ ls | bb -i '(-&gt; *input* first (str/includes? &quot;m&quot;))'
-true</code></pre>
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span><span class="nb">ls</span> | bb <span class="nt">-i</span> <span class="s1">'(-&gt; *input* first (str/includes? "m"))'</span>
+<span class="nb">true</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1260,7 +1512,7 @@ true</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="clojure">(<span class="keyword">-&gt;</span> *input* <span class="keyword">first</span> (str/includes? <span class="string"><span class="delimiter">&quot;</span><span class="content">m</span><span class="delimiter">&quot;</span></span>))</code></pre>
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">(</span><span class="nb">-&gt;</span><span class="w"> </span><span class="n">*input*</span><span class="w"> </span><span class="nb">first</span><span class="w"> </span><span class="p">(</span><span class="nf">str/includes?</span><span class="w"> </span><span class="s">"m"</span><span class="p">))</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1271,10 +1523,10 @@ true</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="clojure">(<span class="keyword">ns</span> <span class="namespace">script</span>
-  (<span class="symbol">:require</span> [clojure.java.io <span class="symbol">:as</span> io]
-            [clojure.string <span class="symbol">:as</span> <span class="keyword">str</span>]))
-  (<span class="keyword">-&gt;</span> (io/reader <span class="predefined-constant">*in*</span>) <span class="keyword">line-seq</span> <span class="keyword">first</span> (str/includes? <span class="string"><span class="delimiter">&quot;</span><span class="content">m</span><span class="delimiter">&quot;</span></span>))</code></pre>
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">(</span><span class="nf">ns</span><span class="w"> </span><span class="n">script</span><span class="w">
+  </span><span class="p">(</span><span class="no">:require</span><span class="w"> </span><span class="p">[</span><span class="n">clojure.java.io</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">io</span><span class="p">]</span><span class="w">
+            </span><span class="p">[</span><span class="n">clojure.string</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="nb">str</span><span class="p">]))</span><span class="w">
+  </span><span class="p">(</span><span class="nb">-&gt;</span><span class="w"> </span><span class="p">(</span><span class="nf">io/reader</span><span class="w"> </span><span class="n">*in*</span><span class="p">)</span><span class="w"> </span><span class="nb">line-seq</span><span class="w"> </span><span class="nb">first</span><span class="w"> </span><span class="p">(</span><span class="nf">str/includes?</span><span class="w"> </span><span class="s">"m"</span><span class="p">))</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1309,43 +1561,43 @@ babashka.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="shellsession">Babashka v0.2.3
+<pre class="rouge highlight"><code data-lang="bash">Babashka v0.2.3
 
-Options must appear in the order of groups mentioned below.
+Options must appear <span class="k">in </span>the order of <span class="nb">groups </span>mentioned below.
 
 Help:
 
-  --help, -h or -?    Print this help text.
-  --version           Print the current version of babashka.
-  --describe          Print an EDN map with information about this version of babashka.
+  <span class="nt">--help</span>, <span class="nt">-h</span> or -?    Print this <span class="nb">help </span>text.
+  <span class="nt">--version</span>           Print the current version of babashka.
+  <span class="nt">--describe</span>          Print an EDN map with information about this version of babashka.
 
 In- and output flags:
 
-  -i                  Bind *input* to a lazy seq of lines from stdin.
-  -I                  Bind *input* to a lazy seq of EDN values from stdin.
-  -o                  Write lines to stdout.
-  -O                  Write EDN values to stdout.
-  --stream            Stream over lines or EDN values from stdin. Combined with -i or -I *input* becomes a single value per iteration.
+  <span class="nt">-i</span>                  Bind <span class="k">*</span>input<span class="k">*</span> to a lazy <span class="nb">seq </span>of lines from stdin.
+  <span class="nt">-I</span>                  Bind <span class="k">*</span>input<span class="k">*</span> to a lazy <span class="nb">seq </span>of EDN values from stdin.
+  <span class="nt">-o</span>                  Write lines to stdout.
+  <span class="nt">-O</span>                  Write EDN values to stdout.
+  <span class="nt">--stream</span>            Stream over lines or EDN values from stdin. Combined with <span class="nt">-i</span> or <span class="nt">-I</span> <span class="k">*</span>input<span class="k">*</span> becomes a single value per iteration.
 
 Uberscript:
 
-  --uberscript &lt;file&gt; Collect preloads, -e, -f and -m and all required namespaces from the classpath into a single executable file.
+  <span class="nt">--uberscript</span> &lt;file&gt; Collect preloads, <span class="nt">-e</span>, <span class="nt">-f</span> and <span class="nt">-m</span> and all required namespaces from the classpath into a single executable file.
 
 Evaluation:
 
-  -e, --eval &lt;expr&gt;   Evaluate an expression.
-  -f, --file &lt;path&gt;   Evaluate a file.
-  -cp, --classpath    Classpath to use.
-  -m, --main &lt;ns&gt;     Call the -main function from namespace with args.
-  --verbose           Print debug information and entire stacktrace in case of exception.
+  <span class="nt">-e</span>, <span class="nt">--eval</span> &lt;<span class="nb">expr</span><span class="o">&gt;</span>   Evaluate an expression.
+  <span class="nt">-f</span>, <span class="nt">--file</span> &lt;path&gt;   Evaluate a file.
+  <span class="nt">-cp</span>, <span class="nt">--classpath</span>    Classpath to use.
+  <span class="nt">-m</span>, <span class="nt">--main</span> &lt;ns&gt;     Call the <span class="nt">-main</span> <span class="k">function </span>from namespace with args.
+  <span class="nt">--verbose</span>           Print debug information and entire stacktrace <span class="k">in case</span> of exception.
 
 REPL:
 
-  --repl              Start REPL. Use rlwrap for history.
-  --socket-repl       Start socket REPL. Specify port (e.g. 1666) or host and port separated by colon (e.g. 127.0.0.1:1666).
-  --nrepl-server      Start nREPL server. Specify port (e.g. 1667) or host and port separated by colon (e.g. 127.0.0.1:1667).
+  <span class="nt">--repl</span>              Start REPL. Use rlwrap <span class="k">for </span>history.
+  <span class="nt">--socket-repl</span>       Start socket REPL. Specify port <span class="o">(</span>e.g. 1666<span class="p">)</span> or host and port separated by colon <span class="o">(</span>e.g. 127.0.0.1:1666<span class="o">)</span><span class="nb">.</span>
+  <span class="nt">--nrepl-server</span>      Start nREPL server. Specify port <span class="o">(</span>e.g. 1667<span class="o">)</span> or host and port separated by colon <span class="o">(</span>e.g. 127.0.0.1:1667<span class="o">)</span><span class="nb">.</span>
 
-If neither -e, -f, or --socket-repl are specified, then the first argument that is not parsed as a option is treated as a file if it exists, or as an expression otherwise. Everything after that is bound to *command-line-args*. Use -- to separate script command line args from bb command line args.</code></pre>
+If neither <span class="nt">-e</span>, <span class="nt">-f</span>, or <span class="nt">--socket-repl</span> are specified, <span class="k">then </span>the first argument that is not parsed as a option is treated as a file <span class="k">if </span>it exists, or as an expression otherwise. Everything after that is bound to <span class="k">*</span>command-line-args<span class="k">*</span><span class="nb">.</span> Use <span class="nt">--</span> to separate script <span class="nb">command </span>line args from bb <span class="nb">command </span>line args.</code></pre>
 </div>
 </div>
 <div class="sect2">
@@ -1488,23 +1740,23 @@ you want to compile babashka yourself.</p>
 <div class="sect2">
 <h3 id="_babashka_namespaces">Babashka namespaces</h3>
 <div class="sect3">
-<h4 id="babashkaclasspath">babashka.classpath</h4>
+<h4 id="babashka_classpath">babashka.classpath</h4>
 <div class="paragraph">
 <p>Contains the function <code>add-classpath</code> which can be used to add to the
 classpath dynamically:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="clojure">(<span class="keyword">require</span> '[babashka.classpath <span class="symbol">:refer</span> [<span class="keyword">add-classpath</span>]]
-         '[clojure.java.shell <span class="symbol">:refer</span> [sh]]
-         '[clojure.string <span class="symbol">:as</span> <span class="keyword">str</span>])
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">(</span><span class="nf">require</span><span class="w"> </span><span class="o">'</span><span class="p">[</span><span class="n">babashka.classpath</span><span class="w"> </span><span class="no">:refer</span><span class="w"> </span><span class="p">[</span><span class="n">add-classpath</span><span class="p">]]</span><span class="w">
+         </span><span class="o">'</span><span class="p">[</span><span class="n">clojure.java.shell</span><span class="w"> </span><span class="no">:refer</span><span class="w"> </span><span class="p">[</span><span class="n">sh</span><span class="p">]]</span><span class="w">
+         </span><span class="o">'</span><span class="p">[</span><span class="n">clojure.string</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="nb">str</span><span class="p">])</span><span class="w">
 
-(<span class="keyword">def</span> <span class="function">medley-dep</span> '{<span class="symbol">:deps</span> {medley {<span class="symbol">:git/url</span> <span class="string"><span class="delimiter">&quot;</span><span class="content">https://github.com/borkdude/medley</span><span class="delimiter">&quot;</span></span>
-                                 <span class="symbol">:sha</span> <span class="string"><span class="delimiter">&quot;</span><span class="content">91adfb5da33f8d23f75f0894da1defe567a625c0</span><span class="delimiter">&quot;</span></span>}}})
-(<span class="keyword">def</span> <span class="function">cp</span> (<span class="keyword">-&gt;</span> (sh <span class="string"><span class="delimiter">&quot;</span><span class="content">clojure</span><span class="delimiter">&quot;</span></span> <span class="string"><span class="delimiter">&quot;</span><span class="content">-Spath</span><span class="delimiter">&quot;</span></span> <span class="string"><span class="delimiter">&quot;</span><span class="content">-Sdeps</span><span class="delimiter">&quot;</span></span> (<span class="keyword">str</span> medley-dep)) <span class="symbol">:out</span> str/trim))
-(<span class="keyword">add-classpath</span> cp)
-(<span class="keyword">require</span> '[medley.core <span class="symbol">:as</span> m])
-(m/index-by <span class="symbol">:id</span> [{<span class="symbol">:id</span> <span class="integer">1</span>} {<span class="symbol">:id</span> <span class="integer">2</span>}]) <span class="comment">;;=&gt; {1 {:id 1}, 2 {:id 2}}</span></code></pre>
+</span><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">medley-dep</span><span class="w"> </span><span class="o">'</span><span class="p">{</span><span class="no">:deps</span><span class="w"> </span><span class="p">{</span><span class="n">medley</span><span class="w"> </span><span class="p">{</span><span class="no">:git/url</span><span class="w"> </span><span class="s">"https://github.com/borkdude/medley"</span><span class="w">
+                                 </span><span class="no">:sha</span><span class="w"> </span><span class="s">"91adfb5da33f8d23f75f0894da1defe567a625c0"</span><span class="p">}}})</span><span class="w">
+</span><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">cp</span><span class="w"> </span><span class="p">(</span><span class="nb">-&gt;</span><span class="w"> </span><span class="p">(</span><span class="nf">sh</span><span class="w"> </span><span class="s">"clojure"</span><span class="w"> </span><span class="s">"-Spath"</span><span class="w"> </span><span class="s">"-Sdeps"</span><span class="w"> </span><span class="p">(</span><span class="nb">str</span><span class="w"> </span><span class="n">medley-dep</span><span class="p">))</span><span class="w"> </span><span class="no">:out</span><span class="w"> </span><span class="n">str/trim</span><span class="p">))</span><span class="w">
+</span><span class="p">(</span><span class="nf">add-classpath</span><span class="w"> </span><span class="n">cp</span><span class="p">)</span><span class="w">
+</span><span class="p">(</span><span class="nf">require</span><span class="w"> </span><span class="o">'</span><span class="p">[</span><span class="n">medley.core</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">m</span><span class="p">])</span><span class="w">
+</span><span class="p">(</span><span class="nf">m/index-by</span><span class="w"> </span><span class="no">:id</span><span class="w"> </span><span class="p">[{</span><span class="no">:id</span><span class="w"> </span><span class="mi">1</span><span class="p">}</span><span class="w"> </span><span class="p">{</span><span class="no">:id</span><span class="w"> </span><span class="mi">2</span><span class="p">}])</span><span class="w"> </span><span class="c1">;;=&gt; {1 {:id 1}, 2 {:id 2}}</span></code></pre>
 </div>
 </div>
 </div>
@@ -1518,8 +1770,8 @@ classpath dynamically:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="clojure">(wait/wait-for-port <span class="string"><span class="delimiter">&quot;</span><span class="content">localhost</span><span class="delimiter">&quot;</span></span> <span class="integer">8080</span>)
-(wait/wait-for-port <span class="string"><span class="delimiter">&quot;</span><span class="content">localhost</span><span class="delimiter">&quot;</span></span> <span class="integer">8080</span> {<span class="symbol">:timeout</span> <span class="integer">1000</span> <span class="symbol">:pause</span> <span class="integer">1000</span>})</code></pre>
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">(</span><span class="nf">wait/wait-for-port</span><span class="w"> </span><span class="s">"localhost"</span><span class="w"> </span><span class="mi">8080</span><span class="p">)</span><span class="w">
+</span><span class="p">(</span><span class="nf">wait/wait-for-port</span><span class="w"> </span><span class="s">"localhost"</span><span class="w"> </span><span class="mi">8080</span><span class="w"> </span><span class="p">{</span><span class="no">:timeout</span><span class="w"> </span><span class="mi">1000</span><span class="w"> </span><span class="no">:pause</span><span class="w"> </span><span class="mi">1000</span><span class="p">})</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1533,8 +1785,8 @@ the time waited between retries.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="clojure">(wait/wait-for-path <span class="string"><span class="delimiter">&quot;</span><span class="content">/tmp/wait-path-test</span><span class="delimiter">&quot;</span></span>)
-(wait/wait-for-path <span class="string"><span class="delimiter">&quot;</span><span class="content">/tmp/wait-path-test</span><span class="delimiter">&quot;</span></span> {<span class="symbol">:timeout</span> <span class="integer">1000</span> <span class="symbol">:pause</span> <span class="integer">1000</span>})</code></pre>
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">(</span><span class="nf">wait/wait-for-path</span><span class="w"> </span><span class="s">"/tmp/wait-path-test"</span><span class="p">)</span><span class="w">
+</span><span class="p">(</span><span class="nf">wait/wait-for-path</span><span class="w"> </span><span class="s">"/tmp/wait-path-test"</span><span class="w"> </span><span class="p">{</span><span class="no">:timeout</span><span class="w"> </span><span class="mi">1000</span><span class="w"> </span><span class="no">:pause</span><span class="w"> </span><span class="mi">1000</span><span class="p">})</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1555,7 +1807,7 @@ namespace.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="clojure">(signal/pipe-signal-received?)</code></pre>
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">(</span><span class="nf">signal/pipe-signal-received?</span><span class="p">)</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1563,7 +1815,7 @@ namespace.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="shellsession">$ bb '((fn [x] (println x) (when (not (signal/pipe-signal-received?)) (recur (inc x)))) 0)' | head -n2
+<pre class="rouge highlight"><code data-lang="bash"><span class="nv">$ </span>bb <span class="s1">'((fn [x] (println x) (when (not (signal/pipe-signal-received?)) (recur (inc x)))) 0)'</span> | <span class="nb">head</span> <span class="nt">-n2</span>
 1
 2</code></pre>
 </div>
@@ -1608,10 +1860,10 @@ the easiest one.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="clojure">user=&gt; (<span class="keyword">require</span> '[clojure.java.shell <span class="symbol">:refer</span> [sh]])
-<span class="predefined-constant">nil</span>
-user=&gt; (sh <span class="string"><span class="delimiter">&quot;</span><span class="content">ls</span><span class="delimiter">&quot;</span></span>)
-{<span class="symbol">:exit</span> <span class="integer">0</span>, <span class="symbol">:out</span> <span class="string"><span class="delimiter">&quot;</span><span class="content">README.md</span><span class="content">\n</span><span class="content">dist</span><span class="content">\n</span><span class="content">gh-pages</span><span class="content">\n</span><span class="content">script</span><span class="content">\n</span><span class="content">src</span><span class="content">\n</span><span class="delimiter">&quot;</span></span>, <span class="symbol">:err</span> <span class="string"><span class="delimiter">&quot;</span><span class="delimiter">&quot;</span></span>}</code></pre>
+<pre class="rouge highlight"><code data-lang="clojure"><span class="n">user=&gt;</span><span class="w"> </span><span class="p">(</span><span class="nf">require</span><span class="w"> </span><span class="o">'</span><span class="p">[</span><span class="n">clojure.java.shell</span><span class="w"> </span><span class="no">:refer</span><span class="w"> </span><span class="p">[</span><span class="n">sh</span><span class="p">]])</span><span class="w">
+</span><span class="n">nil</span><span class="w">
+</span><span class="n">user=&gt;</span><span class="w"> </span><span class="p">(</span><span class="nf">sh</span><span class="w"> </span><span class="s">"ls"</span><span class="p">)</span><span class="w">
+</span><span class="p">{</span><span class="no">:exit</span><span class="w"> </span><span class="mi">0</span><span class="n">,</span><span class="w"> </span><span class="no">:out</span><span class="w"> </span><span class="s">"README.md\ndist\ngh-pages\nscript\nsrc\n"</span><span class="n">,</span><span class="w"> </span><span class="no">:err</span><span class="w"> </span><span class="s">""</span><span class="p">}</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1620,8 +1872,8 @@ user=&gt; (sh <span class="string"><span class="delimiter">&quot;</span><span cl
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="clojure">user=&gt; (sh <span class="string"><span class="delimiter">&quot;</span><span class="content">ls</span><span class="delimiter">&quot;</span></span> <span class="string"><span class="delimiter">&quot;</span><span class="content">foo</span><span class="delimiter">&quot;</span></span>)
-{<span class="symbol">:exit</span> <span class="integer">1</span>, <span class="symbol">:out</span> <span class="string"><span class="delimiter">&quot;</span><span class="delimiter">&quot;</span></span>, <span class="symbol">:err</span> <span class="string"><span class="delimiter">&quot;</span><span class="content">ls: foo: No such file or directory</span><span class="content">\n</span><span class="delimiter">&quot;</span></span>}</code></pre>
+<pre class="rouge highlight"><code data-lang="clojure"><span class="n">user=&gt;</span><span class="w"> </span><span class="p">(</span><span class="nf">sh</span><span class="w"> </span><span class="s">"ls"</span><span class="w"> </span><span class="s">"foo"</span><span class="p">)</span><span class="w">
+</span><span class="p">{</span><span class="no">:exit</span><span class="w"> </span><span class="mi">1</span><span class="n">,</span><span class="w"> </span><span class="no">:out</span><span class="w"> </span><span class="s">""</span><span class="n">,</span><span class="w"> </span><span class="no">:err</span><span class="w"> </span><span class="s">"ls: foo: No such file or directory\n"</span><span class="p">}</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1659,20 +1911,21 @@ starts a pREPL process:</p>
 <div class="listingblock">
 <div class="title">process/prepl_1.clj</div>
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="clojure"><span class="error">#</span>!/usr/bin/env bb
+<pre class="rouge highlight"><code data-lang="clojure"><span class="o">#</span><span class="n">!/usr/bin/env</span><span class="w"> </span><span class="n">bb</span><span class="w">
 
-(<span class="keyword">require</span> '[babashka.process <span class="symbol">:as</span> p])
+</span><span class="p">(</span><span class="nf">require</span><span class="w"> </span><span class="o">'</span><span class="p">[</span><span class="n">babashka.process</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">p</span><span class="p">])</span><span class="w">
 
-(<span class="keyword">defn</span> <span class="function">io-prepl</span> []
-  (<span class="keyword">let</span> [cmd [<span class="string"><span class="delimiter">&quot;</span><span class="content">clojure</span><span class="delimiter">&quot;</span></span> <span class="string"><span class="delimiter">&quot;</span><span class="content">-M</span><span class="delimiter">&quot;</span></span>
-             <span class="string"><span class="delimiter">&quot;</span><span class="content">-e</span><span class="delimiter">&quot;</span></span> <span class="string"><span class="delimiter">&quot;</span><span class="content">(require '[clojure.core.server :as s])</span><span class="delimiter">&quot;</span></span>
-             <span class="string"><span class="delimiter">&quot;</span><span class="content">-e</span><span class="delimiter">&quot;</span></span> <span class="string"><span class="delimiter">&quot;</span><span class="content">(s/io-prepl)</span><span class="delimiter">&quot;</span></span>]                           <i class="conum" data-value="1"></i><b>(1)</b>
-        proc (p/process cmd                                 <i class="conum" data-value="2"></i><b>(2)</b>
-                        {<span class="symbol">:inherit</span> <span class="predefined-constant">true</span>                      <i class="conum" data-value="3"></i><b>(3)</b>
-                         <span class="symbol">:shutdown</span> p/destroy-tree})]        <i class="conum" data-value="4"></i><b>(4)</b>
-    proc))
+</span><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">io-prepl</span><span class="w"> </span><span class="p">[]</span><span class="w">
+  </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[</span><span class="n">cmd</span><span class="w"> </span><span class="p">[</span><span class="s">"clojure"</span><span class="w"> </span><span class="s">"-M"</span><span class="w">
+             </span><span class="s">"-e"</span><span class="w"> </span><span class="s">"(require '[clojure.core.server :as s])"</span><span class="w">
+             </span><span class="s">"-e"</span><span class="w"> </span><span class="s">"(s/io-prepl)"</span><span class="p">]</span><span class="w">                           <i class="conum" data-value="1"></i><b>(1)</b>
+        </span><span class="n">proc</span><span class="w"> </span><span class="p">(</span><span class="nf">p/process</span><span class="w"> </span><span class="n">cmd</span><span class="w">                                 <i class="conum" data-value="2"></i><b>(2)</b>
+                        </span><span class="p">{</span><span class="no">:inherit</span><span class="w"> </span><span class="n">true</span><span class="w">                      <i class="conum" data-value="3"></i><b>(3)</b>
+                         </span><span class="no">:shutdown</span><span class="w"> </span><span class="n">p/destroy-tree</span><span class="p">})]</span><span class="w">        <i class="conum" data-value="4"></i><b>(4)</b>
+    </span><span class="n">proc</span><span class="p">))</span><span class="w">
 
-@(io-prepl)                                                 <i class="conum" data-value="5"></i><b>(5)</b></code></pre>
+</span><span class="o">@</span><span class="p">(</span><span class="nf">io-prepl</span><span class="p">)</span><span class="w">                                                 <i class="conum" data-value="5"></i><b>(5)</b>
+</span></code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -1707,9 +1960,9 @@ we would not include this, our script would end immediately.</td>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="shell">$ bb src/process/prepl_1.clj
-(+ 1 2 3)
-{:tag :ret, :val &quot;6&quot;, :ns &quot;user&quot;, :ms 5, :form &quot;(+ 1 2 3)&quot;}</code></pre>
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>bb src/process/prepl_1.clj
+<span class="o">(</span>+ 1 2 3<span class="o">)</span>
+<span class="o">{</span>:tag :ret, :val <span class="s2">"6"</span>, :ns <span class="s2">"user"</span>, :ms 5, :form <span class="s2">"(+ 1 2 3)"</span><span class="o">}</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1725,39 +1978,39 @@ stream of the process and handle reading ourselves.</p>
 <div class="listingblock">
 <div class="title">process/prepl_2.clj</div>
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="clojure"><span class="error">#</span>!/usr/bin/env bb
+<pre class="rouge highlight"><code data-lang="clojure"><span class="o">#</span><span class="n">!/usr/bin/env</span><span class="w"> </span><span class="n">bb</span><span class="w">
 
-(<span class="keyword">require</span> '[babashka.process <span class="symbol">:as</span> p])
+</span><span class="p">(</span><span class="nf">require</span><span class="w"> </span><span class="o">'</span><span class="p">[</span><span class="n">babashka.process</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">p</span><span class="p">])</span><span class="w">
 
-(<span class="keyword">defn</span> <span class="function">io-prepl</span> []
-  (<span class="keyword">let</span> [cmd [<span class="string"><span class="delimiter">&quot;</span><span class="content">clojure</span><span class="delimiter">&quot;</span></span> <span class="string"><span class="delimiter">&quot;</span><span class="content">-M</span><span class="delimiter">&quot;</span></span>
-             <span class="string"><span class="delimiter">&quot;</span><span class="content">-e</span><span class="delimiter">&quot;</span></span> <span class="string"><span class="delimiter">&quot;</span><span class="content">(require '[clojure.core.server :as s])</span><span class="delimiter">&quot;</span></span>
-             <span class="string"><span class="delimiter">&quot;</span><span class="content">-e</span><span class="delimiter">&quot;</span></span> <span class="string"><span class="delimiter">&quot;</span><span class="content">(s/io-prepl)</span><span class="delimiter">&quot;</span></span>]
-        proc (p/process cmd
-                        {<span class="symbol">:shutdown</span> p/destroy-tree})]
-    proc))
+</span><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">io-prepl</span><span class="w"> </span><span class="p">[]</span><span class="w">
+  </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[</span><span class="n">cmd</span><span class="w"> </span><span class="p">[</span><span class="s">"clojure"</span><span class="w"> </span><span class="s">"-M"</span><span class="w">
+             </span><span class="s">"-e"</span><span class="w"> </span><span class="s">"(require '[clojure.core.server :as s])"</span><span class="w">
+             </span><span class="s">"-e"</span><span class="w"> </span><span class="s">"(s/io-prepl)"</span><span class="p">]</span><span class="w">
+        </span><span class="n">proc</span><span class="w"> </span><span class="p">(</span><span class="nf">p/process</span><span class="w"> </span><span class="n">cmd</span><span class="w">
+                        </span><span class="p">{</span><span class="no">:shutdown</span><span class="w"> </span><span class="n">p/destroy-tree</span><span class="p">})]</span><span class="w">
+    </span><span class="n">proc</span><span class="p">))</span><span class="w">
 
-(<span class="keyword">def</span> <span class="function">prepl-process</span> (io-prepl))
+</span><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">prepl-process</span><span class="w"> </span><span class="p">(</span><span class="nf">io-prepl</span><span class="p">))</span><span class="w">
 
-(<span class="keyword">require</span> '[clojure.java.io <span class="symbol">:as</span> io])
+</span><span class="p">(</span><span class="nf">require</span><span class="w"> </span><span class="o">'</span><span class="p">[</span><span class="n">clojure.java.io</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">io</span><span class="p">])</span><span class="w">
 
-(<span class="keyword">def</span> <span class="function">input-writer</span> (io/writer (<span class="symbol">:in</span> prepl-process)))        <i class="conum" data-value="1"></i><b>(1)</b>
-(<span class="keyword">def</span> <span class="function">output-reader</span> (java.io.PushbackReader.
-                    (io/reader (<span class="symbol">:out</span> prepl-process))))    <i class="conum" data-value="2"></i><b>(2)</b>
+</span><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">input-writer</span><span class="w"> </span><span class="p">(</span><span class="nf">io/writer</span><span class="w"> </span><span class="p">(</span><span class="no">:in</span><span class="w"> </span><span class="n">prepl-process</span><span class="p">)))</span><span class="w">        <i class="conum" data-value="1"></i><b>(1)</b>
+</span><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">output-reader</span><span class="w"> </span><span class="p">(</span><span class="nf">java.io.PushbackReader.</span><span class="w">
+                    </span><span class="p">(</span><span class="nf">io/reader</span><span class="w"> </span><span class="p">(</span><span class="no">:out</span><span class="w"> </span><span class="n">prepl-process</span><span class="p">))))</span><span class="w">    <i class="conum" data-value="2"></i><b>(2)</b>
 
-(<span class="keyword">require</span> '[clojure.edn <span class="symbol">:as</span> edn])
+</span><span class="p">(</span><span class="nf">require</span><span class="w"> </span><span class="o">'</span><span class="p">[</span><span class="n">clojure.edn</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">edn</span><span class="p">])</span><span class="w">
 
-(<span class="keyword">loop</span> []
-  (<span class="keyword">println</span> <span class="string"><span class="delimiter">&quot;</span><span class="content">Type an expression to evaluate:</span><span class="delimiter">&quot;</span></span>)
-  (<span class="keyword">when-let</span> [v (<span class="keyword">read-line</span>)]                               <i class="conum" data-value="3"></i><b>(3)</b>
-    (<span class="keyword">binding</span> [<span class="predefined-constant">*out*</span> input-writer]                         <i class="conum" data-value="4"></i><b>(4)</b>
-      (<span class="keyword">println</span> v))
-    (<span class="keyword">let</span> [next-val (edn/read {<span class="symbol">:eof</span> <span class="symbol">::EOF</span>} output-reader)] <i class="conum" data-value="5"></i><b>(5)</b>
-      (<span class="keyword">when-not</span> (<span class="keyword">identical?</span> <span class="symbol">::EOF</span> next-val)
-        (<span class="keyword">println</span> (<span class="symbol">:form</span> next-val)                         <i class="conum" data-value="6"></i><b>(6)</b>
-                 <span class="string"><span class="delimiter">&quot;</span><span class="content">evaluates to</span><span class="delimiter">&quot;</span></span>
-                 (<span class="symbol">:val</span> next-val))
-        (<span class="keyword">recur</span>)))))</code></pre>
+</span><span class="p">(</span><span class="nb">loop</span><span class="w"> </span><span class="p">[]</span><span class="w">
+  </span><span class="p">(</span><span class="nb">println</span><span class="w"> </span><span class="s">"Type an expression to evaluate:"</span><span class="p">)</span><span class="w">
+  </span><span class="p">(</span><span class="nb">when-let</span><span class="w"> </span><span class="p">[</span><span class="n">v</span><span class="w"> </span><span class="p">(</span><span class="nb">read-line</span><span class="p">)]</span><span class="w">                               <i class="conum" data-value="3"></i><b>(3)</b>
+    </span><span class="p">(</span><span class="nb">binding</span><span class="w"> </span><span class="p">[</span><span class="n">*out*</span><span class="w"> </span><span class="n">input-writer</span><span class="p">]</span><span class="w">                         <i class="conum" data-value="4"></i><b>(4)</b>
+      </span><span class="p">(</span><span class="nb">println</span><span class="w"> </span><span class="n">v</span><span class="p">))</span><span class="w">
+    </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[</span><span class="n">next-val</span><span class="w"> </span><span class="p">(</span><span class="nf">edn/read</span><span class="w"> </span><span class="p">{</span><span class="no">:eof</span><span class="w"> </span><span class="no">::EOF</span><span class="p">}</span><span class="w"> </span><span class="n">output-reader</span><span class="p">)]</span><span class="w"> <i class="conum" data-value="5"></i><b>(5)</b>
+      </span><span class="p">(</span><span class="nb">when-not</span><span class="w"> </span><span class="p">(</span><span class="nb">identical?</span><span class="w"> </span><span class="no">::EOF</span><span class="w"> </span><span class="n">next-val</span><span class="p">)</span><span class="w">
+        </span><span class="p">(</span><span class="nb">println</span><span class="w"> </span><span class="p">(</span><span class="no">:form</span><span class="w"> </span><span class="n">next-val</span><span class="p">)</span><span class="w">                         <i class="conum" data-value="6"></i><b>(6)</b>
+                 </span><span class="s">"evaluates to"</span><span class="w">
+                 </span><span class="p">(</span><span class="no">:val</span><span class="w"> </span><span class="n">next-val</span><span class="p">))</span><span class="w">
+        </span><span class="p">(</span><span class="nf">recur</span><span class="p">)))))</span></code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -1795,10 +2048,10 @@ to it.</td>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="shell">$ bb src/process/prepl_2.clj
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>bb src/process/prepl_2.clj
 Type an expression to evaluate:
-(+ 1 2 3)
-(+ 1 2 3) evaluates to 6
+<span class="o">(</span>+ 1 2 3<span class="o">)</span>
+<span class="o">(</span>+ 1 2 3<span class="o">)</span> evaluates to 6
 :repl/quit</code></pre>
 </div>
 </div>
@@ -1827,10 +2080,91 @@ compute a classpath using tools.deps</p>
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="_deps_clj">Deps.clj</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <a href="https://github.com/borkdude/deps.clj/"><code>deps.clj</code></a> script can be used
+to work with <code>deps.edn</code>-based projects:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>deps.clj <span class="nt">-A</span>:my-script <span class="nt">-Scommand</span> <span class="s2">"bb -cp {{classpath}} {{main-opts}}"</span>
+Hello from gist script!</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Create these aliases for brevity:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span><span class="nb">alias </span>bb-deps<span class="o">=</span><span class="s1">'deps.clj -Scommand "bb -cp {{classpath}} {{main-opts}}"'</span>
+<span class="nv">$ </span><span class="nb">alias </span>bb-deps-repl<span class="o">=</span><span class="s1">'rlwrap deps.clj -Scommand "bb -cp {{classpath}} {{main-opts}}"'</span>
+<span class="nv">$ </span>bb-deps <span class="nt">-M</span>:my-script
+Hello from gist script!
+<span class="nv">$ </span>bb-deps-repl
+Babashka v0.0.58 REPL.
+Use :repl/quit or :repl/exit to quit the REPL.
+Clojure rocks, Bash reaches.
+
+<span class="nv">user</span><span class="o">=&gt;</span> <span class="o">(</span>require <span class="s1">'[my-gist-script :as mgs])
+nil
+user=&gt; (mgs/-main)
+Hello from gist script!
+nil</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can also use for example <code>deps.clj</code> to produce the classpath for a
+<code>babashka</code> REPL:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shellsession">$ cat script/start-repl.sh
+#!/bin/sh -e
+git_root=$(git rev-parse --show-toplevel)
+export BABASHKA_CLASSPATH=$("$git_root"/script/deps.clj -Spath)
+bb --socket-repl 1666
+$ ./script/start-repl.sh
+Babashka socket REPL started at localhost:1666</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now, given that your <code>deps.edn</code> and source tree looks something like</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shellsession">$ cat deps.edn
+{:paths ["src" "test"]
+ :deps  {}}
+$ tree -L 3
+├── deps.edn
+├── README
+├── script
+│   ├── deps.clj
+│   └── start-repl.sh
+├── src
+│   └── project_namespace
+│       ├── main.clj
+│       └── utilities.clj
+└── test
+    └── project_namespace
+        ├── test_main.clj
+        └── test_utilities.clj</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>you should now be able to
+<code>(require '[multi-machine-rsync.utilities :as util])</code> in your REPL and
+the source code in <code>/src/multi_machine_rsync/utilities.clj</code> will be
+evaluated and made available through the symbol <code>util</code>.</p>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-11-28 19:41:04 +0100
+Last updated 2020-11-28 20:55:32 +0100
 </div>
 </div>
 </body>
