@@ -19,20 +19,12 @@ tutorial. If you aren't that familiar with Clojure but you're curious to learn,
 check out https://gist.github.com/yogthos/be323be0361c589570a6da4ccc85f58f[this]
 list of beginner resources.
 
-=== Compatibility
+=== Setting expectations
 
-Babashka uses the Small Clojure Interpreter, or
-https://github.com/borkdude/sci/[sci] for short to run programs within a
-GraalVM-compiled binary. GraalVM gives it its fast startup and low memory usage
-characteristics. Source code is not compiled to JVM bytecode first, like in
-Clojure on the JVM. Despite this difference, babashka aims to be as compatible
-as possible with the semantics of Clojure. It supports a significant subset of
-Clojure: functions, macros, multi-methods, namespaces, most of it is there. At
-the moment, the main difference with Clojure is lack of support for `deftype`,
-and `definterface`. Like a JVM programmer would expect, babashka has support for
-multi-threading and provides access to commonly used Java packages and classes
-like `File`, `System`, `java.io` and `java.net`. Because babashka uses
-interpretation instead of compilation, longer running programs are usually
-slower, despite the benefit of fast startup. If that turns out to be the case,
-your scripting efforts are not in vain: the code you wrote still runs with
-Clojure!
+Babashka uses https://github.com/borkdude/sci[sci] for interpreting Clojure. Sci
+implements a substantial subset of Clojure. Interpreting code is in general not
+as performant as executing compiled code. If your script takes more than a few
+seconds to run or has lots of loops, Clojure on the JVM may be a better fit,
+since the performance of Clojure on the JVM outweighs its startup time
+penalty. Read more about the differences with Clojure
+link:#differences-with-clojure[here].
