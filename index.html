@@ -786,23 +786,17 @@ code of this library is located <a href="https://github.com/babashka/process">he
 </div>
 <div class="paragraph">
 <p>What if we wanted to start a Clojure pREPL in our script, send commands to it
-and read the evaluated output?  Using <code>clojure.java.shell/sh</code> for this has a few
-drawbacks:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>We have no control over stopping the pREPL process.</p>
-</li>
-<li>
-<p>We can&#8217;t see any output from pREPL process until it finishes.</p>
-</li>
-</ul>
+and read the evaluated output in a loop?  Using <code>clojure.java.shell/sh</code> for this
+has the limitation that we can only send input and read output once per process.
+Using <code>babashka.process</code> which leverages the <code>java.lang.ProcessBuilder</code> and
+<code>java.lang.Process</code> classes gives us the extra power we need to overcome this
+limitation.</p>
 </div>
 <div class="paragraph">
-<p>Using <code>babashka.process</code> which leverages the <code>java.lang.ProcessBuilder</code> and
-<code>java.lang.Process</code> classes gives us the extra power we need to overcome these
-limitations.</p>
+<p>First we show how to use <code>process</code> to start a process that inherits stdout,
+stderr and stdin from the parent process. This is often useful when you want to
+hand over control to another process at the end of a script. The following code
+starts a pREPL process:</p>
 </div>
 <div class="listingblock">
 <div class="title">process/prepl_1.clj</div>
