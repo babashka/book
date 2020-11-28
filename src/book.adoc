@@ -25,6 +25,8 @@ include::style.adoc[]
 
 include::libraries.adoc[]
 
+include::pods.adoc[]
+
 include::child_processes.adoc[]
 
 include::deps_clj.adoc[]
