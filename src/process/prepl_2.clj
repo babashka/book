@@ -28,12 +28,11 @@
 (def output-reader (java.io.PushbackReader.
                     (io/reader (:out prepl-process))))     ;; <4>
 
-@(future
-   (loop []
-     (println "Type an expression to evaluate:")
-     (let [next-val (edn/read {:eof ::EOF} output-reader)] ;; <5>
-       (when-not (identical? ::EOF next-val)
-         (println (:form next-val)                         ;; <6>
-                  "evaluates to"
-                  (:val next-val))
-         (recur)))))
+(loop []
+  (println "Type an expression to evaluate:")
+  (let [next-val (edn/read {:eof ::EOF} output-reader)] ;; <5>
+    (when-not (identical? ::EOF next-val)
+      (println (:form next-val)                         ;; <6>
+               "evaluates to"
+               (:val next-val))
+      (recur))))
