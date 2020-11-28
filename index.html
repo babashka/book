@@ -665,7 +665,7 @@ pre.rouge {
 <li><a href="#introduction">Introduction</a>
 <ul class="sectlevel2">
 <li><a href="#_target_audience">Target audience</a></li>
-<li><a href="#_compatibility">Compatibility</a></li>
+<li><a href="#_setting_expectations">Setting expectations</a></li>
 </ul>
 </li>
 <li><a href="#getting_started">Getting started</a>
@@ -699,7 +699,7 @@ pre.rouge {
 <li><a href="#_explicit_requires">Explicit requires</a></li>
 </ul>
 </li>
-<li><a href="#_features">Features</a>
+<li><a href="#features">Features</a>
 <ul class="sectlevel2">
 <li><a href="#_built_in_namespaces">Built-in namespaces</a></li>
 <li><a href="#_babashka_namespaces">Babashka namespaces</a></li>
@@ -711,18 +711,19 @@ pre.rouge {
 <li><a href="#_babashka_process">babashka.process</a></li>
 </ul>
 </li>
-<li><a href="#_deps_clj">Deps.clj</a></li>
+<li><a href="#deps_clj">Deps.clj</a></li>
 <li><a href="#recipes">Recipes</a>
 <ul class="sectlevel2">
 <li><a href="#_running_tests">Running tests</a></li>
 <li><a href="#main_file">Main file</a></li>
 <li><a href="#_shutdown_hook">Shutdown hook</a></li>
 <li><a href="#_printing_returned_values">Printing returned values</a></li>
-<li><a href="#_core_async">Core.async</a></li>
+<li><a href="#core_async">Core.async</a></li>
 <li><a href="#_http_over_unix_sockets">HTTP over Unix sockets</a></li>
 <li><a href="#_interacting_with_an_nrepl_server">Interacting with an nREPL server</a></li>
 </ul>
 </li>
+<li><a href="#_differences_with_clojure">Differences with Clojure</a></li>
 <li><a href="#license">License</a></li>
 </ul>
 </div>
@@ -768,23 +769,15 @@ list of beginner resources.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_compatibility">Compatibility</h3>
+<h3 id="_setting_expectations">Setting expectations</h3>
 <div class="paragraph">
-<p>Babashka uses the Small Clojure Interpreter, or
-<a href="https://github.com/borkdude/sci/">sci</a> for short to run programs within a
-GraalVM-compiled binary. GraalVM gives it its fast startup and low memory usage
-characteristics. Source code is not compiled to JVM bytecode first, like in
-Clojure on the JVM. Despite this difference, babashka aims to be as compatible
-as possible with the semantics of Clojure. It supports a significant subset of
-Clojure: functions, macros, multi-methods, namespaces, most of it is there. At
-the moment, the main difference with Clojure is lack of support for <code>deftype</code>,
-and <code>definterface</code>. Like a JVM programmer would expect, babashka has support for
-multi-threading and provides access to commonly used Java packages and classes
-like <code>File</code>, <code>System</code>, <code>java.io</code> and <code>java.net</code>. Because babashka uses
-interpretation instead of compilation, longer running programs are usually
-slower, despite the benefit of fast startup. If that turns out to be the case,
-your scripting efforts are not in vain: the code you wrote still runs with
-Clojure!</p>
+<p>Babashka uses <a href="https://github.com/borkdude/sci">sci</a> for interpreting Clojure. Sci
+implements a substantial subset of Clojure. Interpreting code is in general not
+as performant as executing compiled code. If your script takes more than a few
+seconds to run or has lots of loops, Clojure on the JVM may be a better fit,
+since the performance of Clojure on the JVM outweighs its startup time
+penalty. Read more about the differences with Clojure
+<a href="#differences-with-clojure">here</a>.</p>
 </div>
 </div>
 </div>
@@ -1883,7 +1876,7 @@ with <code>clojure</code></p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_features">Features</h2>
+<h2 id="features">Features</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Typing <code>bb --help</code> from the command line will print all the available command
@@ -2412,7 +2405,7 @@ compute a classpath using tools.deps</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_deps_clj">Deps.clj</h2>
+<h2 id="deps_clj">Deps.clj</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>The <a href="https://github.com/borkdude/deps.clj/"><code>deps.clj</code></a> script can be used
@@ -2560,7 +2553,7 @@ something side-effecting.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_core_async">Core.async</h3>
+<h3 id="core_async">Core.async</h3>
 <div class="paragraph">
 <p>In addition to <code>future</code>, <code>pmap</code>, <code>promise</code> and friends, you may use the
 <code>clojure.core.async</code> namespace for asynchronous scripting. The following
@@ -2655,6 +2648,54 @@ started with <code>lein repl</code>:</p>
 </div>
 </div>
 <div class="sect1">
+<h2 id="_differences_with_clojure">Differences with Clojure</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Babashka is implemented using the <a href="https://github.com/borkdude/sci">Small
+Clojure Interpreter</a>. This means that a snippet or script is not
+compiled to JVM bytecode, but executed form by form by a runtime which
+implements a substantial subset of Clojure. Babashka is compiled to a
+native binary using <a href="https://github.com/oracle/graal">GraalVM</a>. It comes
+with a selection of built-in namespaces and functions from Clojure and
+other useful libraries. The data types (numbers, strings, persistent
+collections) are the same. Multi-threading is supported (<code>pmap</code>,
+<code>future</code>).</p>
+</div>
+<div class="paragraph">
+<p>Differences with Clojure:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>A pre-selected set of Java classes are supported. You cannot add Java
+classes at runtime.</p>
+</li>
+<li>
+<p>Interpretation comes with overhead. Therefore loops are slower than in
+Clojure on the JVM. In general interpretation yields slower programs
+than compiled programs.</p>
+</li>
+<li>
+<p>No <code>deftype</code>, <code>definterface</code> and unboxed math.</p>
+</li>
+<li>
+<p><code>defprotocol</code> and <code>defrecord</code> are implemented using multimethods and
+regular maps. Ostensibly they work the same, but under the hood there
+are no Java classes that correspond to them.</p>
+</li>
+<li>
+<p>Currently <code>reify</code> works only for one class at a time</p>
+</li>
+<li>
+<p>The <code>clojure.core.async/go</code> macro is not (yet) supported. For
+compatibility it currently maps to <code>clojure.core.async/thread</code>. More
+info <a href="#core_async">here</a>.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="license">License</h2>
 <div class="sectionbody">
 <div class="paragraph">
@@ -2679,7 +2720,7 @@ this repository as a basis for creating your own book based on this one.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-11-28 21:26:01 +0100
+Last updated 2020-11-28 21:40:10 +0100
 </div>
 </div>
 </body>
