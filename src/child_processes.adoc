@@ -36,7 +36,8 @@ https://clojure.github.io/clojure/clojure.java.shell-api.html[API documentation]
 Creating a child process with `clojure.java.shell/sh` is convenient and
 sufficient in 90% of the scripts you're going to write with babashka. For the
 remaining 10% you're going to need something slightly more powerful. This is
-where `babashka.process` comes in.
+where the `babashka.process` library namespace comes in. The README and source
+code of this library is located https://github.com/babashka/process[here]
 
 What if we wanted to start a Clojure pREPL in our script, send commands to it
 and read the evaluated output?  Using `clojure.java.shell/sh` for this has a few
