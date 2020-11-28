@@ -23,7 +23,7 @@ include::usage.adoc[]
 
 include::style.adoc[]
 
-include::features.adoc[]
+include::libraries.adoc[]
 
 include::child_processes.adoc[]
 
