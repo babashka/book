@@ -562,6 +562,14 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <li><a href="#_command_line_arguments">Command-line arguments</a></li>
 </ul>
 </li>
+<li><a href="#repl">Running a REPL</a>
+<ul class="sectlevel2">
+<li><a href="#_repl">REPL</a></li>
+<li><a href="#_socket_repl">Socket REPL</a></li>
+<li><a href="#_prepl">pREPL</a></li>
+<li><a href="#_nrepl">nREPL</a></li>
+</ul>
+</li>
 <li><a href="#style">Style</a>
 <ul class="sectlevel2">
 <li><a href="#_explicit_requires">Explicit requires</a></li>
@@ -583,6 +591,11 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 </div>
 </div>
 <div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<!--<script>alert('hello')</script>-->
+</div>
+</div>
 <div class="sect1">
 <h2 id="license">License</h2>
 <div class="sectionbody">
@@ -994,6 +1007,226 @@ you want to parse command line arguments, you may use the built-in
 or use the
 <a href="https://github.com/borkdude/babashka/blob/master/doc/projects.md#nubankdocopt">nubank/docopt</a>
 library.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="repl">Running a REPL</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Babashka supports running a REPL, a socket REPL and an nREPL server.</p>
+</div>
+<div class="sect2">
+<h3 id="_repl">REPL</h3>
+<div class="paragraph">
+<p>To start a REPL, type:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="shell">$ bb --repl</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To get history with up and down arrows, use <a href="https://github.com/hanslub42/rlwrap">rlwrap</a>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="shell">$ rlwrap bb --repl</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_socket_repl">Socket REPL</h3>
+<div class="paragraph">
+<p>To start a socket REPL on port <code>1666</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="shell">$ bb --socket-repl 1666
+Babashka socket REPL started at localhost:1666</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now you can connect with your favorite socket REPL client:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="shell">$ rlwrap nc 127.0.0.1 1666
+Babashka v0.0.14 REPL.
+Use :repl/quit or :repl/exit to quit the REPL.
+Clojure rocks, Bash reaches.
+
+bb=&gt; (+ 1 2 3)
+6
+bb=&gt; :repl/quit
+$</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>--socket-repl</code> option takes options similar to the <code>clojure.server.repl</code>
+Java property option in Clojure:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="clojure">$ bb --socket-repl '{<span class="symbol">:address</span> <span class="string"><span class="delimiter">&quot;</span><span class="content">0.0.0.0</span><span class="delimiter">&quot;</span></span> <span class="symbol">:accept</span> clojure.core.server/repl <span class="symbol">:port</span> <span class="integer">1666</span>}'</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Editor plugins and tools known to work with a babashka socket REPL:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Emacs: <a href="https://github.com/clojure-emacs/inf-clojure">inf-clojure</a>:</p>
+<div class="paragraph">
+<p>To connect:</p>
+</div>
+<div class="paragraph">
+<p><code>M-x inf-clojure-connect &lt;RET&gt; localhost &lt;RET&gt; 1666</code></p>
+</div>
+<div class="paragraph">
+<p>Before evaluating from a Clojure buffer:</p>
+</div>
+<div class="paragraph">
+<p><code>M-x inf-clojure-minor-mode</code></p>
+</div>
+</li>
+<li>
+<p>Atom: <a href="https://github.com/mauricioszabo/atom-chlorine">Chlorine</a></p>
+</li>
+<li>
+<p>Vim: <a href="https://github.com/liquidz/vim-iced">vim-iced</a></p>
+</li>
+<li>
+<p>IntelliJ IDEA: <a href="https://cursive-ide.com/">Cursive</a></p>
+<div class="paragraph">
+<p>Note: you will have to use a workaround via
+<a href="https://github.com/mfikes/tubular">tubular</a>. For more info, look
+<a href="https://cursive-ide.com/userguide/repl.html#repl-types">here</a>.</p>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_prepl">pREPL</h3>
+<div class="paragraph">
+<p>Launching a prepl can be done as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="clojure">$ bb --socket-repl '{<span class="symbol">:address</span> <span class="string"><span class="delimiter">&quot;</span><span class="content">0.0.0.0</span><span class="delimiter">&quot;</span></span> <span class="symbol">:accept</span> clojure.core.server/io-prepl <span class="symbol">:port</span> <span class="integer">1666</span>}'</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>or programmatically:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="clojure">$ bb -e '(clojure.core.server/io-prepl)'
+(<span class="keyword">+</span> <span class="integer">1</span> <span class="integer">2</span> <span class="integer">3</span>)
+{<span class="symbol">:tag</span> <span class="symbol">:ret</span>, <span class="symbol">:val</span> <span class="string"><span class="delimiter">&quot;</span><span class="content">6</span><span class="delimiter">&quot;</span></span>, <span class="symbol">:ns</span> <span class="string"><span class="delimiter">&quot;</span><span class="content">user</span><span class="delimiter">&quot;</span></span>, <span class="symbol">:ms</span> <span class="integer">0</span>, <span class="symbol">:form</span> <span class="string"><span class="delimiter">&quot;</span><span class="content">(+ 1 2 3)</span><span class="delimiter">&quot;</span></span>}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_nrepl">nREPL</h3>
+<div class="paragraph">
+<p>To start an nREPL server:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="shell">$ bb --nrepl-server 1667</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Then connect with your favorite nREPL client:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="clojure">$ lein repl <span class="symbol">:connect</span> <span class="integer">1667</span>
+Connecting to nREPL at <span class="float">127.0</span><span class="keyword">.</span><span class="float">0.1</span><span class="error">:</span><span class="integer">1667</span>
+user=&gt; (<span class="keyword">+</span> <span class="integer">1</span> <span class="integer">2</span> <span class="integer">3</span>)
+<span class="integer">6</span>
+user=&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Editor plugins and tools known to work with the babashka nREPL server:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Emacs: <a href="https://docs.cider.mx/cider/platforms/babashka.html">CIDER</a></p>
+</li>
+<li>
+<p><code>lein repl :connect</code></p>
+</li>
+<li>
+<p>VSCode: <a href="http://calva.io/">Calva</a></p>
+</li>
+<li>
+<p>Atom: <a href="https://github.com/mauricioszabo/atom-chlorine">Chlorine</a></p>
+</li>
+<li>
+<p>(Neo)Vim: <a href="https://github.com/liquidz/vim-iced">vim-iced</a>,
+<a href="https://github.com/Olical/conjure">conjure</a>,
+<a href="https://github.com/tpope/vim-fireplace">fireplace</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The babashka nREPL server does not write an <code>.nrepl-port</code> file at
+startup, but you can easily write a script that launches the server and
+writes the file:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="clojure"><span class="error">#</span>!/usr/bin/env bb
+
+(<span class="keyword">import</span> [java.net ServerSocket]
+        [java.io File]
+        [java.lang ProcessBuilder$Redirect])
+
+(<span class="keyword">require</span> '[babashka.wait <span class="symbol">:as</span> wait])
+
+(<span class="keyword">let</span> [nrepl-port (<span class="keyword">with-open</span> [sock (ServerSocket. <span class="integer">0</span>)] (<span class="keyword">.</span>getLocalPort sock))
+      cp (str/join File/pathSeparatorChar [<span class="string"><span class="delimiter">&quot;</span><span class="content">src</span><span class="delimiter">&quot;</span></span> <span class="string"><span class="delimiter">&quot;</span><span class="content">test</span><span class="delimiter">&quot;</span></span>])
+      pb (<span class="keyword">doto</span> (ProcessBuilder. (<span class="keyword">into</span> [<span class="string"><span class="delimiter">&quot;</span><span class="content">bb</span><span class="delimiter">&quot;</span></span> <span class="string"><span class="delimiter">&quot;</span><span class="content">--nrepl-server</span><span class="delimiter">&quot;</span></span> (<span class="keyword">str</span> nrepl-port)
+                                       <span class="string"><span class="delimiter">&quot;</span><span class="content">--classpath</span><span class="delimiter">&quot;</span></span> cp]
+                                      <span class="predefined-constant">*command-line-args*</span>))
+           (<span class="keyword">.</span>redirectOutput ProcessBuilder$Redirect/INHERIT))
+      proc (<span class="keyword">.</span>start pb)]
+  (wait/wait-for-port <span class="string"><span class="delimiter">&quot;</span><span class="content">localhost</span><span class="delimiter">&quot;</span></span> nrepl-port)
+  (spit <span class="string"><span class="delimiter">&quot;</span><span class="content">.nrepl-port</span><span class="delimiter">&quot;</span></span> nrepl-port)
+  (<span class="keyword">.</span>deleteOnExit (File. <span class="string"><span class="delimiter">&quot;</span><span class="content">.nrepl-port</span><span class="delimiter">&quot;</span></span>))
+  (<span class="keyword">.</span>waitFor proc))</code></pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_debugging_the_nrepl_server">Debugging the nREPL server</h4>
+<div class="paragraph">
+<p>To debug the nREPL server from the binary you can run:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="shell">$ BABASHKA_DEV=true bb --nrepl-server 1667</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This will print all the incoming messages.</p>
+</div>
+<div class="paragraph">
+<p>To debug the nREPL server from source:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="clojure">$ git clone https<span class="symbol">://github.com/borkdude/babashka</span> --recurse-submodules
+$ cd babashka
+$ BABASHKA_DEV=true clojure -A<span class="symbol">:main</span> --nrepl-server <span class="integer">1667</span></code></pre>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -1597,7 +1830,7 @@ compute a classpath using tools.deps</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-11-28 17:51:40 +0100
+Last updated 2020-11-28 19:41:04 +0100
 </div>
 </div>
 </body>
