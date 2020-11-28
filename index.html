@@ -889,29 +889,23 @@ stream of the process and handle reading ourselves.</p>
 
 (<span class="keyword">require</span> '[clojure.java.io <span class="symbol">:as</span> io])
 
-(<span class="keyword">def</span> <span class="function">input-writer</span> (io/writer (<span class="symbol">:in</span> prepl-process)))         <i class="conum" data-value="1"></i><b>(1)</b>
-
-(<span class="keyword">future</span>
-  (<span class="keyword">loop</span> []
-    (<span class="keyword">when-let</span> [v (<span class="keyword">read-line</span>)]                              <i class="conum" data-value="2"></i><b>(2)</b>
-      (<span class="keyword">binding</span> [<span class="predefined-constant">*out*</span> input-writer]                        <i class="conum" data-value="3"></i><b>(3)</b>
-        (<span class="keyword">println</span> v))
-      (<span class="keyword">recur</span>))))
+(<span class="keyword">def</span> <span class="function">input-writer</span> (io/writer (<span class="symbol">:in</span> prepl-process)))     <i class="conum" data-value="1"></i><b>(1)</b>
+(<span class="keyword">def</span> <span class="function">output-reader</span> (java.io.PushbackReader.
+                    (io/reader (<span class="symbol">:out</span> prepl-process)))) <i class="conum" data-value="2"></i><b>(2)</b>
 
 (<span class="keyword">require</span> '[clojure.edn <span class="symbol">:as</span> edn])
 
-(<span class="keyword">def</span> <span class="function">output-reader</span> (java.io.PushbackReader.
-                    (io/reader (<span class="symbol">:out</span> prepl-process))))     <i class="conum" data-value="4"></i><b>(4)</b>
-
-@(<span class="keyword">future</span>
-   (<span class="keyword">loop</span> []
-     (<span class="keyword">println</span> <span class="string"><span class="delimiter">&quot;</span><span class="content">Type an expression to evaluate:</span><span class="delimiter">&quot;</span></span>)
-     (<span class="keyword">let</span> [next-val (edn/read {<span class="symbol">:eof</span> <span class="symbol">::EOF</span>} output-reader)] <i class="conum" data-value="5"></i><b>(5)</b>
-       (<span class="keyword">when-not</span> (<span class="keyword">identical?</span> <span class="symbol">::EOF</span> next-val)
-         (<span class="keyword">println</span> (<span class="symbol">:form</span> next-val)                         <i class="conum" data-value="6"></i><b>(6)</b>
-                  <span class="string"><span class="delimiter">&quot;</span><span class="content">evaluates to</span><span class="delimiter">&quot;</span></span>
-                  (<span class="symbol">:val</span> next-val))
-         (<span class="keyword">recur</span>)))))</code></pre>
+(<span class="keyword">loop</span> []
+  (<span class="keyword">println</span> <span class="string"><span class="delimiter">&quot;</span><span class="content">Type an expression to evaluate:</span><span class="delimiter">&quot;</span></span>)
+  (<span class="keyword">when-let</span> [v (<span class="keyword">read-line</span>)]                               <i class="conum" data-value="3"></i><b>(3)</b>
+    (<span class="keyword">binding</span> [<span class="predefined-constant">*out*</span> input-writer]                         <i class="conum" data-value="4"></i><b>(4)</b>
+      (<span class="keyword">println</span> v))
+    (<span class="keyword">let</span> [next-val (edn/read {<span class="symbol">:eof</span> <span class="symbol">::EOF</span>} output-reader)] <i class="conum" data-value="5"></i><b>(5)</b>
+      (<span class="keyword">when-not</span> (<span class="keyword">identical?</span> <span class="symbol">::EOF</span> next-val)
+        (<span class="keyword">println</span> (<span class="symbol">:form</span> next-val)                         <i class="conum" data-value="6"></i><b>(6)</b>
+                 <span class="string"><span class="delimiter">&quot;</span><span class="content">evaluates to</span><span class="delimiter">&quot;</span></span>
+                 (<span class="symbol">:val</span> next-val))
+        (<span class="keyword">recur</span>)))))</code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -922,17 +916,17 @@ stream of the process and handle reading ourselves.</p>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>We read user input via <code>clojure.core/read-line</code></td>
+<td>A reader that reads from the pREPL output. pREPL returns EDN and
+<code>clojure.edn/read</code> needs a <code>PushbackReader</code>.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>Here we binding <code>*out*</code> to the input writer so we can use <code>println</code> to write
-to it.</td>
+<td>We read user input via <code>clojure.core/read-line</code></td>
 </tr>
 <tr>
 <td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>A reader that reads from the pREPL output. pREPL returns EDN and
-<code>clojure.edn/read</code> needs a <code>PushbackReader</code>.</td>
+<td>Here we binding <code>*out*</code> to the input writer so we can use <code>println</code> to write
+to it.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="5"></i><b>5</b></td>
@@ -940,8 +934,7 @@ to it.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="6"></i><b>6</b></td>
-<td>If it&#8217;s not the end of the input, then we print the output using our custom
-formatting.</td>
+<td>Print the output using our custom formatting.</td>
 </tr>
 </table>
 </div>
@@ -955,10 +948,6 @@ $ bb src/process/prepl_2.clj
 Type an expression to evaluate:
 (+ 1 2 3)
 (+ 1 2 3) evaluates to 6
-Type an expression to evaluate:
-(/ 1 2 3)
-(/ 1 2 3) evaluates to 1/6
-Type an expression to evaluate:
 :repl/quit
 ---</code></pre>
 </div>
