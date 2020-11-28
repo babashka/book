@@ -565,11 +565,27 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <li><a href="#_output">Output</a></li>
 </ul>
 </li>
+<li><a href="#_current_file_path">Current file path</a></li>
+<li><a href="#_command_line_arguments">Command-line arguments</a></li>
 </ul>
 </li>
-<li><a href="#features">Features</a>
+<li><a href="#style">Style</a>
+<ul class="sectlevel2">
+<li><a href="#_explicit_requires">Explicit requires</a></li>
+</ul>
+</li>
+<li><a href="#_features">Features</a>
 <ul class="sectlevel2">
 <li><a href="#_built_in_namespaces">Built-in namespaces</a></li>
+<li><a href="#_babashka_namespaces">Babashka namespaces</a>
+<ul class="sectlevel3">
+<li><a href="#babashkaclasspath">babashka.classpath</a></li>
+<li><a href="#babashkawait">babashka.wait</a></li>
+<li><a href="#babashkasignal">babashka.signal</a></li>
+<li><a href="#babashkacurl">babashka.curl</a></li>
+<li><a href="#babashkaprocess">babashka.process</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a href="#child_processes">Child processes</a>
@@ -971,10 +987,106 @@ seq of lines (the <code>-i</code> flag), you can use:</p>
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_current_file_path">Current file path</h3>
+<div class="paragraph">
+<p>The var <code>*file*</code> contains the full path of the file that is currently
+being executed:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="shellsession">$ cat example.clj
+(prn *file*)
+
+$ bb example.clj
+&quot;/Users/borkdude/example.clj&quot;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_command_line_arguments">Command-line arguments</h3>
+<div class="paragraph">
+<p>Command-line arguments can be retrieved using <code>*command-line-args*</code>. If
+you want to parse command line arguments, you may use the built-in
+<code>clojure.tools.cli</code> namespace (see
+<a href="https://github.com/borkdude/babashka#parsing-command-line-arguments">docs</a>)
+or use the
+<a href="https://github.com/borkdude/babashka/blob/master/doc/projects.md#nubankdocopt">nubank/docopt</a>
+library.</p>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="features">Features</h2>
+<h2 id="style">Style</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A note on style. Babashka recommends the following:</p>
+</div>
+<div class="sect2">
+<h3 id="_explicit_requires">Explicit requires</h3>
+<div class="paragraph">
+<p>Use explicit requires with namespace aliases in scripts, unless you&#8217;re
+writing one-liners.</p>
+</div>
+<div class="paragraph">
+<p>Do this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="shell">$ ls | bb -i '(-&gt; *input* first (str/includes? &quot;m&quot;))'
+true</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>But not this:</p>
+</div>
+<div class="paragraph">
+<p>script.clj:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="clojure">(<span class="keyword">-&gt;</span> *input* <span class="keyword">first</span> (str/includes? <span class="string"><span class="delimiter">&quot;</span><span class="content">m</span><span class="delimiter">&quot;</span></span>))</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Rather do this:</p>
+</div>
+<div class="paragraph">
+<p>script.clj:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="clojure">(<span class="keyword">ns</span> <span class="namespace">script</span>
+  (<span class="symbol">:require</span> [clojure.java.io <span class="symbol">:as</span> io]
+            [clojure.string <span class="symbol">:as</span> <span class="keyword">str</span>]))
+  (<span class="keyword">-&gt;</span> (io/reader <span class="predefined-constant">*in*</span>) <span class="keyword">line-seq</span> <span class="keyword">first</span> (str/includes? <span class="string"><span class="delimiter">&quot;</span><span class="content">m</span><span class="delimiter">&quot;</span></span>))</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Some reasons for this:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Linters like clj-kondo work better with code that uses namespace
+forms, explicit requires, and known Clojure constructs</p>
+</li>
+<li>
+<p>Editor tooling works better with namespace forms (sorting requires,
+etc).</p>
+</li>
+<li>
+<p>Writing compatible code gives you the option to run the same script
+with <code>clojure</code></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_features">Features</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Typing <code>bb --help</code> from the command line will print all the available command
@@ -1157,6 +1269,110 @@ you want to compile babashka yourself.</p>
 <div class="paragraph">
 <p>A selection of Java classes are available, see
 <code>babashka/impl/classes.clj</code> in babashka&#8217;s git repo.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_babashka_namespaces">Babashka namespaces</h3>
+<div class="sect3">
+<h4 id="babashkaclasspath">babashka.classpath</h4>
+<div class="paragraph">
+<p>Contains the function <code>add-classpath</code> which can be used to add to the
+classpath dynamically:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="clojure">(<span class="keyword">require</span> '[babashka.classpath <span class="symbol">:refer</span> [<span class="keyword">add-classpath</span>]]
+         '[clojure.java.shell <span class="symbol">:refer</span> [sh]]
+         '[clojure.string <span class="symbol">:as</span> <span class="keyword">str</span>])
+
+(<span class="keyword">def</span> <span class="function">medley-dep</span> '{<span class="symbol">:deps</span> {medley {<span class="symbol">:git/url</span> <span class="string"><span class="delimiter">&quot;</span><span class="content">https://github.com/borkdude/medley</span><span class="delimiter">&quot;</span></span>
+                                 <span class="symbol">:sha</span> <span class="string"><span class="delimiter">&quot;</span><span class="content">91adfb5da33f8d23f75f0894da1defe567a625c0</span><span class="delimiter">&quot;</span></span>}}})
+(<span class="keyword">def</span> <span class="function">cp</span> (<span class="keyword">-&gt;</span> (sh <span class="string"><span class="delimiter">&quot;</span><span class="content">clojure</span><span class="delimiter">&quot;</span></span> <span class="string"><span class="delimiter">&quot;</span><span class="content">-Spath</span><span class="delimiter">&quot;</span></span> <span class="string"><span class="delimiter">&quot;</span><span class="content">-Sdeps</span><span class="delimiter">&quot;</span></span> (<span class="keyword">str</span> medley-dep)) <span class="symbol">:out</span> str/trim))
+(<span class="keyword">add-classpath</span> cp)
+(<span class="keyword">require</span> '[medley.core <span class="symbol">:as</span> m])
+(m/index-by <span class="symbol">:id</span> [{<span class="symbol">:id</span> <span class="integer">1</span>} {<span class="symbol">:id</span> <span class="integer">2</span>}]) <span class="comment">;;=&gt; {1 {:id 1}, 2 {:id 2}}</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="babashkawait">babashka.wait</h4>
+<div class="paragraph">
+<p>Contains the functions: <code>wait-for-port</code> and <code>wait-for-path</code>.</p>
+</div>
+<div class="paragraph">
+<p>Usage of <code>wait-for-port</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="clojure">(wait/wait-for-port <span class="string"><span class="delimiter">&quot;</span><span class="content">localhost</span><span class="delimiter">&quot;</span></span> <span class="integer">8080</span>)
+(wait/wait-for-port <span class="string"><span class="delimiter">&quot;</span><span class="content">localhost</span><span class="delimiter">&quot;</span></span> <span class="integer">8080</span> {<span class="symbol">:timeout</span> <span class="integer">1000</span> <span class="symbol">:pause</span> <span class="integer">1000</span>})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Waits for TCP connection to be available on host and port. Options map
+supports <code>:timeout</code> and <code>:pause</code>. If <code>:timeout</code> is provided and reached,
+<code>:default</code>'s value (if any) is returned. The <code>:pause</code> option determines
+the time waited between retries.</p>
+</div>
+<div class="paragraph">
+<p>Usage of <code>wait-for-path</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="clojure">(wait/wait-for-path <span class="string"><span class="delimiter">&quot;</span><span class="content">/tmp/wait-path-test</span><span class="delimiter">&quot;</span></span>)
+(wait/wait-for-path <span class="string"><span class="delimiter">&quot;</span><span class="content">/tmp/wait-path-test</span><span class="delimiter">&quot;</span></span> {<span class="symbol">:timeout</span> <span class="integer">1000</span> <span class="symbol">:pause</span> <span class="integer">1000</span>})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Waits for file path to be available. Options map supports <code>:default</code>,
+<code>:timeout</code> and <code>:pause</code>. If <code>:timeout</code> is provided and reached,
+<code>:default</code>'s value (if any) is returned. The <code>:pause</code> option determines
+the time waited between retries.</p>
+</div>
+<div class="paragraph">
+<p>The namespace <code>babashka.wait</code> is aliased as <code>wait</code> in the <code>user</code>
+namespace.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="babashkasignal">babashka.signal</h4>
+<div class="paragraph">
+<p>Contains the function <code>signal/pipe-signal-received?</code>. Usage:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="clojure">(signal/pipe-signal-received?)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Returns true if <code>PIPE</code> signal was received. Example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="shellsession">$ bb '((fn [x] (println x) (when (not (signal/pipe-signal-received?)) (recur (inc x)))) 0)' | head -n2
+1
+2</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The namespace <code>babashka.signal</code> is aliased as <code>signal</code> in the <code>user</code>
+namespace.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="babashkacurl">babashka.curl</h4>
+<div class="paragraph">
+<p>The namespace <code>babashka.curl</code> is a tiny wrapper around curl. It&#8217;s aliased as
+<code>curl</code> in the user namespace. See
+<a href="https://github.com/borkdude/babashka.curl">babashka.curl</a> for how to use it.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="babashkaprocess">babashka.process</h4>
+<div class="paragraph">
+<p>The <code>babashka.process</code> process library. See the
+<a href="https://github.com/babashka/process">process</a> repo for API docs.</p>
+</div>
 </div>
 </div>
 </div>
@@ -1400,7 +1616,7 @@ compute a classpath using tools.deps</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-11-28 15:36:28 +0100
+Last updated 2020-11-28 17:10:07 +0100
 </div>
 </div>
 </body>
