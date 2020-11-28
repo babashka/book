@@ -889,9 +889,9 @@ stream of the process and handle reading ourselves.</p>
 
 (<span class="keyword">require</span> '[clojure.java.io <span class="symbol">:as</span> io])
 
-(<span class="keyword">def</span> <span class="function">input-writer</span> (io/writer (<span class="symbol">:in</span> prepl-process)))     <i class="conum" data-value="1"></i><b>(1)</b>
+(<span class="keyword">def</span> <span class="function">input-writer</span> (io/writer (<span class="symbol">:in</span> prepl-process)))        <i class="conum" data-value="1"></i><b>(1)</b>
 (<span class="keyword">def</span> <span class="function">output-reader</span> (java.io.PushbackReader.
-                    (io/reader (<span class="symbol">:out</span> prepl-process)))) <i class="conum" data-value="2"></i><b>(2)</b>
+                    (io/reader (<span class="symbol">:out</span> prepl-process))))    <i class="conum" data-value="2"></i><b>(2)</b>
 
 (<span class="keyword">require</span> '[clojure.edn <span class="symbol">:as</span> edn])
 
