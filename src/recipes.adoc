@@ -104,6 +104,24 @@ suitable replacement for all of the above options. If you know about a
 GraalVM-friendly feature-complete well-maintained library, please reach
 out!
 
+==== HTTP over Unix sockets
+
+This can be useful for talking to Docker:
+
+[source,clojure]
+----
+(require '[clojure.java.shell :refer [sh]])
+(require '[cheshire.core :as json])
+(-> (sh "curl" "--silent"
+        "--no-buffer" "--unix-socket"
+        "/var/run/docker.sock"
+        "http://localhost/images/json")
+    :out
+    (json/parse-string true)
+    first
+    :RepoTags) ;;=> ["borkdude/babashka:latest"]
+----
+
 [[core_async]]
 === Core.async
 
@@ -147,24 +165,6 @@ of `n`:
     (let [[v _] (async/alts!! cs)]
       (assert (= "hi" v))))
   (println "Read" n "msgs in" (- (System/currentTimeMillis) begin) "ms"))
-----
-
-=== HTTP over Unix sockets
-
-This can be useful for talking to Docker:
-
-[source,clojure]
-----
-(require '[clojure.java.shell :refer [sh]])
-(require '[cheshire.core :as json])
-(-> (sh "curl" "--silent"
-        "--no-buffer" "--unix-socket"
-        "/var/run/docker.sock"
-        "http://localhost/images/json")
-    :out
-    (json/parse-string true)
-    first
-    :RepoTags) ;;=> ["borkdude/babashka:latest"]
 ----
 
 === Interacting with an nREPL server
