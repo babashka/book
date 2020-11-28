@@ -3,6 +3,7 @@
 
 == Libraries
 
+[[built-in-namespaces]]
 === Built-in namespaces
 
 In addition to `clojure.core`, the following namespaces are available in babashka.
