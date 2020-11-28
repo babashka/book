@@ -557,6 +557,14 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <li><a href="#usage">Usage</a>
 <ul class="sectlevel2">
 <li><a href="#_running_a_script">Running a script</a></li>
+<li><a href="#_input_and_output_flags">Input and output flags</a>
+<ul class="sectlevel3">
+<li><a href="#_scripts">Scripts</a></li>
+<li><a href="#_edn_input">EDN input</a></li>
+<li><a href="#_text_input">Text input</a></li>
+<li><a href="#_output">Output</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a href="#features">Features</a>
@@ -810,6 +818,156 @@ workaround:</p>
 
 ./script.clj 1 2 3
 (&quot;hello&quot; &quot;1&quot; &quot;2&quot; &quot;3&quot;)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_input_and_output_flags">Input and output flags</h3>
+<div class="paragraph">
+<p>In one-liners the <code>*input*</code> value may come in handy. It contains the
+input read from stdin as EDN by default. If you want to read in text,
+use the <code>-i</code> flag, which binds <code>*input*</code> to a lazy seq of lines of text.
+If you want to read multiple EDN values, use the <code>-I</code> flag. The <code>-o</code>
+option prints the result as lines of text. The <code>-O</code> option prints the
+result as lines of EDN values.</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p><strong>Note:</strong> <code>*input*</code> is only available in the <code>user</code> namespace, designed
+for one-liners. For writing scripts, see <a href="#scripts">scripts</a>.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>The following table illustrates the combination of options for commands
+of the form</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>echo "{{Input}}" | bb {{Input flags}} {{Output flags}} "*input*"</pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Input</th>
+<th class="tableblock halign-left valign-top">Input flags</th>
+<th class="tableblock halign-left valign-top">Output flag</th>
+<th class="tableblock halign-left valign-top"><code>*input*</code></th>
+<th class="tableblock halign-left valign-top">Output</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>{:a 1}</code> <code>{:a 2}</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>{:a 1}</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>{:a 1}</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">hello bye</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>-i</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>("hello" "bye")</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>("hello" "bye")</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">hello bye</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>-i</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>-o</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>("hello" "bye")</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">hello bye</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>{:a 1}</code> <code>{:a 2}</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>-I</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>({:a 1} {:a 2})</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>({:a 1} {:a 2})</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>{:a 1}</code> <code>{:a 2}</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>-I</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>-O</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>({:a 1} {:a 2})</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>{:a 1}</code> <code>{:a 2}</code></p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>When combined with the <code>--stream</code> option, the expression is executed for
+each value in the input:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="clojure">$ echo '{<span class="symbol">:a</span> <span class="integer">1</span>} {<span class="symbol">:a</span> <span class="integer">2</span>}' <span class="error">|</span> bb --stream '*input*'
+{<span class="symbol">:a</span> <span class="integer">1</span>}
+{<span class="symbol">:a</span> <span class="integer">2</span>}</code></pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_scripts">Scripts</h4>
+<div class="paragraph">
+<p>When writing scripts instead of one-liners on the command line, it is
+not recommended to use <code>*input*</code>. Here is how you can rewrite to
+standard Clojure code.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_edn_input">EDN input</h4>
+<div class="paragraph">
+<p>Reading a single EDN value from stdin:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="clojure">(<span class="keyword">ns</span> <span class="namespace">script</span>
+ (<span class="symbol">:require</span> [clojure.edn <span class="symbol">:as</span> edn]))
+
+(edn/read <span class="predefined-constant">*in*</span>)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Reading multiple EDN values from stdin (the <code>-I</code> flag):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="clojure">(<span class="keyword">ns</span> <span class="namespace">script</span>
+ (<span class="symbol">:require</span> [clojure.edn <span class="symbol">:as</span> edn]
+           [clojure.java.io <span class="symbol">:as</span> io]))
+
+(<span class="keyword">let</span> [reader  (java.io.PushbackReader. (io/reader <span class="predefined-constant">*in*</span>))]
+  (<span class="keyword">take-while</span> #(<span class="keyword">not</span> (<span class="keyword">identical?</span> <span class="symbol">::eof</span> %)) (<span class="keyword">repeatedly</span> #(edn/read {<span class="symbol">:eof</span> <span class="symbol">::eof</span>} reader))))</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_text_input">Text input</h4>
+<div class="paragraph">
+<p>Reading text from stdin can be done with <code>(slurp *in*)</code>. To get a lazy
+seq of lines (the <code>-i</code> flag), you can use:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="clojure">(<span class="keyword">ns</span> <span class="namespace">script</span>
+ (<span class="symbol">:require</span> [clojure.java.io <span class="symbol">:as</span> io]))
+
+(<span class="keyword">line-seq</span> (io/reader <span class="predefined-constant">*in*</span>))</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_output">Output</h4>
+<div class="paragraph">
+<p>To print to stdout, use <code>println</code> for text and <code>prn</code> for EDN values.</p>
 </div>
 </div>
 </div>
