@@ -14,9 +14,9 @@
 
 (require '[clojure.java.io :as io])
 
-(def input-writer (io/writer (:in prepl-process)))     ;; <1>
+(def input-writer (io/writer (:in prepl-process)))        ;; <1>
 (def output-reader (java.io.PushbackReader.
-                    (io/reader (:out prepl-process)))) ;; <2>
+                    (io/reader (:out prepl-process))))    ;; <2>
 
 (require '[clojure.edn :as edn])
 
