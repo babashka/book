@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.10">
+<meta name="generator" content="Asciidoctor 2.0.12">
 <meta name="description" content="A book with scripting recipes for babashka">
 <meta name="author" content="Michiel Borkent">
 <title>Babashka book</title>
@@ -49,7 +49,7 @@ textarea{overflow:auto;vertical-align:top}
 table{border-collapse:collapse;border-spacing:0}
 *,*::before,*::after{-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box}
 html,body{font-size:100%}
-body{background:#fff;color:rgba(0,0,0,.8);padding:0;margin:0;font-family:"Noto Serif","DejaVu Serif",serif;font-weight:400;font-style:normal;line-height:1;position:relative;cursor:auto;tab-size:4;-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased}
+body{background:#fff;color:rgba(0,0,0,.8);padding:0;margin:0;font-family:"Noto Serif","DejaVu Serif",serif;font-weight:400;font-style:normal;line-height:1;position:relative;cursor:auto;tab-size:4;word-wrap:anywhere;-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased}
 a:hover{cursor:pointer}
 img,object,embed{max-width:100%;height:auto}
 object,embed{height:100%}
@@ -64,10 +64,8 @@ img{-ms-interpolation-mode:bicubic}
 img,object,svg{display:inline-block;vertical-align:middle}
 textarea{height:auto;min-height:50px}
 select{width:100%}
-.center{margin-left:auto;margin-right:auto}
-.stretch{width:100%}
 .subheader,.admonitionblock td.content>.title,.audioblock>.title,.exampleblock>.title,.imageblock>.title,.listingblock>.title,.literalblock>.title,.stemblock>.title,.openblock>.title,.paragraph>.title,.quoteblock>.title,table.tableblock>.title,.verseblock>.title,.videoblock>.title,.dlist>.title,.olist>.title,.ulist>.title,.qlist>.title,.hdlist>.title{line-height:1.45;color:#7a2518;font-weight:400;margin-top:0;margin-bottom:.25em}
-div,dl,dt,dd,ul,ol,li,h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6,pre,form,p,blockquote,th,td{margin:0;padding:0;direction:ltr}
+div,dl,dt,dd,ul,ol,li,h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6,pre,form,p,blockquote,th,td{margin:0;padding:0}
 a{color:#2156a5;text-decoration:underline;line-height:inherit}
 a:hover,a:focus{color:#1d4b8f}
 a img{border:0}
@@ -107,19 +105,22 @@ h1{font-size:2.75em}
 h2{font-size:2.3125em}
 h3,#toctitle,.sidebarblock>.content>.title{font-size:1.6875em}
 h4{font-size:1.4375em}}
-table{background:#fff;margin-bottom:1.25em;border:solid 1px #dedede}
+table{background:#fff;margin-bottom:1.25em;border:solid 1px #dedede;word-wrap:normal}
 table thead,table tfoot{background:#f7f8f7}
 table thead tr th,table thead tr td,table tfoot tr th,table tfoot tr td{padding:.5em .625em .625em;font-size:inherit;color:rgba(0,0,0,.8);text-align:left}
 table tr th,table tr td{padding:.5625em .625em;font-size:inherit;color:rgba(0,0,0,.8)}
 table tr.even,table tr.alt{background:#f8f8f7}
-table thead tr th,table tfoot tr th,table tbody tr td,table tr td,table tfoot tr td{display:table-cell;line-height:1.6}
+table thead tr th,table tfoot tr th,table tbody tr td,table tr td,table tfoot tr td{line-height:1.6}
 h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{line-height:1.2;word-spacing:-.05em}
 h1 strong,h2 strong,h3 strong,#toctitle strong,.sidebarblock>.content>.title strong,h4 strong,h5 strong,h6 strong{font-weight:400}
+.center{margin-left:auto;margin-right:auto}
+.stretch{width:100%}
 .clearfix::before,.clearfix::after,.float-group::before,.float-group::after{content:" ";display:table}
 .clearfix::after,.float-group::after{clear:both}
-:not(pre):not([class^=L])>code{font-size:.9375em;font-style:normal!important;letter-spacing:0;padding:.1em .5ex;word-spacing:-.15em;background:#f7f7f8;-webkit-border-radius:4px;border-radius:4px;line-height:1.45;text-rendering:optimizeSpeed;word-wrap:break-word}
-:not(pre)>code.nobreak{word-wrap:normal}
-:not(pre)>code.nowrap{white-space:nowrap}
+:not(pre).nobreak{word-wrap:normal}
+:not(pre).nowrap{white-space:nowrap}
+:not(pre).pre-wrap{white-space:pre-wrap}
+:not(pre):not([class^=L])>code{font-size:.9375em;font-style:normal!important;letter-spacing:0;padding:.1em .5ex;word-spacing:-.15em;background:#f7f7f8;-webkit-border-radius:4px;border-radius:4px;line-height:1.45;text-rendering:optimizeSpeed}
 pre{color:rgba(0,0,0,.9);font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;line-height:1.45;text-rendering:optimizeSpeed}
 pre code,pre pre{color:inherit;font-size:inherit;line-height:inherit}
 pre>code{display:block}
@@ -184,7 +185,7 @@ body.toc2.toc-right{padding-left:0;padding-right:20em}}
 #content #toc{border-style:solid;border-width:1px;border-color:#e0e0dc;margin-bottom:1.25em;padding:1.25em;background:#f8f8f7;-webkit-border-radius:4px;border-radius:4px}
 #content #toc>:first-child{margin-top:0}
 #content #toc>:last-child{margin-bottom:0}
-#footer{max-width:100%;background:rgba(0,0,0,.8);padding:1.25em}
+#footer{max-width:none;background:rgba(0,0,0,.8);padding:1.25em}
 #footer-text{color:rgba(255,255,255,.8);line-height:1.44}
 #content{margin-bottom:.625em}
 .sect1{padding-bottom:.625em}
@@ -207,7 +208,7 @@ table.tableblock #preamble>.sectionbody>[class="paragraph"]:first-of-type p{font
 .admonitionblock>table td.icon{text-align:center;width:80px}
 .admonitionblock>table td.icon img{max-width:none}
 .admonitionblock>table td.icon .title{font-weight:bold;font-family:"Open Sans","DejaVu Sans",sans-serif;text-transform:uppercase}
-.admonitionblock>table td.content{padding-left:1.125em;padding-right:1.25em;border-left:1px solid #dddddf;color:rgba(0,0,0,.6)}
+.admonitionblock>table td.content{padding-left:1.125em;padding-right:1.25em;border-left:1px solid #dddddf;color:rgba(0,0,0,.6);word-wrap:anywhere}
 .admonitionblock>table td.content>:last-child>:last-child{margin-bottom:0}
 .exampleblock>.content{border-style:solid;border-width:1px;border-color:#e6e6e6;margin-bottom:1.25em;padding:1.25em;background:#fff;-webkit-border-radius:4px;border-radius:4px}
 .exampleblock>.content>:first-child{margin-top:0}
@@ -217,7 +218,7 @@ table.tableblock #preamble>.sectionbody>[class="paragraph"]:first-of-type p{font
 .sidebarblock>:last-child{margin-bottom:0}
 .sidebarblock>.content>.title{color:#7a2518;margin-top:0;text-align:center}
 .exampleblock>.content>:last-child>:last-child,.exampleblock>.content .olist>ol>li:last-child>:last-child,.exampleblock>.content .ulist>ul>li:last-child>:last-child,.exampleblock>.content .qlist>ol>li:last-child>:last-child,.sidebarblock>.content>:last-child>:last-child,.sidebarblock>.content .olist>ol>li:last-child>:last-child,.sidebarblock>.content .ulist>ul>li:last-child>:last-child,.sidebarblock>.content .qlist>ol>li:last-child>:last-child{margin-bottom:0}
-.literalblock pre,.listingblock>.content>pre{-webkit-border-radius:4px;border-radius:4px;word-wrap:break-word;overflow-x:auto;padding:1em;font-size:.8125em}
+.literalblock pre,.listingblock>.content>pre{-webkit-border-radius:4px;border-radius:4px;overflow-x:auto;padding:1em;font-size:.8125em}
 @media screen and (min-width:768px){.literalblock pre,.listingblock>.content>pre{font-size:.90625em}}
 @media screen and (min-width:1280px){.literalblock pre,.listingblock>.content>pre{font-size:1em}}
 .literalblock pre,.listingblock>.content>pre:not(.highlight),.listingblock>.content>pre[class="highlight"],.listingblock>.content>pre[class^="highlight "]{background:#f7f7f8}
@@ -263,21 +264,20 @@ pre.pygments .lineno::before{content:"";margin-right:-.125em}
 .quoteblock.excerpt,.quoteblock .quoteblock{margin-left:0}
 .quoteblock.excerpt blockquote,.quoteblock.excerpt p,.quoteblock .quoteblock blockquote,.quoteblock .quoteblock p{color:inherit;font-size:1.0625rem}
 .quoteblock.excerpt .attribution,.quoteblock .quoteblock .attribution{color:inherit;text-align:left;margin-right:0}
-table.tableblock{max-width:100%;border-collapse:separate}
 p.tableblock:last-child{margin-bottom:0}
+td.tableblock>.content{margin-bottom:1.25em;word-wrap:anywhere}
 td.tableblock>.content>:last-child{margin-bottom:-1.25em}
-td.tableblock>.content>:last-child.sidebarblock{margin-bottom:0}
 table.tableblock,th.tableblock,td.tableblock{border:0 solid #dedede}
-table.grid-all>thead>tr>.tableblock,table.grid-all>tbody>tr>.tableblock{border-width:0 1px 1px 0}
-table.grid-all>tfoot>tr>.tableblock{border-width:1px 1px 0 0}
-table.grid-cols>*>tr>.tableblock{border-width:0 1px 0 0}
-table.grid-rows>thead>tr>.tableblock,table.grid-rows>tbody>tr>.tableblock{border-width:0 0 1px}
-table.grid-rows>tfoot>tr>.tableblock{border-width:1px 0 0}
-table.grid-all>*>tr>.tableblock:last-child,table.grid-cols>*>tr>.tableblock:last-child{border-right-width:0}
-table.grid-all>tbody>tr:last-child>.tableblock,table.grid-all>thead:last-child>tr>.tableblock,table.grid-rows>tbody>tr:last-child>.tableblock,table.grid-rows>thead:last-child>tr>.tableblock{border-bottom-width:0}
+table.grid-all>*>tr>*{border-width:1px}
+table.grid-cols>*>tr>*{border-width:0 1px}
+table.grid-rows>*>tr>*{border-width:1px 0}
 table.frame-all{border-width:1px}
+table.frame-ends{border-width:1px 0}
 table.frame-sides{border-width:0 1px}
-table.frame-topbot,table.frame-ends{border-width:1px 0}
+table.frame-none>colgroup+*>:first-child>*,table.frame-sides>colgroup+*>:first-child>*{border-top-width:0}
+table.frame-none>:last-child>:last-child>*,table.frame-sides>:last-child>:last-child>*{border-bottom-width:0}
+table.frame-none>*>tr>:first-child,table.frame-ends>*>tr>:first-child{border-left-width:0}
+table.frame-none>*>tr>:last-child,table.frame-ends>*>tr>:last-child{border-right-width:0}
 table.stripes-all tr,table.stripes-odd tr:nth-of-type(odd),table.stripes-even tr:nth-of-type(even),table.stripes-hover tr:hover{background:#f8f8f7}
 th.halign-left,td.halign-left{text-align:left}
 th.halign-right,td.halign-right{text-align:right}
@@ -286,7 +286,7 @@ th.valign-top,td.valign-top{vertical-align:top}
 th.valign-bottom,td.valign-bottom{vertical-align:bottom}
 th.valign-middle,td.valign-middle{vertical-align:middle}
 table thead th,table tfoot th{font-weight:bold}
-tbody tr th{display:table-cell;line-height:1.6;background:#f7f8f7}
+tbody tr th{background:#f7f8f7}
 tbody tr th,tbody tr th p,tfoot tr th,tfoot tr th p{color:rgba(0,0,0,.8);font-weight:bold}
 p.tableblock>code:only-child{background:none;padding:0}
 p.tableblock{font-size:1em}
@@ -315,6 +315,7 @@ ol.lowergreek{list-style-type:lower-greek}
 .hdlist>table>tbody>tr,.colist>table>tbody>tr{background:none}
 td.hdlist1,td.hdlist2{vertical-align:top;padding:0 .625em}
 td.hdlist1{font-weight:bold;padding-bottom:1.25em}
+td.hdlist2{word-wrap:anywhere}
 .literalblock+.colist,.listingblock+.colist{margin-top:-.5em}
 .colist td:not([class]):first-child{padding:.4em .75em 0;line-height:1;vertical-align:top}
 .colist td:not([class]):first-child img{max-width:none}
@@ -387,7 +388,7 @@ a span.icon>.fa{cursor:inherit}
 .admonitionblock td.icon .icon-warning::before{content:"\f071";color:#bf6900}
 .admonitionblock td.icon .icon-caution::before{content:"\f06d";color:#bf3400}
 .admonitionblock td.icon .icon-important::before{content:"\f06a";color:#bf0000}
-.conum[data-value]{display:inline-block;color:#fff!important;background:rgba(0,0,0,.8);-webkit-border-radius:100px;border-radius:100px;text-align:center;font-size:.75em;width:1.67em;height:1.67em;line-height:1.67em;font-family:"Open Sans","DejaVu Sans",sans-serif;font-style:normal;font-weight:bold}
+.conum[data-value]{display:inline-block;color:#fff!important;background:rgba(0,0,0,.8);-webkit-border-radius:50%;border-radius:50%;text-align:center;font-size:.75em;width:1.67em;height:1.67em;line-height:1.67em;font-family:"Open Sans","DejaVu Sans",sans-serif;font-style:normal;font-weight:bold}
 .conum[data-value] *{color:#fff!important}
 .conum[data-value]+b{display:none}
 .conum[data-value]::after{content:attr(data-value)}
@@ -414,6 +415,7 @@ thead{display:table-header-group}
 svg{max-width:100%}
 p,blockquote,dt,td.content{font-size:1em;orphans:3;widows:3}
 h2,h3,#toctitle,.sidebarblock>.content>.title{page-break-after:avoid}
+#header,#content,#footnotes,#footer{max-width:none}
 #toc,.sidebarblock,.exampleblock>.content{background:none!important}
 #toc{border-bottom:1px solid #dddddf!important;padding-bottom:0!important}
 body.book #header{text-align:center}
@@ -438,6 +440,95 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 @media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+/* Stylesheet for CodeRay to match GitHub theme | MIT License | http://foundation.zurb.com */
+pre.CodeRay{background:#f7f7f8}
+.CodeRay .line-numbers{border-right:1px solid currentColor;opacity:.35;padding:0 .5em 0 0}
+.CodeRay span.line-numbers{display:inline-block;margin-right:.75em}
+.CodeRay .line-numbers strong{color:#000}
+table.CodeRay{border-collapse:separate;border:0;margin-bottom:0;background:none}
+table.CodeRay td{vertical-align:top;line-height:inherit}
+table.CodeRay td.line-numbers{text-align:right}
+table.CodeRay td.code{padding:0 0 0 .75em}
+.CodeRay .debug{color:#fff !important;background:#000080 !important}
+.CodeRay .annotation{color:#007}
+.CodeRay .attribute-name{color:#000080}
+.CodeRay .attribute-value{color:#700}
+.CodeRay .binary{color:#509}
+.CodeRay .comment{color:#998;font-style:italic}
+.CodeRay .char{color:#04d}
+.CodeRay .char .content{color:#04d}
+.CodeRay .char .delimiter{color:#039}
+.CodeRay .class{color:#458;font-weight:bold}
+.CodeRay .complex{color:#a08}
+.CodeRay .constant,.CodeRay .predefined-constant{color:#008080}
+.CodeRay .color{color:#099}
+.CodeRay .class-variable{color:#369}
+.CodeRay .decorator{color:#b0b}
+.CodeRay .definition{color:#099}
+.CodeRay .delimiter{color:#000}
+.CodeRay .doc{color:#970}
+.CodeRay .doctype{color:#34b}
+.CodeRay .doc-string{color:#d42}
+.CodeRay .escape{color:#666}
+.CodeRay .entity{color:#800}
+.CodeRay .error{color:#808}
+.CodeRay .exception{color:inherit}
+.CodeRay .filename{color:#099}
+.CodeRay .function{color:#900;font-weight:bold}
+.CodeRay .global-variable{color:#008080}
+.CodeRay .hex{color:#058}
+.CodeRay .integer,.CodeRay .float{color:#099}
+.CodeRay .include{color:#555}
+.CodeRay .inline{color:#000}
+.CodeRay .inline .inline{background:#ccc}
+.CodeRay .inline .inline .inline{background:#bbb}
+.CodeRay .inline .inline-delimiter{color:#d14}
+.CodeRay .inline-delimiter{color:#d14}
+.CodeRay .important{color:#555;font-weight:bold}
+.CodeRay .interpreted{color:#b2b}
+.CodeRay .instance-variable{color:#008080}
+.CodeRay .label{color:#970}
+.CodeRay .local-variable{color:#963}
+.CodeRay .octal{color:#40e}
+.CodeRay .predefined{color:#369}
+.CodeRay .preprocessor{color:#579}
+.CodeRay .pseudo-class{color:#555}
+.CodeRay .directive{font-weight:bold}
+.CodeRay .type{font-weight:bold}
+.CodeRay .predefined-type{color:inherit}
+.CodeRay .reserved,.CodeRay .keyword {color:#000;font-weight:bold}
+.CodeRay .key{color:#808}
+.CodeRay .key .delimiter{color:#606}
+.CodeRay .key .char{color:#80f}
+.CodeRay .value{color:#088}
+.CodeRay .regexp .delimiter{color:#808}
+.CodeRay .regexp .content{color:#808}
+.CodeRay .regexp .modifier{color:#808}
+.CodeRay .regexp .char{color:#d14}
+.CodeRay .regexp .function{color:#404;font-weight:bold}
+.CodeRay .string{color:#d20}
+.CodeRay .string .string .string{background:#ffd0d0}
+.CodeRay .string .content{color:#d14}
+.CodeRay .string .char{color:#d14}
+.CodeRay .string .delimiter{color:#d14}
+.CodeRay .shell{color:#d14}
+.CodeRay .shell .delimiter{color:#d14}
+.CodeRay .symbol{color:#990073}
+.CodeRay .symbol .content{color:#a60}
+.CodeRay .symbol .delimiter{color:#630}
+.CodeRay .tag{color:#008080}
+.CodeRay .tag-special{color:#d70}
+.CodeRay .variable{color:#036}
+.CodeRay .insert{background:#afa}
+.CodeRay .delete{background:#faa}
+.CodeRay .change{color:#aaf;background:#007}
+.CodeRay .head{color:#f8f;background:#505}
+.CodeRay .insert .insert{color:#080}
+.CodeRay .delete .delete{color:#800}
+.CodeRay .change .change{color:#66f}
+.CodeRay .head .head{color:#f4f}
+</style>
 </head>
 <body class="book toc2 toc-left">
 <div id="header">
@@ -466,7 +557,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#child_processes">Child processes</a>
 <ul class="sectlevel2">
 <li><a href="#_clojure_java_shell">clojure.java.shell</a></li>
-<li><a href="#_java_lang_processbuilder">java.lang.Process(Builder)</a>
+<li><a href="#_babashka_process">babashka.process</a>
 <ul class="sectlevel3">
 <li><a href="#_real_world_examples">Real world examples</a></li>
 </ul>
@@ -514,18 +605,43 @@ on how to contribute.</p>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Welcome reader! This is a book about scripting with Clojure and babashka.
-<a href="https://www.clojure.org">Clojure</a> is a functional, dynamic programming language from the Lisp family which runs on the JVM. Babashka is a scripting environment made with Clojure, compiled to native with <a href="https://www.graalvm.org">GraalVM</a>. The primary benefits of using babashka for scripting compared to the JVM are fast startup time and low memory consumption. Babashka comes with batteries included and packs libraries like <code>clojure.tools.cli</code> for parsing command line arguments and <code>cheshire</code> for working with JSON. Moreover, it can be installed just by downloading a self-contained binary.</p>
+<a href="https://www.clojure.org">Clojure</a> is a functional, dynamic programming language
+from the Lisp family which runs on the JVM. Babashka is a scripting environment
+made with Clojure, compiled to native with <a href="https://www.graalvm.org">GraalVM</a>. The
+primary benefits of using babashka for scripting compared to the JVM are fast
+startup time and low memory consumption. Babashka comes with batteries included
+and packs libraries like <code>clojure.tools.cli</code> for parsing command line arguments
+and <code>cheshire</code> for working with JSON. Moreover, it can be installed just by
+downloading a self-contained binary.</p>
 </div>
 <div class="sect2">
 <h3 id="_target_audience">Target audience</h3>
 <div class="paragraph">
-<p>Babashka is written for developers who are familiar with Clojure on the JVM. This book assumes familiarity with Clojure and is not a Clojure tutorial. If you aren&#8217;t that familiar with Clojure but you&#8217;re curious to learn, check out <a href="https://gist.github.com/yogthos/be323be0361c589570a6da4ccc85f58f">this</a> list of beginner resources.</p>
+<p>Babashka is written for developers who are familiar with Clojure on
+the JVM. This book assumes familiarity with Clojure and is not a Clojure
+tutorial. If you aren&#8217;t that familiar with Clojure but you&#8217;re curious to learn,
+check out <a href="https://gist.github.com/yogthos/be323be0361c589570a6da4ccc85f58f">this</a>
+list of beginner resources.</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_compatibility">Compatibility</h3>
 <div class="paragraph">
-<p>Babashka uses the Small Clojure Interpreter, or <a href="https://github.com/borkdude/sci/">sci</a> for short to run programs within a GraalVM-compiled binary. GraalVM gives it its fast startup and low memory usage characteristics. Source code is not compiled to JVM bytecode first, like in Clojure on the JVM. Despite this difference, babashka aims to be as compatible as possible with the semantics of Clojure. It supports a sufficiently large subset of Clojure: functions, macros, multi-methods, namespaces, most of it is there. At the moment, the main difference with Clojure is lack of support for <code>deftype</code>, <code>definterface</code>, and <code>reify</code>. Like a JVM programmer would expect, babashka has support for multi-threading and provides access to commonly used Java packages and classes like <code>File</code>, <code>System</code>, <code>java.io</code> and <code>java.net</code>. Because babashka uses interpretation instead of compilation, some longer running programs may be slower, despite the benefit of fast startup. If that turns out to be the case, your efforts are not in vain: the code you wrote still runs with Clojure!</p>
+<p>Babashka uses the Small Clojure Interpreter, or
+<a href="https://github.com/borkdude/sci/">sci</a> for short to run programs within a
+GraalVM-compiled binary. GraalVM gives it its fast startup and low memory usage
+characteristics. Source code is not compiled to JVM bytecode first, like in
+Clojure on the JVM. Despite this difference, babashka aims to be as compatible
+as possible with the semantics of Clojure. It supports a significant subset of
+Clojure: functions, macros, multi-methods, namespaces, most of it is there. At
+the moment, the main difference with Clojure is lack of support for <code>deftype</code>,
+and <code>definterface</code>. Like a JVM programmer would expect, babashka has support for
+multi-threading and provides access to commonly used Java packages and classes
+like <code>File</code>, <code>System</code>, <code>java.io</code> and <code>java.net</code>. Because babashka uses
+interpretation instead of compilation, longer running programs are usually
+slower, despite the benefit of fast startup. If that turns out to be the case,
+your scripting efforts are not in vain: the code you wrote still runs with
+Clojure!</p>
 </div>
 </div>
 </div>
@@ -536,18 +652,26 @@ on how to contribute.</p>
 <div class="sect2">
 <h3 id="_installation">Installation</h3>
 <div class="paragraph">
-<p>Installing babashka is as simple as downloading the binary for your platform and placing it on your path. Pre-built binaries are provided on the <a href="https://github.com/borkdude/babashka/releases">releases</a> page of babashka&#8217;s <a href="https://github.com/borkdude/babashka">Github repo</a>. Babashka is also available in various package managers like <code>brew</code> for macOS and linux and <code>scoop</code> for Windows. See <a href="https://github.com/borkdude/babashka#installation">here</a> for details.</p>
+<p>Installing babashka is as simple as downloading the binary for your platform and
+placing it on your path. Pre-built binaries are provided on the
+<a href="https://github.com/borkdude/babashka/releases">releases</a> page of babashka&#8217;s
+<a href="https://github.com/borkdude/babashka">Github repo</a>. Babashka is also available in
+various package managers like <code>brew</code> for macOS and linux and <code>scoop</code> for
+Windows. See <a href="https://github.com/borkdude/babashka#installation">here</a> for
+details.</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_building_from_source">Building from source</h3>
 <div class="paragraph">
-<p>If you would rather build babashka from source, download a copy of GraalVM and set the <code>GRAALVM_HOME</code> environment variable. Also make sure you have <a href="https://leiningen.org">lein</a> installed. Then run:</p>
+<p>If you would rather build babashka from source, download a copy of GraalVM and
+set the <code>GRAALVM_HOME</code> environment variable. Also make sure you have
+<a href="https://leiningen.org">lein</a> installed. Then run:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code>$ git clone https://github.com/borkdude/babashka --recursive
-$ script/compile</code></pre>
+$ script/uberjar &amp;&amp; script/compile</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -557,7 +681,8 @@ $ script/compile</code></pre>
 <div class="sect2">
 <h3 id="_running_babashka">Running babashka</h3>
 <div class="paragraph">
-<p>The babashka executable is called <code>bb</code>. You can either provide it with a Clojure expression directly:</p>
+<p>The babashka executable is called <code>bb</code>. You can either provide it with a Clojure
+expression directly:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -651,48 +776,50 @@ output on stdout and the <code>:exit</code> code is <code>1</code>.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_java_lang_processbuilder">java.lang.Process(Builder)</h3>
+<h3 id="_babashka_process">babashka.process</h3>
 <div class="paragraph">
 <p>Creating a child process with <code>clojure.java.shell/sh</code> is convenient and
 sufficient in 90% of the scripts you&#8217;re going to write with babashka. For the
-remaining 10% you&#8217;re going to need something slightly more powerful.</p>
+remaining 10% you&#8217;re going to need something slightly more powerful. This is
+where <code>babashka.process</code> comes in.</p>
 </div>
 <div class="paragraph">
-<p>What if we wanted to start a test runner that watches a source directory and
-executes tests whenever a file changes? Using <code>clojure.java.shell/sh</code> for this
-has a few drawbacks:</p>
+<p>What if we wanted to start a Clojure pREPL in our script, send commands to it
+and read the evaluated output?  Using <code>clojure.java.shell/sh</code> for this has a few
+drawbacks:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>We have no control over stopping the watcher process</p>
+<p>We have no control over stopping the pREPL process.</p>
 </li>
 <li>
-<p>We can&#8217;t see any output from the test runner until the process finishes</p>
+<p>We can&#8217;t see any output from pREPL process until it finishes.</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>Using <code>java.lang.ProcessBuilder</code> and <code>java.lang.Process</code> gives us the extra
-power we need to overcome these limitations.</p>
+<p>Using <code>babashka.process</code> which leverages the <code>java.lang.ProcessBuilder</code> and
+<code>java.lang.Process</code> classes gives us the extra power we need to overcome these
+limitations.</p>
 </div>
 <div class="listingblock">
-<div class="title">test_runner_1.clj</div>
+<div class="title">process/prepl_1.clj</div>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="clojure"><span class="error">#</span>!/usr/bin/env bb
 
-(<span class="keyword">import</span> java.lang.ProcessBuilder$Redirect)
+(<span class="keyword">require</span> '[babashka.process <span class="symbol">:as</span> p])
 
-(<span class="keyword">defn</span> <span class="function">test-runner-watch</span> []
-  (<span class="keyword">let</span> [cmd [<span class="string"><span class="delimiter">&quot;</span><span class="content">clojure</span><span class="delimiter">&quot;</span></span> <span class="string"><span class="delimiter">&quot;</span><span class="content">-A:kaocha</span><span class="delimiter">&quot;</span></span> <span class="string"><span class="delimiter">&quot;</span><span class="content">-m</span><span class="delimiter">&quot;</span></span> <span class="string"><span class="delimiter">&quot;</span><span class="content">kaocha.runner</span><span class="delimiter">&quot;</span></span> <span class="string"><span class="delimiter">&quot;</span><span class="content">--watch</span><span class="delimiter">&quot;</span></span>] <i class="conum" data-value="1"></i><b>(1)</b>
-        pb (<span class="keyword">doto</span> (ProcessBuilder. cmd) <i class="conum" data-value="2"></i><b>(2)</b>
-             (<span class="keyword">.</span>redirectOutput ProcessBuilder$Redirect/INHERIT)) <i class="conum" data-value="3"></i><b>(3)</b>
-        proc (<span class="keyword">.</span>start pb)] <i class="conum" data-value="4"></i><b>(4)</b>
-    (<span class="keyword">-&gt;</span> (Runtime/getRuntime)
-        (<span class="keyword">.</span>addShutdownHook (Thread. #(<span class="keyword">.</span>destroy proc)))) <i class="conum" data-value="5"></i><b>(5)</b>
+(<span class="keyword">defn</span> <span class="function">io-prepl</span> []
+  (<span class="keyword">let</span> [cmd [<span class="string"><span class="delimiter">&quot;</span><span class="content">clojure</span><span class="delimiter">&quot;</span></span> <span class="string"><span class="delimiter">&quot;</span><span class="content">-M</span><span class="delimiter">&quot;</span></span>
+             <span class="string"><span class="delimiter">&quot;</span><span class="content">-e</span><span class="delimiter">&quot;</span></span> <span class="string"><span class="delimiter">&quot;</span><span class="content">(require '[clojure.core.server :as s])</span><span class="delimiter">&quot;</span></span>
+             <span class="string"><span class="delimiter">&quot;</span><span class="content">-e</span><span class="delimiter">&quot;</span></span> <span class="string"><span class="delimiter">&quot;</span><span class="content">(s/io-prepl)</span><span class="delimiter">&quot;</span></span>]                           <i class="conum" data-value="1"></i><b>(1)</b>
+        proc (p/process cmd                                 <i class="conum" data-value="2"></i><b>(2)</b>
+                        {<span class="symbol">:inherit</span> <span class="predefined-constant">true</span>                      <i class="conum" data-value="3"></i><b>(3)</b>
+                         <span class="symbol">:shutdown</span> p/destroy-tree})]        <i class="conum" data-value="4"></i><b>(4)</b>
     proc))
 
-(<span class="keyword">.</span>waitFor (test-runner-watch)) <i class="conum" data-value="6"></i><b>(6)</b></code></pre>
+@(io-prepl)                                                 <i class="conum" data-value="5"></i><b>(5)</b></code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -703,242 +830,143 @@ power we need to overcome these limitations.</p>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Construction of a <code>Process</code> is done using <code>ProcessBuilder</code></td>
+<td>Creating the process</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>This sends the output of the child process directly to the parent process&#8217;s
-standard out.</td>
+<td>This option redirects stdout and stdin from the parent process to the child
+process.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>Calling <code>start</code> on a <code>ProcessBuilder</code> instance starts the process and gives
-us a <code>Process</code> instance.</td>
+<td>This line will destroy the child process and all of it&#8217;s children processes
+before the parent process exits.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="5"></i><b>5</b></td>
-<td>This line will destroy the child process before the parent process exits.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="6"></i><b>6</b></td>
-<td><code>waitFor</code> waits until the child process ends and returns its exit code. If
-we would not include this, our script would end without waiting for the watcher.</td>
+<td>Dereferencing the process waits until it ends. If
+we would not include this, our script would end immediately.</td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>When calling the script, we can see output from the test runner while it is running:</p>
+<p>When calling the script, we can interact with the pREPL</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="shell">$ test_runner_watch.clj
-[(.................)(..)]
-7 tests, 19 assertions, 0 failures.</code></pre>
+<pre class="CodeRay highlight"><code data-lang="shell">$ bb src/process/prepl_1.clj
+(+ 1 2 3)
+{:tag :ret, :val &quot;6&quot;, :ns &quot;user&quot;, :ms 5, :form &quot;(+ 1 2 3)&quot;}</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>When we change a file in a source directory, the watcher is triggered and the
-tests run again.</p>
+<p>Pressing ctrl-C or typing <code>:repl/quit</code> will make the script terminate.</p>
 </div>
 <div class="paragraph">
-<p>What if we want to parse the output of the test runner and do something with it?
-Instead of sending the output of the child process to stdout we will have to get
-a hold of it. This is possible via <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Process.html#getInputStream()"><code>getInputStream</code></a>.</p>
+<p>What if we want to parse the output of the prepl and reformat it to our own
+likings?  Instead of sending the output of the child process to stdout we will
+have to get a hold of it. We can grab the output by not using <code>:inherit</code> and
+getting the <code>:out</code> stream of the process. Similarly we will grab the <code>:in</code>
+stream of the process and handle reading ourselves.</p>
 </div>
 <div class="listingblock">
-<div class="title">test_runner_2.clj</div>
+<div class="title">process/prepl_2.clj</div>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="clojure"><span class="error">#</span>!/usr/bin/env bb
 
-(<span class="keyword">defn</span> <span class="function">test-runner</span> []
-  (<span class="keyword">let</span> [cmd [<span class="string"><span class="delimiter">&quot;</span><span class="content">clojure</span><span class="delimiter">&quot;</span></span> <span class="string"><span class="delimiter">&quot;</span><span class="content">-A:kaocha</span><span class="delimiter">&quot;</span></span>
-             <span class="string"><span class="delimiter">&quot;</span><span class="content">-m</span><span class="delimiter">&quot;</span></span> <span class="string"><span class="delimiter">&quot;</span><span class="content">kaocha.runner</span><span class="delimiter">&quot;</span></span> <span class="string"><span class="delimiter">&quot;</span><span class="content">--watch</span><span class="delimiter">&quot;</span></span>
-             <span class="string"><span class="delimiter">&quot;</span><span class="content">--no-color</span><span class="delimiter">&quot;</span></span>] <i class="conum" data-value="1"></i><b>(1)</b>
-        pb (ProcessBuilder. cmd)
-        proc (<span class="keyword">.</span>start pb)
-        out (<span class="keyword">.</span>getInputStream proc)] <i class="conum" data-value="2"></i><b>(2)</b>
-    (<span class="keyword">-&gt;</span> (Runtime/getRuntime)
-        (<span class="keyword">.</span>addShutdownHook (Thread. #(<span class="keyword">.</span>destroy proc))))
-    {<span class="symbol">:proc</span> proc
-     <span class="symbol">:out</span> out}))
+(<span class="keyword">require</span> '[babashka.process <span class="symbol">:as</span> p])
 
-(<span class="keyword">require</span> '[clojure.string <span class="symbol">:as</span> <span class="keyword">str</span>])
+(<span class="keyword">defn</span> <span class="function">io-prepl</span> []
+  (<span class="keyword">let</span> [cmd [<span class="string"><span class="delimiter">&quot;</span><span class="content">clojure</span><span class="delimiter">&quot;</span></span> <span class="string"><span class="delimiter">&quot;</span><span class="content">-M</span><span class="delimiter">&quot;</span></span>
+             <span class="string"><span class="delimiter">&quot;</span><span class="content">-e</span><span class="delimiter">&quot;</span></span> <span class="string"><span class="delimiter">&quot;</span><span class="content">(require '[clojure.core.server :as s])</span><span class="delimiter">&quot;</span></span>
+             <span class="string"><span class="delimiter">&quot;</span><span class="content">-e</span><span class="delimiter">&quot;</span></span> <span class="string"><span class="delimiter">&quot;</span><span class="content">(s/io-prepl)</span><span class="delimiter">&quot;</span></span>]
+        proc (p/process cmd
+                        {<span class="symbol">:shutdown</span> p/destroy-tree})]
+    proc))
 
-(<span class="keyword">defn</span> <span class="function">process-line</span> <i class="conum" data-value="3"></i><b>(3)</b>
-  <span class="string"><span class="delimiter">&quot;</span><span class="content">Returns EDN representation of test runner output.</span><span class="delimiter">&quot;</span></span>
-  [line]
-  (<span class="keyword">when</span> (<span class="keyword">re-matches</span> <span class="regexp"><span class="delimiter">#&quot;</span><span class="content">\d</span><span class="content">+ tests.*</span><span class="delimiter">&quot;</span></span> line)
-    (<span class="keyword">let</span> [splits (str/split line <span class="regexp"><span class="delimiter">#&quot;</span><span class="content">[,.]</span><span class="content">\s</span><span class="content">*</span><span class="delimiter">&quot;</span></span>)
-          keyvals (<span class="keyword">map</span> (<span class="keyword">fn</span> [s]
-                         (<span class="keyword">let</span> [[n k] (str/split s <span class="regexp"><span class="delimiter">#&quot;</span><span class="content"> </span><span class="delimiter">&quot;</span></span>)]
-                           [(<span class="keyword">keyword</span> k) (Integer. n)]))
-                       splits)]
-      (<span class="keyword">into</span> {<span class="symbol">:failures</span> <span class="integer">0</span> <span class="symbol">:errors</span> <span class="integer">0</span>} <span class="comment">;; defaults</span>
-            keyvals))))
-
-(<span class="keyword">defn</span> <span class="function">stderr</span> <i class="conum" data-value="4"></i><b>(4)</b>
-  <span class="string"><span class="delimiter">&quot;</span><span class="content">Prints line to stderr and returns line.</span><span class="delimiter">&quot;</span></span>
-  [line]
-  (<span class="keyword">binding</span> [<span class="predefined-constant">*out*</span> <span class="predefined-constant">*err*</span>]
-    (<span class="keyword">println</span> line))
-  line)
+(<span class="keyword">def</span> <span class="function">prepl-process</span> (io-prepl))
 
 (<span class="keyword">require</span> '[clojure.java.io <span class="symbol">:as</span> io])
 
-(<span class="keyword">defn</span> <span class="function">watch</span> <i class="conum" data-value="5"></i><b>(5)</b>
-  <span class="string"><span class="delimiter">&quot;</span><span class="content">Starts test-runner and calls `callback` on EDN representation of output.</span><span class="delimiter">&quot;</span></span>
-  [callback]
-  (<span class="keyword">let</span> [runner (test-runner)]
-    (<span class="keyword">with-open</span> [reader (io/reader (<span class="symbol">:out</span> runner))]
-      (<span class="keyword">let</span> [lines (<span class="keyword">line-seq</span> reader)
-            lines (keep (<span class="keyword">comp</span> process-line stderr) lines)]
-        (run! callback lines)))))
+(<span class="keyword">def</span> <span class="function">input-writer</span> (io/writer (<span class="symbol">:in</span> prepl-process)))         <i class="conum" data-value="1"></i><b>(1)</b>
 
-(watch <span class="keyword">prn</span>) <i class="conum" data-value="6"></i><b>(6)</b></code></pre>
+(<span class="keyword">future</span>
+  (<span class="keyword">loop</span> []
+    (<span class="keyword">when-let</span> [v (<span class="keyword">read-line</span>)]                              <i class="conum" data-value="2"></i><b>(2)</b>
+      (<span class="keyword">binding</span> [<span class="predefined-constant">*out*</span> input-writer]                        <i class="conum" data-value="3"></i><b>(3)</b>
+        (<span class="keyword">println</span> v))
+      (<span class="keyword">recur</span>))))
+
+(<span class="keyword">require</span> '[clojure.edn <span class="symbol">:as</span> edn])
+
+(<span class="keyword">def</span> <span class="function">output-reader</span> (java.io.PushbackReader.
+                    (io/reader (<span class="symbol">:out</span> prepl-process))))     <i class="conum" data-value="4"></i><b>(4)</b>
+
+@(<span class="keyword">future</span>
+   (<span class="keyword">loop</span> []
+     (<span class="keyword">println</span> <span class="string"><span class="delimiter">&quot;</span><span class="content">Type an expression to evaluate:</span><span class="delimiter">&quot;</span></span>)
+     (<span class="keyword">let</span> [next-val (edn/read {<span class="symbol">:eof</span> <span class="symbol">::EOF</span>} output-reader)] <i class="conum" data-value="5"></i><b>(5)</b>
+       (<span class="keyword">when-not</span> (<span class="keyword">identical?</span> <span class="symbol">::EOF</span> next-val)
+         (<span class="keyword">println</span> (<span class="symbol">:form</span> next-val)                         <i class="conum" data-value="6"></i><b>(6)</b>
+                  <span class="string"><span class="delimiter">&quot;</span><span class="content">evaluates to</span><span class="delimiter">&quot;</span></span>
+                  (<span class="symbol">:val</span> next-val))
+         (<span class="keyword">recur</span>)))))</code></pre>
 </div>
 </div>
 <div class="colist arabic">
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>We ask the test runner not to output ANSI color codes which makes parsing
-the output easier</td>
+<td>A writer that we will use to send input to the pREPL</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Instead of forwarding the output of the child process to stdout we now grab
-it as a <code>java.lang.InputStream</code></td>
+<td>We read user input via <code>clojure.core/read-line</code></td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>The function <code>process-line</code> parses a line of output of the test runner and returns it as EDN data</td>
+<td>Here we binding <code>*out*</code> to the input writer so we can use <code>println</code> to write
+to it.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>The function <code>stderr</code> prints the line to stderr and returns it.</td>
+<td>A reader that reads from the pREPL output. pREPL returns EDN and
+<code>clojure.edn/read</code> needs a <code>PushbackReader</code>.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="5"></i><b>5</b></td>
-<td>The function <code>watch</code> starts the test-runner in watch mode and applies the
-<code>callback</code> function on succesfully parsed lines</td>
+<td>Read the next EDN value.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="6"></i><b>6</b></td>
-<td>Finally we call the <code>watch</code> function with <code>prn</code> as the callback function.</td>
+<td>If it&#8217;s not the end of the input, then we print the output using our custom
+formatting.</td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>Running this script prints EDN data to stdout and the rest of the output goes to stderr:</p>
+<p>Here is an example run:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="shell">[(.................)(..)]
-7 tests, 19 assertions, 0 failures.
-{:errors 0, :failures 0, :tests 7, :assertions 19}</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>A more interesting callback could be one that calls a notifier like <a href="https://github.com/tonsky/AnyBar">AnyBar</a> or <a href="https://github.com/limpbrains/somebar">somebar</a>:</p>
-</div>
-<div class="listingblock">
-<div class="title">test_runner_3.clj</div>
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="clojure">(<span class="keyword">defn</span> <span class="function">packet</span>
-  <span class="string"><span class="delimiter">&quot;</span><span class="content">Returns UDP packet</span><span class="delimiter">&quot;</span></span>
-  [data port]
-  (<span class="keyword">let</span> [<span class="keyword">bytes</span> (<span class="keyword">.</span>getBytes data)
-        host (java.net.InetAddress/getByName <span class="string"><span class="delimiter">&quot;</span><span class="content">localhost</span><span class="delimiter">&quot;</span></span>)]
-    (java.net.DatagramPacket. <span class="keyword">bytes</span> (<span class="keyword">count</span> <span class="keyword">bytes</span>)
-                              host
-                              port)))
-
-(<span class="keyword">defn</span> <span class="function">send-data</span> [data]
-  (<span class="keyword">.</span><span class="keyword">send</span> (java.net.DatagramSocket.)
-         (packet data <span class="integer">1738</span>))) <i class="conum" data-value="1"></i><b>(1)</b>
-
-(<span class="keyword">defn</span> <span class="function">callback</span> [{<span class="symbol">:keys</span> [<span class="symbol">:failures</span> <span class="symbol">:errors</span>]}]
-  (<span class="keyword">if</span> (<span class="keyword">or</span> (<span class="keyword">pos?</span> failures)
-          (<span class="keyword">pos?</span> errors))
-    (send-data <span class="string"><span class="delimiter">&quot;</span><span class="content">red</span><span class="delimiter">&quot;</span></span>) <i class="conum" data-value="2"></i><b>(2)</b>
-    (send-data <span class="string"><span class="delimiter">&quot;</span><span class="content">green</span><span class="delimiter">&quot;</span></span>)))
-
-(watch callback)</code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td><code>1738</code> is the default AnyBar UDP port</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>In case of failures or errors we set AnyBar to red, else to green.</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>In some scripts it might be desirable to set the working directory and
-environment variables of the child process. Also it might be the last step in a
-script and you just want to let it run until it finishes:</p>
-</div>
-<div class="listingblock">
-<div class="title">test_runner_4.clj</div>
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="clojure"><span class="error">#</span>!/usr/bin/env bb
-
-(<span class="keyword">require</span> '[clojure.java.io <span class="symbol">:as</span> io])
-
-(<span class="keyword">def</span> <span class="function">working-dir</span> (<span class="keyword">first</span> <span class="predefined-constant">*command-line-args*</span>)) <i class="conum" data-value="1"></i><b>(1)</b>
-(<span class="keyword">def</span> <span class="function">runner-args</span> (<span class="keyword">rest</span> <span class="predefined-constant">*command-line-args*</span>))  <i class="conum" data-value="2"></i><b>(2)</b>
-
-(<span class="keyword">let</span> [pb (<span class="keyword">doto</span> (ProcessBuilder.
-                (<span class="keyword">into</span> [<span class="string"><span class="delimiter">&quot;</span><span class="content">clojure</span><span class="delimiter">&quot;</span></span> <span class="string"><span class="delimiter">&quot;</span><span class="content">-A:kaocha</span><span class="delimiter">&quot;</span></span> <span class="string"><span class="delimiter">&quot;</span><span class="content">-m</span><span class="delimiter">&quot;</span></span> <span class="string"><span class="delimiter">&quot;</span><span class="content">kaocha.runner</span><span class="delimiter">&quot;</span></span>] runner-args)) <i class="conum" data-value="2"></i><b>(2)</b>
-           (<span class="keyword">.</span>inheritIO) <i class="conum" data-value="3"></i><b>(3)</b>
-           (<span class="keyword">.</span>directory (io/file working-dir))) <i class="conum" data-value="1"></i><b>(1)</b>
-      _ (<span class="keyword">doto</span> (<span class="keyword">.</span>environment pb) <i class="conum" data-value="4"></i><b>(4)</b>
-          (<span class="keyword">.</span>put <span class="string"><span class="delimiter">&quot;</span><span class="content">CI</span><span class="delimiter">&quot;</span></span> <span class="string"><span class="delimiter">&quot;</span><span class="content">false</span><span class="delimiter">&quot;</span></span>))
-      proc (<span class="keyword">.</span>start pb)]
-  (<span class="keyword">-&gt;</span> (Runtime/getRuntime)
-      (<span class="keyword">.</span>addShutdownHook (Thread. #(<span class="keyword">.</span>destroy proc))))
-  (System/exit (<span class="keyword">.</span>waitFor proc))) <i class="conum" data-value="5"></i><b>(5)</b></code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>We interpret the first command line arg as the working directory for the test runner</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Remaining args are passed through to the test runner</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="3"></i><b>3</b></td>
-<td><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/ProcessBuilder.html#inheritIO()"><code>.inheritIO</code></a> is a convenience method. According to its documentation: Sets the source and destination for subprocess
-standard I/O to be the same as those of the current Java process.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>Here we set the child process' environment variable <code>CI</code> to <code>false</code></td>
-</tr>
-<tr>
-<td><i class="conum" data-value="5"></i><b>5</b></td>
-<td>We wait for the process to end and exit with its exit code.</td>
-</tr>
-</table>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="shell">$ test_runner_4.clj ~/projects/carve --watch
-[(.................)(..)]
-7 tests, 19 assertions, 0 failures.</code></pre>
+<pre class="CodeRay highlight"><code data-lang="shell">---
+$ bb src/process/prepl_2.clj
+Type an expression to evaluate:
+(+ 1 2 3)
+(+ 1 2 3) evaluates to 6
+Type an expression to evaluate:
+(/ 1 2 3)
+(/ 1 2 3) evaluates to 1/6
+Type an expression to evaluate:
+:repl/quit
+---</code></pre>
 </div>
 </div>
 <div class="sect3">
 <h4 id="_real_world_examples">Real world examples</h4>
+<div class="paragraph">
+<p>Prior to <code>babashka.process</code> people were using raw <code>ProcessBuilder</code> interop. Here are some real world examples. These might get updated to <code>babashka.process</code> in the future.</p>
+</div>
 <div class="ulist">
 <ul>
 <li>
@@ -965,94 +993,5 @@ compute a classpath using tools.deps</p>
 Last updated 2020-06-28 23:05:52 +0200
 </div>
 </div>
-<style>
-/* Stylesheet for CodeRay to match GitHub theme | MIT License | http://foundation.zurb.com */
-pre.CodeRay{background:#f7f7f8}
-.CodeRay .line-numbers{border-right:1px solid currentColor;opacity:.35;padding:0 .5em 0 0}
-.CodeRay span.line-numbers{display:inline-block;margin-right:.75em}
-.CodeRay .line-numbers strong{color:#000}
-table.CodeRay{border-collapse:separate;border:0;margin-bottom:0;background:none}
-table.CodeRay td{vertical-align:top;line-height:inherit}
-table.CodeRay td.line-numbers{text-align:right}
-table.CodeRay td.code{padding:0 0 0 .75em}
-.CodeRay .debug{color:#fff !important;background:#000080 !important}
-.CodeRay .annotation{color:#007}
-.CodeRay .attribute-name{color:#000080}
-.CodeRay .attribute-value{color:#700}
-.CodeRay .binary{color:#509}
-.CodeRay .comment{color:#998;font-style:italic}
-.CodeRay .char{color:#04d}
-.CodeRay .char .content{color:#04d}
-.CodeRay .char .delimiter{color:#039}
-.CodeRay .class{color:#458;font-weight:bold}
-.CodeRay .complex{color:#a08}
-.CodeRay .constant,.CodeRay .predefined-constant{color:#008080}
-.CodeRay .color{color:#099}
-.CodeRay .class-variable{color:#369}
-.CodeRay .decorator{color:#b0b}
-.CodeRay .definition{color:#099}
-.CodeRay .delimiter{color:#000}
-.CodeRay .doc{color:#970}
-.CodeRay .doctype{color:#34b}
-.CodeRay .doc-string{color:#d42}
-.CodeRay .escape{color:#666}
-.CodeRay .entity{color:#800}
-.CodeRay .error{color:#808}
-.CodeRay .exception{color:inherit}
-.CodeRay .filename{color:#099}
-.CodeRay .function{color:#900;font-weight:bold}
-.CodeRay .global-variable{color:#008080}
-.CodeRay .hex{color:#058}
-.CodeRay .integer,.CodeRay .float{color:#099}
-.CodeRay .include{color:#555}
-.CodeRay .inline{color:#000}
-.CodeRay .inline .inline{background:#ccc}
-.CodeRay .inline .inline .inline{background:#bbb}
-.CodeRay .inline .inline-delimiter{color:#d14}
-.CodeRay .inline-delimiter{color:#d14}
-.CodeRay .important{color:#555;font-weight:bold}
-.CodeRay .interpreted{color:#b2b}
-.CodeRay .instance-variable{color:#008080}
-.CodeRay .label{color:#970}
-.CodeRay .local-variable{color:#963}
-.CodeRay .octal{color:#40e}
-.CodeRay .predefined{color:#369}
-.CodeRay .preprocessor{color:#579}
-.CodeRay .pseudo-class{color:#555}
-.CodeRay .directive{font-weight:bold}
-.CodeRay .type{font-weight:bold}
-.CodeRay .predefined-type{color:inherit}
-.CodeRay .reserved,.CodeRay .keyword {color:#000;font-weight:bold}
-.CodeRay .key{color:#808}
-.CodeRay .key .delimiter{color:#606}
-.CodeRay .key .char{color:#80f}
-.CodeRay .value{color:#088}
-.CodeRay .regexp .delimiter{color:#808}
-.CodeRay .regexp .content{color:#808}
-.CodeRay .regexp .modifier{color:#808}
-.CodeRay .regexp .char{color:#d14}
-.CodeRay .regexp .function{color:#404;font-weight:bold}
-.CodeRay .string{color:#d20}
-.CodeRay .string .string .string{background:#ffd0d0}
-.CodeRay .string .content{color:#d14}
-.CodeRay .string .char{color:#d14}
-.CodeRay .string .delimiter{color:#d14}
-.CodeRay .shell{color:#d14}
-.CodeRay .shell .delimiter{color:#d14}
-.CodeRay .symbol{color:#990073}
-.CodeRay .symbol .content{color:#a60}
-.CodeRay .symbol .delimiter{color:#630}
-.CodeRay .tag{color:#008080}
-.CodeRay .tag-special{color:#d70}
-.CodeRay .variable{color:#036}
-.CodeRay .insert{background:#afa}
-.CodeRay .delete{background:#faa}
-.CodeRay .change{color:#aaf;background:#007}
-.CodeRay .head{color:#f8f;background:#505}
-.CodeRay .insert .insert{color:#080}
-.CodeRay .delete .delete{color:#800}
-.CodeRay .change .change{color:#66f}
-.CodeRay .head .head{color:#f4f}
-</style>
 </body>
 </html>
