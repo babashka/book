@@ -3,8 +3,11 @@
 ## Build
 
 ``` shell
-$ asciidoctor-pdf src/book.adoc -o gh-pages/index.html
+$ script/compile
 ```
+
+This uses `asciidoctor` to spit out an HTML file into the `gh-pages` directory.
+To install `asciidoctor`, check the documentation [here](https://asciidoctor.org/).
 
 ## Release
 
