@@ -1,8 +1,6 @@
 [[getting_started]]
 == Getting started
 
-by Michiel Borkent
-
 === Installation
 
 Installing babashka is as simple as downloading the binary for your platform and

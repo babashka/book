@@ -1,111 +1,46 @@
-[[features]]
-== Features
+[[usage]]
+== Usage
 
-Typing `bb --help` from the command line will print all the available command
-line options which should give you a sense of the available features in
-babashka.
+=== Running a script
+
+Scripts may be executed from a file using `-f` or `--file`:
 
 [source,shellsession]
 ----
-Babashka v0.2.3
-
-Options must appear in the order of groups mentioned below.
-
-Help:
-
-  --help, -h or -?    Print this help text.
-  --version           Print the current version of babashka.
-  --describe          Print an EDN map with information about this version of babashka.
-
-In- and output flags:
-
-  -i                  Bind *input* to a lazy seq of lines from stdin.
-  -I                  Bind *input* to a lazy seq of EDN values from stdin.
-  -o                  Write lines to stdout.
-  -O                  Write EDN values to stdout.
-  --stream            Stream over lines or EDN values from stdin. Combined with -i or -I *input* becomes a single value per iteration.
-
-Uberscript:
-
-  --uberscript <file> Collect preloads, -e, -f and -m and all required namespaces from the classpath into a single executable file.
-
-Evaluation:
-
-  -e, --eval <expr>   Evaluate an expression.
-  -f, --file <path>   Evaluate a file.
-  -cp, --classpath    Classpath to use.
-  -m, --main <ns>     Call the -main function from namespace with args.
-  --verbose           Print debug information and entire stacktrace in case of exception.
-
-REPL:
-
-  --repl              Start REPL. Use rlwrap for history.
-  --socket-repl       Start socket REPL. Specify port (e.g. 1666) or host and port separated by colon (e.g. 127.0.0.1:1666).
-  --nrepl-server      Start nREPL server. Specify port (e.g. 1667) or host and port separated by colon (e.g. 127.0.0.1:1667).
-
-If neither -e, -f, or --socket-repl are specified, then the first argument that is not parsed as a option is treated as a file if it exists, or as an expression otherwise. Everything after that is bound to *command-line-args*. Use -- to separate script command line args from bb command line args.
+bb -f download_html.clj
 ----
 
-=== Built-in namespaces
+Using `bb` with a shebang also works:
 
-In addition to `clojure.core`, the following namespaces are available in babashka.
-Some are available through pre-defined aliases in the `user` namespace,
-which can be handy for one-liners. If not all vars are available, they
-are enumerated explicitly. If some important var is missing, an issue or
-PR is welcome.
+[source,clojure]
+----
+include::usage/download_html.clj[]
+----
 
-From Clojure:
+[source,shellsession]
+----
+$ ./download_html.clj
+Usage: <url> <file>
 
-* `clojure.core`
-* `clojure.core.protocols`: `Datafiable`, `Navigable`
-* `clojure.data`
-* `clojure.datafy`
-* `clojure.edn` aliased as `edn`
-* `clojure.java.browse`
-* `clojure.java.io` aliased as `io`:
-** `as-relative-path`, `as-url`, `copy`, `delete-file`, `file`,
-`input-stream`, `make-parents`, `output-stream`, `reader`, `resource`,
-`writer`
-* `clojure.java.shell` aliased as `shell`
-* `clojure.main`: `demunge`, `repl`, `repl-requires`
-* `clojure.pprint`: `pprint`, `cl-format`
-* `clojure.set` aliased as `set`
-* `clojure.string` aliased as `str`
-* `clojure.stacktrace`
-* `clojure.test`
-* `clojure.zip`
+$ ./download_html.clj https://www.clojure.org /tmp/clojure.org.html
+Fetching url: https://www.clojure.org
+Writing file: /tmp/clojure.org.html
+----
 
-Additional libraries:
+If `/usr/bin/env` doesn't work for you, you can use the following
+workaround:
 
-* https://github.com/borkdude/babashka.curl[`babashka.curl`]
-* https://github.com/babashka/process[`babashka/process`]
-* https://github.com/nrepl/bencode[`bencode.core`] aliased as `bencode`:
-`read-bencode`, `write-bencode`
-* https://github.com/dakrone/cheshire[`cheshire.core`] aliased as `json`
-* https://clojure.github.io/core.async/[`clojure.core.async`] aliased as
-`async`. Also see https://github.com/borkdude/babashka#coreasync[docs].
-* https://github.com/clojure/data.csv[`clojure.data.csv`] aliased as
-`csv`
-* https://github.com/clojure/data.xml[`clojure.data.xml`] aliased as
-`xml`
-* https://github.com/clojure/tools.cli[`clojure.tools.cli`] aliased as
-`tools.cli`
-* https://github.com/clj-commons/clj-yaml[`clj-yaml.core`] alias as
-`yaml`
-* https://github.com/cognitect/transit-clj[`cognitect.transit`] aliased
-as `transit`
-* https://github.com/http-kit/http-kit[`org.httpkit.client`]
-* https://github.com/http-kit/http-kit[`org.httpkit.server`]
+[source,shellsession]
+----
+$ cat script.clj
+#!/bin/sh
 
-See the
-https://github.com/borkdude/babashka/blob/master/doc/projects.md[projects]
-page for libraries that are not built-in, but which you can load from
-source via the `--classpath` option.
+#_(
+   "exec" "bb" "$0" hello "$@"
+   )
 
-See the
-https://github.com/borkdude/babashka/blob/master/doc/build.md[build]
-page for built-in libraries that can be enabled via feature flags, if
-you want to compile babashka yourself.
+(prn *command-line-args*)
 
-A selection of Java classes are available, see
-`babashka/impl/classes.clj` in babashka's git repo.
+./script.clj 1 2 3
+("hello" "1" "2" "3")
+----
