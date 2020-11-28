@@ -13,6 +13,7 @@ include::license.adoc[]
 include::contributing.adoc[]
 include::intro.adoc[]
 include::getting_started.adoc[]
+include::usage.adoc[]
 include::child_processes.adoc[]
 
 //include::shell_integration.adoc[]

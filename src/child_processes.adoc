@@ -1,6 +1,8 @@
 [[child_processes]]
 == Child processes
 
+by Michiel Borkent
+
 There are several ways of creating child processes in babashka. Let's start with
 the easiest one.
 
