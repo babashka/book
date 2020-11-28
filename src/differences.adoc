@@ -1,3 +1,4 @@
+[[differences-with-clojure]]
 == Differences with Clojure
 
 Babashka is implemented using the https://github.com/borkdude/sci[Small
