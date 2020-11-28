@@ -109,13 +109,13 @@ to it.
 Here is an example run:
 
 [source,shell]
----
+----
 $ bb src/process/prepl_2.clj
 Type an expression to evaluate:
 (+ 1 2 3)
 (+ 1 2 3) evaluates to 6
 :repl/quit
----
+----
 
 ==== Real world examples
 
