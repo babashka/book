@@ -1,5 +1,9 @@
 # Babashka book
 
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md).
+
 ## Build
 
 ``` shell
