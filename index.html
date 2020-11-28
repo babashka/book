@@ -554,6 +554,11 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <li><a href="#_running_babashka">Running babashka</a></li>
 </ul>
 </li>
+<li><a href="#usage">Usage</a>
+<ul class="sectlevel2">
+<li><a href="#_running_a_script">Running a script</a></li>
+</ul>
+</li>
 <li><a href="#features">Features</a>
 <ul class="sectlevel2">
 <li><a href="#_built_in_namespaces">Built-in namespaces</a></li>
@@ -654,9 +659,6 @@ Clojure!</p>
 <div class="sect1">
 <h2 id="getting_started">Getting started</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p>by Michiel Borkent</p>
-</div>
 <div class="sect2">
 <h3 id="_installation">Installation</h3>
 <div class="paragraph">
@@ -739,6 +741,75 @@ expression directly:</p>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="clojure"><span class="error">#</span>!/usr/bin/env bb
 (<span class="keyword">+</span> <span class="integer">1</span> <span class="integer">2</span> <span class="integer">3</span>)</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="usage">Usage</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_running_a_script">Running a script</h3>
+<div class="paragraph">
+<p>Scripts may be executed from a file using <code>-f</code> or <code>--file</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="shellsession">bb -f download_html.clj</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Using <code>bb</code> with a shebang also works:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="clojure"><span class="error">#</span>!/usr/bin/env bb
+
+(<span class="keyword">require</span> '[babashka.curl <span class="symbol">:as</span> curl])
+
+(<span class="keyword">defn</span> <span class="function">get-url</span> [url]
+  (<span class="keyword">println</span> <span class="string"><span class="delimiter">&quot;</span><span class="content">Downloading url:</span><span class="delimiter">&quot;</span></span> url)
+  (curl/get url))
+
+(<span class="keyword">defn</span> <span class="function">write-html</span> [file html]
+  (<span class="keyword">println</span> <span class="string"><span class="delimiter">&quot;</span><span class="content">Writing file:</span><span class="delimiter">&quot;</span></span> file)
+  (spit file html))
+
+(<span class="keyword">let</span> [[url file] <span class="predefined-constant">*command-line-args*</span>]
+  (<span class="keyword">when</span> (<span class="keyword">or</span> (<span class="keyword">empty?</span> url) (<span class="keyword">empty?</span> file))
+    (<span class="keyword">println</span> <span class="string"><span class="delimiter">&quot;</span><span class="content">Usage: &lt;url&gt; &lt;file&gt;</span><span class="delimiter">&quot;</span></span>)
+    (System/exit <span class="integer">1</span>))
+  (write-html file (get-url url)))</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="shellsession">$ ./download_html.clj
+Usage: &lt;url&gt; &lt;file&gt;
+
+$ ./download_html.clj https://www.clojure.org /tmp/clojure.org.html
+Fetching url: https://www.clojure.org
+Writing file: /tmp/clojure.org.html</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If <code>/usr/bin/env</code> doesn&#8217;t work for you, you can use the following
+workaround:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="shellsession">$ cat script.clj
+#!/bin/sh
+
+#_(
+   &quot;exec&quot; &quot;bb&quot; &quot;$0&quot; hello &quot;$@&quot;
+   )
+
+(prn *command-line-args*)
+
+./script.clj 1 2 3
+(&quot;hello&quot; &quot;1&quot; &quot;2&quot; &quot;3&quot;)</code></pre>
 </div>
 </div>
 </div>
@@ -1171,7 +1242,7 @@ compute a classpath using tools.deps</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-11-28 15:15:31 +0100
+Last updated 2020-11-28 15:36:28 +0100
 </div>
 </div>
 </body>
