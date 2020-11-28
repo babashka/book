@@ -1,10 +1,3 @@
-== link:doc/repl.md[Running a REPL]
-
-Babashka offers a REPL, a socket REPL and an nREPL server. Look
-link:doc/repl.md[here] for more information on how to use and integrate
-them with your editor.
-
-
 == Preloads
 
 The environment variable `BABASHKA_PRELOADS` allows to define code that

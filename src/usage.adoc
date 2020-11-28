@@ -70,3 +70,5 @@ https://github.com/borkdude/babashka#parsing-command-line-arguments[docs])
 or use the
 https://github.com/borkdude/babashka/blob/master/doc/projects.md#nubankdocopt[nubank/docopt]
 library.
+
+include::usage/repl.adoc[]

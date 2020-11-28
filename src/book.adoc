@@ -8,6 +8,11 @@ Michiel Borkent
 :icons: font
 :toc: left
 :toclevels: 2
+:toc-collapsable:
+
+++++
+<!--<script>alert('hello')</script>-->
+++++
 
 include::license.adoc[]
 include::contributing.adoc[]

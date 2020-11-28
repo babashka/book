@@ -1,0 +1,167 @@
+[[repl]]
+== Running a REPL
+
+Babashka supports running a REPL, a socket REPL and an nREPL server.
+
+=== REPL
+
+To start a REPL, type:
+
+[source,shell]
+----
+$ bb --repl
+----
+
+To get history with up and down arrows, use https://github.com/hanslub42/rlwrap[rlwrap]:
+
+[source,shell]
+----
+$ rlwrap bb --repl
+----
+
+=== Socket REPL
+
+To start a socket REPL on port `1666`:
+
+[source,shell]
+----
+$ bb --socket-repl 1666
+Babashka socket REPL started at localhost:1666
+----
+
+Now you can connect with your favorite socket REPL client:
+
+[source,shell]
+----
+$ rlwrap nc 127.0.0.1 1666
+Babashka v0.0.14 REPL.
+Use :repl/quit or :repl/exit to quit the REPL.
+Clojure rocks, Bash reaches.
+
+bb=> (+ 1 2 3)
+6
+bb=> :repl/quit
+$
+----
+
+The `--socket-repl` option takes options similar to the `clojure.server.repl`
+Java property option in Clojure:
+
+[source,clojure]
+----
+$ bb --socket-repl '{:address "0.0.0.0" :accept clojure.core.server/repl :port 1666}'
+----
+
+Editor plugins and tools known to work with a babashka socket REPL:
+
+* Emacs: https://github.com/clojure-emacs/inf-clojure[inf-clojure]:
++
+To connect:
++
+`M-x inf-clojure-connect <RET> localhost <RET> 1666`
++
+Before evaluating from a Clojure buffer:
++
+`M-x inf-clojure-minor-mode`
+* Atom: https://github.com/mauricioszabo/atom-chlorine[Chlorine]
+* Vim: https://github.com/liquidz/vim-iced[vim-iced]
+* IntelliJ IDEA: https://cursive-ide.com/[Cursive]
++
+Note: you will have to use a workaround via
+https://github.com/mfikes/tubular[tubular]. For more info, look
+https://cursive-ide.com/userguide/repl.html#repl-types[here].
+
+=== pREPL
+
+Launching a prepl can be done as follows:
+
+[source,clojure]
+----
+$ bb --socket-repl '{:address "0.0.0.0" :accept clojure.core.server/io-prepl :port 1666}'
+----
+
+or programmatically:
+
+[source,clojure]
+----
+$ bb -e '(clojure.core.server/io-prepl)'
+(+ 1 2 3)
+{:tag :ret, :val "6", :ns "user", :ms 0, :form "(+ 1 2 3)"}
+----
+
+=== nREPL
+
+To start an nREPL server:
+
+[source,shell]
+----
+$ bb --nrepl-server 1667
+----
+
+Then connect with your favorite nREPL client:
+
+[source,clojure]
+----
+$ lein repl :connect 1667
+Connecting to nREPL at 127.0.0.1:1667
+user=> (+ 1 2 3)
+6
+user=>
+----
+
+Editor plugins and tools known to work with the babashka nREPL server:
+
+* Emacs: https://docs.cider.mx/cider/platforms/babashka.html[CIDER]
+* `lein repl :connect`
+* VSCode: http://calva.io/[Calva]
+* Atom: https://github.com/mauricioszabo/atom-chlorine[Chlorine]
+* (Neo)Vim: https://github.com/liquidz/vim-iced[vim-iced],
+https://github.com/Olical/conjure[conjure],
+https://github.com/tpope/vim-fireplace[fireplace]
+
+The babashka nREPL server does not write an `.nrepl-port` file at
+startup, but you can easily write a script that launches the server and
+writes the file:
+
+[source,clojure]
+----
+#!/usr/bin/env bb
+
+(import [java.net ServerSocket]
+        [java.io File]
+        [java.lang ProcessBuilder$Redirect])
+
+(require '[babashka.wait :as wait])
+
+(let [nrepl-port (with-open [sock (ServerSocket. 0)] (.getLocalPort sock))
+      cp (str/join File/pathSeparatorChar ["src" "test"])
+      pb (doto (ProcessBuilder. (into ["bb" "--nrepl-server" (str nrepl-port)
+                                       "--classpath" cp]
+                                      *command-line-args*))
+           (.redirectOutput ProcessBuilder$Redirect/INHERIT))
+      proc (.start pb)]
+  (wait/wait-for-port "localhost" nrepl-port)
+  (spit ".nrepl-port" nrepl-port)
+  (.deleteOnExit (File. ".nrepl-port"))
+  (.waitFor proc))
+----
+
+==== Debugging the nREPL server
+
+To debug the nREPL server from the binary you can run:
+
+[source,shell]
+----
+$ BABASHKA_DEV=true bb --nrepl-server 1667
+----
+
+This will print all the incoming messages.
+
+To debug the nREPL server from source:
+
+[source,clojure]
+----
+$ git clone https://github.com/borkdude/babashka --recurse-submodules
+$ cd babashka
+$ BABASHKA_DEV=true clojure -A:main --nrepl-server 1667
+----
