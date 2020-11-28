@@ -1,0 +1,142 @@
+[[recipes]]
+== Recipes
+
+=== Running tests
+
+Babashka bundles `clojure.test`. To make CI scripts fail you can use a
+simple runner like this:
+
+[source,shell]
+----
+#!/usr/bin/env bash
+bb -cp "src:test:resources" \
+   -e "(require '[clojure.test :as t] '[borkdude.deps-test])
+       (let [{:keys [:fail :error]} (t/run-tests 'borkdude.deps-test)]
+         (System/exit (+ fail error)))"
+----
+
+[[main_file]]
+=== Main file
+
+In Python scripts there is a well-known pattern to check if the current
+file was the file invoked from the command line, or loaded from another
+file: the `__name__ == "__main__"` pattern. In babashka this pattern can
+be implemented with:
+
+[source,clojure]
+----
+(= *file* (System/getProperty "babashka.file")
+----
+
+=== Shutdown hook
+
+Adding a shutdown hook allows you to execute some code before the script
+exits.
+
+[source,clojure]
+----
+$ bb -e '(-> (Runtime/getRuntime) (.addShutdownHook (Thread. #(println "bye"))))'
+bye
+----
+
+This also works when the script is interrupted with ctrl-c.
+
+=== Printing returned values
+
+Babashka doesn't print a returned `nil` as lots of scripts end in
+something side-effecting.
+
+[source,shell]
+----
+$ bb '(:a {:a 5})'
+5
+$ bb '(:b {:a 5})'
+$
+----
+
+If you really want to print the nil, you can use `(prn ..)` instead.
+
+=== Core.async
+
+In addition to `future`, `pmap`, `promise` and friends, you may use the
+`clojure.core.async` namespace for asynchronous scripting. The following
+example shows how to get first available value from two different
+processes:
+
+[source,clojure]
+----
+bb '
+(defn async-command [& args]
+  (async/thread (apply shell/sh "bash" "-c" args)))
+
+(-> (async/alts!! [(async-command "sleep 2 && echo process 1")
+                   (async-command "sleep 1 && echo process 2")])
+    first :out str/trim println)'
+process 2
+----
+
+Caveat: currently the `go` macro is available for compatibility with JVM
+programs, but the implementation maps to `clojure.core.async/thread` and
+the single exclamation mark operations (`<!`, `>!`, etc.) map to the
+double exclamation mark operations (`<!!`, `>!!`, etc.). It will not
+"park" threads, like on the JVM.
+
+Examples like the following may still work, but will take a lot more
+system resources than on the JVM and will break down for some high value
+of `n`:
+
+[source,clojure]
+----
+(require '[clojure.core.async :as async])
+
+(def n 1000)
+
+(let [cs (repeatedly n async/chan)
+      begin (System/currentTimeMillis)]
+  (doseq [c cs] (async/go (async/>! c "hi")))
+  (dotimes [_ n]
+    (let [[v _] (async/alts!! cs)]
+      (assert (= "hi" v))))
+  (println "Read" n "msgs in" (- (System/currentTimeMillis) begin) "ms"))
+----
+
+=== HTTP over Unix sockets
+
+This can be useful for talking to Docker:
+
+[source,clojure]
+----
+(require '[clojure.java.shell :refer [sh]])
+(require '[cheshire.core :as json])
+(-> (sh "curl" "--silent"
+        "--no-buffer" "--unix-socket"
+        "/var/run/docker.sock"
+        "http://localhost/images/json")
+    :out
+    (json/parse-string true)
+    first
+    :RepoTags) ;;=> ["borkdude/babashka:latest"]
+----
+
+=== Interacting with an nREPL server
+
+Babashka comes with the https://github.com/nrepl/bencode[nrepl/bencode]
+library which allows you to read and write bencode messages to a socket.
+A simple example which evaluates a Clojure expression on an nREPL server
+started with `lein repl`:
+
+[source,clojure]
+----
+(ns nrepl-client
+  (:require [bencode.core :as b]))
+
+(defn nrepl-eval [port expr]
+  (let [s (java.net.Socket. "localhost" port)
+        out (.getOutputStream s)
+        in (java.io.PushbackInputStream. (.getInputStream s))
+        _ (b/write-bencode out {"op" "eval" "code" expr})
+        bytes (get (b/read-bencode in) "value")]
+    (String. bytes)))
+
+(nrepl-eval 52054 "(+ 1 2 3)") ;;=> "6"
+----

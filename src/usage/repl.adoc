@@ -1,9 +1,9 @@
 [[repl]]
-== Running a REPL
+===  Running a REPL
 
 Babashka supports running a REPL, a socket REPL and an nREPL server.
 
-=== REPL
+==== REPL
 
 To start a REPL, type:
 
@@ -19,7 +19,7 @@ To get history with up and down arrows, use https://github.com/hanslub42/rlwrap[
 $ rlwrap bb --repl
 ----
 
-=== Socket REPL
+==== Socket REPL
 
 To start a socket REPL on port `1666`:
 
@@ -71,7 +71,7 @@ Note: you will have to use a workaround via
 https://github.com/mfikes/tubular[tubular]. For more info, look
 https://cursive-ide.com/userguide/repl.html#repl-types[here].
 
-=== pREPL
+==== pREPL
 
 Launching a prepl can be done as follows:
 
@@ -89,7 +89,7 @@ $ bb -e '(clojure.core.server/io-prepl)'
 {:tag :ret, :val "6", :ns "user", :ms 0, :form "(+ 1 2 3)"}
 ----
 
-=== nREPL
+==== nREPL
 
 To start an nREPL server:
 
@@ -146,7 +146,7 @@ writes the file:
   (.waitFor proc))
 ----
 
-==== Debugging the nREPL server
+===== Debugging the nREPL server
 
 To debug the nREPL server from the binary you can run:
 
