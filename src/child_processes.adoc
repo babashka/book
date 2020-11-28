@@ -46,6 +46,11 @@ Using `babashka.process` which leverages the `java.lang.ProcessBuilder` and
 `java.lang.Process` classes gives us the extra power we need to overcome this
 limitation.
 
+First we show how to use `process` to start a process that inherits stdout,
+stderr and stdin from the parent process. This is often useful when you want to
+hand over control to another process at the end of a script. The following code
+starts a pREPL process:
+
 .process/prepl_1.clj
 [source,clojure]
 ----
