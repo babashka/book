@@ -699,7 +699,7 @@ pre.rouge {
 <li><a href="#_explicit_requires">Explicit requires</a></li>
 </ul>
 </li>
-<li><a href="#features">Features</a>
+<li><a href="#libraries">Libraries</a>
 <ul class="sectlevel2">
 <li><a href="#_built_in_namespaces">Built-in namespaces</a></li>
 <li><a href="#_babashka_namespaces">Babashka namespaces</a></li>
@@ -875,6 +875,52 @@ expression directly:</p>
 <div class="sect1">
 <h2 id="usage">Usage</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>Typing <code>bb --help</code> from the command line will print all the available command
+line options which should give you a sense of the available features in
+babashka.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash">Babashka v0.2.3
+
+Options must appear <span class="k">in </span>the order of <span class="nb">groups </span>mentioned below.
+
+Help:
+
+  <span class="nt">--help</span>, <span class="nt">-h</span> or -?    Print this <span class="nb">help </span>text.
+  <span class="nt">--version</span>           Print the current version of babashka.
+  <span class="nt">--describe</span>          Print an EDN map with information about this version of babashka.
+
+In- and output flags:
+
+  <span class="nt">-i</span>                  Bind <span class="k">*</span>input<span class="k">*</span> to a lazy <span class="nb">seq </span>of lines from stdin.
+  <span class="nt">-I</span>                  Bind <span class="k">*</span>input<span class="k">*</span> to a lazy <span class="nb">seq </span>of EDN values from stdin.
+  <span class="nt">-o</span>                  Write lines to stdout.
+  <span class="nt">-O</span>                  Write EDN values to stdout.
+  <span class="nt">--stream</span>            Stream over lines or EDN values from stdin. Combined with <span class="nt">-i</span> or <span class="nt">-I</span> <span class="k">*</span>input<span class="k">*</span> becomes a single value per iteration.
+
+Uberscript:
+
+  <span class="nt">--uberscript</span> &lt;file&gt; Collect preloads, <span class="nt">-e</span>, <span class="nt">-f</span> and <span class="nt">-m</span> and all required namespaces from the classpath into a single executable file.
+
+Evaluation:
+
+  <span class="nt">-e</span>, <span class="nt">--eval</span> &lt;<span class="nb">expr</span><span class="o">&gt;</span>   Evaluate an expression.
+  <span class="nt">-f</span>, <span class="nt">--file</span> &lt;path&gt;   Evaluate a file.
+  <span class="nt">-cp</span>, <span class="nt">--classpath</span>    Classpath to use.
+  <span class="nt">-m</span>, <span class="nt">--main</span> &lt;ns&gt;     Call the <span class="nt">-main</span> <span class="k">function </span>from namespace with args.
+  <span class="nt">--verbose</span>           Print debug information and entire stacktrace <span class="k">in case</span> of exception.
+
+REPL:
+
+  <span class="nt">--repl</span>              Start REPL. Use rlwrap <span class="k">for </span>history.
+  <span class="nt">--socket-repl</span>       Start socket REPL. Specify port <span class="o">(</span>e.g. 1666<span class="p">)</span> or host and port separated by colon <span class="o">(</span>e.g. 127.0.0.1:1666<span class="o">)</span><span class="nb">.</span>
+  <span class="nt">--nrepl-server</span>      Start nREPL server. Specify port <span class="o">(</span>e.g. 1667<span class="o">)</span> or host and port separated by colon <span class="o">(</span>e.g. 127.0.0.1:1667<span class="o">)</span><span class="nb">.</span>
+
+If neither <span class="nt">-e</span>, <span class="nt">-f</span>, or <span class="nt">--socket-repl</span> are specified, <span class="k">then </span>the first argument that is not parsed as a option is treated as a file <span class="k">if </span>it exists, or as an expression otherwise. Everything after that is bound to <span class="k">*</span>command-line-args<span class="k">*</span><span class="nb">.</span> Use <span class="nt">--</span> to separate script <span class="nb">command </span>line args from bb <span class="nb">command </span>line args.</code></pre>
+</div>
+</div>
 <div class="sect2">
 <h3 id="_running_a_script">Running a script</h3>
 <div class="paragraph">
@@ -1876,54 +1922,8 @@ with <code>clojure</code></p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="features">Features</h2>
+<h2 id="libraries">Libraries</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p>Typing <code>bb --help</code> from the command line will print all the available command
-line options which should give you a sense of the available features in
-babashka.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="bash">Babashka v0.2.3
-
-Options must appear <span class="k">in </span>the order of <span class="nb">groups </span>mentioned below.
-
-Help:
-
-  <span class="nt">--help</span>, <span class="nt">-h</span> or -?    Print this <span class="nb">help </span>text.
-  <span class="nt">--version</span>           Print the current version of babashka.
-  <span class="nt">--describe</span>          Print an EDN map with information about this version of babashka.
-
-In- and output flags:
-
-  <span class="nt">-i</span>                  Bind <span class="k">*</span>input<span class="k">*</span> to a lazy <span class="nb">seq </span>of lines from stdin.
-  <span class="nt">-I</span>                  Bind <span class="k">*</span>input<span class="k">*</span> to a lazy <span class="nb">seq </span>of EDN values from stdin.
-  <span class="nt">-o</span>                  Write lines to stdout.
-  <span class="nt">-O</span>                  Write EDN values to stdout.
-  <span class="nt">--stream</span>            Stream over lines or EDN values from stdin. Combined with <span class="nt">-i</span> or <span class="nt">-I</span> <span class="k">*</span>input<span class="k">*</span> becomes a single value per iteration.
-
-Uberscript:
-
-  <span class="nt">--uberscript</span> &lt;file&gt; Collect preloads, <span class="nt">-e</span>, <span class="nt">-f</span> and <span class="nt">-m</span> and all required namespaces from the classpath into a single executable file.
-
-Evaluation:
-
-  <span class="nt">-e</span>, <span class="nt">--eval</span> &lt;<span class="nb">expr</span><span class="o">&gt;</span>   Evaluate an expression.
-  <span class="nt">-f</span>, <span class="nt">--file</span> &lt;path&gt;   Evaluate a file.
-  <span class="nt">-cp</span>, <span class="nt">--classpath</span>    Classpath to use.
-  <span class="nt">-m</span>, <span class="nt">--main</span> &lt;ns&gt;     Call the <span class="nt">-main</span> <span class="k">function </span>from namespace with args.
-  <span class="nt">--verbose</span>           Print debug information and entire stacktrace <span class="k">in case</span> of exception.
-
-REPL:
-
-  <span class="nt">--repl</span>              Start REPL. Use rlwrap <span class="k">for </span>history.
-  <span class="nt">--socket-repl</span>       Start socket REPL. Specify port <span class="o">(</span>e.g. 1666<span class="p">)</span> or host and port separated by colon <span class="o">(</span>e.g. 127.0.0.1:1666<span class="o">)</span><span class="nb">.</span>
-  <span class="nt">--nrepl-server</span>      Start nREPL server. Specify port <span class="o">(</span>e.g. 1667<span class="o">)</span> or host and port separated by colon <span class="o">(</span>e.g. 127.0.0.1:1667<span class="o">)</span><span class="nb">.</span>
-
-If neither <span class="nt">-e</span>, <span class="nt">-f</span>, or <span class="nt">--socket-repl</span> are specified, <span class="k">then </span>the first argument that is not parsed as a option is treated as a file <span class="k">if </span>it exists, or as an expression otherwise. Everything after that is bound to <span class="k">*</span>command-line-args<span class="k">*</span><span class="nb">.</span> Use <span class="nt">--</span> to separate script <span class="nb">command </span>line args from bb <span class="nb">command </span>line args.</code></pre>
-</div>
-</div>
 <div class="sect2">
 <h3 id="_built_in_namespaces">Built-in namespaces</h3>
 <div class="paragraph">
@@ -2720,7 +2720,7 @@ this repository as a basis for creating your own book based on this one.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-11-28 21:40:10 +0100
+Last updated 2020-11-28 21:49:36 +0100
 </div>
 </div>
 </body>
