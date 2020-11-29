@@ -811,7 +811,7 @@ pre.rouge {
 </div>
 </div>
 <div class="sect1">
-<h2 id="introduction">Introduction</h2>
+<h2 id="introduction"><a class="link" href="#introduction">Introduction</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Welcome reader! This is a book about scripting with Clojure and babashka.
@@ -825,7 +825,7 @@ and <code>cheshire</code> for working with JSON. Moreover, it can be installed j
 downloading a self-contained binary.</p>
 </div>
 <div class="sect2">
-<h3 id="_target_audience">Target audience</h3>
+<h3 id="_target_audience"><a class="link" href="#_target_audience">Target audience</a></h3>
 <div class="paragraph">
 <p>Babashka is written for developers who are familiar with Clojure on
 the JVM. This book assumes familiarity with Clojure and is not a Clojure
@@ -835,7 +835,7 @@ list of beginner resources.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_setting_expectations">Setting expectations</h3>
+<h3 id="_setting_expectations"><a class="link" href="#_setting_expectations">Setting expectations</a></h3>
 <div class="paragraph">
 <p>Babashka uses <a href="https://github.com/borkdude/sci">sci</a> for interpreting Clojure. Sci
 implements a substantial subset of Clojure. Interpreting code is in general not
@@ -848,10 +848,10 @@ about the differences with Clojure <a href="#differences-with-clojure">here</a>.
 </div>
 </div>
 <div class="sect1">
-<h2 id="getting_started">Getting started</h2>
+<h2 id="getting_started"><a class="link" href="#getting_started">Getting started</a></h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_installation">Installation</h3>
+<h3 id="_installation"><a class="link" href="#_installation">Installation</a></h3>
 <div class="paragraph">
 <p>Installing babashka is as simple as downloading the binary for your platform and
 placing it on your path. Pre-built binaries are provided on the
@@ -863,7 +863,7 @@ details.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_building_from_source">Building from source</h3>
+<h3 id="_building_from_source"><a class="link" href="#_building_from_source">Building from source</a></h3>
 <div class="paragraph">
 <p>If you would rather build babashka from source, download a copy of GraalVM and
 set the <code>GRAALVM_HOME</code> environment variable. Also make sure you have
@@ -880,7 +880,7 @@ $ script/uberjar &amp;&amp; script/compile</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_running_babashka">Running babashka</h3>
+<h3 id="_running_babashka"><a class="link" href="#_running_babashka">Running babashka</a></h3>
 <div class="paragraph">
 <p>The babashka executable is called <code>bb</code>. You can either provide it with a Clojure
 expression directly:</p>
@@ -938,7 +938,7 @@ expression directly:</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="usage">Usage</h2>
+<h2 id="usage"><a class="link" href="#usage">Usage</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Typing <code>bb --help</code> from the command line will print all the available command
@@ -987,7 +987,7 @@ If neither <span class="nt">-e</span>, <span class="nt">-f</span>, or <span clas
 </div>
 </div>
 <div class="sect2">
-<h3 id="_running_a_script">Running a script</h3>
+<h3 id="_running_a_script"><a class="link" href="#_running_a_script">Running a script</a></h3>
 <div class="paragraph">
 <p>Scripts may be executed from a file using <code>-f</code> or <code>--file</code>:</p>
 </div>
@@ -1051,7 +1051,7 @@ workaround:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_input_and_output_flags">Input and output flags</h3>
+<h3 id="_input_and_output_flags"><a class="link" href="#_input_and_output_flags">Input and output flags</a></h3>
 <div class="paragraph">
 <p>In one-liners the <code>*input*</code> value may come in handy. It contains the
 input read from stdin as EDN by default. If you want to read in text,
@@ -1144,7 +1144,7 @@ each value in the input:</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_scripts">Scripts</h4>
+<h4 id="_scripts"><a class="link" href="#_scripts">Scripts</a></h4>
 <div class="paragraph">
 <p>When writing scripts instead of one-liners on the command line, it is
 not recommended to use <code>*input*</code>. Here is how you can rewrite to
@@ -1152,7 +1152,7 @@ standard Clojure code.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_edn_input">EDN input</h4>
+<h4 id="_edn_input"><a class="link" href="#_edn_input">EDN input</a></h4>
 <div class="paragraph">
 <p>Reading a single EDN value from stdin:</p>
 </div>
@@ -1179,7 +1179,7 @@ standard Clojure code.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_text_input">Text input</h4>
+<h4 id="_text_input"><a class="link" href="#_text_input">Text input</a></h4>
 <div class="paragraph">
 <p>Reading text from stdin can be done with <code>(slurp *in*)</code>. To get a lazy
 seq of lines (the <code>-i</code> flag), you can use:</p>
@@ -1194,14 +1194,14 @@ seq of lines (the <code>-i</code> flag), you can use:</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_output">Output</h4>
+<h4 id="_output"><a class="link" href="#_output">Output</a></h4>
 <div class="paragraph">
 <p>To print to stdout, use <code>println</code> for text and <code>prn</code> for EDN values.</p>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_current_file_path">Current file path</h3>
+<h3 id="_current_file_path"><a class="link" href="#_current_file_path">Current file path</a></h3>
 <div class="paragraph">
 <p>The var <code>*file*</code> contains the full path of the file that is currently
 being executed:</p>
@@ -1217,7 +1217,7 @@ being executed:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_command_line_arguments">Command-line arguments</h3>
+<h3 id="_command_line_arguments"><a class="link" href="#_command_line_arguments">Command-line arguments</a></h3>
 <div class="paragraph">
 <p>Command-line arguments can be retrieved using <code>*command-line-args*</code>. If
 you want to parse command line arguments, you may use the built-in
@@ -1229,12 +1229,12 @@ library.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="repl">Running a REPL</h3>
+<h3 id="repl"><a class="link" href="#repl">Running a REPL</a></h3>
 <div class="paragraph">
 <p>Babashka supports running a REPL, a socket REPL and an nREPL server.</p>
 </div>
 <div class="sect3">
-<h4 id="_repl">REPL</h4>
+<h4 id="_repl"><a class="link" href="#_repl">REPL</a></h4>
 <div class="paragraph">
 <p>To start a REPL, type:</p>
 </div>
@@ -1253,7 +1253,7 @@ library.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_socket_repl">Socket REPL</h4>
+<h4 id="_socket_repl"><a class="link" href="#_socket_repl">Socket REPL</a></h4>
 <div class="paragraph">
 <p>To start a socket REPL on port <code>1666</code>:</p>
 </div>
@@ -1326,7 +1326,7 @@ Java property option in Clojure:</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_prepl">pREPL</h4>
+<h4 id="_prepl"><a class="link" href="#_prepl">pREPL</a></h4>
 <div class="paragraph">
 <p>Launching a prepl can be done as follows:</p>
 </div>
@@ -1347,7 +1347,7 @@ Java property option in Clojure:</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_nrepl">nREPL</h4>
+<h4 id="_nrepl"><a class="link" href="#_nrepl">nREPL</a></h4>
 <div class="paragraph">
 <p>To start an nREPL server:</p>
 </div>
@@ -1421,7 +1421,7 @@ writes the file:</p>
 </div>
 </div>
 <div class="sect4">
-<h5 id="_debugging_the_nrepl_server">Debugging the nREPL server</h5>
+<h5 id="_debugging_the_nrepl_server"><a class="link" href="#_debugging_the_nrepl_server">Debugging the nREPL server</a></h5>
 <div class="paragraph">
 <p>To debug the nREPL server from the binary you can run:</p>
 </div>
@@ -1447,7 +1447,7 @@ writes the file:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_preloads">Preloads</h3>
+<h3 id="_preloads"><a class="link" href="#_preloads">Preloads</a></h3>
 <div class="paragraph">
 <p>The environment variable <code>BABASHKA_PRELOADS</code> allows to define code that
 will be available in all subsequent usages of babashka.</p>
@@ -1482,7 +1482,7 @@ these functions in babashka:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_classpath">Classpath</h3>
+<h3 id="_classpath"><a class="link" href="#_classpath">Classpath</a></h3>
 <div class="paragraph">
 <p>Babashka accepts a <code>--classpath</code> option that will be used to search for
 namespaces when requiring them:</p>
@@ -1570,7 +1570,7 @@ bash script.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_uberscript">Uberscript</h3>
+<h3 id="_uberscript"><a class="link" href="#_uberscript">Uberscript</a></h3>
 <div class="paragraph">
 <p>The <code>--uberscript</code> option collects the expressions in
 <code>BABASHKA_PRELOADS</code>, the command line expression or file, the main
@@ -1650,7 +1650,7 @@ bring the resources along.</p>
 <a href="#uberjar">uberjar</a> is a good alternative.</p>
 </div>
 <div class="sect3">
-<h4 id="_carve">Carve</h4>
+<h4 id="_carve"><a class="link" href="#_carve">Carve</a></h4>
 <div class="paragraph">
 <p>Uberscripts can be optimized by cutting out unused vars with
 <a href="https://github.com/borkdude/carve">carve</a>.</p>
@@ -1678,7 +1678,7 @@ bb glob-uberscript.clj <span class="s1">'*.md'</span>   0.02s  user 0.01s system
 </div>
 </div>
 <div class="sect2">
-<h3 id="_uberjar">Uberjar</h3>
+<h3 id="_uberjar"><a class="link" href="#_uberjar">Uberjar</a></h3>
 <div class="paragraph">
 <p>Babashka can create uberjars from a given classpath and optionally a
 main method:</p>
@@ -1745,7 +1745,7 @@ Clojure on the JVM for that part:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_system_properties">System properties</h3>
+<h3 id="_system_properties"><a class="link" href="#_system_properties">System properties</a></h3>
 <div class="paragraph">
 <p>Babashka sets the following system properties:</p>
 </div>
@@ -1765,7 +1765,7 @@ Clojure on the JVM for that part:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_data_readers">Data readers</h3>
+<h3 id="_data_readers"><a class="link" href="#_data_readers">Data readers</a></h3>
 <div class="paragraph">
 <p>Data readers can be enabled by setting <code>*data-readers*</code> to a hashmap of
 symbols to functions or vars:</p>
@@ -1782,7 +1782,7 @@ symbols to functions or vars:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_parsing_command_line_arguments">Parsing command line arguments</h3>
+<h3 id="_parsing_command_line_arguments"><a class="link" href="#_parsing_command_line_arguments">Parsing command line arguments</a></h3>
 <div class="paragraph">
 <p>Babashka ships with <code>clojure.tools.cli</code>:</p>
 </div>
@@ -1811,7 +1811,7 @@ symbols to functions or vars:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_reader_conditionals">Reader conditionals</h3>
+<h3 id="_reader_conditionals"><a class="link" href="#_reader_conditionals">Reader conditionals</a></h3>
 <div class="paragraph">
 <p>Babashka supports reader conditionals by taking either the <code>:bb</code> or
 <code>:clj</code> branch, whichever comes first. NOTE: the <code>:clj</code> branch behavior
@@ -1834,13 +1834,13 @@ ignored.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="style">Style</h2>
+<h2 id="style"><a class="link" href="#style">Style</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>A note on style. Babashka recommends the following:</p>
 </div>
 <div class="sect2">
-<h3 id="_explicit_requires">Explicit requires</h3>
+<h3 id="_explicit_requires"><a class="link" href="#_explicit_requires">Explicit requires</a></h3>
 <div class="paragraph">
 <p>Use explicit requires with namespace aliases in scripts, unless you&#8217;re
 writing one-liners.</p>
@@ -1902,10 +1902,10 @@ with <code>clojure</code></p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="libraries">Libraries</h2>
+<h2 id="libraries"><a class="link" href="#libraries">Libraries</a></h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="built-in-namespaces">Built-in namespaces</h3>
+<h3 id="built-in-namespaces"><a class="link" href="#built-in-namespaces">Built-in namespaces</a></h3>
 <div class="paragraph">
 <p>In addition to <code>clojure.core</code>, the following namespaces are available in babashka.
 Some are available through pre-defined aliases in the <code>user</code> namespace,
@@ -2042,9 +2042,9 @@ you want to compile babashka yourself.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_babashka_namespaces">Babashka namespaces</h3>
+<h3 id="_babashka_namespaces"><a class="link" href="#_babashka_namespaces">Babashka namespaces</a></h3>
 <div class="sect3">
-<h4 id="babashka_classpath">babashka.classpath</h4>
+<h4 id="babashka_classpath"><a class="link" href="#babashka_classpath">babashka.classpath</a></h4>
 <div class="paragraph">
 <p>Contains the function <code>add-classpath</code> which can be used to add to the
 classpath dynamically:</p>
@@ -2065,7 +2065,7 @@ classpath dynamically:</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="babashkawait">babashka.wait</h4>
+<h4 id="babashkawait"><a class="link" href="#babashkawait">babashka.wait</a></h4>
 <div class="paragraph">
 <p>Contains the functions: <code>wait-for-port</code> and <code>wait-for-path</code>.</p>
 </div>
@@ -2105,7 +2105,7 @@ namespace.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="babashkasignal">babashka.signal</h4>
+<h4 id="babashkasignal"><a class="link" href="#babashkasignal">babashka.signal</a></h4>
 <div class="paragraph">
 <p>Contains the function <code>signal/pipe-signal-received?</code>. Usage:</p>
 </div>
@@ -2130,7 +2130,7 @@ namespace.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="babashkacurl">babashka.curl</h4>
+<h4 id="babashkacurl"><a class="link" href="#babashkacurl">babashka.curl</a></h4>
 <div class="paragraph">
 <p>The namespace <code>babashka.curl</code> is a tiny wrapper around curl. It&#8217;s aliased as
 <code>curl</code> in the user namespace. See
@@ -2138,7 +2138,7 @@ namespace.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="babashkaprocess">babashka.process</h4>
+<h4 id="babashkaprocess"><a class="link" href="#babashkaprocess">babashka.process</a></h4>
 <div class="paragraph">
 <p>The <code>babashka.process</code> process library. See the
 <a href="https://github.com/babashka/process">process</a> repo for API docs.</p>
@@ -2146,7 +2146,7 @@ namespace.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_projects">Projects</h3>
+<h3 id="_projects"><a class="link" href="#_projects">Projects</a></h3>
 <div class="paragraph">
 <p>Babashka is able to run Clojure projects from source, if they are compatible
 with the subset of Clojure that sci is capable of running.</p>
@@ -2160,7 +2160,7 @@ projects that are known to work with babashka.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="pods">Pods</h2>
+<h2 id="pods"><a class="link" href="#pods">Pods</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Pods are programs that can be used as a Clojure library by
@@ -2174,7 +2174,7 @@ babashka. Documentation is available in the
 </div>
 </div>
 <div class="sect1">
-<h2 id="child_processes">Child processes</h2>
+<h2 id="child_processes"><a class="link" href="#child_processes">Child processes</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>by Michiel Borkent</p>
@@ -2184,7 +2184,7 @@ babashka. Documentation is available in the
 the easiest one.</p>
 </div>
 <div class="sect2">
-<h3 id="_clojure_java_shell">clojure.java.shell</h3>
+<h3 id="_clojure_java_shell"><a class="link" href="#_clojure_java_shell">clojure.java.shell</a></h3>
 <div class="paragraph">
 <p>A common way to shell out to another process is via <code>clojure.java.shell</code>:</p>
 </div>
@@ -2216,7 +2216,7 @@ output on stdout and the <code>:exit</code> code is <code>1</code>.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_babashka_process">babashka.process</h3>
+<h3 id="_babashka_process"><a class="link" href="#_babashka_process">babashka.process</a></h3>
 <div class="paragraph">
 <p>Creating a child process with <code>clojure.java.shell/sh</code> is convenient and
 sufficient in 90% of the scripts you&#8217;re going to write with babashka. For the
@@ -2386,7 +2386,7 @@ Type an expression to evaluate:
 </div>
 </div>
 <div class="sect3">
-<h4 id="_real_world_examples">Real world examples</h4>
+<h4 id="_real_world_examples"><a class="link" href="#_real_world_examples">Real world examples</a></h4>
 <div class="paragraph">
 <p>Prior to <code>babashka.process</code> people were using raw <code>ProcessBuilder</code> interop. Here are some real world examples. These might get updated to <code>babashka.process</code> in the future.</p>
 </div>
@@ -2411,7 +2411,7 @@ compute a classpath using tools.deps</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="deps_clj">Deps.clj</h2>
+<h2 id="deps_clj"><a class="link" href="#deps_clj">Deps.clj</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>The <a href="https://github.com/borkdude/deps.clj/"><code>deps.clj</code></a> script can be used
@@ -2492,10 +2492,10 @@ evaluated and made available through the symbol <code>util</code>.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="recipes">Recipes</h2>
+<h2 id="recipes"><a class="link" href="#recipes">Recipes</a></h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_running_tests">Running tests</h3>
+<h3 id="_running_tests"><a class="link" href="#_running_tests">Running tests</a></h3>
 <div class="paragraph">
 <p>Babashka bundles <code>clojure.test</code>. To make CI scripts fail you can use a
 simple runner like this:</p>
@@ -2511,7 +2511,7 @@ bb <span class="nt">-cp</span> <span class="s2">"src:test:resources"</span> <spa
 </div>
 </div>
 <div class="sect2">
-<h3 id="main_file">Main file</h3>
+<h3 id="main_file"><a class="link" href="#main_file">Main file</a></h3>
 <div class="paragraph">
 <p>In Python scripts there is a well-known pattern to check if the current
 file was the file invoked from the command line, or loaded from another
@@ -2525,7 +2525,7 @@ be implemented with:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_shutdown_hook">Shutdown hook</h3>
+<h3 id="_shutdown_hook"><a class="link" href="#_shutdown_hook">Shutdown hook</a></h3>
 <div class="paragraph">
 <p>Adding a shutdown hook allows you to execute some code before the script
 exits.</p>
@@ -2541,7 +2541,7 @@ exits.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_printing_returned_values">Printing returned values</h3>
+<h3 id="_printing_returned_values"><a class="link" href="#_printing_returned_values">Printing returned values</a></h3>
 <div class="paragraph">
 <p>Babashka doesn&#8217;t print a returned <code>nil</code> as lots of scripts end in
 something side-effecting.</p>
@@ -2559,7 +2559,7 @@ something side-effecting.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_http_requests">HTTP requests</h3>
+<h3 id="_http_requests"><a class="link" href="#_http_requests">HTTP requests</a></h3>
 <div class="paragraph">
 <p>For making HTTP requests you can use:</p>
 </div>
@@ -2588,7 +2588,7 @@ favorite command line http client</p>
 </ul>
 </div>
 <div class="sect3">
-<h4 id="_choosing_the_right_client">Choosing the right client</h4>
+<h4 id="_choosing_the_right_client"><a class="link" href="#_choosing_the_right_client">Choosing the right client</a></h4>
 <div class="paragraph">
 <p>If memory usage is a concern and you are downloading big files, choose
 <code>babashka.curl</code> with <code>:as :stream</code> over <code>org.httpkit.client</code> since
@@ -2626,7 +2626,7 @@ out!</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_http_over_unix_sockets">HTTP over Unix sockets</h4>
+<h4 id="_http_over_unix_sockets"><a class="link" href="#_http_over_unix_sockets">HTTP over Unix sockets</a></h4>
 <div class="paragraph">
 <p>This can be useful for talking to Docker:</p>
 </div>
@@ -2647,7 +2647,7 @@ out!</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="core_async">Core.async</h3>
+<h3 id="core_async"><a class="link" href="#core_async">Core.async</a></h3>
 <div class="paragraph">
 <p>In addition to <code>future</code>, <code>pmap</code>, <code>promise</code> and friends, you may use the
 <code>clojure.core.async</code> namespace for asynchronous scripting. The following
@@ -2695,7 +2695,7 @@ of <code>n</code>:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_interacting_with_an_nrepl_server">Interacting with an nREPL server</h3>
+<h3 id="_interacting_with_an_nrepl_server"><a class="link" href="#_interacting_with_an_nrepl_server">Interacting with an nREPL server</a></h3>
 <div class="paragraph">
 <p>Babashka comes with the <a href="https://github.com/nrepl/bencode">nrepl/bencode</a>
 library which allows you to read and write bencode messages to a socket.
@@ -2722,7 +2722,7 @@ started with <code>lein repl</code>:</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="differences-with-clojure">Differences with Clojure</h2>
+<h2 id="differences-with-clojure"><a class="link" href="#differences-with-clojure">Differences with Clojure</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Babashka is implemented using the <a href="https://github.com/borkdude/sci">Small
@@ -2770,7 +2770,7 @@ info <a href="#core_async">here</a>.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="contributing">Contributing</h2>
+<h2 id="contributing"><a class="link" href="#contributing">Contributing</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Visit Babashka book&#8217;s <a href="https://github.com/babashka/book">Github repository</a> and read
@@ -2780,7 +2780,7 @@ on how to contribute.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="license">License</h2>
+<h2 id="license"><a class="link" href="#license">License</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Copyright © 2020 Michiel Borkent</p>
@@ -2804,7 +2804,7 @@ this repository as a basis for creating your own book based on this one.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-11-29 18:23:23 +0100
+Last updated 2020-11-29 22:13:20 +0100
 </div>
 </div>
 </body>
