@@ -2,7 +2,7 @@ site:
   title: Babashka book
   # the 404 page and sitemap files only get generated when the url property is set
   url: https://book.babashka.org
-  start_page: book::intro.adoc
+  start_page: _::intro.adoc
 content:
   sources:
   - url: ./

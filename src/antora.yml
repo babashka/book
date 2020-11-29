@@ -1,6 +1,6 @@
-name: book
+name: _
 title: Babashka
 version: master
-start_page: book.adoc
+start_page: intro.adoc
 nav:
   - modules/ROOT/nav.adoc
