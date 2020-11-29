@@ -60,7 +60,7 @@ Using `bb` with a shebang also works:
 
 [source,clojure]
 ----
-include::usage/download_html.clj[]
+include::example$/usage/download_html.clj[]
 ----
 
 [source,bash]
