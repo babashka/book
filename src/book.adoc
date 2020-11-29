@@ -13,8 +13,6 @@ Michiel Borkent
 <!--<script>alert('hello')</script>-->
 ++++
 
-include::contributing.adoc[]
-
 include::intro.adoc[]
 
 include::getting_started.adoc[]
@@ -34,6 +32,8 @@ include::deps_clj.adoc[]
 include::recipes.adoc[]
 
 include::differences.adoc[]
+
+include::contributing.adoc[]
 
 include::license.adoc[]
 
