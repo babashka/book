@@ -659,74 +659,74 @@ pre.rouge {
 <!-- We do not need the tocify CSS because the asciidoc CSS already provides most of what we neeed -->
 
 <style>
-/* .tocify-header { */
-/*     font-style: italic; */
-/* } */
+  /* .tocify-header { */
+  /*     font-style: italic; */
+  /* } */
 
-.tocify-subheader {
+  .tocify-subheader {
     font-style: normal;
     font-size: 90%;
-}
+  }
 
-.tocify ul {
+  .tocify ul {
     margin: 0;
- }
+  }
 
-.tocify-focus {
+  .tocify-focus {
     color: #7a2518;
     background-color: rgba(0, 0, 0, 0.1);
-}
+  }
 
-.tocify-focus > a {
+  .tocify-focus > a {
     color: #7a2518;
-}
+  }
 </style>
 
 <script type="text/javascript">
-    $(function () {
-        // Add a new container for the tocify toc into the existing toc so we can re-use its
-        // styling
-        $("#toc").append("<div id='generated-toc'></div>");
-        $("#generated-toc").tocify({
-            extendPage: true,
-            context: "#content",
-            highlightOnScroll: true,
-            hideEffect: "slideUp",
-            // Use the IDs that asciidoc already provides so that TOC links and intra-document
-            // links are the same. Anything else might confuse users when they create bookmarks.
-            hashGenerator: function(text, element) {
-                return $(element).attr("id");
-            },
-            // Smooth scrolling doesn't work properly if we use the asciidoc IDs
-            smoothScroll: false,
-            // Set to 'none' to use the tocify classes
-            theme: "none",
-            // Handle book (may contain h1) and article (only h2 deeper)
-            selectors: $( "#content" ).has( "h1" ).size() > 0 ? "h1,h2,h3,h4,h5" : "h2,h3,h4,h5",
-            ignoreSelector: ".discrete"
-        });
-
-        // Switch between static asciidoc toc and dynamic tocify toc based on browser size
-        // This is set to match the media selectors in the asciidoc CSS
-        // Without this, we keep the dynamic toc even if it is moved from the side to preamble
-        // position which will cause odd scrolling behavior
-        var handleTocOnResize = function() {
-            if ($(document).width() < 768) {
-                $("#generated-toc").hide();
-                $(".sectlevel0").show();
-                $(".sectlevel1").show();
-            }
-            else {
-                $("#generated-toc").show();
-                $(".sectlevel0").hide();
-                $(".sectlevel1").hide();
-            }
-        }
-
-        $(window).resize(handleTocOnResize);
-        handleTocOnResize();
+  $(function () {
+    // Add a new container for the tocify toc into the existing toc so we can re-use its
+    // styling
+    $("#toc").append("<div id='generated-toc'></div>");
+    $("#generated-toc").tocify({
+      extendPage: true,
+      context: "#content",
+      highlightOnScroll: true,
+      hideEffect: "slideUp",
+      // Use the IDs that asciidoc already provides so that TOC links and intra-document
+      // links are the same. Anything else might confuse users when they create bookmarks.
+      hashGenerator: function(text, element) {
+        return $(element).attr("id");
+      },
+      // Smooth scrolling doesn't work properly if we use the asciidoc IDs
+      smoothScroll: false,
+      // Set to 'none' to use the tocify classes
+      theme: "none",
+      // Handle book (may contain h1) and article (only h2 deeper)
+      selectors: $( "#content" ).has( "h1" ).size() > 0 ? "h1,h2,h3,h4,h5" : "h2,h3,h4,h5",
+      ignoreSelector: ".discrete"
     });
-</script>
+
+    // Switch between static asciidoc toc and dynamic tocify toc based on browser size
+    // This is set to match the media selectors in the asciidoc CSS
+    // Without this, we keep the dynamic toc even if it is moved from the side to preamble
+    // position which will cause odd scrolling behavior
+    var handleTocOnResize = function() {
+      if ($(document).width() < 768) {
+        $("#generated-toc").hide();
+        $(".sectlevel0").show();
+        $(".sectlevel1").show();
+      }
+      else {
+        $("#generated-toc").show();
+        $(".sectlevel0").hide();
+        $(".sectlevel1").hide();
+      }
+    }
+
+    $(window).resize(handleTocOnResize);
+    handleTocOnResize();
+  });
+  </script>
 </head>
 <body class="book toc2 toc-left">
 <div id="header">
@@ -737,7 +737,6 @@ pre.rouge {
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#contributing">Contributing</a></li>
 <li><a href="#introduction">Introduction</a>
 <ul class="sectlevel2">
 <li><a href="#_target_audience">Target audience</a></li>
@@ -800,6 +799,7 @@ pre.rouge {
 </ul>
 </li>
 <li><a href="#differences-with-clojure">Differences with Clojure</a></li>
+<li><a href="#contributing">Contributing</a></li>
 <li><a href="#license">License</a></li>
 </ul>
 </div>
@@ -808,16 +808,6 @@ pre.rouge {
 <div id="preamble">
 <div class="sectionbody">
 <!--<script>alert('hello')</script>-->
-</div>
-</div>
-<div class="sect1">
-<h2 id="contributing">Contributing</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Visit Babashka book&#8217;s <a href="https://github.com/babashka/book">Github repository</a> and read
-<a href="https://github.com/babashka/book/blob/master/CONTRIBUTING.md">CONTRIBUTING.md</a>
-on how to contribute.</p>
-</div>
 </div>
 </div>
 <div class="sect1">
@@ -2780,6 +2770,16 @@ info <a href="#core_async">here</a>.</p>
 </div>
 </div>
 <div class="sect1">
+<h2 id="contributing">Contributing</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Visit Babashka book&#8217;s <a href="https://github.com/babashka/book">Github repository</a> and read
+<a href="https://github.com/babashka/book/blob/master/CONTRIBUTING.md">CONTRIBUTING.md</a>
+on how to contribute.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="license">License</h2>
 <div class="sectionbody">
 <div class="paragraph">
@@ -2804,7 +2804,7 @@ this repository as a basis for creating your own book based on this one.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-11-28 22:33:31 +0100
+Last updated 2020-11-29 18:23:23 +0100
 </div>
 </div>
 </body>
