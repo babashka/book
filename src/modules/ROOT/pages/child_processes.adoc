@@ -56,7 +56,7 @@ starts a pREPL process:
 .process/prepl_1.clj
 [source,clojure]
 ----
-include::./process/prepl_1.clj[]
+include::example$/process/prepl_1.clj[]
 ----
 
 <1> The command and its arguments
@@ -92,7 +92,7 @@ stream of the process and handle reading ourselves.
 .process/prepl_2.clj
 [source,clojure]
 ----
-include::process/prepl_2.clj[]
+include::example$process/prepl_2.clj[]
 ----
 
 <1> A writer that we will use to send input to the pREPL
