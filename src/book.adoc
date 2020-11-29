@@ -8,6 +8,7 @@ Michiel Borkent
 :toc: left
 :toclevels: 2
 :toc-collapsable:
+:sectlinks:
 
 ++++
 <!--<script>alert('hello')</script>-->
