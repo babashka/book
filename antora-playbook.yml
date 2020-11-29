@@ -1,8 +1,8 @@
 site:
-  title: Antora ARC42 Template
+  title: Babashka book
   # the 404 page and sitemap files only get generated when the url property is set
-  url: https://anoff.io/antora-arc42
-  start_page: book::book.adoc
+  url: https://book.babashka.org
+  start_page: book::intro.adoc
 content:
   sources:
   - url: ./
@@ -12,4 +12,4 @@ ui:
   bundle:
     url: https://gitlab.com/antora/antora-ui-default/-/jobs/artifacts/master/raw/build/ui-bundle.zip?job=bundle-stable
     snapshot: true
-#  supplemental_files: ./supplemental-ui
+  supplemental_files: src/supplemental-ui

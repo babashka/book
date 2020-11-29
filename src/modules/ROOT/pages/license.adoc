@@ -3,10 +3,10 @@
 
 Copyright © 2020 Michiel Borkent
 
-image::https://i.creativecommons.org/l/by-nc-nd/3.0/88x31.png[Creative Commons License,rel=rel="license",link="https://creativecommons.org/licenses/by-nc-nd/3.0/deed.en_US"]
+image::https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png[Creative Commons License,rel=rel="license",link="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.en_US"]
 
 This book is licensed under a
-https://creativecommons.org/licenses/by-nc-nd/3.0/deed.en_US[Creative Commons
+https://creativecommons.org/licenses/by-nc-nd/4.0/deed.en_US[Creative Commons
 License].
 
 Please note that because this is a *No Derivatives* license, you may *not* use

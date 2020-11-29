@@ -1,0 +1,79 @@
+== Classpath
+
+Babashka accepts a `--classpath` option that will be used to search for
+namespaces when requiring them:
+
+[source,clojure]
+----
+$ cat src/my/namespace.clj
+(ns my.namespace)
+(defn -main [& _args]
+  (println "Hello from my namespace!"))
+
+$ bb --classpath src --main my.namespace
+Hello from my namespace!
+----
+
+If you have a larger script with a classic Clojure project layout like
+
+[source,bash]
+----
+$ tree -L 3
+├── deps.edn
+├── README
+├── src
+│   └── project_namespace
+│       ├── main.clj
+│       └── utilities.clj
+└── test
+    └── project_namespace
+        ├── test_main.clj
+        └── test_utilities.clj
+----
+
+then you can tell babashka to include both the `src` and `test` folders
+in the classpath and start a socket REPL by running:
+
+[source,bash]
+----
+$ bb --classpath src:test --socket-repl 1666
+----
+
+Note that you can use the `clojure` tool to produce classpaths and
+download dependencies:
+
+[source,bash]
+----
+$ cat deps.edn
+{:deps
+ {my_gist_script
+  {:git/url "https://gist.github.com/borkdude/263b150607f3ce03630e114611a4ef42"
+   :sha "cfc761d06dfb30bb77166b45d439fe8fe54a31b8"}}
+ :aliases {:my-script {:main-opts ["-m" "my-gist-script"]}}}
+
+$ CLASSPATH=$(clojure -Spath)
+$ bb --classpath "$CLASSPATH" --main my-gist-script
+Hello from gist script!
+----
+
+If there is no `--classpath` argument, the `BABASHKA_CLASSPATH`
+environment variable will be used:
+
+[source,bash]
+----
+$ export BABASHKA_CLASSPATH=$(clojure -Spath)
+$ export BABASHKA_PRELOADS="(require '[my-gist-script])"
+$ bb "(my-gist-script/-main)"
+Hello from gist script!
+----
+
+When invoking `bb` with a main function, the expression
+`(System/getProperty "babashka.main")` will return the name of the main
+function.
+
+Also see the link:#babashka_classpath[babashka.classpath]
+namespace which allows dynamically adding to the classpath.
+
+See link:#deps_clj[deps.clj] for a babashka script that replaces the `clojure`
+bash script.
+

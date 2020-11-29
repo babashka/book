@@ -21,23 +21,23 @@ include::getting_started.adoc[]
 
 include::usage.adoc[]
 
-// include::style.adoc[]
+include::style.adoc[]
 
-// include::libraries.adoc[]
+include::libraries.adoc[]
 
-// include::pods.adoc[]
+include::pods.adoc[]
 
-// include::child_processes.adoc[]
+include::child_processes.adoc[]
 
-// include::deps_clj.adoc[]
+include::deps_clj.adoc[]
 
-// include::recipes.adoc[]
+include::recipes.adoc[]
 
-// include::differences.adoc[]
+include::differences.adoc[]
 
-// include::license.adoc[]
+include::license.adoc[]
 
-//include::shell_integration.adoc[]
+include::shell_integration.adoc[]
 
 // == TODO
 
