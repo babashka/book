@@ -1,0 +1,9 @@
+[[pods]]
+== Pods
+
+Pods are programs that can be used as a Clojure library by
+babashka. Documentation is available in the
+https://github.com/babashka/babashka.pods[library repo].
+
+A list of available pods can be found
+https://github.com/borkdude/babashka/blob/master/doc/projects.md#pods[here].

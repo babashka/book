@@ -1,0 +1,132 @@
+[[child_processes]]
+== Child processes
+
+by Michiel Borkent
+
+There are several ways of creating child processes in babashka. Let's start with
+the easiest one.
+
+=== clojure.java.shell
+
+A common way to shell out to another process is via `clojure.java.shell`:
+
+[source,clojure]
+----
+user=> (require '[clojure.java.shell :refer [sh]])
+nil
+user=> (sh "ls")
+{:exit 0, :out "README.md\ndist\ngh-pages\nscript\nsrc\n", :err ""}
+----
+
+As you can see the result of `:out` are the lines of text produced by `ls`. The
+`:exit` code was `0` and there was no output on stderr.
+
+[source,clojure]
+----
+user=> (sh "ls" "foo")
+{:exit 1, :out "", :err "ls: foo: No such file or directory\n"}
+----
+
+If we invoke `ls` with a non-existing file, there is error output, but not
+output on stdout and the `:exit` code is `1`.
+
+For more information on `clojure.java.shell`, read the
+https://clojure.github.io/clojure/clojure.java.shell-api.html[API documentation]
+
+=== babashka.process
+
+Creating a child process with `clojure.java.shell/sh` is convenient and
+sufficient in 90% of the scripts you're going to write with babashka. For the
+remaining 10% you're going to need something slightly more powerful. This is
+where the `babashka.process` library namespace comes in. The README and source
+code of this library is located https://github.com/babashka/process[here].
+
+What if we wanted to start a Clojure pREPL in our script, send commands to it
+and read the evaluated output in a loop?  Using `clojure.java.shell/sh` for this
+has the limitation that we can only send input and read output once per process.
+Using `babashka.process` which leverages the `java.lang.ProcessBuilder` and
+`java.lang.Process` classes gives us the extra power we need to overcome this
+limitation.
+
+First we show how to use `process` to start a process that inherits stdout,
+stderr and stdin from the parent process. This is often useful when you want to
+hand over control to another process at the end of a script. The following code
+starts a pREPL process:
+
+.process/prepl_1.clj
+[source,clojure]
+----
+include::./process/prepl_1.clj[]
+----
+
+<1> The command and its arguments
+
+<2> Creating the process
+
+<3> This option redirects stdout and stdin from the parent process to the child
+process.
+
+<4> This line will destroy the child process and all of it's children processes
+before the parent process exits.
+
+<5> Dereferencing the process waits until it ends. If
+we would not include this, our script would end immediately.
+
+When calling the script, we can interact with the pREPL
+
+[source,shell]
+----
+$ bb src/process/prepl_1.clj
+(+ 1 2 3)
+{:tag :ret, :val "6", :ns "user", :ms 5, :form "(+ 1 2 3)"}
+----
+
+Pressing ctrl-C or typing `:repl/quit` will make the script terminate.
+
+What if we want to parse the output of the prepl and reformat it to our own
+likings?  Instead of sending the output of the child process to stdout we will
+have to get a hold of it. We can grab the output by not using `:inherit` and
+getting the `:out` stream of the process. Similarly we will grab the `:in`
+stream of the process and handle reading ourselves.
+
+.process/prepl_2.clj
+[source,clojure]
+----
+include::process/prepl_2.clj[]
+----
+
+<1> A writer that we will use to send input to the pREPL
+
+<2> A reader that reads from the pREPL output. pREPL returns EDN and
+`clojure.edn/read` needs a `PushbackReader`.
+
+<3> We read user input via `clojure.core/read-line`
+
+<4> Here we binding `*out*` to the input writer so we can use `println` to write
+to it.
+
+<5> Read the next EDN value.
+
+<6> Print the output using our custom formatting.
+
+Here is an example run:
+
+[source,shell]
+----
+$ bb src/process/prepl_2.clj
+Type an expression to evaluate:
+(+ 1 2 3)
+(+ 1 2 3) evaluates to 6
+:repl/quit
+----
+
+==== Real world examples
+
+Prior to `babashka.process` people were using raw `ProcessBuilder` interop. Here are some real world examples. These might get updated to `babashka.process` in the future.
+
+* The https://github.com/borkdude/babashka/blob/5608f935cd28c777cf7d16243574558e2203872e/script/bump_version.clj#L9[babashka] repo uses `ProcessBuilder` to invoke git to make a commit after bumping the version.
+  It redirects the output from `git` directly to stdout of the parent process.
+* https://github.com/borkdude/babashka.curl/blob/53b5b9d98f2e594384f628b0deee76b53bea5062/src/babashka/curl.clj#L17[babashka.curl] uses `ProcessBuilder` to interact with the `curl` executable
+* https://github.com/borkdude/deps.clj/blob/5d51b80176bdcb96927ce5e6aedb25581db0e2e0/deps.clj#L18[deps.clj]
+  uses `ProcessBuilder` to interact with `java`, e.g. to start a Clojure REPL or
+  compute a classpath using tools.deps

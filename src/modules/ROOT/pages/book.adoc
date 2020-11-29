@@ -1,0 +1,46 @@
+Babashka book
+=============
+Michiel Borkent
+:doctype: book
+:description: A book with scripting recipes for babashka
+:source-highlighter: rouge
+:icons: font
+:toc: left
+:toclevels: 2
+:toc-collapsable:
+
+++++
+<!--<script>alert('hello')</script>-->
+++++
+
+include::contributing.adoc[]
+
+include::intro.adoc[]
+
+include::getting_started.adoc[]
+
+include::usage.adoc[]
+
+// include::style.adoc[]
+
+// include::libraries.adoc[]
+
+// include::pods.adoc[]
+
+// include::child_processes.adoc[]
+
+// include::deps_clj.adoc[]
+
+// include::recipes.adoc[]
+
+// include::differences.adoc[]
+
+// include::license.adoc[]
+
+//include::shell_integration.adoc[]
+
+// == TODO
+
+// - Command line arguments
+// - HTTP requests
+// - XML

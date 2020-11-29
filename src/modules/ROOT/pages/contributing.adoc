@@ -1,0 +1,6 @@
+[[contributing]]
+== Contributing
+
+Visit Babashka book's https://github.com/babashka/book[Github repository] and read
+https://github.com/babashka/book/blob/master/CONTRIBUTING.md[CONTRIBUTING.md]
+on how to contribute.

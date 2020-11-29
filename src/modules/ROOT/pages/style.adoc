@@ -1,0 +1,48 @@
+[[style]]
+== Style
+
+A note on style. Babashka recommends the following:
+
+=== Explicit requires
+
+Use explicit requires with namespace aliases in scripts, unless you're
+writing one-liners.
+
+Do this:
+
+[source,shell]
+----
+$ ls | bb -i '(-> *input* first (str/includes? "m"))'
+true
+----
+
+But not this:
+
+script.clj:
+
+[source,clojure]
+----
+(-> *input* first (str/includes? "m"))
+----
+
+Rather do this:
+
+script.clj:
+
+[source,clojure]
+----
+(ns script
+  (:require [clojure.java.io :as io]
+            [clojure.string :as str]))
+  (-> (io/reader *in*) line-seq first (str/includes? "m"))
+----
+
+Some reasons for this:
+
+* Linters like clj-kondo work better with code that uses namespace
+forms, explicit requires, and known Clojure constructs
+* Editor tooling works better with namespace forms (sorting requires,
+etc).
+* Writing compatible code gives you the option to run the same script
+with `clojure`
+

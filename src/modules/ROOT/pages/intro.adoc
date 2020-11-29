@@ -1,0 +1,29 @@
+[[introduction]]
+== Introduction
+
+Welcome reader! This is a book about scripting with Clojure and babashka.
+https://www.clojure.org[Clojure] is a functional, dynamic programming language
+from the Lisp family which runs on the JVM. Babashka is a scripting environment
+made with Clojure, compiled to native with https://www.graalvm.org[GraalVM]. The
+primary benefits of using babashka for scripting compared to the JVM are fast
+startup time and low memory consumption. Babashka comes with batteries included
+and packs libraries like `clojure.tools.cli` for parsing command line arguments
+and `cheshire` for working with JSON. Moreover, it can be installed just by
+downloading a self-contained binary.
+
+=== Target audience
+
+Babashka is written for developers who are familiar with Clojure on
+the JVM. This book assumes familiarity with Clojure and is not a Clojure
+tutorial. If you aren't that familiar with Clojure but you're curious to learn,
+check out https://gist.github.com/yogthos/be323be0361c589570a6da4ccc85f58f[this]
+list of beginner resources.
+
+=== Setting expectations
+
+Babashka uses https://github.com/borkdude/sci[sci] for interpreting Clojure. Sci
+implements a substantial subset of Clojure. Interpreting code is in general not
+as performant as executing compiled code. If your script takes more than a few
+seconds to run or has lots of loops, Clojure on the JVM may be a better fit, as
+the performance on JVM is going to outweigh its startup time penalty. Read more
+about the differences with Clojure link:#differences-with-clojure[here].
