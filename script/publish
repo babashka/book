@@ -2,6 +2,7 @@
 
 script/compile
 cd gh-pages
+touch .nojekyll
 git add .
 git commit -am "update"
 git push
