@@ -1,0 +1,1594 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Babashka book :: Babashka book</title>
+    <link rel="canonical" href="https://book.babashka.org/_/book.html">
+    <meta name="description" content="A book with scripting recipes for babashka">
+    <meta name="generator" content="Antora 2.3.4">
+    <link rel="stylesheet" href="../_/css/site.css">
+<link rel="stylesheet" href="../_/css/site-extra.css">
+<!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css">-->
+<!--<link rel="icon" href="../_/img/favicon.ico" type="image/x-icon">-->
+  </head>
+  <body class="article">
+<header class="header" role="banner">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <div class="navbar-item">
+        <a href="https://book.babashka.org">Babashka book</a>
+        <!--<span class="separator">//</span>
+        <a href="https://book.babashka.org">Docs</a>-->
+      </div>
+      <!--<div class="navbar-item">
+        <input id="search-input" type="text" placeholder="Search docs">
+      </div>-->
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <!--<div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Projects</a>
+          <div class="navbar-dropdown">
+              <a class="navbar-item" href="https://github.com/clojure-emacs/cider">CIDER</a>
+              <a class="navbar-item" href="https://github.com/clojure-emacs/cider-nrepl">CIDER nREPL</a>
+              <a class="navbar-item" href="https://github.com/clojure-emacs/orchard">Orchard</a>
+              <a class="navbar-item" href="https://github.com/clojure-emacs/clojure-mode">clojure-mode</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Community</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="/cider/about/support.html">Support</a>
+            <a class="navbar-item" href="/cider/contributing.html">Contributing</a>
+            <a class="navbar-item" href="https://opencollective.com/cider">Open Collective</a>
+          </div>
+        </div>
+      </div>
+    </div>-->
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="_" data-version="master">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="intro.html">Babashka</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="intro.html">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="getting_started.html">Getting started</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Usage</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="usage.html">General usage</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="usage/repl.html">Running a REPL</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="usage/classpath.html">Classpath</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="usage/preloads.html">Preloads</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="usage/io-flags.html">Input and output flags</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="usage/uberscript.html">Uberscript</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="usage/uberjar.html">Uberjar</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="style.html">Style</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="libraries.html">Libraries</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="pods.html">Pods</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="child_processes.html">Child processes</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="deps_clj.html">Deps.clj</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="recipes.html">Recipes</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="differences.html">Differences with Clojure</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="contributing.html">Contributing</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="license.html">License</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Babashka</span>
+    <span class="version">master</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <span class="title">Babashka</span>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="intro.html">master</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="intro.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="intro.html">Babashka</a></li>
+    <li><a href="book.html">Babashka book</a></li>
+  </ul>
+</nav>
+  <div class="edit-this-page"><a href="file:///Users/borkdude/Dropbox/dev/clojure/babashka.book/src/modules/ROOT/pages/book.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<article class="doc">
+<h1 class="page">Babashka book</h1>
+<div id="toc" class="toc">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#contributing">Contributing</a></li>
+<li><a href="#introduction">Introduction</a>
+<ul class="sectlevel2">
+<li><a href="#_target_audience">Target audience</a></li>
+<li><a href="#_setting_expectations">Setting expectations</a></li>
+</ul>
+</li>
+<li><a href="#getting_started">Getting started</a>
+<ul class="sectlevel2">
+<li><a href="#_installation">Installation</a></li>
+<li><a href="#_building_from_source">Building from source</a></li>
+<li><a href="#_running_babashka">Running babashka</a></li>
+</ul>
+</li>
+<li><a href="#general-usage">General usage</a>
+<ul class="sectlevel2">
+<li><a href="#command-line-options">Command line options</a></li>
+<li><a href="#running-a-script">Running a script</a></li>
+<li><a href="#_current_file_path">Current file path</a></li>
+<li><a href="#_parsing_command_line_arguments">Parsing command line arguments</a></li>
+<li><a href="#_system_properties">System properties</a></li>
+<li><a href="#_data_readers">Data readers</a></li>
+<li><a href="#_reader_conditionals">Reader conditionals</a></li>
+</ul>
+</li>
+<li><a href="#style">Style</a>
+<ul class="sectlevel2">
+<li><a href="#_explicit_requires">Explicit requires</a></li>
+</ul>
+</li>
+<li><a href="#libraries">Libraries</a>
+<ul class="sectlevel2">
+<li><a href="#built-in-namespaces">Built-in namespaces</a></li>
+<li><a href="#_babashka_namespaces">Babashka namespaces</a></li>
+<li><a href="#_projects">Projects</a></li>
+</ul>
+</li>
+<li><a href="#pods">Pods</a></li>
+<li><a href="#child_processes">Child processes</a>
+<ul class="sectlevel2">
+<li><a href="#_clojure_java_shell">clojure.java.shell</a></li>
+<li><a href="#_babashka_process">babashka.process</a></li>
+</ul>
+</li>
+<li><a href="#deps_clj">Deps.clj</a></li>
+<li><a href="#recipes">Recipes</a>
+<ul class="sectlevel2">
+<li><a href="#_running_tests">Running tests</a></li>
+<li><a href="#main_file">Main file</a></li>
+<li><a href="#_shutdown_hook">Shutdown hook</a></li>
+<li><a href="#_printing_returned_values">Printing returned values</a></li>
+<li><a href="#_http_requests">HTTP requests</a></li>
+<li><a href="#core_async">Core.async</a></li>
+<li><a href="#_interacting_with_an_nrepl_server">Interacting with an nREPL server</a></li>
+</ul>
+</li>
+<li><a href="#differences-with-clojure">Differences with Clojure</a></li>
+<li><a href="#license">License</a></li>
+<li><a href="#shell_integration">Shell integration</a></li>
+</ul>
+</div>
+<div id="preamble">
+<div class="sectionbody">
+<!--<script>alert('hello')</script>-->
+</div>
+</div>
+<div class="sect1">
+<h2 id="contributing"><a class="anchor" href="#contributing"></a>Contributing</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Visit Babashka book&#8217;s <a href="https://github.com/babashka/book">Github repository</a> and read
+<a href="https://github.com/babashka/book/blob/master/CONTRIBUTING.md">CONTRIBUTING.md</a>
+on how to contribute.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="introduction"><a class="anchor" href="#introduction"></a>Introduction</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Welcome reader! This is a book about scripting with Clojure and babashka.
+<a href="https://www.clojure.org">Clojure</a> is a functional, dynamic programming language
+from the Lisp family which runs on the JVM. Babashka is a scripting environment
+made with Clojure, compiled to native with <a href="https://www.graalvm.org">GraalVM</a>. The
+primary benefits of using babashka for scripting compared to the JVM are fast
+startup time and low memory consumption. Babashka comes with batteries included
+and packs libraries like <code>clojure.tools.cli</code> for parsing command line arguments
+and <code>cheshire</code> for working with JSON. Moreover, it can be installed just by
+downloading a self-contained binary.</p>
+</div>
+<div class="sect2">
+<h3 id="_target_audience"><a class="anchor" href="#_target_audience"></a>Target audience</h3>
+<div class="paragraph">
+<p>Babashka is written for developers who are familiar with Clojure on
+the JVM. This book assumes familiarity with Clojure and is not a Clojure
+tutorial. If you aren&#8217;t that familiar with Clojure but you&#8217;re curious to learn,
+check out <a href="https://gist.github.com/yogthos/be323be0361c589570a6da4ccc85f58f">this</a>
+list of beginner resources.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_setting_expectations"><a class="anchor" href="#_setting_expectations"></a>Setting expectations</h3>
+<div class="paragraph">
+<p>Babashka uses <a href="https://github.com/borkdude/sci">sci</a> for interpreting Clojure. Sci
+implements a substantial subset of Clojure. Interpreting code is in general not
+as performant as executing compiled code. If your script takes more than a few
+seconds to run or has lots of loops, Clojure on the JVM may be a better fit, as
+the performance on JVM is going to outweigh its startup time penalty. Read more
+about the differences with Clojure <a href="#differences-with-clojure">here</a>.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="getting_started"><a class="anchor" href="#getting_started"></a>Getting started</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_installation"><a class="anchor" href="#_installation"></a>Installation</h3>
+<div class="paragraph">
+<p>Installing babashka is as simple as downloading the binary for your platform and
+placing it on your path. Pre-built binaries are provided on the
+<a href="https://github.com/borkdude/babashka/releases">releases</a> page of babashka&#8217;s
+<a href="https://github.com/borkdude/babashka">Github repo</a>. Babashka is also available in
+various package managers like <code>brew</code> for macOS and linux and <code>scoop</code> for
+Windows. See <a href="https://github.com/borkdude/babashka#installation">here</a> for
+details.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_building_from_source"><a class="anchor" href="#_building_from_source"></a>Building from source</h3>
+<div class="paragraph">
+<p>If you would rather build babashka from source, download a copy of GraalVM and
+set the <code>GRAALVM_HOME</code> environment variable. Also make sure you have
+<a href="https://leiningen.org">lein</a> installed. Then run:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code>$ git clone https://github.com/borkdude/babashka --recursive
+$ script/uberjar &amp;&amp; script/compile</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>See the babashka <a href="https://github.com/borkdude/babashka/blob/master/doc/build.md">build.md</a> page for details.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_running_babashka"><a class="anchor" href="#_running_babashka"></a>Running babashka</h3>
+<div class="paragraph">
+<p>The babashka executable is called <code>bb</code>. You can either provide it with a Clojure
+expression directly:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-clojure hljs" data-lang="clojure">$ bb -e '(+ 1 2 3)'
+6</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>or run a script:</p>
+</div>
+<div class="listingblock">
+<div class="title">script.clj</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-clojure hljs" data-lang="clojure">(+ 1 2 3)</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-clojure hljs" data-lang="clojure">$ bb -f script.clj
+6</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>-e</code> flag is optional when the argument starts with a paren. In that case babashka will treat it automatically as an expression:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-clojure hljs" data-lang="clojure">$ bb '(+ 1 2 3)'
+6</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Similarly, the <code>-f</code> flag is optional when the argument is a filename:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-clojure hljs" data-lang="clojure">$ bb script.clj
+6</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Commonly, scripts have shebangs so you can invoke them with their filename only:</p>
+</div>
+<div class="listingblock">
+<div class="title">script.clj</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-clojure hljs" data-lang="clojure">#!/usr/bin/env bb
+(+ 1 2 3)</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="general-usage"><a class="anchor" href="#general-usage"></a>General usage</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="command-line-options"><a class="anchor" href="#command-line-options"></a>Command line options</h3>
+<div class="paragraph">
+<p>Typing <code>bb --help</code> from the command line will print all the available command
+line options which should give you a sense of the available features in
+babashka.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">Babashka v0.2.3
+
+Options must appear in the order of groups mentioned below.
+
+Help:
+
+  --help, -h or -?    Print this help text.
+  --version           Print the current version of babashka.
+  --describe          Print an EDN map with information about this version of babashka.
+
+In- and output flags:
+
+  -i                  Bind *input* to a lazy seq of lines from stdin.
+  -I                  Bind *input* to a lazy seq of EDN values from stdin.
+  -o                  Write lines to stdout.
+  -O                  Write EDN values to stdout.
+  --stream            Stream over lines or EDN values from stdin. Combined with -i or -I *input* becomes a single value per iteration.
+
+Uberscript:
+
+  --uberscript &lt;file&gt; Collect preloads, -e, -f and -m and all required namespaces from the classpath into a single executable file.
+
+Evaluation:
+
+  -e, --eval &lt;expr&gt;   Evaluate an expression.
+  -f, --file &lt;path&gt;   Evaluate a file.
+  -cp, --classpath    Classpath to use.
+  -m, --main &lt;ns&gt;     Call the -main function from namespace with args.
+  --verbose           Print debug information and entire stacktrace in case of exception.
+
+REPL:
+
+  --repl              Start REPL. Use rlwrap for history.
+  --socket-repl       Start socket REPL. Specify port (e.g. 1666) or host and port separated by colon (e.g. 127.0.0.1:1666).
+  --nrepl-server      Start nREPL server. Specify port (e.g. 1667) or host and port separated by colon (e.g. 127.0.0.1:1667).
+
+If neither -e, -f, or --socket-repl are specified, then the first argument that is not parsed as a option is treated as a file if it exists, or as an expression otherwise. Everything after that is bound to *command-line-args*. Use -- to separate script command line args from bb command line args.</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="running-a-script"><a class="anchor" href="#running-a-script"></a>Running a script</h3>
+<div class="paragraph">
+<p>Scripts may be executed from a file using <code>-f</code> or <code>--file</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">bb -f download_html.clj</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Using <code>bb</code> with a shebang also works:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-clojure hljs" data-lang="clojure">#!/usr/bin/env bb
+
+(require '[babashka.curl :as curl])
+
+(defn get-url [url]
+  (println "Downloading url:" url)
+  (curl/get url))
+
+(defn write-html [file html]
+  (println "Writing file:" file)
+  (spit file html))
+
+(let [[url file] *command-line-args*]
+  (when (or (empty? url) (empty? file))
+    (println "Usage: &lt;url&gt; &lt;file&gt;")
+    (System/exit 1))
+  (write-html file (get-url url)))</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ ./download_html.clj
+Usage: &lt;url&gt; &lt;file&gt;
+
+$ ./download_html.clj https://www.clojure.org /tmp/clojure.org.html
+Fetching url: https://www.clojure.org
+Writing file: /tmp/clojure.org.html</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If <code>/usr/bin/env</code> doesn&#8217;t work for you, you can use the following
+workaround:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ cat script.clj
+#!/bin/sh
+
+#_(
+   "exec" "bb" "$0" hello "$@"
+   )
+
+(prn *command-line-args*)
+
+./script.clj 1 2 3
+("hello" "1" "2" "3")</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_current_file_path"><a class="anchor" href="#_current_file_path"></a>Current file path</h3>
+<div class="paragraph">
+<p>The var <code>*file*</code> contains the full path of the file that is currently
+being executed:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ cat example.clj
+(prn *file*)
+
+$ bb example.clj
+"/Users/borkdude/example.clj"</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parsing_command_line_arguments"><a class="anchor" href="#_parsing_command_line_arguments"></a>Parsing command line arguments</h3>
+<div class="paragraph">
+<p>Command-line arguments can be retrieved using <code>+*command-line-args*+</code>. If you
+want to parse command line arguments, you may use the built-in
+<code>clojure.tools.cli</code> namespace:</p>
+</div>
+<div class="paragraph">
+<p>Babashka ships with <code>clojure.tools.cli</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-clojure hljs" data-lang="clojure">(require '[clojure.tools.cli :refer [parse-opts]])
+
+(def cli-options
+  ;; An option with a required argument
+  [["-p" "--port PORT" "Port number"
+    :default 80
+    :parse-fn #(Integer/parseInt %)
+    :validate [#(&lt; 0 % 0x10000) "Must be a number between 0 and 65536"]]
+   ["-h" "--help"]])
+
+(:options (parse-opts *command-line-args* cli-options))</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ bb script.clj
+{:port 80}
+$ bb script.clj -h
+{:port 80, :help true}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>There is also the
+<a href="https://github.com/borkdude/babashka/blob/master/doc/projects.md#nubankdocopt">nubank/docopt</a>
+library that is compatible with babashka.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_system_properties"><a class="anchor" href="#_system_properties"></a>System properties</h3>
+<div class="paragraph">
+<p>Babashka sets the following system properties:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>babashka.version</code>: the version string, e.g. <code>"1.2.0"</code></p>
+</li>
+<li>
+<p><code>babashka.main</code>: the <code>--main</code> argument</p>
+</li>
+<li>
+<p><code>babashka.file</code>: the <code>--file</code> argument (normalized using
+<code>.getAbsolutePath</code>)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>In babashka you can read these properties using <code>System/getProperty</code>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_data_readers"><a class="anchor" href="#_data_readers"></a>Data readers</h3>
+<div class="paragraph">
+<p>Data readers can be enabled by setting <code>*data-readers*</code> to a hashmap of
+symbols to functions or vars:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-clojure hljs" data-lang="clojure">$ bb "(set! *data-readers* {'t/tag inc}) #t/tag 1"
+2</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To preserve good startup time, babashka does not scan the classpath for
+<code>data_readers.clj</code> files.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_reader_conditionals"><a class="anchor" href="#_reader_conditionals"></a>Reader conditionals</h3>
+<div class="paragraph">
+<p>Babashka supports reader conditionals by taking either the <code>:bb</code> or
+<code>:clj</code> branch, whichever comes first. NOTE: the <code>:clj</code> branch behavior
+was added in version 0.0.71, before that version the <code>:clj</code> branch was
+ignored.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-clojure hljs" data-lang="clojure">$ bb "#?(:bb :hello :clj :bye)"
+:hello
+
+$ bb "#?(:clj :bye :bb :hello)"
+:bye
+
+$ bb "[1 2 #?@(:bb [] :clj [1])]"
+[1 2]</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="style"><a class="anchor" href="#style"></a>Style</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A note on style. Babashka recommends the following:</p>
+</div>
+<div class="sect2">
+<h3 id="_explicit_requires"><a class="anchor" href="#_explicit_requires"></a>Explicit requires</h3>
+<div class="paragraph">
+<p>Use explicit requires with namespace aliases in scripts, unless you&#8217;re
+writing one-liners.</p>
+</div>
+<div class="paragraph">
+<p>Do this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">$ ls | bb -i '(-&gt; *input* first (str/includes? "m"))'
+true</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>But not this:</p>
+</div>
+<div class="paragraph">
+<p>script.clj:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-clojure hljs" data-lang="clojure">(-&gt; *input* first (str/includes? "m"))</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Rather do this:</p>
+</div>
+<div class="paragraph">
+<p>script.clj:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-clojure hljs" data-lang="clojure">(ns script
+  (:require [clojure.java.io :as io]
+            [clojure.string :as str]))
+  (-&gt; (io/reader *in*) line-seq first (str/includes? "m"))</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Some reasons for this:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Linters like clj-kondo work better with code that uses namespace
+forms, explicit requires, and known Clojure constructs</p>
+</li>
+<li>
+<p>Editor tooling works better with namespace forms (sorting requires,
+etc).</p>
+</li>
+<li>
+<p>Writing compatible code gives you the option to run the same script
+with <code>clojure</code></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="libraries"><a class="anchor" href="#libraries"></a>Libraries</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="built-in-namespaces"><a class="anchor" href="#built-in-namespaces"></a>Built-in namespaces</h3>
+<div class="paragraph">
+<p>In addition to <code>clojure.core</code>, the following namespaces are available in babashka.
+Some are available through pre-defined aliases in the <code>user</code> namespace,
+which can be handy for one-liners. If not all vars are available, they
+are enumerated explicitly. If some important var is missing, an issue or
+PR is welcome.</p>
+</div>
+<div class="paragraph">
+<p>From Clojure:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>clojure.core</code></p>
+</li>
+<li>
+<p><code>clojure.core.protocols</code>: <code>Datafiable</code>, <code>Navigable</code></p>
+</li>
+<li>
+<p><code>clojure.data</code></p>
+</li>
+<li>
+<p><code>clojure.datafy</code></p>
+</li>
+<li>
+<p><code>clojure.edn</code> aliased as <code>edn</code></p>
+</li>
+<li>
+<p><code>clojure.java.browse</code></p>
+</li>
+<li>
+<p><code>clojure.java.io</code> aliased as <code>io</code>:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>as-relative-path</code>, <code>as-url</code>, <code>copy</code>, <code>delete-file</code>, <code>file</code>,
+<code>input-stream</code>, <code>make-parents</code>, <code>output-stream</code>, <code>reader</code>, <code>resource</code>,
+<code>writer</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><code>clojure.java.shell</code> aliased as <code>shell</code></p>
+</li>
+<li>
+<p><code>clojure.main</code>: <code>demunge</code>, <code>repl</code>, <code>repl-requires</code></p>
+</li>
+<li>
+<p><code>clojure.pprint</code>: <code>pprint</code>, <code>cl-format</code></p>
+</li>
+<li>
+<p><code>clojure.set</code> aliased as <code>set</code></p>
+</li>
+<li>
+<p><code>clojure.string</code> aliased as <code>str</code></p>
+</li>
+<li>
+<p><code>clojure.stacktrace</code></p>
+</li>
+<li>
+<p><code>clojure.test</code></p>
+</li>
+<li>
+<p><code>clojure.zip</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Additional libraries:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://github.com/borkdude/babashka.curl"><code>babashka.curl</code></a></p>
+</li>
+<li>
+<p><a href="https://github.com/babashka/process"><code>babashka/process</code></a></p>
+</li>
+<li>
+<p><a href="https://github.com/nrepl/bencode"><code>bencode.core</code></a> aliased as <code>bencode</code>:
+<code>read-bencode</code>, <code>write-bencode</code></p>
+</li>
+<li>
+<p><a href="https://github.com/dakrone/cheshire"><code>cheshire.core</code></a> aliased as <code>json</code></p>
+</li>
+<li>
+<p><a href="https://clojure.github.io/core.async/"><code>clojure.core.async</code></a> aliased as
+<code>async</code>. Also see <a href="https://github.com/borkdude/babashka#coreasync">docs</a>.</p>
+</li>
+<li>
+<p><a href="https://github.com/clojure/data.csv"><code>clojure.data.csv</code></a> aliased as
+<code>csv</code></p>
+</li>
+<li>
+<p><a href="https://github.com/clojure/data.xml"><code>clojure.data.xml</code></a> aliased as
+<code>xml</code></p>
+</li>
+<li>
+<p><a href="https://github.com/clojure/tools.cli"><code>clojure.tools.cli</code></a> aliased as
+<code>tools.cli</code></p>
+</li>
+<li>
+<p><a href="https://github.com/clj-commons/clj-yaml"><code>clj-yaml.core</code></a> alias as
+<code>yaml</code></p>
+</li>
+<li>
+<p><a href="https://github.com/cognitect/transit-clj"><code>cognitect.transit</code></a> aliased
+as <code>transit</code></p>
+</li>
+<li>
+<p><a href="https://github.com/http-kit/http-kit"><code>org.httpkit.client</code></a></p>
+</li>
+<li>
+<p><a href="https://github.com/http-kit/http-kit"><code>org.httpkit.server</code></a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>See the
+<a href="https://github.com/borkdude/babashka/blob/master/doc/projects.md">projects</a>
+page for libraries that are not built-in, but which you can load from
+source via the <code>--classpath</code> option.</p>
+</div>
+<div class="paragraph">
+<p>See the
+<a href="https://github.com/borkdude/babashka/blob/master/doc/build.md">build</a>
+page for built-in libraries that can be enabled via feature flags, if
+you want to compile babashka yourself.</p>
+</div>
+<div class="paragraph">
+<p>A selection of Java classes are available, see
+<code>babashka/impl/classes.clj</code> in babashka&#8217;s git repo.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_babashka_namespaces"><a class="anchor" href="#_babashka_namespaces"></a>Babashka namespaces</h3>
+<div class="sect3">
+<h4 id="babashka_classpath"><a class="anchor" href="#babashka_classpath"></a>babashka.classpath</h4>
+<div class="paragraph">
+<p>Contains the function <code>add-classpath</code> which can be used to add to the
+classpath dynamically:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-clojure hljs" data-lang="clojure">(require '[babashka.classpath :refer [add-classpath]]
+         '[clojure.java.shell :refer [sh]]
+         '[clojure.string :as str])
+
+(def medley-dep '{:deps {medley {:git/url "https://github.com/borkdude/medley"
+                                 :sha "91adfb5da33f8d23f75f0894da1defe567a625c0"}}})
+(def cp (-&gt; (sh "clojure" "-Spath" "-Sdeps" (str medley-dep)) :out str/trim))
+(add-classpath cp)
+(require '[medley.core :as m])
+(m/index-by :id [{:id 1} {:id 2}]) ;;=&gt; {1 {:id 1}, 2 {:id 2}}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="babashkawait"><a class="anchor" href="#babashkawait"></a>babashka.wait</h4>
+<div class="paragraph">
+<p>Contains the functions: <code>wait-for-port</code> and <code>wait-for-path</code>.</p>
+</div>
+<div class="paragraph">
+<p>Usage of <code>wait-for-port</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-clojure hljs" data-lang="clojure">(wait/wait-for-port "localhost" 8080)
+(wait/wait-for-port "localhost" 8080 {:timeout 1000 :pause 1000})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Waits for TCP connection to be available on host and port. Options map
+supports <code>:timeout</code> and <code>:pause</code>. If <code>:timeout</code> is provided and reached,
+<code>:default</code>'s value (if any) is returned. The <code>:pause</code> option determines
+the time waited between retries.</p>
+</div>
+<div class="paragraph">
+<p>Usage of <code>wait-for-path</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-clojure hljs" data-lang="clojure">(wait/wait-for-path "/tmp/wait-path-test")
+(wait/wait-for-path "/tmp/wait-path-test" {:timeout 1000 :pause 1000})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Waits for file path to be available. Options map supports <code>:default</code>,
+<code>:timeout</code> and <code>:pause</code>. If <code>:timeout</code> is provided and reached,
+<code>:default</code>'s value (if any) is returned. The <code>:pause</code> option determines
+the time waited between retries.</p>
+</div>
+<div class="paragraph">
+<p>The namespace <code>babashka.wait</code> is aliased as <code>wait</code> in the <code>user</code>
+namespace.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="babashkasignal"><a class="anchor" href="#babashkasignal"></a>babashka.signal</h4>
+<div class="paragraph">
+<p>Contains the function <code>signal/pipe-signal-received?</code>. Usage:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-clojure hljs" data-lang="clojure">(signal/pipe-signal-received?)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Returns true if <code>PIPE</code> signal was received. Example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ bb '((fn [x] (println x) (when (not (signal/pipe-signal-received?)) (recur (inc x)))) 0)' | head -n2
+1
+2</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The namespace <code>babashka.signal</code> is aliased as <code>signal</code> in the <code>user</code>
+namespace.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="babashkacurl"><a class="anchor" href="#babashkacurl"></a>babashka.curl</h4>
+<div class="paragraph">
+<p>The namespace <code>babashka.curl</code> is a tiny wrapper around curl. It&#8217;s aliased as
+<code>curl</code> in the user namespace. See
+<a href="https://github.com/borkdude/babashka.curl">babashka.curl</a> for how to use it.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="babashkaprocess"><a class="anchor" href="#babashkaprocess"></a>babashka.process</h4>
+<div class="paragraph">
+<p>The <code>babashka.process</code> process library. See the
+<a href="https://github.com/babashka/process">process</a> repo for API docs.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_projects"><a class="anchor" href="#_projects"></a>Projects</h3>
+<div class="paragraph">
+<p>Babashka is able to run Clojure projects from source, if they are compatible
+with the subset of Clojure that sci is capable of running.</p>
+</div>
+<div class="paragraph">
+<p>Check this
+<a href="https://github.com/borkdude/babashka/blob/master/doc/projects.md">page</a> for
+projects that are known to work with babashka.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="pods"><a class="anchor" href="#pods"></a>Pods</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Pods are programs that can be used as a Clojure library by
+babashka. Documentation is available in the
+<a href="https://github.com/babashka/babashka.pods">library repo</a>.</p>
+</div>
+<div class="paragraph">
+<p>A list of available pods can be found
+<a href="https://github.com/borkdude/babashka/blob/master/doc/projects.md#pods">here</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="child_processes"><a class="anchor" href="#child_processes"></a>Child processes</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>by Michiel Borkent</p>
+</div>
+<div class="paragraph">
+<p>There are several ways of creating child processes in babashka. Let&#8217;s start with
+the easiest one.</p>
+</div>
+<div class="sect2">
+<h3 id="_clojure_java_shell"><a class="anchor" href="#_clojure_java_shell"></a>clojure.java.shell</h3>
+<div class="paragraph">
+<p>A common way to shell out to another process is via <code>clojure.java.shell</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-clojure hljs" data-lang="clojure">user=&gt; (require '[clojure.java.shell :refer [sh]])
+nil
+user=&gt; (sh "ls")
+{:exit 0, :out "README.md\ndist\ngh-pages\nscript\nsrc\n", :err ""}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>As you can see the result of <code>:out</code> are the lines of text produced by <code>ls</code>. The
+<code>:exit</code> code was <code>0</code> and there was no output on stderr.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-clojure hljs" data-lang="clojure">user=&gt; (sh "ls" "foo")
+{:exit 1, :out "", :err "ls: foo: No such file or directory\n"}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If we invoke <code>ls</code> with a non-existing file, there is error output, but not
+output on stdout and the <code>:exit</code> code is <code>1</code>.</p>
+</div>
+<div class="paragraph">
+<p>For more information on <code>clojure.java.shell</code>, read the
+<a href="https://clojure.github.io/clojure/clojure.java.shell-api.html">API documentation</a></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_babashka_process"><a class="anchor" href="#_babashka_process"></a>babashka.process</h3>
+<div class="paragraph">
+<p>Creating a child process with <code>clojure.java.shell/sh</code> is convenient and
+sufficient in 90% of the scripts you&#8217;re going to write with babashka. For the
+remaining 10% you&#8217;re going to need something slightly more powerful. This is
+where the <code>babashka.process</code> library namespace comes in. The README and source
+code of this library is located <a href="https://github.com/babashka/process">here</a>.</p>
+</div>
+<div class="paragraph">
+<p>What if we wanted to start a Clojure pREPL in our script, send commands to it
+and read the evaluated output in a loop?  Using <code>clojure.java.shell/sh</code> for this
+has the limitation that we can only send input and read output once per process.
+Using <code>babashka.process</code> which leverages the <code>java.lang.ProcessBuilder</code> and
+<code>java.lang.Process</code> classes gives us the extra power we need to overcome this
+limitation.</p>
+</div>
+<div class="paragraph">
+<p>First we show how to use <code>process</code> to start a process that inherits stdout,
+stderr and stdin from the parent process. This is often useful when you want to
+hand over control to another process at the end of a script. The following code
+starts a pREPL process:</p>
+</div>
+<div class="listingblock">
+<div class="title">process/prepl_1.clj</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-clojure hljs" data-lang="clojure">#!/usr/bin/env bb
+
+(require '[babashka.process :as p])
+
+(defn io-prepl []
+  (let [cmd ["clojure" "-M"
+             "-e" "(require '[clojure.core.server :as s])"
+             "-e" "(s/io-prepl)"]                           <i class="conum" data-value="1"></i><b>(1)</b>
+        proc (p/process cmd                                 <i class="conum" data-value="2"></i><b>(2)</b>
+                        {:inherit true                      <i class="conum" data-value="3"></i><b>(3)</b>
+                         :shutdown p/destroy-tree})]        <i class="conum" data-value="4"></i><b>(4)</b>
+    proc))
+
+@(io-prepl)                                                 <i class="conum" data-value="5"></i><b>(5)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The command and its arguments</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Creating the process</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>This option redirects stdout and stdin from the parent process to the child
+process.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>This line will destroy the child process and all of it&#8217;s children processes
+before the parent process exits.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>Dereferencing the process waits until it ends. If
+we would not include this, our script would end immediately.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>When calling the script, we can interact with the pREPL</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">$ bb src/process/prepl_1.clj
+(+ 1 2 3)
+{:tag :ret, :val "6", :ns "user", :ms 5, :form "(+ 1 2 3)"}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Pressing ctrl-C or typing <code>:repl/quit</code> will make the script terminate.</p>
+</div>
+<div class="paragraph">
+<p>What if we want to parse the output of the prepl and reformat it to our own
+likings?  Instead of sending the output of the child process to stdout we will
+have to get a hold of it. We can grab the output by not using <code>:inherit</code> and
+getting the <code>:out</code> stream of the process. Similarly we will grab the <code>:in</code>
+stream of the process and handle reading ourselves.</p>
+</div>
+<div class="listingblock">
+<div class="title">process/prepl_2.clj</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-clojure hljs" data-lang="clojure">#!/usr/bin/env bb
+
+(require '[babashka.process :as p])
+
+(defn io-prepl []
+  (let [cmd ["clojure" "-M"
+             "-e" "(require '[clojure.core.server :as s])"
+             "-e" "(s/io-prepl)"]
+        proc (p/process cmd
+                        {:shutdown p/destroy-tree})]
+    proc))
+
+(def prepl-process (io-prepl))
+
+(require '[clojure.java.io :as io])
+
+(def input-writer (io/writer (:in prepl-process)))        <i class="conum" data-value="1"></i><b>(1)</b>
+(def output-reader (java.io.PushbackReader.
+                    (io/reader (:out prepl-process))))    <i class="conum" data-value="2"></i><b>(2)</b>
+
+(require '[clojure.edn :as edn])
+
+(loop []
+  (println "Type an expression to evaluate:")
+  (when-let [v (read-line)]                               <i class="conum" data-value="3"></i><b>(3)</b>
+    (binding [*out* input-writer]                         <i class="conum" data-value="4"></i><b>(4)</b>
+      (println v))
+    (let [next-val (edn/read {:eof ::EOF} output-reader)] <i class="conum" data-value="5"></i><b>(5)</b>
+      (when-not (identical? ::EOF next-val)
+        (println (:form next-val)                         <i class="conum" data-value="6"></i><b>(6)</b>
+                 "evaluates to"
+                 (:val next-val))
+        (recur)))))</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>A writer that we will use to send input to the pREPL</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>A reader that reads from the pREPL output. pREPL returns EDN and
+<code>clojure.edn/read</code> needs a <code>PushbackReader</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>We read user input via <code>clojure.core/read-line</code></td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Here we binding <code>*out*</code> to the input writer so we can use <code>println</code> to write
+to it.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>Read the next EDN value.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="6"></i><b>6</b></td>
+<td>Print the output using our custom formatting.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Here is an example run:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">$ bb src/process/prepl_2.clj
+Type an expression to evaluate:
+(+ 1 2 3)
+(+ 1 2 3) evaluates to 6
+:repl/quit</code></pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_real_world_examples"><a class="anchor" href="#_real_world_examples"></a>Real world examples</h4>
+<div class="paragraph">
+<p>Prior to <code>babashka.process</code> people were using raw <code>ProcessBuilder</code> interop. Here are some real world examples. These might get updated to <code>babashka.process</code> in the future.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The <a href="https://github.com/borkdude/babashka/blob/5608f935cd28c777cf7d16243574558e2203872e/script/bump_version.clj#L9">babashka</a> repo uses <code>ProcessBuilder</code> to invoke git to make a commit after bumping the version.
+It redirects the output from <code>git</code> directly to stdout of the parent process.</p>
+</li>
+<li>
+<p><a href="https://github.com/borkdude/babashka.curl/blob/53b5b9d98f2e594384f628b0deee76b53bea5062/src/babashka/curl.clj#L17">babashka.curl</a> uses <code>ProcessBuilder</code> to interact with the <code>curl</code> executable</p>
+</li>
+<li>
+<p><a href="https://github.com/borkdude/deps.clj/blob/5d51b80176bdcb96927ce5e6aedb25581db0e2e0/deps.clj#L18">deps.clj</a>
+uses <code>ProcessBuilder</code> to interact with <code>java</code>, e.g. to start a Clojure REPL or
+compute a classpath using tools.deps</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="deps_clj"><a class="anchor" href="#deps_clj"></a>Deps.clj</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <a href="https://github.com/borkdude/deps.clj/"><code>deps.clj</code></a> script can be used
+to work with <code>deps.edn</code>-based projects:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">$ deps.clj -A:my-script -Scommand "bb -cp {{classpath}} {{main-opts}}"
+Hello from gist script!</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Create these aliases for brevity:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">$ alias bb-deps='deps.clj -Scommand "bb -cp {{classpath}} {{main-opts}}"'
+$ alias bb-deps-repl='rlwrap deps.clj -Scommand "bb -cp {{classpath}} {{main-opts}}"'
+$ bb-deps -M:my-script
+Hello from gist script!
+$ bb-deps-repl
+Babashka v0.0.58 REPL.
+Use :repl/quit or :repl/exit to quit the REPL.
+Clojure rocks, Bash reaches.
+
+user=&gt; (require '[my-gist-script :as mgs])
+nil
+user=&gt; (mgs/-main)
+Hello from gist script!
+nil</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can also use for example <code>deps.clj</code> to produce the classpath for a
+<code>babashka</code> REPL:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shellsession hljs" data-lang="shellsession">$ cat script/start-repl.sh
+#!/bin/sh -e
+git_root=$(git rev-parse --show-toplevel)
+export BABASHKA_CLASSPATH=$("$git_root"/script/deps.clj -Spath)
+bb --socket-repl 1666
+$ ./script/start-repl.sh
+Babashka socket REPL started at localhost:1666</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now, given that your <code>deps.edn</code> and source tree looks something like</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shellsession hljs" data-lang="shellsession">$ cat deps.edn
+{:paths ["src" "test"]
+ :deps  {}}
+$ tree -L 3
+├── deps.edn
+├── README
+├── script
+│   ├── deps.clj
+│   └── start-repl.sh
+├── src
+│   └── project_namespace
+│       ├── main.clj
+│       └── utilities.clj
+└── test
+    └── project_namespace
+        ├── test_main.clj
+        └── test_utilities.clj</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>you should now be able to
+<code>(require '[multi-machine-rsync.utilities :as util])</code> in your REPL and
+the source code in <code>/src/multi_machine_rsync/utilities.clj</code> will be
+evaluated and made available through the symbol <code>util</code>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="recipes"><a class="anchor" href="#recipes"></a>Recipes</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_running_tests"><a class="anchor" href="#_running_tests"></a>Running tests</h3>
+<div class="paragraph">
+<p>Babashka bundles <code>clojure.test</code>. To make CI scripts fail you can use a
+simple runner like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">#!/usr/bin/env bash
+bb -cp "src:test:resources" \
+   -e "(require '[clojure.test :as t] '[borkdude.deps-test])
+       (let [{:keys [:fail :error]} (t/run-tests 'borkdude.deps-test)]
+         (System/exit (+ fail error)))"</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="main_file"><a class="anchor" href="#main_file"></a>Main file</h3>
+<div class="paragraph">
+<p>In Python scripts there is a well-known pattern to check if the current
+file was the file invoked from the command line, or loaded from another
+file: the <code>__name__ == "__main__"</code> pattern. In babashka this pattern can
+be implemented with:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-clojure hljs" data-lang="clojure">(= *file* (System/getProperty "babashka.file")</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_shutdown_hook"><a class="anchor" href="#_shutdown_hook"></a>Shutdown hook</h3>
+<div class="paragraph">
+<p>Adding a shutdown hook allows you to execute some code before the script
+exits.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-clojure hljs" data-lang="clojure">$ bb -e '(-&gt; (Runtime/getRuntime) (.addShutdownHook (Thread. #(println "bye"))))'
+bye</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This also works when the script is interrupted with ctrl-c.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_printing_returned_values"><a class="anchor" href="#_printing_returned_values"></a>Printing returned values</h3>
+<div class="paragraph">
+<p>Babashka doesn&#8217;t print a returned <code>nil</code> as lots of scripts end in
+something side-effecting.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">$ bb '(:a {:a 5})'
+5
+$ bb '(:b {:a 5})'
+$</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you really want to print the nil, you can use <code>(prn ..)</code> instead.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_http_requests"><a class="anchor" href="#_http_requests"></a>HTTP requests</h3>
+<div class="paragraph">
+<p>For making HTTP requests you can use:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://github.com/borkdude/babashka.curl">babashka.curl</a>. This library
+is included with babashka and aliased as <code>curl</code> in the user namespace.
+The interface is similar to that of
+<a href="https://github.com/dakrone/clj-http">clj-http</a> but it will shell out to
+<code>curl</code> to make requests.</p>
+</li>
+<li>
+<p><a href="https://github.com/http-kit/http-kit">org.httpkit.client</a></p>
+</li>
+<li>
+<p><code>slurp</code> for simple <code>GET</code> requests</p>
+</li>
+<li>
+<p><a href="https://github.com/babashka/clj-http-lite">clj-http-lite</a> as a library.</p>
+</li>
+<li>
+<p><code>clojure.java.shell</code> or <code>babashka.process</code> for shelling out to your
+favorite command line http client</p>
+</li>
+</ul>
+</div>
+<div class="sect3">
+<h4 id="_choosing_the_right_client"><a class="anchor" href="#_choosing_the_right_client"></a>Choosing the right client</h4>
+<div class="paragraph">
+<p>If memory usage is a concern and you are downloading big files, choose
+<code>babashka.curl</code> with <code>:as :stream</code> over <code>org.httpkit.client</code> since
+http-kit holds the entire response in memory at once. Let&#8217;s download a
+200mb file with 10mb heap size:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-clojure hljs" data-lang="clojure">$ bb -Xmx10m -e '(io/copy (:body (curl/get "http://ipv4.download.thinkbroadband.com/200MB.zip" {:as :stream})) (io/file "/tmp/200mb.zip"))'</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>With <code>babashka.curl</code> this works fine. However with <code>org.httpkit.client</code>
+that won&#8217;t work. Not even 190mb of heap will do:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-clojure hljs" data-lang="clojure">$ bb -Xmx190m -e '(io/copy (:body @(org.httpkit.client/get "http://ipv4.download.thinkbroadband.com/200MB.zip" {:as :stream})) (io/file "/tmp/200mb.zip"))'
+Sun Nov 08 23:01:46 CET 2020 [client-loop] ERROR - select exception, should not happen
+java.lang.OutOfMemoryError: Array allocation too large.</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If your script creates many requests with relatively small payloads,
+choose <code>org.httpkit.client</code> over <code>babashka.curl</code> since <code>babashka.curl</code>
+creates a <code>curl</code> process for each request.</p>
+</div>
+<div class="paragraph">
+<p>In the future babashka (1.0.0?) may come with an HTTP client based on
+the JVM 11 <code>java.net.http</code> package that ticks all the boxes (async,
+HTTP/2, websockets, multi-part file uploads, sane memory usage) and is a
+suitable replacement for all of the above options. If you know about a
+GraalVM-friendly feature-complete well-maintained library, please reach
+out!</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_http_over_unix_sockets"><a class="anchor" href="#_http_over_unix_sockets"></a>HTTP over Unix sockets</h4>
+<div class="paragraph">
+<p>This can be useful for talking to Docker:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-clojure hljs" data-lang="clojure">(require '[clojure.java.shell :refer [sh]])
+(require '[cheshire.core :as json])
+(-&gt; (sh "curl" "--silent"
+        "--no-buffer" "--unix-socket"
+        "/var/run/docker.sock"
+        "http://localhost/images/json")
+    :out
+    (json/parse-string true)
+    first
+    :RepoTags) ;;=&gt; ["borkdude/babashka:latest"]</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="core_async"><a class="anchor" href="#core_async"></a>Core.async</h3>
+<div class="paragraph">
+<p>In addition to <code>future</code>, <code>pmap</code>, <code>promise</code> and friends, you may use the
+<code>clojure.core.async</code> namespace for asynchronous scripting. The following
+example shows how to get first available value from two different
+processes:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-clojure hljs" data-lang="clojure">bb '
+(defn async-command [&amp; args]
+  (async/thread (apply shell/sh "bash" "-c" args)))
+
+(-&gt; (async/alts!! [(async-command "sleep 2 &amp;&amp; echo process 1")
+                   (async-command "sleep 1 &amp;&amp; echo process 2")])
+    first :out str/trim println)'
+process 2</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Caveat: currently the <code>go</code> macro is available for compatibility with JVM
+programs, but the implementation maps to <code>clojure.core.async/thread</code> and
+the single exclamation mark operations (<code>&lt;!</code>, <code>&gt;!</code>, etc.) map to the
+double exclamation mark operations (<code>&lt;!!</code>, <code>&gt;!!</code>, etc.). It will not
+"park" threads, like on the JVM.</p>
+</div>
+<div class="paragraph">
+<p>Examples like the following may still work, but will take a lot more
+system resources than on the JVM and will break down for some high value
+of <code>n</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-clojure hljs" data-lang="clojure">(require '[clojure.core.async :as async])
+
+(def n 1000)
+
+(let [cs (repeatedly n async/chan)
+      begin (System/currentTimeMillis)]
+  (doseq [c cs] (async/go (async/&gt;! c "hi")))
+  (dotimes [_ n]
+    (let [[v _] (async/alts!! cs)]
+      (assert (= "hi" v))))
+  (println "Read" n "msgs in" (- (System/currentTimeMillis) begin) "ms"))</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_interacting_with_an_nrepl_server"><a class="anchor" href="#_interacting_with_an_nrepl_server"></a>Interacting with an nREPL server</h3>
+<div class="paragraph">
+<p>Babashka comes with the <a href="https://github.com/nrepl/bencode">nrepl/bencode</a>
+library which allows you to read and write bencode messages to a socket.
+A simple example which evaluates a Clojure expression on an nREPL server
+started with <code>lein repl</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-clojure hljs" data-lang="clojure">(ns nrepl-client
+  (:require [bencode.core :as b]))
+
+(defn nrepl-eval [port expr]
+  (let [s (java.net.Socket. "localhost" port)
+        out (.getOutputStream s)
+        in (java.io.PushbackInputStream. (.getInputStream s))
+        _ (b/write-bencode out {"op" "eval" "code" expr})
+        bytes (get (b/read-bencode in) "value")]
+    (String. bytes)))
+
+(nrepl-eval 52054 "(+ 1 2 3)") ;;=&gt; "6"</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="differences-with-clojure"><a class="anchor" href="#differences-with-clojure"></a>Differences with Clojure</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Babashka is implemented using the <a href="https://github.com/borkdude/sci">Small
+Clojure Interpreter</a>. This means that a snippet or script is not
+compiled to JVM bytecode, but executed form by form by a runtime which
+implements a substantial subset of Clojure. Babashka is compiled to a
+native binary using <a href="https://github.com/oracle/graal">GraalVM</a>. It comes
+with a selection of built-in namespaces and functions from Clojure and
+other useful libraries. The data types (numbers, strings, persistent
+collections) are the same. Multi-threading is supported (<code>pmap</code>,
+<code>future</code>).</p>
+</div>
+<div class="paragraph">
+<p>Differences with Clojure:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>A pre-selected set of Java classes are supported. You cannot add Java
+classes at runtime.</p>
+</li>
+<li>
+<p>Interpretation comes with overhead. Therefore loops are slower than in
+Clojure on the JVM. In general interpretation yields slower programs
+than compiled programs.</p>
+</li>
+<li>
+<p>No <code>deftype</code>, <code>definterface</code> and unboxed math.</p>
+</li>
+<li>
+<p><code>defprotocol</code> and <code>defrecord</code> are implemented using multimethods and
+regular maps. Ostensibly they work the same, but under the hood there
+are no Java classes that correspond to them.</p>
+</li>
+<li>
+<p>Currently <code>reify</code> works only for one class at a time</p>
+</li>
+<li>
+<p>The <code>clojure.core.async/go</code> macro is not (yet) supported. For
+compatibility it currently maps to <code>clojure.core.async/thread</code>. More
+info <a href="#core_async">here</a>.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="license"><a class="anchor" href="#license"></a>License</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Copyright © 2020 Michiel Borkent</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<a class="image" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.en_US"><img src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" alt="Creative Commons License"></a>
+</div>
+</div>
+<div class="paragraph">
+<p>This book is licensed under a
+<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.en_US">Creative Commons
+License</a>.</p>
+</div>
+<div class="paragraph">
+<p>Please note that because this is a <strong>No Derivatives</strong> license, you may <strong>not</strong> use
+this repository as a basis for creating your own book based on this one.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="shell_integration"><a class="anchor" href="#shell_integration"></a>Shell integration</h2>
+<div class="sectionbody">
+
+</div>
+</div>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>Copyright (C) 2020 <a href="https://babashka.org">Michiel Borkent</a></p>
+  <p>Except where otherwise noted, book.babashka.org is licensed under the <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons
+Attribution-NonCommercial-NoDerivs</a> (CC BY-NC-ND 4.0).</p>
+</footer>
+<!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script> -->
+<!-- <script type="text/javascript"> -->
+<!-- docsearch({ -->
+<!--   apiKey: '1f3d78fd63fcb687dcc1312aab02a2de', -->
+<!--   indexName: 'cider', -->
+<!--   inputSelector: '#search-input', -->
+<!--   algoliaOptions: { 'facetFilters': ["version:0.26"] }, -->
+<!--   debug: false // Set debug to true if you want to inspect the dropdown -->
+<!-- }); -->
+<!-- </script> -->
+
+<script src="../_/js/site.js"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Untitled :: Babashka book</title>
+    <link rel="canonical" href="https://book.babashka.org/book/getting_started.html">
+    <meta name="generator" content="Antora 2.3.4">
+    <link rel="stylesheet" href="../_/css/site.css">
+<link rel="stylesheet" href="../_/css/site-extra.css">
+<!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css">-->
+<!--<link rel="icon" href="../_/img/favicon.ico" type="image/x-icon">-->
+  </head>
+  <body class="article">
+<header class="header" role="banner">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <div class="navbar-item">
+        <a href="https://book.babashka.org">Babashka book</a>
+        <!--<span class="separator">//</span>
+        <a href="https://book.babashka.org">Docs</a>-->
+      </div>
+      <!--<div class="navbar-item">
+        <input id="search-input" type="text" placeholder="Search docs">
+      </div>-->
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <!--<div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Projects</a>
+          <div class="navbar-dropdown">
+              <a class="navbar-item" href="https://github.com/clojure-emacs/cider">CIDER</a>
+              <a class="navbar-item" href="https://github.com/clojure-emacs/cider-nrepl">CIDER nREPL</a>
+              <a class="navbar-item" href="https://github.com/clojure-emacs/orchard">Orchard</a>
+              <a class="navbar-item" href="https://github.com/clojure-emacs/clojure-mode">clojure-mode</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Community</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="/cider/about/support.html">Support</a>
+            <a class="navbar-item" href="/cider/contributing.html">Contributing</a>
+            <a class="navbar-item" href="https://opencollective.com/cider">Open Collective</a>
+          </div>
+        </div>
+      </div>
+    </div>-->
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="book" data-version="master">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="book.html">Babashka</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="intro.html">Introduction</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="1">
+    <a class="nav-link" href="getting_started.html">Getting started</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="usage.html">Usage</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="usage/repl.html">Running a REPL</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="usage/classpath.html">Classpath</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="usage/preloads.html">Preloads</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="usage/io-flags.html">Input and output flags</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="style.html">Style</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="libraries.html">Libraries</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="pods.html">Pods</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="child_processes.html">Child processes</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="deps_clj.html">Deps.clj</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="recipes.html">Recipes</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="differences.html">Differences with Clojure</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="contributing.html">Contributing</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="license.html">License</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Babashka</span>
+    <span class="version">master</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <span class="title">Babashka</span>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="book.html">master</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="intro.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="book.html">Babashka</a></li>
+    <li><a href="getting_started.html">Getting started</a></li>
+  </ul>
+</nav>
+  <div class="edit-this-page"><a href="file:///Users/borkdude/Dropbox/dev/clojure/babashka.book/src/modules/ROOT/pages/getting_started.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<article class="doc">
+<div class="sect1">
+<h2 id="getting_started"><a class="anchor" href="#getting_started"></a>Getting started</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_installation"><a class="anchor" href="#_installation"></a>Installation</h3>
+<div class="paragraph">
+<p>Installing babashka is as simple as downloading the binary for your platform and
+placing it on your path. Pre-built binaries are provided on the
+<a href="https://github.com/borkdude/babashka/releases">releases</a> page of babashka&#8217;s
+<a href="https://github.com/borkdude/babashka">Github repo</a>. Babashka is also available in
+various package managers like <code>brew</code> for macOS and linux and <code>scoop</code> for
+Windows. See <a href="https://github.com/borkdude/babashka#installation">here</a> for
+details.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_building_from_source"><a class="anchor" href="#_building_from_source"></a>Building from source</h3>
+<div class="paragraph">
+<p>If you would rather build babashka from source, download a copy of GraalVM and
+set the <code>GRAALVM_HOME</code> environment variable. Also make sure you have
+<a href="https://leiningen.org">lein</a> installed. Then run:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code>$ git clone https://github.com/borkdude/babashka --recursive
+$ script/uberjar &amp;&amp; script/compile</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>See the babashka <a href="https://github.com/borkdude/babashka/blob/master/doc/build.md">build.md</a> page for details.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_running_babashka"><a class="anchor" href="#_running_babashka"></a>Running babashka</h3>
+<div class="paragraph">
+<p>The babashka executable is called <code>bb</code>. You can either provide it with a Clojure
+expression directly:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-clojure hljs" data-lang="clojure">$ bb -e '(+ 1 2 3)'
+6</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>or run a script:</p>
+</div>
+<div class="listingblock">
+<div class="title">script.clj</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-clojure hljs" data-lang="clojure">(+ 1 2 3)</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-clojure hljs" data-lang="clojure">$ bb -f script.clj
+6</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>-e</code> flag is optional when the argument starts with a paren. In that case babashka will treat it automatically as an expression:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-clojure hljs" data-lang="clojure">$ bb '(+ 1 2 3)'
+6</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Similarly, the <code>-f</code> flag is optional when the argument is a filename:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-clojure hljs" data-lang="clojure">$ bb script.clj
+6</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Commonly, scripts have shebangs so you can invoke them with their filename only:</p>
+</div>
+<div class="listingblock">
+<div class="title">script.clj</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-clojure hljs" data-lang="clojure">#!/usr/bin/env bb
+(+ 1 2 3)</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>Copyright (C) 2020 <a href="https://babashka.org">Michiel Borkent</a></p>
+  <p>Except where otherwise noted, book.babashka.org is licensed under the <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons
+Attribution-NonCommercial-NoDerivs</a> (CC BY-NC-ND 4.0).</p>
+</footer>
+<!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script> -->
+<!-- <script type="text/javascript"> -->
+<!-- docsearch({ -->
+<!--   apiKey: '1f3d78fd63fcb687dcc1312aab02a2de', -->
+<!--   indexName: 'cider', -->
+<!--   inputSelector: '#search-input', -->
+<!--   algoliaOptions: { 'facetFilters': ["version:0.26"] }, -->
+<!--   debug: false // Set debug to true if you want to inspect the dropdown -->
+<!-- }); -->
+<!-- </script> -->
+
+<script src="../_/js/site.js"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

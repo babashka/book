@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Untitled :: Babashka book</title>
+    <link rel="canonical" href="https://book.babashka.org/book/libraries.html">
+    <meta name="generator" content="Antora 2.3.4">
+    <link rel="stylesheet" href="../_/css/site.css">
+<link rel="stylesheet" href="../_/css/site-extra.css">
+<!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css">-->
+<!--<link rel="icon" href="../_/img/favicon.ico" type="image/x-icon">-->
+  </head>
+  <body class="article">
+<header class="header" role="banner">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <div class="navbar-item">
+        <a href="https://book.babashka.org">Babashka book</a>
+        <!--<span class="separator">//</span>
+        <a href="https://book.babashka.org">Docs</a>-->
+      </div>
+      <!--<div class="navbar-item">
+        <input id="search-input" type="text" placeholder="Search docs">
+      </div>-->
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <!--<div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Projects</a>
+          <div class="navbar-dropdown">
+              <a class="navbar-item" href="https://github.com/clojure-emacs/cider">CIDER</a>
+              <a class="navbar-item" href="https://github.com/clojure-emacs/cider-nrepl">CIDER nREPL</a>
+              <a class="navbar-item" href="https://github.com/clojure-emacs/orchard">Orchard</a>
+              <a class="navbar-item" href="https://github.com/clojure-emacs/clojure-mode">clojure-mode</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Community</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="/cider/about/support.html">Support</a>
+            <a class="navbar-item" href="/cider/contributing.html">Contributing</a>
+            <a class="navbar-item" href="https://opencollective.com/cider">Open Collective</a>
+          </div>
+        </div>
+      </div>
+    </div>-->
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="book" data-version="master">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="book.html">Babashka</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="intro.html">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="getting_started.html">Getting started</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="usage.html">Usage</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="usage/repl.html">Running a REPL</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="usage/classpath.html">Classpath</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="usage/preloads.html">Preloads</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="usage/io-flags.html">Input and output flags</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="style.html">Style</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="1">
+    <a class="nav-link" href="libraries.html">Libraries</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="pods.html">Pods</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="child_processes.html">Child processes</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="deps_clj.html">Deps.clj</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="recipes.html">Recipes</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="differences.html">Differences with Clojure</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="contributing.html">Contributing</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="license.html">License</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Babashka</span>
+    <span class="version">master</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <span class="title">Babashka</span>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="book.html">master</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="intro.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="book.html">Babashka</a></li>
+    <li><a href="libraries.html">Libraries</a></li>
+  </ul>
+</nav>
+  <div class="edit-this-page"><a href="file:///Users/borkdude/Dropbox/dev/clojure/babashka.book/src/modules/ROOT/pages/libraries.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<article class="doc">
+<div class="sect1">
+<h2 id="libraries"><a class="anchor" href="#libraries"></a>Libraries</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="built-in-namespaces"><a class="anchor" href="#built-in-namespaces"></a>Built-in namespaces</h3>
+<div class="paragraph">
+<p>In addition to <code>clojure.core</code>, the following namespaces are available in babashka.
+Some are available through pre-defined aliases in the <code>user</code> namespace,
+which can be handy for one-liners. If not all vars are available, they
+are enumerated explicitly. If some important var is missing, an issue or
+PR is welcome.</p>
+</div>
+<div class="paragraph">
+<p>From Clojure:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>clojure.core</code></p>
+</li>
+<li>
+<p><code>clojure.core.protocols</code>: <code>Datafiable</code>, <code>Navigable</code></p>
+</li>
+<li>
+<p><code>clojure.data</code></p>
+</li>
+<li>
+<p><code>clojure.datafy</code></p>
+</li>
+<li>
+<p><code>clojure.edn</code> aliased as <code>edn</code></p>
+</li>
+<li>
+<p><code>clojure.java.browse</code></p>
+</li>
+<li>
+<p><code>clojure.java.io</code> aliased as <code>io</code>:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>as-relative-path</code>, <code>as-url</code>, <code>copy</code>, <code>delete-file</code>, <code>file</code>,
+<code>input-stream</code>, <code>make-parents</code>, <code>output-stream</code>, <code>reader</code>, <code>resource</code>,
+<code>writer</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><code>clojure.java.shell</code> aliased as <code>shell</code></p>
+</li>
+<li>
+<p><code>clojure.main</code>: <code>demunge</code>, <code>repl</code>, <code>repl-requires</code></p>
+</li>
+<li>
+<p><code>clojure.pprint</code>: <code>pprint</code>, <code>cl-format</code></p>
+</li>
+<li>
+<p><code>clojure.set</code> aliased as <code>set</code></p>
+</li>
+<li>
+<p><code>clojure.string</code> aliased as <code>str</code></p>
+</li>
+<li>
+<p><code>clojure.stacktrace</code></p>
+</li>
+<li>
+<p><code>clojure.test</code></p>
+</li>
+<li>
+<p><code>clojure.zip</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Additional libraries:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://github.com/borkdude/babashka.curl"><code>babashka.curl</code></a></p>
+</li>
+<li>
+<p><a href="https://github.com/babashka/process"><code>babashka/process</code></a></p>
+</li>
+<li>
+<p><a href="https://github.com/nrepl/bencode"><code>bencode.core</code></a> aliased as <code>bencode</code>:
+<code>read-bencode</code>, <code>write-bencode</code></p>
+</li>
+<li>
+<p><a href="https://github.com/dakrone/cheshire"><code>cheshire.core</code></a> aliased as <code>json</code></p>
+</li>
+<li>
+<p><a href="https://clojure.github.io/core.async/"><code>clojure.core.async</code></a> aliased as
+<code>async</code>. Also see <a href="https://github.com/borkdude/babashka#coreasync">docs</a>.</p>
+</li>
+<li>
+<p><a href="https://github.com/clojure/data.csv"><code>clojure.data.csv</code></a> aliased as
+<code>csv</code></p>
+</li>
+<li>
+<p><a href="https://github.com/clojure/data.xml"><code>clojure.data.xml</code></a> aliased as
+<code>xml</code></p>
+</li>
+<li>
+<p><a href="https://github.com/clojure/tools.cli"><code>clojure.tools.cli</code></a> aliased as
+<code>tools.cli</code></p>
+</li>
+<li>
+<p><a href="https://github.com/clj-commons/clj-yaml"><code>clj-yaml.core</code></a> alias as
+<code>yaml</code></p>
+</li>
+<li>
+<p><a href="https://github.com/cognitect/transit-clj"><code>cognitect.transit</code></a> aliased
+as <code>transit</code></p>
+</li>
+<li>
+<p><a href="https://github.com/http-kit/http-kit"><code>org.httpkit.client</code></a></p>
+</li>
+<li>
+<p><a href="https://github.com/http-kit/http-kit"><code>org.httpkit.server</code></a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>See the
+<a href="https://github.com/borkdude/babashka/blob/master/doc/projects.md">projects</a>
+page for libraries that are not built-in, but which you can load from
+source via the <code>--classpath</code> option.</p>
+</div>
+<div class="paragraph">
+<p>See the
+<a href="https://github.com/borkdude/babashka/blob/master/doc/build.md">build</a>
+page for built-in libraries that can be enabled via feature flags, if
+you want to compile babashka yourself.</p>
+</div>
+<div class="paragraph">
+<p>A selection of Java classes are available, see
+<code>babashka/impl/classes.clj</code> in babashka&#8217;s git repo.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_babashka_namespaces"><a class="anchor" href="#_babashka_namespaces"></a>Babashka namespaces</h3>
+<div class="sect3">
+<h4 id="babashka_classpath"><a class="anchor" href="#babashka_classpath"></a>babashka.classpath</h4>
+<div class="paragraph">
+<p>Contains the function <code>add-classpath</code> which can be used to add to the
+classpath dynamically:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-clojure hljs" data-lang="clojure">(require '[babashka.classpath :refer [add-classpath]]
+         '[clojure.java.shell :refer [sh]]
+         '[clojure.string :as str])
+
+(def medley-dep '{:deps {medley {:git/url "https://github.com/borkdude/medley"
+                                 :sha "91adfb5da33f8d23f75f0894da1defe567a625c0"}}})
+(def cp (-&gt; (sh "clojure" "-Spath" "-Sdeps" (str medley-dep)) :out str/trim))
+(add-classpath cp)
+(require '[medley.core :as m])
+(m/index-by :id [{:id 1} {:id 2}]) ;;=&gt; {1 {:id 1}, 2 {:id 2}}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="babashkawait"><a class="anchor" href="#babashkawait"></a>babashka.wait</h4>
+<div class="paragraph">
+<p>Contains the functions: <code>wait-for-port</code> and <code>wait-for-path</code>.</p>
+</div>
+<div class="paragraph">
+<p>Usage of <code>wait-for-port</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-clojure hljs" data-lang="clojure">(wait/wait-for-port "localhost" 8080)
+(wait/wait-for-port "localhost" 8080 {:timeout 1000 :pause 1000})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Waits for TCP connection to be available on host and port. Options map
+supports <code>:timeout</code> and <code>:pause</code>. If <code>:timeout</code> is provided and reached,
+<code>:default&#8217;s value (if any) is returned. The `:pause</code> option determines
+the time waited between retries.</p>
+</div>
+<div class="paragraph">
+<p>Usage of <code>wait-for-path</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-clojure hljs" data-lang="clojure">(wait/wait-for-path "/tmp/wait-path-test")
+(wait/wait-for-path "/tmp/wait-path-test" {:timeout 1000 :pause 1000})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Waits for file path to be available. Options map supports <code>:default</code>,
+<code>:timeout</code> and <code>:pause</code>. If <code>:timeout</code> is provided and reached,
+<code>:default&#8217;s value (if any) is returned. The `:pause</code> option determines
+the time waited between retries.</p>
+</div>
+<div class="paragraph">
+<p>The namespace <code>babashka.wait</code> is aliased as <code>wait</code> in the <code>user</code>
+namespace.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="babashkasignal"><a class="anchor" href="#babashkasignal"></a>babashka.signal</h4>
+<div class="paragraph">
+<p>Contains the function <code>signal/pipe-signal-received?</code>. Usage:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-clojure hljs" data-lang="clojure">(signal/pipe-signal-received?)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Returns true if <code>PIPE</code> signal was received. Example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ bb '((fn [x] (println x) (when (not (signal/pipe-signal-received?)) (recur (inc x)))) 0)' | head -n2
+1
+2</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The namespace <code>babashka.signal</code> is aliased as <code>signal</code> in the <code>user</code>
+namespace.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="babashkacurl"><a class="anchor" href="#babashkacurl"></a>babashka.curl</h4>
+<div class="paragraph">
+<p>The namespace <code>babashka.curl</code> is a tiny wrapper around curl. It&#8217;s aliased as
+<code>curl</code> in the user namespace. See
+<a href="https://github.com/borkdude/babashka.curl">babashka.curl</a> for how to use it.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="babashkaprocess"><a class="anchor" href="#babashkaprocess"></a>babashka.process</h4>
+<div class="paragraph">
+<p>The <code>babashka.process</code> process library. See the
+<a href="https://github.com/babashka/process">process</a> repo for API docs.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_projects"><a class="anchor" href="#_projects"></a>Projects</h3>
+<div class="paragraph">
+<p>Babashka is able to run Clojure projects from source, if they are compatible
+with the subset of Clojure that sci is capable of running.</p>
+</div>
+<div class="paragraph">
+<p>Check this
+<a href="https://github.com/borkdude/babashka/blob/master/doc/projects.md">page</a> for
+projects that are known to work with babashka.</p>
+</div>
+</div>
+</div>
+</div>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>Copyright (C) 2020 <a href="https://babashka.org">Michiel Borkent</a></p>
+  <p>Except where otherwise noted, book.babashka.org is licensed under the <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons
+Attribution-NonCommercial-NoDerivs</a> (CC BY-NC-ND 4.0).</p>
+</footer>
+<!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script> -->
+<!-- <script type="text/javascript"> -->
+<!-- docsearch({ -->
+<!--   apiKey: '1f3d78fd63fcb687dcc1312aab02a2de', -->
+<!--   indexName: 'cider', -->
+<!--   inputSelector: '#search-input', -->
+<!--   algoliaOptions: { 'facetFilters': ["version:0.26"] }, -->
+<!--   debug: false // Set debug to true if you want to inspect the dropdown -->
+<!-- }); -->
+<!-- </script> -->
+
+<script src="../_/js/site.js"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

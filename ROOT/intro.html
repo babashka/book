@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Untitled :: Babashka book</title>
+    <link rel="canonical" href="https://book.babashka.org/ROOT/intro.html">
+    <meta name="generator" content="Antora 2.3.4">
+    <link rel="stylesheet" href="../_/css/site.css">
+<link rel="stylesheet" href="../_/css/site-extra.css">
+<!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css">-->
+<!--<link rel="icon" href="../_/img/favicon.ico" type="image/x-icon">-->
+  </head>
+  <body class="article">
+<header class="header" role="banner">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <div class="navbar-item">
+        <a href="https://book.babashka.org">Babashka book</a>
+        <!--<span class="separator">//</span>
+        <a href="https://book.babashka.org">Docs</a>-->
+      </div>
+      <!--<div class="navbar-item">
+        <input id="search-input" type="text" placeholder="Search docs">
+      </div>-->
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <!--<div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Projects</a>
+          <div class="navbar-dropdown">
+              <a class="navbar-item" href="https://github.com/clojure-emacs/cider">CIDER</a>
+              <a class="navbar-item" href="https://github.com/clojure-emacs/cider-nrepl">CIDER nREPL</a>
+              <a class="navbar-item" href="https://github.com/clojure-emacs/orchard">Orchard</a>
+              <a class="navbar-item" href="https://github.com/clojure-emacs/clojure-mode">clojure-mode</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Community</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="/cider/about/support.html">Support</a>
+            <a class="navbar-item" href="/cider/contributing.html">Contributing</a>
+            <a class="navbar-item" href="https://opencollective.com/cider">Open Collective</a>
+          </div>
+        </div>
+      </div>
+    </div>-->
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="ROOT" data-version="master">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="book.html">Babashka</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item is-current-page" data-depth="1">
+    <a class="nav-link" href="intro.html">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="getting_started.html">Getting started</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="usage.html">Usage</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="usage/repl.html">Running a REPL</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="usage/classpath.html">Classpath</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="usage/preloads.html">Preloads</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="usage/io-flags.html">Input and output flags</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="style.html">Style</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="libraries.html">Libraries</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="pods.html">Pods</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="child_processes.html">Child processes</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="deps_clj.html">Deps.clj</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="recipes.html">Recipes</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="differences.html">Differences with Clojure</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="contributing.html">Contributing</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="license.html">License</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Babashka</span>
+    <span class="version">master</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <span class="title">Babashka</span>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="book.html">master</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="intro.html" class="home-link is-current"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="book.html">Babashka</a></li>
+    <li><a href="intro.html">Introduction</a></li>
+  </ul>
+</nav>
+  <div class="edit-this-page"><a href="file:///Users/borkdude/Dropbox/dev/clojure/babashka.book/src/modules/ROOT/pages/intro.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<article class="doc">
+<div class="sect1">
+<h2 id="introduction"><a class="anchor" href="#introduction"></a>Introduction</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Welcome reader! This is a book about scripting with Clojure and babashka.
+<a href="https://www.clojure.org">Clojure</a> is a functional, dynamic programming language
+from the Lisp family which runs on the JVM. Babashka is a scripting environment
+made with Clojure, compiled to native with <a href="https://www.graalvm.org">GraalVM</a>. The
+primary benefits of using babashka for scripting compared to the JVM are fast
+startup time and low memory consumption. Babashka comes with batteries included
+and packs libraries like <code>clojure.tools.cli</code> for parsing command line arguments
+and <code>cheshire</code> for working with JSON. Moreover, it can be installed just by
+downloading a self-contained binary.</p>
+</div>
+<div class="sect2">
+<h3 id="_target_audience"><a class="anchor" href="#_target_audience"></a>Target audience</h3>
+<div class="paragraph">
+<p>Babashka is written for developers who are familiar with Clojure on
+the JVM. This book assumes familiarity with Clojure and is not a Clojure
+tutorial. If you aren&#8217;t that familiar with Clojure but you&#8217;re curious to learn,
+check out <a href="https://gist.github.com/yogthos/be323be0361c589570a6da4ccc85f58f">this</a>
+list of beginner resources.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_setting_expectations"><a class="anchor" href="#_setting_expectations"></a>Setting expectations</h3>
+<div class="paragraph">
+<p>Babashka uses <a href="https://github.com/borkdude/sci">sci</a> for interpreting Clojure. Sci
+implements a substantial subset of Clojure. Interpreting code is in general not
+as performant as executing compiled code. If your script takes more than a few
+seconds to run or has lots of loops, Clojure on the JVM may be a better fit, as
+the performance on JVM is going to outweigh its startup time penalty. Read more
+about the differences with Clojure <a href="#differences-with-clojure">here</a>.</p>
+</div>
+</div>
+</div>
+</div>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>Copyright (C) 2020 <a href="https://babashka.org">Michiel Borkent</a></p>
+  <p>Except where otherwise noted, book.babashka.org is licensed under the <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons
+Attribution-NonCommercial-NoDerivs</a> (CC BY-NC-ND 4.0).</p>
+</footer>
+<!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script> -->
+<!-- <script type="text/javascript"> -->
+<!-- docsearch({ -->
+<!--   apiKey: '1f3d78fd63fcb687dcc1312aab02a2de', -->
+<!--   indexName: 'cider', -->
+<!--   inputSelector: '#search-input', -->
+<!--   algoliaOptions: { 'facetFilters': ["version:0.26"] }, -->
+<!--   debug: false // Set debug to true if you want to inspect the dropdown -->
+<!-- }); -->
+<!-- </script> -->
+
+<script src="../_/js/site.js"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

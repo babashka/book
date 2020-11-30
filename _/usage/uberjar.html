@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Untitled :: Babashka book</title>
+    <link rel="canonical" href="https://book.babashka.org/_/usage/uberjar.html">
+    <meta name="generator" content="Antora 2.3.4">
+    <link rel="stylesheet" href="../../_/css/site.css">
+<link rel="stylesheet" href="../../_/css/site-extra.css">
+<!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css">-->
+<!--<link rel="icon" href="../../_/img/favicon.ico" type="image/x-icon">-->
+  </head>
+  <body class="article">
+<header class="header" role="banner">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <div class="navbar-item">
+        <a href="https://book.babashka.org">Babashka book</a>
+        <!--<span class="separator">//</span>
+        <a href="https://book.babashka.org">Docs</a>-->
+      </div>
+      <!--<div class="navbar-item">
+        <input id="search-input" type="text" placeholder="Search docs">
+      </div>-->
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <!--<div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Projects</a>
+          <div class="navbar-dropdown">
+              <a class="navbar-item" href="https://github.com/clojure-emacs/cider">CIDER</a>
+              <a class="navbar-item" href="https://github.com/clojure-emacs/cider-nrepl">CIDER nREPL</a>
+              <a class="navbar-item" href="https://github.com/clojure-emacs/orchard">Orchard</a>
+              <a class="navbar-item" href="https://github.com/clojure-emacs/clojure-mode">clojure-mode</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Community</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="/cider/about/support.html">Support</a>
+            <a class="navbar-item" href="/cider/contributing.html">Contributing</a>
+            <a class="navbar-item" href="https://opencollective.com/cider">Open Collective</a>
+          </div>
+        </div>
+      </div>
+    </div>-->
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="_" data-version="master">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../intro.html">Babashka</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../intro.html">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../getting_started.html">Getting started</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Usage</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../usage.html">General usage</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="repl.html">Running a REPL</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="classpath.html">Classpath</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="preloads.html">Preloads</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="io-flags.html">Input and output flags</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="uberscript.html">Uberscript</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="uberjar.html">Uberjar</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../style.html">Style</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../libraries.html">Libraries</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../pods.html">Pods</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../child_processes.html">Child processes</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../deps_clj.html">Deps.clj</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../recipes.html">Recipes</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../differences.html">Differences with Clojure</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../contributing.html">Contributing</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../license.html">License</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Babashka</span>
+    <span class="version">master</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <span class="title">Babashka</span>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../intro.html">master</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../intro.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../intro.html">Babashka</a></li>
+    <li>Usage</li>
+    <li><a href="uberjar.html">Uberjar</a></li>
+  </ul>
+</nav>
+  <div class="edit-this-page"><a href="file:///Users/borkdude/Dropbox/dev/clojure/babashka.book/src/modules/ROOT/pages/usage/uberjar.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<article class="doc">
+<div class="sect1">
+<h2 id="_uberjar"><a class="anchor" href="#_uberjar"></a>Uberjar</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Babashka can create uberjars from a given classpath and optionally a
+main method:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-clojure hljs" data-lang="clojure">$ cat src/foo.clj
+(ns foo (:gen-class)) (defn -main [&amp; args] (prn :hello))
+$ bb -cp $(clojure -Spath) -m foo --uberjar foo.jar
+$ bb foo.jar
+:hello</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>When producing a classpath using the <code>clojure</code> or <code>deps.clj</code> tool,
+Clojure itself, spec and the core specs will be on the classpath and
+will therefore be included in your uberjar, which makes it bigger than
+necessary:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ ls -lh foo.jar
+-rw-r--r--  1 borkdude  staff   4.5M Aug 19 17:04 foo.jar</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To exclude these dependencies, you can use the following
+<code>:classpath-overrides</code> in your <code>deps.edn</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-clojure hljs" data-lang="clojure">{:aliases {:remove-clojure {:classpath-overrides {org.clojure/clojure nil
+                                                  org.clojure/spec.alpha nil
+                                                  org.clojure/core.specs.alpha nil}}}}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-clojure hljs" data-lang="clojure">$ rm foo.jar
+$ bb -cp $(clojure -A:remove-clojure -Spath) -m foo --uberjar foo.jar
+$ bb foo.jar
+:hello
+$ ls -lh foo.jar
+-rw-r--r--  1 borkdude  staff   871B Aug 19 17:07 foo.jar</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you want your uberjar to be compatible with the JVM, you&#8217;ll need to
+compile the main namespace. Babashka does not do compilation, so we use
+Clojure on the JVM for that part:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-clojure hljs" data-lang="clojure">$ rm foo.jar
+$ mkdir classes
+$ clojure -e "(require 'foo) (compile 'foo)"
+foo
+$ bb -cp $(clojure -Spath):classes -m foo --uberjar foo.jar
+$ bb foo.jar
+:hello
+$ java -jar foo.jar
+:hello</code></pre>
+</div>
+</div>
+</div>
+</div>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>Copyright (C) 2020 <a href="https://babashka.org">Michiel Borkent</a></p>
+  <p>Except where otherwise noted, book.babashka.org is licensed under the <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons
+Attribution-NonCommercial-NoDerivs</a> (CC BY-NC-ND 4.0).</p>
+</footer>
+<!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script> -->
+<!-- <script type="text/javascript"> -->
+<!-- docsearch({ -->
+<!--   apiKey: '1f3d78fd63fcb687dcc1312aab02a2de', -->
+<!--   indexName: 'cider', -->
+<!--   inputSelector: '#search-input', -->
+<!--   algoliaOptions: { 'facetFilters': ["version:0.26"] }, -->
+<!--   debug: false // Set debug to true if you want to inspect the dropdown -->
+<!-- }); -->
+<!-- </script> -->
+
+<script src="../../_/js/site.js"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>
