@@ -108,7 +108,7 @@ $ bb example.clj
 
 === Parsing command line arguments
 
-Command-line arguments can be retrieved using `+*command-line-args*+`. If you
+Command-line arguments can be retrieved using `*command-line-args*`. If you
 want to parse command line arguments, you may use the built-in
 `clojure.tools.cli` namespace:
 
