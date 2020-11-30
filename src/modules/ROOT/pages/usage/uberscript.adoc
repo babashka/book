@@ -1,0 +1,88 @@
+== Uberscript
+
+The `--uberscript` option collects the expressions in
+`BABASHKA_PRELOADS`, the command line expression or file, the main
+entrypoint and all required namespaces from the classpath into a single
+file. This can be convenient for debugging and deployment.
+
+Here is an example that uses a function from the
+https://github.com/clj-commons/fs[clj-commons/fs] library.
+
+Let's first set the classpath:
+
+[source,clojure]
+----
+$ export BABASHKA_CLASSPATH=$(clojure -Spath -Sdeps '{:deps {clj-commons/fs {:mvn/version "1.5.2"}}}')
+----
+
+Write a little script, say `glob.clj`:
+
+[source,clojure]
+----
+(ns foo (:require [me.raynes.fs :as fs]))
+(run! (comp println str)
+      (fs/glob (first *command-line-args*)))
+----
+
+Now we can execute the script which uses the library:
+
+[source,bash]
+----
+$ time bb glob.clj '*.md'
+/Users/borkdude/Dropbox/dev/clojure/carve/README.md
+bb glob.clj '*.md'   0.03s  user 0.02s system 70% cpu 0.064 total
+----
+
+Producing an uberscript with all required code:
+
+[source,bash]
+----
+$ bb -f glob.clj --uberscript glob-uberscript.clj
+----
+
+To prove that we don't need the classpath anymore:
+
+[source,bash]
+----
+$ unset BABASHKA_CLASSPATH
+$ time bb glob-uberscript.clj '*.md'
+/Users/borkdude/Dropbox/dev/clojure/carve/README.md
+bb glob-uberscript.clj '*.md'   0.03s  user 0.02s system 93% cpu 0.049 total
+----
+
+Caveats:
+
+* _Dynamic requires_. Building uberscripts works by running top-level
+`ns` and `require` forms. The rest of the code is not evaluated. Code
+that relies on dynamic requires may not work in an uberscript.
+* _Resources_. The usage of `io/resource` assumes a classpath, so when
+this is used in your uberscript, you still have to set a classpath and
+bring the resources along.
+
+If any of the above is problematic for your project, using an
+link:#uberjar[uberjar] is a good alternative.
+
+== Carve
+
+Uberscripts can be optimized by cutting out unused vars with
+https://github.com/borkdude/carve[carve].
+
+[source,bash]
+----
+$ wc -l glob-uberscript.clj
+     607 glob-uberscript.clj
+$ clojure -M:carve --opts '{:paths ["glob-uberscript.clj"] :aggressive true :silent true}'
+$ wc -l glob-uberscript.clj
+     172 glob-uberscript.clj
+----
+
+Note that the uberscript became 72% shorter. This has a beneficial
+effect on execution time:
+
+[source,bash]
+----
+$ time bb glob-uberscript.clj '*.md'
+/Users/borkdude/Dropbox/dev/clojure/carve/README.md
+bb glob-uberscript.clj '*.md'   0.02s  user 0.01s system 93% cpu 0.032 total
+----
+

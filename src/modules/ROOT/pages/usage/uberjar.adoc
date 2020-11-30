@@ -1,0 +1,62 @@
+== Uberjar
+
+Babashka can create uberjars from a given classpath and optionally a
+main method:
+
+[source,clojure]
+----
+$ cat src/foo.clj
+(ns foo (:gen-class)) (defn -main [& args] (prn :hello))
+$ bb -cp $(clojure -Spath) -m foo --uberjar foo.jar
+$ bb foo.jar
+:hello
+----
+
+When producing a classpath using the `clojure` or `deps.clj` tool,
+Clojure itself, spec and the core specs will be on the classpath and
+will therefore be included in your uberjar, which makes it bigger than
+necessary:
+
+[source,bash]
+----
+$ ls -lh foo.jar
+-rw-r--r--  1 borkdude  staff   4.5M Aug 19 17:04 foo.jar
+----
+
+To exclude these dependencies, you can use the following
+`:classpath-overrides` in your `deps.edn`:
+
+[source,clojure]
+----
+{:aliases {:remove-clojure {:classpath-overrides {org.clojure/clojure nil
+                                                  org.clojure/spec.alpha nil
+                                                  org.clojure/core.specs.alpha nil}}}}
+----
+
+[source,clojure]
+----
+$ rm foo.jar
+$ bb -cp $(clojure -A:remove-clojure -Spath) -m foo --uberjar foo.jar
+$ bb foo.jar
+:hello
+$ ls -lh foo.jar
+-rw-r--r--  1 borkdude  staff   871B Aug 19 17:07 foo.jar
+----
+
+If you want your uberjar to be compatible with the JVM, you'll need to
+compile the main namespace. Babashka does not do compilation, so we use
+Clojure on the JVM for that part:
+
+[source,clojure]
+----
+$ rm foo.jar
+$ mkdir classes
+$ clojure -e "(require 'foo) (compile 'foo)"
+foo
+$ bb -cp $(clojure -Spath):classes -m foo --uberjar foo.jar
+$ bb foo.jar
+:hello
+$ java -jar foo.jar
+:hello
+----
+

@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
 #asciidoctor src/book.adoc -o gh-pages/index.html
-antora generate antora-playbook.yml --to-dir /tmp/antora
+antora generate antora-playbook.yml --to-dir gh-pages
