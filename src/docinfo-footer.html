@@ -17,9 +17,9 @@
     if (width < 768) {
       tocbot.refresh({ contentSelector: '#content',
                        headingSelector: 'h1, h2, h3, h4',
-                       collapseDepth: 6,
-                       activeLinkClass: 'ignoreactive',
-                       throttleTimeout: 1000,
+                       //collapseDepth: 6,
+                       //activeLinkClass: 'ignoreactive',
+                       //throttleTimeout: 1000,
                        smoothScroll: false });
     }
     else {
@@ -30,4 +30,25 @@
   };
   window.addEventListener('resize', handleTocOnResize);
   handleTocOnResize();
+
+  // responsive menu toggle
+  var $toggle_button = document.createElement('button');
+  var $body = document.querySelector('body');
+  var menu_toggle_handler = function(e) {
+    $body.classList.toggle('shownav');
+  };
+  $toggle_button.classList.add('toggle-button');
+  $toggle_button.setAttribute('type', 'button');
+  $toggle_button.innerHTML = "Menu";
+  $toggle_button.addEventListener('click', menu_toggle_handler);
+  $body.appendChild($toggle_button);
+  var register_menu_toggle = function() {
+    var $menu_links = document.querySelectorAll('a.toc-link');
+    $menu_links.forEach(function($menu_link) {
+      $menu_link.addEventListener('click', menu_toggle_handler);
+    });
+  };
+  window.addEventListener('resize', register_menu_toggle);
+  register_menu_toggle();
+
 </script>

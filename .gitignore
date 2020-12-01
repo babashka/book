@@ -2,3 +2,4 @@
 **/*.pdf
 gh-pages/
 !src/docinfo*.html
+.DS_Store
