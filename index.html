@@ -665,6 +665,37 @@ pre.rouge {
   @media print{
     #tocbot a.toc-link.node-name--H4{ display:none }
   }
+  .toggle-button {
+    display: none;
+  }
+  @media screen and (max-width: 767px) {
+    .toggle-button {
+      display: block;
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      z-index: 1001;
+    }
+    #toc {
+      display: none;
+    }
+    body.shownav {
+      overflow: hidden;
+    }
+    body.shownav #toc {
+      display: block;
+      left: 0;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+      padding-left: 1rem;
+      position: fixed;
+      background: white;
+      z-index: 1000;
+      overflow: scroll;
+    }
+  }
+
 </style>
 </head>
 <body class="book toc2 toc-left">
@@ -2573,9 +2604,9 @@ Last updated 2020-11-30 12:31:54 +0100
     if (width < 768) {
       tocbot.refresh({ contentSelector: '#content',
                        headingSelector: 'h1, h2, h3, h4',
-                       collapseDepth: 6,
-                       activeLinkClass: 'ignoreactive',
-                       throttleTimeout: 1000,
+                       //collapseDepth: 6,
+                       //activeLinkClass: 'ignoreactive',
+                       //throttleTimeout: 1000,
                        smoothScroll: false });
     }
     else {
@@ -2586,6 +2617,27 @@ Last updated 2020-11-30 12:31:54 +0100
   };
   window.addEventListener('resize', handleTocOnResize);
   handleTocOnResize();
+
+  // responsive menu toggle
+  var $toggle_button = document.createElement('button');
+  var $body = document.querySelector('body');
+  var menu_toggle_handler = function(e) {
+    $body.classList.toggle('shownav');
+  };
+  $toggle_button.classList.add('toggle-button');
+  $toggle_button.setAttribute('type', 'button');
+  $toggle_button.innerHTML = "Menu";
+  $toggle_button.addEventListener('click', menu_toggle_handler);
+  $body.appendChild($toggle_button);
+  var register_menu_toggle = function() {
+    var $menu_links = document.querySelectorAll('a.toc-link');
+    $menu_links.forEach(function($menu_link) {
+      $menu_link.addEventListener('click', menu_toggle_handler);
+    });
+  };
+  window.addEventListener('resize', register_menu_toggle);
+  register_menu_toggle();
+
 </script>
 </body>
 </html>
