@@ -675,6 +675,13 @@ pre.rouge {
       top: 1rem;
       right: 1rem;
       z-index: 1001;
+      line-height: 1;
+      font-size: .875rem;
+      border: solid 1px #999;
+      margin: 0.25rem;
+      padding: 0.25rem;
+      background-color: #f4f4f4;
+      border-radius: .125rem;
     }
     #toc {
       display: none;
@@ -2620,7 +2627,7 @@ Last updated 2020-11-30 12:31:54 +0100
   handleTocOnResize();
 
   // responsive menu toggle
-  var $toggle_button = document.createElement('button');
+  var $toggle_button = document.createElement('label');
   var $body = document.querySelector('body');
   var menu_toggle_handler = function(e) {
     $body.classList.toggle('shownav');
