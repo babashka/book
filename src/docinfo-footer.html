@@ -9,7 +9,7 @@
   oldtoc.parentNode.replaceChild(newtoc, oldtoc);
   tocbot.init({ contentSelector: '#content',
                 headingSelector: 'h1, h2, h3, h4',
-                smoothScroll: false });
+                scrollSmooth: false });
   var handleTocOnResize = function() {
     var width = window.innerWidth
         || document.documentElement.clientWidth
@@ -20,12 +20,12 @@
                        //collapseDepth: 6,
                        //activeLinkClass: 'ignoreactive',
                        //throttleTimeout: 1000,
-                       smoothScroll: false });
+                       scrollSmooth: false });
     }
     else {
       tocbot.refresh({ contentSelector: '#content',
                        headingSelector: 'h1, h2, h3, h4',
-                       smoothScroll: false });
+                       scrollSmooth: false });
     }
   };
   window.addEventListener('resize', handleTocOnResize);
