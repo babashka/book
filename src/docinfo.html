@@ -12,4 +12,35 @@
   @media print{
     #tocbot a.toc-link.node-name--H4{ display:none }
   }
+  .toggle-button {
+    display: none;
+  }
+  @media screen and (max-width: 767px) {
+    .toggle-button {
+      display: block;
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      z-index: 1001;
+    }
+    #toc {
+      display: none;
+    }
+    body.shownav {
+      overflow: hidden;
+    }
+    body.shownav #toc {
+      display: block;
+      left: 0;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+      padding-left: 1rem;
+      position: fixed;
+      background: white;
+      z-index: 1000;
+      overflow: scroll;
+    } 
+  }
+  
 </style>
