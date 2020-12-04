@@ -172,6 +172,8 @@ export BABASHKA_PRELOADS='(load-file "my_awesome_prelude.clj")'
 
 Note that `*input*` is not available in preloads.
 
+include::usage/repl.adoc[]
+
 === Classpath
 
 Babashka accepts a `--classpath` option that will be used to search for
