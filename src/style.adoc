@@ -34,7 +34,7 @@ script.clj:
 (ns script
   (:require [clojure.java.io :as io]
             [clojure.string :as str]))
-  (-> (io/reader *in*) line-seq first (str/includes? "m"))
+(-> (io/reader *in*) line-seq first (str/includes? "m"))
 ----
 
 Some reasons for this:
