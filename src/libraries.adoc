@@ -73,8 +73,16 @@ A selection of Java classes are available, see
 [[babashka_classpath]]
 ==== babashka.classpath
 
-Contains the function `add-classpath` which can be used to add to the
-classpath dynamically:
+Available functions:
+
+- `add-classpath`
+- `get-classpath`
+- `split-classpath`
+
+===== add-classpath
+
+The function `add-classpath` which can be used to add to the classpath
+dynamically:
 
 [source,clojure]
 ----
@@ -89,6 +97,16 @@ classpath dynamically:
 (require '[medley.core :as m])
 (m/index-by :id [{:id 1} {:id 2}]) ;;=> {1 {:id 1}, 2 {:id 2}}
 ----
+
+===== get-classpath
+
+The function `get-classpath` returns the classpath as set by `--classpath`,
+`BABASHKA_CLASSPATH` and `add-classpath`.
+
+===== split-classpath
+
+Given a classpath, returns a seq of strings as the result of splitting the
+classpath by the platform specific path separatator.
 
 [[babashkawait]]
 ==== babashka.wait

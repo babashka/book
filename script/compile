@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-asciidoctor src/book.adoc -o gh-pages/index.html -a docinfo=shared
