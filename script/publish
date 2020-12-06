@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-script/compile
+script/compile.clj
 cd gh-pages
 touch .nojekyll
 git add .
