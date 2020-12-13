@@ -151,7 +151,7 @@ Example:
 
 The function `clojure` takes a sequential collection of arguments, similar to
 the clojure CLI. The arguments are then passed to
-[deps.clj](https://github.com/borkdude/deps.clj). The `clojure` function returns
+https://github.com/borkdude/deps.clj[deps.clj]. The `clojure` function returns
 `nil` and prints to `*out*` for commands like `-Stree`, and `-Spath`. For `-M`,
 `-X` and `-A` it invokes `java` with `babashka.process/process` (see
 link:#babashkaprocess[babashka.process]) and returns the associated record. For
