@@ -108,6 +108,42 @@ The function `get-classpath` returns the classpath as set by `--classpath`,
 Given a classpath, returns a seq of strings as the result of splitting the
 classpath by the platform specific path separatator.
 
+[[babashkadeps]]
+==== babashka.deps
+
+Available functions:
+
+- `add-deps`
+- `clojure`
+- `merge-deps`
+
+===== add-deps
+
+The function `add-deps` takes a deps edn map like `{:deps {medley/medley {:mvn/version "1.3.0"}}}`, resolves it using [deps.clj](https://github.com/borkdude/deps.clj) and then adds to the babashka classpath accordingly.
+
+Example:
+
+[source,clojure]
+----
+(require '[babashka.deps :as deps])
+
+(deps/add-deps '{:deps {medley/medley {:mvn/version "1.3.0"}}})
+
+(require '[medley.core :as m])
+(m/index-by :id [{:id 1} {:id 2}])
+----
+
+Optionally, `add-deps` takes a second arg with options. Currently the only
+option is `:aliases` which will affect how deps are resolved:
+
+Example:
+
+[source,clojure]
+----
+(deps/add-deps '{:aliases {:medley {:extra-deps {medley/medley {:mvn/version "1.3.0"}}}}}
+               {:aliases [:medley]})
+----
+
 [[babashkawait]]
 ==== babashka.wait
 

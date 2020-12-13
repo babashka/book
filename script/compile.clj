@@ -7,7 +7,7 @@
                        "master")
                    ".html"))
 
-#_:clj-kondo/ignore
+;;#_:clj-kondo/ignore
 @(p/$ asciidoctor src/book.adoc -o ~out-page -a docinfo=shared)
 
 (binding [*out* *err*]
