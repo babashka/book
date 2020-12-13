@@ -741,8 +741,8 @@ pre.rouge {
 <li><a href="#_uberjar">Uberjar</a></li>
 <li><a href="#_system_properties">System properties</a></li>
 <li><a href="#_data_readers">Data readers</a></li>
-<li><a href="#_parsing_command_line_arguments_2">Parsing command line arguments</a></li>
 <li><a href="#_reader_conditionals">Reader conditionals</a></li>
+<li><a href="#_invoking_clojure">Invoking clojure</a></li>
 </ul>
 </li>
 <li><a href="#style">Style</a>
@@ -925,7 +925,7 @@ babashka.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash">Babashka v0.2.3
+<pre class="rouge highlight"><code data-lang="bash">Babashka v0.2.5
 
 Options must appear <span class="k">in </span>the order of <span class="nb">groups </span>mentioned below.
 
@@ -934,18 +934,6 @@ Help:
   <span class="nt">--help</span>, <span class="nt">-h</span> or -?    Print this <span class="nb">help </span>text.
   <span class="nt">--version</span>           Print the current version of babashka.
   <span class="nt">--describe</span>          Print an EDN map with information about this version of babashka.
-
-In- and output flags:
-
-  <span class="nt">-i</span>                  Bind <span class="k">*</span>input<span class="k">*</span> to a lazy <span class="nb">seq </span>of lines from stdin.
-  <span class="nt">-I</span>                  Bind <span class="k">*</span>input<span class="k">*</span> to a lazy <span class="nb">seq </span>of EDN values from stdin.
-  <span class="nt">-o</span>                  Write lines to stdout.
-  <span class="nt">-O</span>                  Write EDN values to stdout.
-  <span class="nt">--stream</span>            Stream over lines or EDN values from stdin. Combined with <span class="nt">-i</span> or <span class="nt">-I</span> <span class="k">*</span>input<span class="k">*</span> becomes a single value per iteration.
-
-Uberscript:
-
-  <span class="nt">--uberscript</span> &lt;file&gt; Collect preloads, <span class="nt">-e</span>, <span class="nt">-f</span> and <span class="nt">-m</span> and all required namespaces from the classpath into a single executable file.
 
 Evaluation:
 
@@ -961,7 +949,30 @@ REPL:
   <span class="nt">--socket-repl</span>       Start socket REPL. Specify port <span class="o">(</span>e.g. 1666<span class="p">)</span> or host and port separated by colon <span class="o">(</span>e.g. 127.0.0.1:1666<span class="o">)</span><span class="nb">.</span>
   <span class="nt">--nrepl-server</span>      Start nREPL server. Specify port <span class="o">(</span>e.g. 1667<span class="o">)</span> or host and port separated by colon <span class="o">(</span>e.g. 127.0.0.1:1667<span class="o">)</span><span class="nb">.</span>
 
-If neither <span class="nt">-e</span>, <span class="nt">-f</span>, or <span class="nt">--socket-repl</span> are specified, <span class="k">then </span>the first argument that is not parsed as a option is treated as a file <span class="k">if </span>it exists, or as an expression otherwise. Everything after that is bound to <span class="k">*</span>command-line-args<span class="k">*</span><span class="nb">.</span> Use <span class="nt">--</span> to separate script <span class="nb">command </span>line args from bb <span class="nb">command </span>line args.</code></pre>
+In- and output flags:
+
+  <span class="nt">-i</span>                  Bind <span class="k">*</span>input<span class="k">*</span> to a lazy <span class="nb">seq </span>of lines from stdin.
+  <span class="nt">-I</span>                  Bind <span class="k">*</span>input<span class="k">*</span> to a lazy <span class="nb">seq </span>of EDN values from stdin.
+  <span class="nt">-o</span>                  Write lines to stdout.
+  <span class="nt">-O</span>                  Write EDN values to stdout.
+  <span class="nt">--stream</span>            Stream over lines or EDN values from stdin. Combined with <span class="nt">-i</span> or <span class="nt">-I</span> <span class="k">*</span>input<span class="k">*</span> becomes a single value per iteration.
+
+Uberscript:
+
+  <span class="nt">--uberscript</span> &lt;file&gt; Collect preloads, <span class="nt">-e</span>, <span class="nt">-f</span> and <span class="nt">-m</span> and all required namespaces from the classpath into a single file.
+
+Uberjar:
+
+  <span class="nt">--uberjar</span>    &lt;jar&gt;  Similar to <span class="nt">--uberscript</span> but creates jar file.
+
+Clojure:
+
+  <span class="nt">--clojure</span> <span class="o">[</span>args...] Invokes clojure. Takes same args as the official clojure CLI.
+
+If the first argument is not any of the above options, <span class="k">then </span>it treated as a file <span class="k">if </span>it exists, or as an expression otherwise.
+Everything after that is bound to <span class="k">*</span>command-line-args<span class="k">*</span><span class="nb">.</span>
+
+Use <span class="nt">--</span> to separate script <span class="nb">command </span>line args from bb <span class="nb">command </span>line args.</code></pre>
 </div>
 </div>
 <div class="sect2">
@@ -1787,35 +1798,6 @@ symbols to functions or vars:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_parsing_command_line_arguments_2"><a class="link" href="#_parsing_command_line_arguments_2">Parsing command line arguments</a></h3>
-<div class="paragraph">
-<p>Babashka ships with <code>clojure.tools.cli</code>:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="clojure"><span class="p">(</span><span class="nf">require</span><span class="w"> </span><span class="o">'</span><span class="p">[</span><span class="n">clojure.tools.cli</span><span class="w"> </span><span class="no">:refer</span><span class="w"> </span><span class="p">[</span><span class="n">parse-opts</span><span class="p">]])</span><span class="w">
-
-</span><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">cli-options</span><span class="w">
-  </span><span class="c1">;; An option with a required argument</span><span class="w">
-  </span><span class="p">[[</span><span class="s">"-p"</span><span class="w"> </span><span class="s">"--port PORT"</span><span class="w"> </span><span class="s">"Port number"</span><span class="w">
-    </span><span class="no">:default</span><span class="w"> </span><span class="mi">80</span><span class="w">
-    </span><span class="no">:parse-fn</span><span class="w"> </span><span class="o">#</span><span class="p">(</span><span class="nf">Integer/parseInt</span><span class="w"> </span><span class="n">%</span><span class="p">)</span><span class="w">
-    </span><span class="no">:validate</span><span class="w"> </span><span class="p">[</span><span class="o">#</span><span class="p">(</span><span class="nb">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="n">%</span><span class="w"> </span><span class="mi">0</span><span class="n">x10000</span><span class="p">)</span><span class="w"> </span><span class="s">"Must be a number between 0 and 65536"</span><span class="p">]]</span><span class="w">
-   </span><span class="p">[</span><span class="s">"-h"</span><span class="w"> </span><span class="s">"--help"</span><span class="p">]])</span><span class="w">
-
-</span><span class="p">(</span><span class="no">:options</span><span class="w"> </span><span class="p">(</span><span class="nf">parse-opts</span><span class="w"> </span><span class="n">*command-line-args*</span><span class="w"> </span><span class="n">cli-options</span><span class="p">))</span></code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><span class="nv">$ </span>bb script.clj
-<span class="o">{</span>:port 80<span class="o">}</span>
-<span class="nv">$ </span>bb script.clj <span class="nt">-h</span>
-<span class="o">{</span>:port 80, :help <span class="nb">true</span><span class="o">}</span></code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
 <h3 id="_reader_conditionals"><a class="link" href="#_reader_conditionals">Reader conditionals</a></h3>
 <div class="paragraph">
 <p>Babashka supports reader conditionals by taking either the <code>:bb</code> or
@@ -1834,6 +1816,24 @@ ignored.</p>
 </span><span class="n">$</span><span class="w"> </span><span class="n">bb</span><span class="w"> </span><span class="s">"[1 2 #?@(:bb [] :clj [1])]"</span><span class="w">
 </span><span class="p">[</span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="p">]</span></code></pre>
 </div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_invoking_clojure"><a class="link" href="#_invoking_clojure">Invoking clojure</a></h3>
+<div class="paragraph">
+<p>Babashka bundles <a href="https://github.com/borkdude/deps.clj">deps.clj</a> for invoking a
+<code>clojure</code> JVM process:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="n">$</span><span class="w"> </span><span class="n">bb</span><span class="w"> </span><span class="n">--clojure</span><span class="w"> </span><span class="n">-M</span><span class="w"> </span><span class="n">-e</span><span class="w"> </span><span class="s">"*clojure-version*"</span><span class="w">
+</span><span class="p">{</span><span class="no">:major</span><span class="w"> </span><span class="mi">1</span><span class="n">,</span><span class="w"> </span><span class="no">:minor</span><span class="w"> </span><span class="mi">10</span><span class="n">,</span><span class="w"> </span><span class="no">:incremental</span><span class="w"> </span><span class="mi">1</span><span class="n">,</span><span class="w"> </span><span class="no">:qualifier</span><span class="w"> </span><span class="n">nil</span><span class="p">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>See the <a href="#_clojure">clojure</a> function in the
+<a href="#babashkadeps">babashka.deps</a> namespace for programmatically invoking
+clojure.</p>
 </div>
 </div>
 </div>
@@ -2051,8 +2051,26 @@ you want to compile babashka yourself.</p>
 <div class="sect3">
 <h4 id="babashka_classpath"><a class="link" href="#babashka_classpath">babashka.classpath</a></h4>
 <div class="paragraph">
-<p>Contains the function <code>add-classpath</code> which can be used to add to the
-classpath dynamically:</p>
+<p>Available functions:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>add-classpath</code></p>
+</li>
+<li>
+<p><code>get-classpath</code></p>
+</li>
+<li>
+<p><code>split-classpath</code></p>
+</li>
+</ul>
+</div>
+<div class="sect4">
+<h5 id="_add_classpath"><a class="link" href="#_add_classpath">add-classpath</a></h5>
+<div class="paragraph">
+<p>The function <code>add-classpath</code> which can be used to add to the classpath
+dynamically:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -2066,6 +2084,112 @@ classpath dynamically:</p>
 </span><span class="p">(</span><span class="nf">add-classpath</span><span class="w"> </span><span class="n">cp</span><span class="p">)</span><span class="w">
 </span><span class="p">(</span><span class="nf">require</span><span class="w"> </span><span class="o">'</span><span class="p">[</span><span class="n">medley.core</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">m</span><span class="p">])</span><span class="w">
 </span><span class="p">(</span><span class="nf">m/index-by</span><span class="w"> </span><span class="no">:id</span><span class="w"> </span><span class="p">[{</span><span class="no">:id</span><span class="w"> </span><span class="mi">1</span><span class="p">}</span><span class="w"> </span><span class="p">{</span><span class="no">:id</span><span class="w"> </span><span class="mi">2</span><span class="p">}])</span><span class="w"> </span><span class="c1">;;=&gt; {1 {:id 1}, 2 {:id 2}}</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_get_classpath"><a class="link" href="#_get_classpath">get-classpath</a></h5>
+<div class="paragraph">
+<p>The function <code>get-classpath</code> returns the classpath as set by <code>--classpath</code>,
+<code>BABASHKA_CLASSPATH</code> and <code>add-classpath</code>.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_split_classpath"><a class="link" href="#_split_classpath">split-classpath</a></h5>
+<div class="paragraph">
+<p>Given a classpath, returns a seq of strings as the result of splitting the
+classpath by the platform specific path separatator.</p>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="babashkadeps"><a class="link" href="#babashkadeps">babashka.deps</a></h4>
+<div class="paragraph">
+<p>Available functions:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>add-deps</code></p>
+</li>
+<li>
+<p><code>clojure</code></p>
+</li>
+<li>
+<p><code>merge-deps</code></p>
+</li>
+</ul>
+</div>
+<div class="sect4">
+<h5 id="_add_deps"><a class="link" href="#_add_deps">add-deps</a></h5>
+<div class="paragraph">
+<p>The function <code>add-deps</code> takes a deps edn map like <code>{:deps {medley/medley
+{:mvn/version "1.3.0"}}}</code>, resolves it using
+<a href="https://github.com/borkdude/deps.clj">deps.clj</a> and then adds to the babashka
+classpath accordingly.</p>
+</div>
+<div class="paragraph">
+<p>Example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">(</span><span class="nf">require</span><span class="w"> </span><span class="o">'</span><span class="p">[</span><span class="n">babashka.deps</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">deps</span><span class="p">])</span><span class="w">
+
+</span><span class="p">(</span><span class="nf">deps/add-deps</span><span class="w"> </span><span class="o">'</span><span class="p">{</span><span class="no">:deps</span><span class="w"> </span><span class="p">{</span><span class="n">medley/medley</span><span class="w"> </span><span class="p">{</span><span class="no">:mvn/version</span><span class="w"> </span><span class="s">"1.3.0"</span><span class="p">}}})</span><span class="w">
+
+</span><span class="p">(</span><span class="nf">require</span><span class="w"> </span><span class="o">'</span><span class="p">[</span><span class="n">medley.core</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">m</span><span class="p">])</span><span class="w">
+</span><span class="p">(</span><span class="nf">m/index-by</span><span class="w"> </span><span class="no">:id</span><span class="w"> </span><span class="p">[{</span><span class="no">:id</span><span class="w"> </span><span class="mi">1</span><span class="p">}</span><span class="w"> </span><span class="p">{</span><span class="no">:id</span><span class="w"> </span><span class="mi">2</span><span class="p">}])</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Optionally, <code>add-deps</code> takes a second arg with options. Currently the only
+option is <code>:aliases</code> which will affect how deps are resolved:</p>
+</div>
+<div class="paragraph">
+<p>Example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">(</span><span class="nf">deps/add-deps</span><span class="w"> </span><span class="o">'</span><span class="p">{</span><span class="no">:aliases</span><span class="w"> </span><span class="p">{</span><span class="no">:medley</span><span class="w"> </span><span class="p">{</span><span class="no">:extra-deps</span><span class="w"> </span><span class="p">{</span><span class="n">medley/medley</span><span class="w"> </span><span class="p">{</span><span class="no">:mvn/version</span><span class="w"> </span><span class="s">"1.3.0"</span><span class="p">}}}}}</span><span class="w">
+               </span><span class="p">{</span><span class="no">:aliases</span><span class="w"> </span><span class="p">[</span><span class="no">:medley</span><span class="p">]})</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_clojure"><a class="link" href="#_clojure">clojure</a></h5>
+<div class="paragraph">
+<p>The function <code>clojure</code> takes a sequential collection of arguments, similar to
+the clojure CLI. The arguments are then passed to
+<a href="https://github.com/borkdude/deps.clj">deps.clj</a>. The <code>clojure</code> function returns
+<code>nil</code> and prints to <code>*out*</code> for commands like <code>-Stree</code>, and <code>-Spath</code>. For <code>-M</code>,
+<code>-X</code> and <code>-A</code> it invokes <code>java</code> with <code>babashka.process/process</code> (see
+<a href="#babashkaprocess">babashka.process</a>) and returns the associated record. For
+more details, read the docstring with:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">(</span><span class="nf">require</span><span class="w"> </span><span class="o">'</span><span class="p">[</span><span class="n">clojure.repl</span><span class="w"> </span><span class="no">:refer</span><span class="w"> </span><span class="p">[</span><span class="nb">doc</span><span class="p">]])</span><span class="w">
+</span><span class="p">(</span><span class="nb">doc</span><span class="w"> </span><span class="n">babashka.deps/clojure</span><span class="p">)</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Example:</p>
+</div>
+<div class="paragraph">
+<p>The following script passes through command line arguments to clojure, while
+adding the medley dependency:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">(</span><span class="nf">require</span><span class="w"> </span><span class="o">'</span><span class="p">[</span><span class="n">babashka.deps</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">deps</span><span class="p">])</span><span class="w">
+
+</span><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">deps</span><span class="w"> </span><span class="o">'</span><span class="p">{</span><span class="no">:deps</span><span class="w"> </span><span class="p">{</span><span class="n">medley/medley</span><span class="w"> </span><span class="p">{</span><span class="no">:mvn/version</span><span class="w"> </span><span class="s">"1.3.0"</span><span class="p">}}})</span><span class="w">
+</span><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">clojure-args</span><span class="w"> </span><span class="p">(</span><span class="nb">list*</span><span class="w"> </span><span class="s">"-Sdeps"</span><span class="w"> </span><span class="n">deps</span><span class="w">  </span><span class="n">*command-line-args*</span><span class="p">))</span><span class="w">
+
+</span><span class="p">(</span><span class="nb">if-let</span><span class="w"> </span><span class="p">[</span><span class="n">proc</span><span class="w"> </span><span class="p">(</span><span class="nf">deps/clojure</span><span class="w"> </span><span class="n">clojure-args</span><span class="p">)]</span><span class="w">
+  </span><span class="p">(</span><span class="nb">-&gt;</span><span class="w"> </span><span class="o">@</span><span class="n">proc</span><span class="w"> </span><span class="no">:exit</span><span class="w"> </span><span class="p">(</span><span class="nf">System/exit</span><span class="p">))</span><span class="w">
+  </span><span class="p">(</span><span class="nf">System/exit</span><span class="w"> </span><span class="mi">0</span><span class="p">))</span></code></pre>
+</div>
 </div>
 </div>
 </div>
