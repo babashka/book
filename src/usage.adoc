@@ -455,3 +455,18 @@ $ bb "#?(:clj :bye :bb :hello)"
 $ bb "[1 2 #?@(:bb [] :clj [1])]"
 [1 2]
 ----
+
+=== Invoking clojure
+
+Babashka bundles https://github.com/borkdude/deps.clj[deps.clj] for invoking a
+`clojure` JVM process:
+
+[source,clojure]
+----
+$ bb --clojure -M -e "*clojure-version*"
+{:major 1, :minor 10, :incremental 1, :qualifier nil}
+----
+
+See the link:#_clojure[clojure] function in the
+link:#babashkadeps[babashka.deps] namespace for programmatically invoking
+clojure.
