@@ -119,7 +119,10 @@ Available functions:
 
 ===== add-deps
 
-The function `add-deps` takes a deps edn map like `{:deps {medley/medley {:mvn/version "1.3.0"}}}`, resolves it using [deps.clj](https://github.com/borkdude/deps.clj) and then adds to the babashka classpath accordingly.
+The function `add-deps` takes a deps edn map like `{:deps {medley/medley
+{:mvn/version "1.3.0"}}}`, resolves it using
+https://github.com/borkdude/deps.clj[deps.clj] and then adds to the babashka
+classpath accordingly.
 
 Example:
 
@@ -142,6 +145,39 @@ Example:
 ----
 (deps/add-deps '{:aliases {:medley {:extra-deps {medley/medley {:mvn/version "1.3.0"}}}}}
                {:aliases [:medley]})
+----
+
+===== clojure
+
+The function `clojure` takes a sequential collection of arguments, similar to
+the clojure CLI. The arguments are then passed to
+[deps.clj](https://github.com/borkdude/deps.clj). The `clojure` function returns
+`nil` and prints to `*out*` for commands like `-Stree`, and `-Spath`. For `-M`,
+`-X` and `-A` it invokes `java` with `babashka.process/process` (see
+link:#babashkaprocess[babashka.process]) and returns the associated record. For
+more details, read the docstring with:
+
+[source,clojure]
+----
+(require '[clojure.repl :refer [doc]])
+(doc babashka.deps/clojure)
+----
+
+Example:
+
+The following script passes through command line arguments to clojure, while
+adding the medley dependency:
+
+[source,clojure]
+----
+(require '[babashka.deps :as deps])
+
+(def deps '{:deps {medley/medley {:mvn/version "1.3.0"}}})
+(def clojure-args (list* "-Sdeps" deps  *command-line-args*))
+
+(if-let [proc (deps/clojure clojure-args)]
+  (-> @proc :exit (System/exit))
+  (System/exit 0))
 ----
 
 [[babashkawait]]
