@@ -7,3 +7,27 @@ https://github.com/babashka/babashka.pods[library repo].
 
 A list of available pods can be found
 https://github.com/borkdude/babashka/blob/master/doc/projects.md#pods[here].
+
+=== Pod registry
+
+Since bb 0.2.6 pods can be obtained via the https://github.com/babashka/pod-registry[pod-registry].
+
+This is an example script which uses
+https://github.com/retrogradeorbit/bootleg[bootleg] as a pod to convert hiccup
+to HTML.
+
+[source,clojure]
+----
+#!/usr/bin/env bb
+
+(require '[babashka.pods :as pods])
+
+(pods/load-pod 'retrogradeorbit/bootleg "0.1.9")
+
+(require '[pod.retrogradeorbit.bootleg.utils :as utils])
+
+(-> [:div
+     [:h1 "Using Bootleg From Babashka"]
+     [:p "This is a demo"]]
+    (utils/convert-to :html))
+----
