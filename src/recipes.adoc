@@ -25,7 +25,7 @@ be implemented with:
 
 [source,clojure]
 ----
-(= *file* (System/getProperty "babashka.file")
+(= *file* (System/getProperty "babashka.file"))
 ----
 
 === Shutdown hook
