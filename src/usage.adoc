@@ -261,8 +261,9 @@ function.
 Also see the link:#babashka_classpath[babashka.classpath]
 namespace which allows dynamically adding to the classpath.
 
-See link:#deps_clj[deps.clj] for a babashka script that replaces the `clojure`
-bash script.
+The namespace link:#babashkadeps[babashka.deps] integrates
+https://github.com/clojure/tools.deps.alpha[tools.deps] with babashka and allows
+you to set the classpath using a `deps.edn` map.
 
 === Uberscript
 
