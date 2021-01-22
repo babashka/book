@@ -768,7 +768,6 @@ pre.rouge {
 <li><a href="#_babashka_process">babashka.process</a></li>
 </ul>
 </li>
-<li><a href="#deps_clj">Deps.clj</a></li>
 <li><a href="#recipes">Recipes</a>
 <ul class="sectlevel2">
 <li><a href="#_running_tests">Running tests</a></li>
@@ -2571,87 +2570,6 @@ compute a classpath using tools.deps</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="deps_clj"><a class="link" href="#deps_clj">Deps.clj</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>The <a href="https://github.com/borkdude/deps.clj/"><code>deps.clj</code></a> script can be used
-to work with <code>deps.edn</code>-based projects:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>deps.clj <span class="nt">-A</span>:my-script <span class="nt">-Scommand</span> <span class="s2">"bb -cp {{classpath}} {{main-opts}}"</span>
-Hello from gist script!</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Create these aliases for brevity:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span><span class="nb">alias </span>bb-deps<span class="o">=</span><span class="s1">'deps.clj -Scommand "bb -cp {{classpath}} {{main-opts}}"'</span>
-<span class="nv">$ </span><span class="nb">alias </span>bb-deps-repl<span class="o">=</span><span class="s1">'rlwrap deps.clj -Scommand "bb -cp {{classpath}} {{main-opts}}"'</span>
-<span class="nv">$ </span>bb-deps <span class="nt">-M</span>:my-script
-Hello from gist script!
-<span class="nv">$ </span>bb-deps-repl
-Babashka v0.0.58 REPL.
-Use :repl/quit or :repl/exit to quit the REPL.
-Clojure rocks, Bash reaches.
-
-<span class="nv">user</span><span class="o">=&gt;</span> <span class="o">(</span>require <span class="s1">'[my-gist-script :as mgs])
-nil
-user=&gt; (mgs/-main)
-Hello from gist script!
-nil</span></code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>You can also use for example <code>deps.clj</code> to produce the classpath for a
-<code>babashka</code> REPL:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="shellsession">$ cat script/start-repl.sh
-#!/bin/sh -e
-git_root=$(git rev-parse --show-toplevel)
-export BABASHKA_CLASSPATH=$("$git_root"/script/deps.clj -Spath)
-bb --socket-repl 1666
-$ ./script/start-repl.sh
-Babashka socket REPL started at localhost:1666</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Now, given that your <code>deps.edn</code> and source tree looks something like</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="shellsession">$ cat deps.edn
-{:paths ["src" "test"]
- :deps  {}}
-$ tree -L 3
-├── deps.edn
-├── README
-├── script
-│   ├── deps.clj
-│   └── start-repl.sh
-├── src
-│   └── project_namespace
-│       ├── main.clj
-│       └── utilities.clj
-└── test
-    └── project_namespace
-        ├── test_main.clj
-        └── test_utilities.clj</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>you should now be able to
-<code>(require '[multi-machine-rsync.utilities :as util])</code> in your REPL and
-the source code in <code>/src/multi_machine_rsync/utilities.clj</code> will be
-evaluated and made available through the symbol <code>util</code>.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
 <h2 id="recipes"><a class="link" href="#recipes">Recipes</a></h2>
 <div class="sectionbody">
 <div class="sect2">
@@ -2992,7 +2910,7 @@ this repository as a basis for creating your own book based on this one.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-11-30 12:31:54 +0100
+Last updated 2021-01-22 09:57:07 +0100
 </div>
 </div>
 <!-- see https://github.com/asciidoctor/asciidoctor/issues/699#issuecomment-321066006 -->
