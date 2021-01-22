@@ -11,7 +11,7 @@
 
 (defn asciidoc []
   (println "Compiling asciidoc")
-  (-> (p/process ["script/compile"] {:inherit true})
+  (-> (p/process ["script/compile.clj"] {:inherit true})
       p/check)
   (println "Done"))
 

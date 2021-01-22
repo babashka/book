@@ -3,17 +3,29 @@
 
 === Running tests
 
-Babashka bundles `clojure.test`. To make CI scripts fail you can use a
-simple runner like this:
+Babashka bundles `clojure.test`. To run tests you can use a script like the following:
 
-[source,shell]
+[source,clojure]
 ----
-#!/usr/bin/env bash
-bb -cp "src:test:resources" \
-   -e "(require '[clojure.test :as t] '[borkdude.deps-test])
-       (let [{:keys [:fail :error]} (t/run-tests 'borkdude.deps-test)]
-         (System/exit (+ fail error)))"
+#!/usr/bin/env bb
+
+(require '[clojure.test :as t]
+         'your-namespace.with-tests)                 ;; <1>
+
+(def test-results
+  (t/run-tests 'your-namespace.with-tests))          ;; <2>
+
+(def failures-and-errors
+  (let [{:keys [:fail :error]} test-results]
+    (+ fail error)))                                 ;; <3>
+
+(System/exit failures-and-errors)                    ;; <4>
 ----
+
+<1> Load `clojure.test` along with your own tests
+<2> Run the tests and store the returned information
+<3> Extract failures and errors
+<4> Exit the test script with a non-zero exit code when there are failures or errors
 
 [[main_file]]
 === Main file
