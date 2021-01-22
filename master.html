@@ -2657,17 +2657,45 @@ evaluated and made available through the symbol <code>util</code>.</p>
 <div class="sect2">
 <h3 id="_running_tests"><a class="link" href="#_running_tests">Running tests</a></h3>
 <div class="paragraph">
-<p>Babashka bundles <code>clojure.test</code>. To make CI scripts fail you can use a
-simple runner like this:</p>
+<p>Babashka bundles <code>clojure.test</code>. To run tests you can use a script like the following:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="shell"><span class="c">#!/usr/bin/env bash</span>
-bb <span class="nt">-cp</span> <span class="s2">"src:test:resources"</span> <span class="se">\</span>
-   <span class="nt">-e</span> <span class="s2">"(require '[clojure.test :as t] '[borkdude.deps-test])
-       (let [{:keys [:fail :error]} (t/run-tests 'borkdude.deps-test)]
-         (System/exit (+ fail error)))"</span></code></pre>
+<pre class="rouge highlight"><code data-lang="clojure"><span class="o">#</span><span class="n">!/usr/bin/env</span><span class="w"> </span><span class="n">bb</span><span class="w">
+
+</span><span class="p">(</span><span class="nf">require</span><span class="w"> </span><span class="o">'</span><span class="p">[</span><span class="n">clojure.test</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">t</span><span class="p">]</span><span class="w">
+         </span><span class="ss">'your-namespace.with-tests</span><span class="p">)</span><span class="w">                 <i class="conum" data-value="1"></i><b>(1)</b>
+
+</span><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">test-results</span><span class="w">
+  </span><span class="p">(</span><span class="nf">t/run-tests</span><span class="w"> </span><span class="ss">'your-namespace.with-tests</span><span class="p">))</span><span class="w">          <i class="conum" data-value="2"></i><b>(2)</b>
+
+</span><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">failures-and-errors</span><span class="w">
+  </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[{</span><span class="no">:keys</span><span class="w"> </span><span class="p">[</span><span class="no">:fail</span><span class="w"> </span><span class="no">:error</span><span class="p">]}</span><span class="w"> </span><span class="n">test-results</span><span class="p">]</span><span class="w">
+    </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="n">fail</span><span class="w"> </span><span class="n">error</span><span class="p">)))</span><span class="w">                                 <i class="conum" data-value="3"></i><b>(3)</b>
+
+</span><span class="p">(</span><span class="nf">System/exit</span><span class="w"> </span><span class="n">failures-and-errors</span><span class="p">)</span><span class="w">                    <i class="conum" data-value="4"></i><b>(4)</b>
+</span></code></pre>
 </div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Load <code>clojure.test</code> along with your own tests</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Run the tests and store the returned information</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Extract failures and errors</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Exit the test script with a non-zero exit code when there are failures or errors</td>
+</tr>
+</table>
 </div>
 </div>
 <div class="sect2">
