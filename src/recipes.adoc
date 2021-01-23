@@ -3,29 +3,46 @@
 
 === Running tests
 
-Babashka bundles `clojure.test`. To run tests you can use a script like the following:
+Babashka bundles `clojure.test`. To run tests you can write a test runner script. Given the following project structure:
 
+[source,shell]
+----
+.
+├── src
+│   └──...
+└── test
+    └── your
+        ├── test_a.clj
+        └── test_b.clj
+----
+
+.test-runner.clj
 [source,clojure]
 ----
 #!/usr/bin/env bb
 
 (require '[clojure.test :as t]
-         'your-namespace.with-tests)                 ;; <1>
+         '[babashka.classpath :as cp])
+
+(cp/add-classpath "src:test")                        ;; <1>
+
+(require 'your.test-a 'your.test-b)                  ;; <2>
 
 (def test-results
-  (t/run-tests 'your-namespace.with-tests))          ;; <2>
+  (t/run-tests 'your.test-a 'your.test-b))           ;; <3>
 
 (def failures-and-errors
   (let [{:keys [:fail :error]} test-results]
-    (+ fail error)))                                 ;; <3>
+    (+ fail error)))                                 ;; <4>
 
-(System/exit failures-and-errors)                    ;; <4>
+(System/exit failures-and-errors)                    ;; <5>
 ----
 
-<1> Load `clojure.test` along with your own tests
-<2> Run the tests and store the returned information
-<3> Extract failures and errors
-<4> Exit the test script with a non-zero exit code when there are failures or errors
+<1> Add sources and tests to the classpath
+<2> Require the test namespaces
+<3> Run all tests in the test namespaces
+<4> Extract failures and errors
+<5> Exit the test script with a non-zero exit code when there are failures or errors
 
 [[main_file]]
 === Main file
