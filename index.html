@@ -2576,23 +2576,39 @@ compute a classpath using tools.deps</p>
 <div class="sect2">
 <h3 id="_running_tests"><a class="link" href="#_running_tests">Running tests</a></h3>
 <div class="paragraph">
-<p>Babashka bundles <code>clojure.test</code>. To run tests you can use a script like the following:</p>
+<p>Babashka bundles <code>clojure.test</code>. To run tests you can write a test runner script. Given the following project structure:</p>
 </div>
 <div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nb">.</span>
+├── src
+│   └──...
+└── <span class="nb">test</span>
+    └── your
+        ├── test_a.clj
+        └── test_b.clj</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">test-runner.clj</div>
 <div class="content">
 <pre class="rouge highlight"><code data-lang="clojure"><span class="o">#</span><span class="n">!/usr/bin/env</span><span class="w"> </span><span class="n">bb</span><span class="w">
 
 </span><span class="p">(</span><span class="nf">require</span><span class="w"> </span><span class="o">'</span><span class="p">[</span><span class="n">clojure.test</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">t</span><span class="p">]</span><span class="w">
-         </span><span class="ss">'your-namespace.with-tests</span><span class="p">)</span><span class="w">                 <i class="conum" data-value="1"></i><b>(1)</b>
+         </span><span class="o">'</span><span class="p">[</span><span class="n">babashka.classpath</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">cp</span><span class="p">])</span><span class="w">
+
+</span><span class="p">(</span><span class="nf">cp/add-classpath</span><span class="w"> </span><span class="s">"src:test"</span><span class="p">)</span><span class="w">                        <i class="conum" data-value="1"></i><b>(1)</b>
+
+</span><span class="p">(</span><span class="nf">require</span><span class="w"> </span><span class="ss">'your.test-a</span><span class="w"> </span><span class="ss">'your.test-b</span><span class="p">)</span><span class="w">                  <i class="conum" data-value="2"></i><b>(2)</b>
 
 </span><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">test-results</span><span class="w">
-  </span><span class="p">(</span><span class="nf">t/run-tests</span><span class="w"> </span><span class="ss">'your-namespace.with-tests</span><span class="p">))</span><span class="w">          <i class="conum" data-value="2"></i><b>(2)</b>
+  </span><span class="p">(</span><span class="nf">t/run-tests</span><span class="w"> </span><span class="ss">'your.test-a</span><span class="w"> </span><span class="ss">'your.test-b</span><span class="p">))</span><span class="w">           <i class="conum" data-value="3"></i><b>(3)</b>
 
 </span><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">failures-and-errors</span><span class="w">
   </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[{</span><span class="no">:keys</span><span class="w"> </span><span class="p">[</span><span class="no">:fail</span><span class="w"> </span><span class="no">:error</span><span class="p">]}</span><span class="w"> </span><span class="n">test-results</span><span class="p">]</span><span class="w">
-    </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="n">fail</span><span class="w"> </span><span class="n">error</span><span class="p">)))</span><span class="w">                                 <i class="conum" data-value="3"></i><b>(3)</b>
+    </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="n">fail</span><span class="w"> </span><span class="n">error</span><span class="p">)))</span><span class="w">                                 <i class="conum" data-value="4"></i><b>(4)</b>
 
-</span><span class="p">(</span><span class="nf">System/exit</span><span class="w"> </span><span class="n">failures-and-errors</span><span class="p">)</span><span class="w">                    <i class="conum" data-value="4"></i><b>(4)</b>
+</span><span class="p">(</span><span class="nf">System/exit</span><span class="w"> </span><span class="n">failures-and-errors</span><span class="p">)</span><span class="w">                    <i class="conum" data-value="5"></i><b>(5)</b>
 </span></code></pre>
 </div>
 </div>
@@ -2600,18 +2616,22 @@ compute a classpath using tools.deps</p>
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Load <code>clojure.test</code> along with your own tests</td>
+<td>Add sources and tests to the classpath</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Run the tests and store the returned information</td>
+<td>Require the test namespaces</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>Extract failures and errors</td>
+<td>Run all tests in the test namespaces</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Extract failures and errors</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
 <td>Exit the test script with a non-zero exit code when there are failures or errors</td>
 </tr>
 </table>
