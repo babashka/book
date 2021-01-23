@@ -54,6 +54,7 @@ Additional libraries:
 as `transit`
 * https://github.com/http-kit/http-kit[`org.httpkit.client`]
 * https://github.com/http-kit/http-kit[`org.httpkit.server`]
+* https://github.com/clojure/core.match[`clojure.core.match`]
 
 See the
 https://github.com/borkdude/babashka/blob/master/doc/projects.md[projects]
