@@ -768,7 +768,6 @@ pre.rouge {
 <li><a href="#_babashka_process">babashka.process</a></li>
 </ul>
 </li>
-<li><a href="#deps_clj">Deps.clj</a></li>
 <li><a href="#recipes">Recipes</a>
 <ul class="sectlevel2">
 <li><a href="#_running_tests">Running tests</a></li>
@@ -1585,8 +1584,9 @@ function.</p>
 namespace which allows dynamically adding to the classpath.</p>
 </div>
 <div class="paragraph">
-<p>See <a href="#deps_clj">deps.clj</a> for a babashka script that replaces the <code>clojure</code>
-bash script.</p>
+<p>The namespace <a href="#babashkadeps">babashka.deps</a> integrates
+<a href="https://github.com/clojure/tools.deps.alpha">tools.deps</a> with babashka and allows
+you to set the classpath using a <code>deps.edn</code> map.</p>
 </div>
 </div>
 <div class="sect2">
@@ -2030,6 +2030,9 @@ as <code>transit</code></p>
 </li>
 <li>
 <p><a href="https://github.com/http-kit/http-kit"><code>org.httpkit.server</code></a></p>
+</li>
+<li>
+<p><a href="https://github.com/clojure/core.match"><code>clojure.core.match</code></a></p>
 </li>
 </ul>
 </div>
@@ -2571,109 +2574,44 @@ compute a classpath using tools.deps</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="deps_clj"><a class="link" href="#deps_clj">Deps.clj</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>The <a href="https://github.com/borkdude/deps.clj/"><code>deps.clj</code></a> script can be used
-to work with <code>deps.edn</code>-based projects:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>deps.clj <span class="nt">-A</span>:my-script <span class="nt">-Scommand</span> <span class="s2">"bb -cp {{classpath}} {{main-opts}}"</span>
-Hello from gist script!</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Create these aliases for brevity:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span><span class="nb">alias </span>bb-deps<span class="o">=</span><span class="s1">'deps.clj -Scommand "bb -cp {{classpath}} {{main-opts}}"'</span>
-<span class="nv">$ </span><span class="nb">alias </span>bb-deps-repl<span class="o">=</span><span class="s1">'rlwrap deps.clj -Scommand "bb -cp {{classpath}} {{main-opts}}"'</span>
-<span class="nv">$ </span>bb-deps <span class="nt">-M</span>:my-script
-Hello from gist script!
-<span class="nv">$ </span>bb-deps-repl
-Babashka v0.0.58 REPL.
-Use :repl/quit or :repl/exit to quit the REPL.
-Clojure rocks, Bash reaches.
-
-<span class="nv">user</span><span class="o">=&gt;</span> <span class="o">(</span>require <span class="s1">'[my-gist-script :as mgs])
-nil
-user=&gt; (mgs/-main)
-Hello from gist script!
-nil</span></code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>You can also use for example <code>deps.clj</code> to produce the classpath for a
-<code>babashka</code> REPL:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="shellsession">$ cat script/start-repl.sh
-#!/bin/sh -e
-git_root=$(git rev-parse --show-toplevel)
-export BABASHKA_CLASSPATH=$("$git_root"/script/deps.clj -Spath)
-bb --socket-repl 1666
-$ ./script/start-repl.sh
-Babashka socket REPL started at localhost:1666</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Now, given that your <code>deps.edn</code> and source tree looks something like</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="shellsession">$ cat deps.edn
-{:paths ["src" "test"]
- :deps  {}}
-$ tree -L 3
-├── deps.edn
-├── README
-├── script
-│   ├── deps.clj
-│   └── start-repl.sh
-├── src
-│   └── project_namespace
-│       ├── main.clj
-│       └── utilities.clj
-└── test
-    └── project_namespace
-        ├── test_main.clj
-        └── test_utilities.clj</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>you should now be able to
-<code>(require '[multi-machine-rsync.utilities :as util])</code> in your REPL and
-the source code in <code>/src/multi_machine_rsync/utilities.clj</code> will be
-evaluated and made available through the symbol <code>util</code>.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
 <h2 id="recipes"><a class="link" href="#recipes">Recipes</a></h2>
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="_running_tests"><a class="link" href="#_running_tests">Running tests</a></h3>
 <div class="paragraph">
-<p>Babashka bundles <code>clojure.test</code>. To run tests you can use a script like the following:</p>
+<p>Babashka bundles <code>clojure.test</code>. To run tests you can write a test runner script. Given the following project structure:</p>
 </div>
 <div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nb">.</span>
+├── src
+│   └──...
+└── <span class="nb">test</span>
+    └── your
+        ├── test_a.clj
+        └── test_b.clj</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">test-runner.clj</div>
 <div class="content">
 <pre class="rouge highlight"><code data-lang="clojure"><span class="o">#</span><span class="n">!/usr/bin/env</span><span class="w"> </span><span class="n">bb</span><span class="w">
 
 </span><span class="p">(</span><span class="nf">require</span><span class="w"> </span><span class="o">'</span><span class="p">[</span><span class="n">clojure.test</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">t</span><span class="p">]</span><span class="w">
-         </span><span class="ss">'your-namespace.with-tests</span><span class="p">)</span><span class="w">                 <i class="conum" data-value="1"></i><b>(1)</b>
+         </span><span class="o">'</span><span class="p">[</span><span class="n">babashka.classpath</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">cp</span><span class="p">])</span><span class="w">
+
+</span><span class="p">(</span><span class="nf">cp/add-classpath</span><span class="w"> </span><span class="s">"src:test"</span><span class="p">)</span><span class="w">                        <i class="conum" data-value="1"></i><b>(1)</b>
+
+</span><span class="p">(</span><span class="nf">require</span><span class="w"> </span><span class="ss">'your.test-a</span><span class="w"> </span><span class="ss">'your.test-b</span><span class="p">)</span><span class="w">                  <i class="conum" data-value="2"></i><b>(2)</b>
 
 </span><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">test-results</span><span class="w">
-  </span><span class="p">(</span><span class="nf">t/run-tests</span><span class="w"> </span><span class="ss">'your-namespace.with-tests</span><span class="p">))</span><span class="w">          <i class="conum" data-value="2"></i><b>(2)</b>
+  </span><span class="p">(</span><span class="nf">t/run-tests</span><span class="w"> </span><span class="ss">'your.test-a</span><span class="w"> </span><span class="ss">'your.test-b</span><span class="p">))</span><span class="w">           <i class="conum" data-value="3"></i><b>(3)</b>
 
 </span><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">failures-and-errors</span><span class="w">
   </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[{</span><span class="no">:keys</span><span class="w"> </span><span class="p">[</span><span class="no">:fail</span><span class="w"> </span><span class="no">:error</span><span class="p">]}</span><span class="w"> </span><span class="n">test-results</span><span class="p">]</span><span class="w">
-    </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="n">fail</span><span class="w"> </span><span class="n">error</span><span class="p">)))</span><span class="w">                                 <i class="conum" data-value="3"></i><b>(3)</b>
+    </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="n">fail</span><span class="w"> </span><span class="n">error</span><span class="p">)))</span><span class="w">                                 <i class="conum" data-value="4"></i><b>(4)</b>
 
-</span><span class="p">(</span><span class="nf">System/exit</span><span class="w"> </span><span class="n">failures-and-errors</span><span class="p">)</span><span class="w">                    <i class="conum" data-value="4"></i><b>(4)</b>
+</span><span class="p">(</span><span class="nf">System/exit</span><span class="w"> </span><span class="n">failures-and-errors</span><span class="p">)</span><span class="w">                    <i class="conum" data-value="5"></i><b>(5)</b>
 </span></code></pre>
 </div>
 </div>
@@ -2681,18 +2619,22 @@ evaluated and made available through the symbol <code>util</code>.</p>
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Load <code>clojure.test</code> along with your own tests</td>
+<td>Add sources and tests to the classpath</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Run the tests and store the returned information</td>
+<td>Require the test namespaces</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>Extract failures and errors</td>
+<td>Run all tests in the test namespaces</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Extract failures and errors</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
 <td>Exit the test script with a non-zero exit code when there are failures or errors</td>
 </tr>
 </table>
@@ -2992,7 +2934,7 @@ this repository as a basis for creating your own book based on this one.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-11-30 12:31:54 +0100
+Last updated 2021-01-22 09:57:07 +0100
 </div>
 </div>
 <!-- see https://github.com/asciidoctor/asciidoctor/issues/699#issuecomment-321066006 -->
