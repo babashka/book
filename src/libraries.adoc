@@ -55,6 +55,11 @@ as `transit`
 * https://github.com/http-kit/http-kit[`org.httpkit.client`]
 * https://github.com/http-kit/http-kit[`org.httpkit.server`]
 * https://github.com/clojure/core.match[`clojure.core.match`]
+* https://github.com/weavejester/hiccup/[`hiccup.core`] and `hiccup2.core`
+* https://github.com/clojure/test.check[`clojure.test.check`]:
+  - `clojure.test.check`
+  - `clojure.test.check.generators`
+  - `clojure.test.check.properties`
 
 See the
 https://github.com/borkdude/babashka/blob/master/doc/projects.md[projects]
