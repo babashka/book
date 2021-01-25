@@ -14,4 +14,4 @@
   (when (or (empty? url) (empty? file))
     (println "Usage: <url> <file>")
     (System/exit 1))
-  (write-html file (get-url url)))
+  (write-html file (:body (get-url url))))
