@@ -1009,7 +1009,7 @@ Use <span class="nt">--</span> to separate script <span class="nb">command </spa
   </span><span class="p">(</span><span class="nb">when</span><span class="w"> </span><span class="p">(</span><span class="nb">or</span><span class="w"> </span><span class="p">(</span><span class="nf">empty?</span><span class="w"> </span><span class="n">url</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nf">empty?</span><span class="w"> </span><span class="n">file</span><span class="p">))</span><span class="w">
     </span><span class="p">(</span><span class="nb">println</span><span class="w"> </span><span class="s">"Usage: &lt;url&gt; &lt;file&gt;"</span><span class="p">)</span><span class="w">
     </span><span class="p">(</span><span class="nf">System/exit</span><span class="w"> </span><span class="mi">1</span><span class="p">))</span><span class="w">
-  </span><span class="p">(</span><span class="nf">write-html</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="p">(</span><span class="nf">get-url</span><span class="w"> </span><span class="n">url</span><span class="p">)))</span></code></pre>
+  </span><span class="p">(</span><span class="nf">write-html</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="p">(</span><span class="no">:body</span><span class="w"> </span><span class="p">(</span><span class="nf">get-url</span><span class="w"> </span><span class="n">url</span><span class="p">))))</span></code></pre>
 </div>
 </div>
 <div class="listingblock">
