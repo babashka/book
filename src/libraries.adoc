@@ -37,6 +37,7 @@ Additional libraries:
 
 * https://github.com/borkdude/babashka.curl[`babashka.curl`]
 * https://github.com/babashka/process[`babashka/process`]
+* https://github.com/babashka/fs[`babashka/fs`]
 * https://github.com/nrepl/bencode[`bencode.core`] aliased as `bencode`:
 `read-bencode`, `write-bencode`
 * https://github.com/dakrone/cheshire[`cheshire.core`] aliased as `json`
@@ -252,7 +253,7 @@ https://github.com/borkdude/babashka.curl[babashka.curl] for how to use it.
 [[babashkaprocess]]
 ==== babashka.process
 
-The `babashka.process` process library. See the
+The `babashka.process` library. See the
 https://github.com/babashka/process[process] repo for API docs.
 
 === Projects
@@ -263,3 +264,9 @@ with the subset of Clojure that sci is capable of running.
 Check this
 https://github.com/borkdude/babashka/blob/master/doc/projects.md[page] for
 projects that are known to work with babashka.
+
+[[babashkafs]]
+==== babashka.fs
+
+The `babashka.fs` library offers file system utilities. See the
+https://github.com/babashka/fs[fs] repo for API docs.
