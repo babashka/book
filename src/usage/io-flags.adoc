@@ -21,12 +21,15 @@ echo "{{Input}}" | bb {{Input flags}} {{Output flags}} "*input*"
 
 [cols=",,,,",options="header",]
 |===
-|Input |Input flags |Output flag |`*input*` |Output
-|`{:a 1}` `{:a 2}` | | |`{:a 1}` |`{:a 1}`
-|hello bye |`-i` | |`("hello" "bye")` |`("hello" "bye")`
-|hello bye |`-i` |`-o` |`("hello" "bye")` |hello bye
-|`{:a 1}` `{:a 2}` |`-I` | |`({:a 1} {:a 2})` |`({:a 1} {:a 2})`
-|`{:a 1}` `{:a 2}` |`-I` |`-O` |`({:a 1} {:a 2})` |`{:a 1}` `{:a 2}`
+|Input              |Input flags |Output flag     | `*input*`                | Output
+|`{:a 1}` `{:a 2}`  |            |                |`{:a 1}`                  |`{:a 1}`
+|hello +
+bye|`-i`        |                |`("hello" "bye")`         | `("hello" "bye")`
+|hello +
+bye|`-i`        |`-o`            |`("hello" "bye")`         | hello +
+bye
+|`{:a 1} {:a 2}`  |`-I`        |                |`({:a 1} {:a 2})`         |`({:a 1} {:a 2})`
+|`{:a 1} {:a 2}`  |`-I` |`-O` |`({:a 1} {:a 2})` |`{:a 1} {:a 2}`
 |===
 
 When combined with the `--stream` option, the expression is executed for
