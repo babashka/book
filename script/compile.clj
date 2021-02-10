@@ -7,8 +7,8 @@
                        "master")
                    ".html"))
 
-;;#_:clj-kondo/ignore
-@(p/$ asciidoctor src/book.adoc -o ~out-page -a docinfo=shared)
+(-> (p/$ asciidoctor src/book.adoc -o ~out-page -a docinfo=shared)
+    (p/check))
 
 (binding [*out* *err*]
   (println "Done writing to" out-page))
