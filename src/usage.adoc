@@ -279,16 +279,24 @@ Let's first set the classpath:
 
 [source,clojure]
 ----
-$ export BABASHKA_CLASSPATH=$(clojure -Spath -Sdeps '{:deps {clj-commons/fs {:mvn/version "1.5.2"}}}')
+$ export BABASHKA_CLASSPATH=$(clojure -Spath -Sdeps '{:deps {clj-commons/fs {:mvn/version "1.6.307"}}}')
 ----
 
 Write a little script, say `glob.clj`:
 
 [source,clojure]
 ----
-(ns foo (:require [me.raynes.fs :as fs]))
+(ns glob (:require [me.raynes.fs :as fs]))
+
 (run! (comp println str)
       (fs/glob (first *command-line-args*)))
+----
+
+For testing, we'll make a file which we will find using the glob function:
+
+[source,bash]
+----
+$ touch README.md
 ----
 
 Now we can execute the script which uses the library:
@@ -296,8 +304,8 @@ Now we can execute the script which uses the library:
 [source,bash]
 ----
 $ time bb glob.clj '*.md'
-/Users/borkdude/Dropbox/dev/clojure/carve/README.md
-bb glob.clj '*.md'   0.03s  user 0.02s system 70% cpu 0.064 total
+/private/tmp/glob/README.md
+bb glob.clj '*.md'   0.03s  user 0.01s system 88% cpu 0.047 total
 ----
 
 Producing an uberscript with all required code:
@@ -313,7 +321,7 @@ To prove that we don't need the classpath anymore:
 ----
 $ unset BABASHKA_CLASSPATH
 $ time bb glob-uberscript.clj '*.md'
-/Users/borkdude/Dropbox/dev/clojure/carve/README.md
+/private/tmp/glob/README.md
 bb glob-uberscript.clj '*.md'   0.03s  user 0.02s system 93% cpu 0.049 total
 ----
 
@@ -337,10 +345,10 @@ https://github.com/borkdude/carve[carve].
 [source,bash]
 ----
 $ wc -l glob-uberscript.clj
-     607 glob-uberscript.clj
-$ clojure -M:carve --opts '{:paths ["glob-uberscript.clj"] :aggressive true :silent true}'
+     583 glob-uberscript.clj
+$ carve --opts '{:paths ["glob-uberscript.clj"] :aggressive true :silent true}'
 $ wc -l glob-uberscript.clj
-     172 glob-uberscript.clj
+     105 glob-uberscript.clj
 ----
 
 Note that the uberscript became 72% shorter. This has a beneficial
@@ -349,8 +357,8 @@ effect on execution time:
 [source,bash]
 ----
 $ time bb glob-uberscript.clj '*.md'
-/Users/borkdude/Dropbox/dev/clojure/carve/README.md
-bb glob-uberscript.clj '*.md'   0.02s  user 0.01s system 93% cpu 0.032 total
+/private/tmp/glob/README.md
+bb glob-uberscript.clj '*.md'   0.02s  user 0.01s system 84% cpu 0.034 total
 ----
 
 === Uberjar
