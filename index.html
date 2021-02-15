@@ -1609,7 +1609,7 @@ file. This can be convenient for debugging and deployment.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="clojure"><span class="n">$</span><span class="w"> </span><span class="n">export</span><span class="w"> </span><span class="n">BABASHKA_CLASSPATH=$</span><span class="p">(</span><span class="nf">clojure</span><span class="w"> </span><span class="n">-Spath</span><span class="w"> </span><span class="n">-Sdeps</span><span class="w"> </span><span class="o">'</span><span class="p">{</span><span class="no">:deps</span><span class="w"> </span><span class="p">{</span><span class="n">clj-commons/fs</span><span class="w"> </span><span class="p">{</span><span class="no">:mvn/version</span><span class="w"> </span><span class="s">"1.5.2"</span><span class="p">}}}</span><span class="o">'</span><span class="p">)</span></code></pre>
+<pre class="rouge highlight"><code data-lang="clojure"><span class="n">$</span><span class="w"> </span><span class="n">export</span><span class="w"> </span><span class="n">BABASHKA_CLASSPATH=$</span><span class="p">(</span><span class="nf">clojure</span><span class="w"> </span><span class="n">-Spath</span><span class="w"> </span><span class="n">-Sdeps</span><span class="w"> </span><span class="o">'</span><span class="p">{</span><span class="no">:deps</span><span class="w"> </span><span class="p">{</span><span class="n">clj-commons/fs</span><span class="w"> </span><span class="p">{</span><span class="no">:mvn/version</span><span class="w"> </span><span class="s">"1.6.307"</span><span class="p">}}}</span><span class="o">'</span><span class="p">)</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1617,9 +1617,18 @@ file. This can be convenient for debugging and deployment.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="clojure"><span class="p">(</span><span class="nf">ns</span><span class="w"> </span><span class="n">foo</span><span class="w"> </span><span class="p">(</span><span class="no">:require</span><span class="w"> </span><span class="p">[</span><span class="n">me.raynes.fs</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">fs</span><span class="p">]))</span><span class="w">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">(</span><span class="nf">ns</span><span class="w"> </span><span class="n">glob</span><span class="w"> </span><span class="p">(</span><span class="no">:require</span><span class="w"> </span><span class="p">[</span><span class="n">me.raynes.fs</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">fs</span><span class="p">]))</span><span class="w">
+
 </span><span class="p">(</span><span class="nf">run!</span><span class="w"> </span><span class="p">(</span><span class="nb">comp</span><span class="w"> </span><span class="nb">println</span><span class="w"> </span><span class="nb">str</span><span class="p">)</span><span class="w">
       </span><span class="p">(</span><span class="nf">fs/glob</span><span class="w"> </span><span class="p">(</span><span class="nb">first</span><span class="w"> </span><span class="n">*command-line-args*</span><span class="p">)))</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For testing, we&#8217;ll make a file which we will find using the glob function:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash"><span class="nv">$ </span><span class="nb">touch </span>README.md</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1628,8 +1637,8 @@ file. This can be convenient for debugging and deployment.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="bash"><span class="nv">$ </span><span class="nb">time </span>bb glob.clj <span class="s1">'*.md'</span>
-/Users/borkdude/Dropbox/dev/clojure/carve/README.md
-bb glob.clj <span class="s1">'*.md'</span>   0.03s  user 0.02s system 70% cpu 0.064 total</code></pre>
+/private/tmp/glob/README.md
+bb glob.clj <span class="s1">'*.md'</span>   0.03s  user 0.01s system 88% cpu 0.047 total</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1647,7 +1656,7 @@ bb glob.clj <span class="s1">'*.md'</span>   0.03s  user 0.02s system 70% cpu 0.
 <div class="content">
 <pre class="rouge highlight"><code data-lang="bash"><span class="nv">$ </span><span class="nb">unset </span>BABASHKA_CLASSPATH
 <span class="nv">$ </span><span class="nb">time </span>bb glob-uberscript.clj <span class="s1">'*.md'</span>
-/Users/borkdude/Dropbox/dev/clojure/carve/README.md
+/private/tmp/glob/README.md
 bb glob-uberscript.clj <span class="s1">'*.md'</span>   0.03s  user 0.02s system 93% cpu 0.049 total</code></pre>
 </div>
 </div>
@@ -1681,10 +1690,10 @@ bring the resources along.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="bash"><span class="nv">$ </span><span class="nb">wc</span> <span class="nt">-l</span> glob-uberscript.clj
-     607 glob-uberscript.clj
-<span class="nv">$ </span>clojure <span class="nt">-M</span>:carve <span class="nt">--opts</span> <span class="s1">'{:paths ["glob-uberscript.clj"] :aggressive true :silent true}'</span>
+     583 glob-uberscript.clj
+<span class="nv">$ </span>carve <span class="nt">--opts</span> <span class="s1">'{:paths ["glob-uberscript.clj"] :aggressive true :silent true}'</span>
 <span class="nv">$ </span><span class="nb">wc</span> <span class="nt">-l</span> glob-uberscript.clj
-     172 glob-uberscript.clj</code></pre>
+     105 glob-uberscript.clj</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1694,8 +1703,8 @@ effect on execution time:</p>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="bash"><span class="nv">$ </span><span class="nb">time </span>bb glob-uberscript.clj <span class="s1">'*.md'</span>
-/Users/borkdude/Dropbox/dev/clojure/carve/README.md
-bb glob-uberscript.clj <span class="s1">'*.md'</span>   0.02s  user 0.01s system 93% cpu 0.032 total</code></pre>
+/private/tmp/glob/README.md
+bb glob-uberscript.clj <span class="s1">'*.md'</span>   0.02s  user 0.01s system 84% cpu 0.034 total</code></pre>
 </div>
 </div>
 </div>
@@ -2966,7 +2975,7 @@ this repository as a basis for creating your own book based on this one.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-01-22 09:57:07 +0100
+Last updated 2021-02-10 13:00:27 +0100
 </div>
 </div>
 <!-- see https://github.com/asciidoctor/asciidoctor/issues/699#issuecomment-321066006 -->
