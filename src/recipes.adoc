@@ -218,3 +218,56 @@ started with `lein repl`:
 
 (nrepl-eval 52054 "(+ 1 2 3)") ;;=> "6"
 ----
+
+
+=== Running from Cygwin/Git Bash
+
+On Windows, `bb` can be invoked from the bash shell directly:
+
+[source,shell]
+----
+$ bb -e '(+ 1 2 3)'
+6
+----
+
+However, creating a script that invokes `bb` via a shebang leads to an error if
+the script is not in the current directory. Suppose you had the following script
+named `hello` on your path:
+
+[source,clojure]
+----
+#!/usr/bin/env bb
+(println "Hello, world!")
+----
+
+[source,shell]
+----
+$ hello
+----- Error --------------------------------------------------------------------
+Type:     java.lang.Exception
+Message:  File does not exist: /cygdrive/c/path/to/hello
+----
+
+The problem here is that the shell is passing a Cygwin-style path to `bb`, but
+`bb` can't recognize it because it wasn't compiled with Cygwin.
+
+The solution is to create a wrapper script that converts the Cygwin-style path
+to a Windows-style path before invoking `bb`. Put the following into a script
+called `bbwrap` somewhere on your Cygwin path, say in `/usr/local/bin/bbwrap`:
+
+[source,shell]
+----
+#!/bin/bash
+SCRIPT=$1
+shift
+bb.exe $(cygpath -w $SCRIPT) $@
+----
+
+Make sure to fix your original script to invoke `bbwrap` instead of `bb`
+directly:
+
+[source,clojure]
+----
+#!/usr/bin/env bbwrap
+(println "Hello, world!")
+----
