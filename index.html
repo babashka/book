@@ -777,6 +777,7 @@ pre.rouge {
 <li><a href="#_http_requests">HTTP requests</a></li>
 <li><a href="#core_async">Core.async</a></li>
 <li><a href="#_interacting_with_an_nrepl_server">Interacting with an nREPL server</a></li>
+<li><a href="#_running_from_cygwingit_bash">Running from Cygwin/Git Bash</a></li>
 </ul>
 </li>
 <li><a href="#differences-with-clojure">Differences with Clojure</a></li>
@@ -1018,7 +1019,7 @@ Use <span class="nt">--</span> to separate script <span class="nb">command </spa
 Usage: &lt;url&gt; &lt;file&gt;
 
 <span class="nv">$ </span>./download_html.clj https://www.clojure.org /tmp/clojure.org.html
-Fetching url: https://www.clojure.org
+Downloading url: https://www.clojure.org
 Writing file: /tmp/clojure.org.html</code></pre>
 </div>
 </div>
@@ -2887,6 +2888,64 @@ started with <code>lein repl</code>:</p>
     </span><span class="p">(</span><span class="nf">String.</span><span class="w"> </span><span class="n">bytes</span><span class="p">)))</span><span class="w">
 
 </span><span class="p">(</span><span class="nf">nrepl-eval</span><span class="w"> </span><span class="mi">52054</span><span class="w"> </span><span class="s">"(+ 1 2 3)"</span><span class="p">)</span><span class="w"> </span><span class="c1">;;=&gt; "6"</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_running_from_cygwingit_bash"><a class="link" href="#_running_from_cygwingit_bash">Running from Cygwin/Git Bash</a></h3>
+<div class="paragraph">
+<p>On Windows, <code>bb</code> can be invoked from the bash shell directly:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>bb <span class="nt">-e</span> <span class="s1">'(+ 1 2 3)'</span>
+6</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>However, creating a script that invokes <code>bb</code> via a shebang leads to an error if
+the script is not in the current directory. Suppose you had the following script
+named <code>hello</code> on your path:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="o">#</span><span class="n">!/usr/bin/env</span><span class="w"> </span><span class="n">bb</span><span class="w">
+</span><span class="p">(</span><span class="nb">println</span><span class="w"> </span><span class="s">"Hello, world!"</span><span class="p">)</span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>hello
+<span class="nt">-----</span> Error <span class="nt">--------------------------------------------------------------------</span>
+Type:     java.lang.Exception
+Message:  File does not exist: /cygdrive/c/path/to/hello</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The problem here is that the shell is passing a Cygwin-style path to <code>bb</code>, but
+<code>bb</code> can&#8217;t recognize it because it wasn&#8217;t compiled with Cygwin.</p>
+</div>
+<div class="paragraph">
+<p>The solution is to create a wrapper script that converts the Cygwin-style path
+to a Windows-style path before invoking <code>bb</code>. Put the following into a script
+called <code>bbwrap</code> somewhere on your Cygwin path, say in <code>/usr/local/bin/bbwrap</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="c">#!/bin/bash</span>
+<span class="nv">SCRIPT</span><span class="o">=</span><span class="nv">$1</span>
+<span class="nb">shift
+</span>bb.exe <span class="si">$(</span>cygpath <span class="nt">-w</span> <span class="nv">$SCRIPT</span><span class="si">)</span> <span class="nv">$@</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Make sure to fix your original script to invoke <code>bbwrap</code> instead of <code>bb</code>
+directly:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="o">#</span><span class="n">!/usr/bin/env</span><span class="w"> </span><span class="n">bbwrap</span><span class="w">
+</span><span class="p">(</span><span class="nb">println</span><span class="w"> </span><span class="s">"Hello, world!"</span><span class="p">)</span></code></pre>
 </div>
 </div>
 </div>
