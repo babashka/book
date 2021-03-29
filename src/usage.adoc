@@ -273,8 +273,7 @@ $ bb -e "(require '[medley.core :as m]) (m/index-by :id [{:id 1} {:id 2}])"
 
 A main function can be invoked with `-m` or `--main` like shown above. When
 given the argument `foo.bar`, the namespace `foo.bar` will be required and the
-function `foo.bar/-main` will be executed while it receives command line
-arguments as strings.
+function `foo.bar/-main` will be called with command line arguments as strings.
 
 Since babashka 0.3.1 you may pass a fully qualified symbol to `-m`:
 
