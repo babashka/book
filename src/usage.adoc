@@ -1,55 +1,55 @@
 [[usage]]
 == Usage
 
-Typing `bb --help` from the command line will print all the available command
+Typing `bb help` from the command line will print all the available command
 line options which should give you a sense of the available features in
 babashka.
 
 [source,bash]
 ----
-Babashka v0.2.5
-
-Options must appear in the order of groups mentioned below.
+Babashka v0.3.1
 
 Help:
 
-  --help, -h or -?    Print this help text.
-  --version           Print the current version of babashka.
-  --describe          Print an EDN map with information about this version of babashka.
+  help, -h or -?     Print this help text.
+  version            Print the current version of babashka.
+  describe           Print an EDN map with information about this version of babashka.
+  doc <var|ns>       Print docstring of var or namespace. Requires namespace if necessary.
 
 Evaluation:
 
-  -e, --eval <expr>   Evaluate an expression.
-  -f, --file <path>   Evaluate a file.
-  -cp, --classpath    Classpath to use.
-  -m, --main <ns>     Call the -main function from namespace with args.
-  --verbose           Print debug information and entire stacktrace in case of exception.
+  -e, --eval <expr>    Evaluate an expression.
+  -f, --file <path>    Evaluate a file.
+  -cp, --classpath     Classpath to use.
+  -m, --main <ns|var>  Call the -main function from a namespace or call a fully qualified var.
+  --verbose            Print debug information and entire stacktrace in case of exception.
 
 REPL:
 
-  --repl              Start REPL. Use rlwrap for history.
-  --socket-repl       Start socket REPL. Specify port (e.g. 1666) or host and port separated by colon (e.g. 127.0.0.1:1666).
-  --nrepl-server      Start nREPL server. Specify port (e.g. 1667) or host and port separated by colon (e.g. 127.0.0.1:1667).
+  Usage: <repl-command> [port/host] [classpath-opt]
+  Specify port (e.g. 1666) or host and port separated by colon (e.g. 127.0.0.1:1666).
 
-In- and output flags:
-
-  -i                  Bind *input* to a lazy seq of lines from stdin.
-  -I                  Bind *input* to a lazy seq of EDN values from stdin.
-  -o                  Write lines to stdout.
-  -O                  Write EDN values to stdout.
-  --stream            Stream over lines or EDN values from stdin. Combined with -i or -I *input* becomes a single value per iteration.
-
-Uberscript:
-
-  --uberscript <file> Collect preloads, -e, -f and -m and all required namespaces from the classpath into a single file.
-
-Uberjar:
-
-  --uberjar    <jar>  Similar to --uberscript but creates jar file.
+  repl               Start REPL. Use rlwrap for history. When invoking bb with no args, this is the default command.
+  socket-repl        Start socket REPL.
+  nrepl-server       Start nREPL server.
 
 Clojure:
 
-  --clojure [args...] Invokes clojure. Takes same args as the official clojure CLI.
+  clojure [args...]  Invokes clojure. Takes same args as the official clojure CLI.
+
+Packaging:
+
+  uberscript <file> [eval-opts]  Collect preloads, -e, -f and -m and all required namespaces from the classpath into a single file.
+
+  uberjar    <jar> [eval-opts]   Similar to --uberscript but creates jar file.
+
+In- and output flags (to be used with -e on the command line):
+
+  -i                 Bind *input* to a lazy seq of lines from stdin.
+  -I                 Bind *input* to a lazy seq of EDN values from stdin.
+  -o                 Write lines to stdout.
+  -O                 Write EDN values to stdout.
+  --stream           Stream over lines or EDN values from stdin. Combined with -i or -I *input* becomes a single value per iteration.
 
 If the first argument is not any of the above options, then it treated as a file if it exists, or as an expression otherwise.
 Everything after that is bound to *command-line-args*.
@@ -64,6 +64,13 @@ Scripts may be executed from a file using `-f` or `--file`:
 [source,bash]
 ----
 bb -f download_html.clj
+----
+
+The file may also be passed directly, without `-f`:
+
+[source,bash]
+----
+bb download_html.clj
 ----
 
 Using `bb` with a shebang also works:
@@ -185,20 +192,29 @@ Note that `*input*` is not available in preloads.
 
 include::usage/repl.adoc[]
 
-=== Classpath
+=== Project setup
+
+==== Classpath
+
+When you want to organize babashka scripts like a regular Clojure project, you
+will need to set a classpath.
 
 Babashka accepts a `--classpath` option that will be used to search for
-namespaces when requiring them:
+namespaces when requiring them. Say we have a file `src/my/namespace.clj`:
 
 [source,clojure]
 ----
-$ cat src/my/namespace.clj
 (ns my.namespace)
-(defn -main [& _args]
-  (println "Hello from my namespace!"))
+(defn -main [& args]
+  (apply println "Hello from my namespace!" args))
+----
 
-$ bb --classpath src --main my.namespace
-Hello from my namespace!
+Now we can execute this main function with:
+
+[source,clojure]
+----
+$ bb --classpath src --main my.namespace 1 2 3
+Hello from my namespace! 1 2 3
 ----
 
 If you have a larger script with a classic Clojure project layout like
@@ -223,40 +239,11 @@ in the classpath and start a socket REPL by running:
 
 [source,bash]
 ----
-$ bb --classpath src:test --socket-repl 1666
+$ bb socket-repl 1666 --classpath src:test
 ----
 
-Note that you can use the `clojure` tool to produce classpaths and
-download dependencies:
-
-[source,bash]
-----
-$ cat deps.edn
-{:deps
- {my_gist_script
-  {:git/url "https://gist.github.com/borkdude/263b150607f3ce03630e114611a4ef42"
-   :sha "cfc761d06dfb30bb77166b45d439fe8fe54a31b8"}}
- :aliases {:my-script {:main-opts ["-m" "my-gist-script"]}}}
-
-$ CLASSPATH=$(clojure -Spath)
-$ bb --classpath "$CLASSPATH" --main my-gist-script
-Hello from gist script!
-----
-
-If there is no `--classpath` argument, the `BABASHKA_CLASSPATH`
-environment variable will be used:
-
-[source,bash]
-----
-$ export BABASHKA_CLASSPATH=$(clojure -Spath)
-$ export BABASHKA_PRELOADS="(require '[my-gist-script])"
-$ bb "(my-gist-script/-main)"
-Hello from gist script!
-----
-
-When invoking `bb` with a main function, the expression
-`(System/getProperty "babashka.main")` will return the name of the main
-function.
+If there is no `--classpath` argument, the `BABASHKA_CLASSPATH` environment
+variable will be used.
 
 Also see the link:#babashka_classpath[babashka.classpath]
 namespace which allows dynamically adding to the classpath.
@@ -264,6 +251,44 @@ namespace which allows dynamically adding to the classpath.
 The namespace link:#babashkadeps[babashka.deps] integrates
 https://github.com/clojure/tools.deps.alpha[tools.deps] with babashka and allows
 you to set the classpath using a `deps.edn` map.
+
+==== bb.edn
+
+Since babashka 0.3.1 supports a local `bb.edn` file where you can declare one
+or multiple paths and dependencies so they are automatically added to the classpath:
+
+[source,clojure]
+----
+{:paths ["src"]
+ :deps {medley/medley {:mvn/version "1.3.0"}}}
+----
+
+[source,clojure]
+----
+$ bb -e "(require '[medley.core :as m]) (m/index-by :id [{:id 1} {:id 2}])"
+{1 {:id 1}, 2 {:id 2}}
+----
+
+==== Invoking a main function
+
+A main function can be invoked with `-m` or `--main` like shown above. When
+given the argument `foo.bar`, the namespace `foo.bar` will be required and the
+function `foo.bar/-main` will be executed while it receives command line
+arguments as strings.
+
+Since babashka 0.3.1 you may pass a fully qualified symbol to `-m`:
+
+[source,clojure]
+----
+$ bb -m clojure.core/prn 1 2 3
+"1" "2" "3"
+----
+
+so you can execute any function as a main function, as long as it accepts
+varargs arguments.
+
+When invoking `bb` with a main function, the expression `(System/getProperty
+"babashka.main")` will return the name of the main function.
 
 === Uberscript
 
