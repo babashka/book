@@ -1605,8 +1605,7 @@ or multiple paths and dependencies so they are automatically added to the classp
 <div class="paragraph">
 <p>A main function can be invoked with <code>-m</code> or <code>--main</code> like shown above. When
 given the argument <code>foo.bar</code>, the namespace <code>foo.bar</code> will be required and the
-function <code>foo.bar/-main</code> will be executed while it receives command line
-arguments as strings.</p>
+function <code>foo.bar/-main</code> will be called with command line arguments as strings.</p>
 </div>
 <div class="paragraph">
 <p>Since babashka 0.3.1 you may pass a fully qualified symbol to <code>-m</code>:</p>
