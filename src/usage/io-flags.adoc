@@ -7,10 +7,9 @@ If you want to read multiple EDN values, use the `-I` flag. The `-o`
 option prints the result as lines of text. The `-O` option prints the
 result as lines of EDN values.
 
-____
-*Note:* `*input*` is only available in the `user` namespace, designed
-for one-liners. For writing scripts, see link:#scripts[scripts].
-____
+NOTE: `*input*` is only available in the `user` namespace, designed
+for one-liners. For writing scripts, see <<_scripts>>.
+
 
 The following table illustrates the combination of options for commands
 of the form
