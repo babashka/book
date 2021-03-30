@@ -40,7 +40,7 @@ $ cat script/start-repl.sh
 #!/bin/sh -e
 git_root=$(git rev-parse --show-toplevel)
 export BABASHKA_CLASSPATH=$("$git_root"/script/deps.clj -Spath)
-bb --socket-repl 1666
+bb socket-repl 1666
 $ ./script/start-repl.sh
 Babashka socket REPL started at localhost:1666
 ----

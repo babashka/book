@@ -77,9 +77,9 @@ something side-effecting.
 
 [source,shell]
 ----
-$ bb '(:a {:a 5})'
+$ bb -e '(:a {:a 5})'
 5
-$ bb '(:b {:a 5})'
+$ bb -e '(:b {:a 5})'
 $
 ----
 
@@ -161,7 +161,7 @@ processes:
 
 [source,clojure]
 ----
-bb '
+bb -e '
 (defn async-command [& args]
   (async/thread (apply shell/sh "bash" "-c" args)))
 
