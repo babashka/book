@@ -235,7 +235,7 @@ Returns true if `PIPE` signal was received. Example:
 
 [source,bash]
 ----
-$ bb '((fn [x] (println x) (when (not (signal/pipe-signal-received?)) (recur (inc x)))) 0)' | head -n2
+$ bb -e '((fn [x] (println x) (when (not (signal/pipe-signal-received?)) (recur (inc x)))) 0)' | head -n2
 1
 2
 ----

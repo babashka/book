@@ -1,7 +1,7 @@
 [[license]]
 == License
 
-Copyright © 2020 Michiel Borkent
+Copyright © 2020-2021 Michiel Borkent
 
 image::https://i.creativecommons.org/l/by-nc-nd/3.0/88x31.png[Creative Commons License,rel=rel="license",link="https://creativecommons.org/licenses/by-nc-nd/3.0/deed.en_US"]
 
