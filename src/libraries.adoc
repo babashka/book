@@ -61,7 +61,7 @@ as `transit`
   - `clojure.test.check`
   - `clojure.test.check.generators`
   - `clojure.test.check.properties`
-* https://github.com/clj-commons/rewrite-clj[rewrite-clj]:
+* https://github.com/clj-commons/rewrite-clj[`rewrite-clj`]:
  - `rewrite-clj.parser`
  - `rewrite-clj.node`
  - `rewrite-clj.zip`
