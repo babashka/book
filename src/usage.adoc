@@ -7,8 +7,6 @@ babashka.
 
 [source,bash]
 ----
-Babashka v0.3.1
-
 Usage: bb [classpath opts] [eval opts] [cmdline args]
 or:    bb [classpath opts] file [cmdline args]
 or:    bb [classpath opts] subcommand [subcommand opts] [cmdline args]
@@ -34,8 +32,8 @@ Help:
 REPL:
 
   repl                 Start REPL. Use rlwrap for history.
-  socket-repl  [addr]  Start a socket REPL. Addr opt defaults to localhost:1666.
-  nrepl-server [addr]  Start nREPL server. Address option defaults to locahost:1667.
+  socket-repl  [addr]  Start a socket REPL. Address defaults to localhost:1666.
+  nrepl-server [addr]  Start nREPL server. Address defaults to localhost:1667.
 
 Clojure:
 
@@ -223,8 +221,12 @@ you to set the classpath using a `deps.edn` map.
 
 ==== bb.edn
 
-Since version 0.3.1, babashka supports a local `bb.edn` file where you can declare one
-or multiple paths and dependencies so they are automatically added to the classpath:
+Since version 0.3.1, babashka supports a local `bb.edn` file to manage a project.
+
+===== Classpath
+
+You can declare one or multiple paths and dependencies so they are automatically
+added to the classpath:
 
 [source,clojure]
 ----
