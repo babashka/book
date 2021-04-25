@@ -223,7 +223,7 @@ you to set the classpath using a `deps.edn` map.
 
 ==== bb.edn
 
-Since babashka 0.3.1 supports a local `bb.edn` file where you can declare one
+Since version 0.3.1, babashka supports a local `bb.edn` file where you can declare one
 or multiple paths and dependencies so they are automatically added to the classpath:
 
 [source,clojure]
@@ -237,6 +237,27 @@ or multiple paths and dependencies so they are automatically added to the classp
 $ bb -e "(require '[medley.core :as m]) (m/index-by :id [{:id 1} {:id 2}])"
 {1 {:id 1}, 2 {:id 2}}
 ----
+
+===== :min-bb-version
+
+Since version 0.3.6, babashka supports the `:min-bb-version` where the minimal
+babashka version can be declared:
+
+[source,clojure]
+----
+{:paths ["src"]
+ :deps {medley/medley {:mvn/version "1.3.0"}}
+ :min-bb-version "1.0.0"}
+----
+
+When using an older bb version (that supports `:min-bb-version`), babashka will
+print a warning:
+
+[source]
+---
+WARNING: this project requires babashka 1.0.0 or newer, but you have: 0.3.6
+---
+[source]
 
 ==== Invoking a main function
 
