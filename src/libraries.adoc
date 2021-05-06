@@ -66,6 +66,8 @@ as `transit`
  - `rewrite-clj.node`
  - `rewrite-clj.zip`
  - `rewrite-clj.paredit`
+* https://github.com/yogthos/Selmer[`Selmer`]:
+ - `selmer.parser`
 
 See the
 https://github.com/borkdude/babashka/blob/master/doc/projects.md[projects]
