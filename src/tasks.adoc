@@ -189,7 +189,7 @@ foo ("1" "2" "3")
 bar ("2" "3")
 ----
 
-=== Task ptions
+=== Task options
 
 Instead of naked expressions, tasks can be defined as maps with options. The
 task expression should then be moved to the `:task` key:
@@ -489,23 +489,17 @@ at Doctor Evidence]
 
 ==== Conflicting file / task / subcommand names
 
-`bb foo` is resolved in this order: 1) execute the relative file `foo`
-if it exists 2) execute the task `foo` if it exists 3) execute the
-subcommand `foo` if it exists
+`bb <option>` is resolved in this order of file, task, subcommand.
 
-Resolving a conflict with a subcommand can be done by renaming a file or
-task.
+Escape hatches in case of conflicts:
 
-Escape hatches:
-
-[arabic]
-. execute relative file as `bb ./foo`
-. execute task as `bb run foo`
-. execute subcommand as `bb --foo`
+- execute relative file as `bb ./foo`
+- execute task as `bb run foo`
+- execute subcommand as `bb --foo`
 
 ==== Conflicting task name and clojure.core var
 
-You can name a task `format` which is also a clojure core var. If you
-want to refer to the core var, it is recommended to use the fully
-qualified `clojure.core/format` in this case, to avoid conflicts in
-`:enter` and `:leave` expressions.
+You can name a task `format` which is also a clojure core var. If you want to
+refer to the core var, it is recommended to use the fully qualified
+`clojure.core/format` in this case, to avoid conflicts in `:enter` and `:leave`
+expressions.
