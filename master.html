@@ -763,7 +763,7 @@ pre.rouge {
 <li><a href="#_run">Run</a></li>
 <li><a href="#_hooks">Hooks</a></li>
 <li><a href="#_command_line_arguments">Command line arguments</a></li>
-<li><a href="#_task_ptions">Task ptions</a></li>
+<li><a href="#_task_options">Task options</a></li>
 <li><a href="#_discoverability">Discoverability</a></li>
 <li><a href="#_tasks_api">Tasks API</a></li>
 <li><a href="#_dependencies_between_tasks">Dependencies between tasks</a></li>
@@ -2691,7 +2691,7 @@ bar <span class="o">(</span><span class="s2">"2"</span> <span class="s2">"3"</sp
 </div>
 </div>
 <div class="sect2">
-<h3 id="_task_ptions"><a class="link" href="#_task_ptions">Task ptions</a></h3>
+<h3 id="_task_options"><a class="link" href="#_task_options">Task options</a></h3>
 <div class="paragraph">
 <p>Instead of naked expressions, tasks can be defined as maps with options. The
 task expression should then be moved to the <code>:task</code> key:</p>
@@ -3067,19 +3067,13 @@ at Doctor Evidence</a></p>
 <div class="sect3">
 <h4 id="_conflicting_file_task_subcommand_names"><a class="link" href="#_conflicting_file_task_subcommand_names">Conflicting file / task / subcommand names</a></h4>
 <div class="paragraph">
-<p><code>bb foo</code> is resolved in this order: 1) execute the relative file <code>foo</code>
-if it exists 2) execute the task <code>foo</code> if it exists 3) execute the
-subcommand <code>foo</code> if it exists</p>
+<p><code>bb &lt;option&gt;</code> is resolved in this order of file, task, subcommand.</p>
 </div>
 <div class="paragraph">
-<p>Resolving a conflict with a subcommand can be done by renaming a file or
-task.</p>
+<p>Escape hatches in case of conflicts:</p>
 </div>
-<div class="paragraph">
-<p>Escape hatches:</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
+<div class="ulist">
+<ul>
 <li>
 <p>execute relative file as <code>bb ./foo</code></p>
 </li>
@@ -3089,16 +3083,16 @@ task.</p>
 <li>
 <p>execute subcommand as <code>bb --foo</code></p>
 </li>
-</ol>
+</ul>
 </div>
 </div>
 <div class="sect3">
 <h4 id="_conflicting_task_name_and_clojure_core_var"><a class="link" href="#_conflicting_task_name_and_clojure_core_var">Conflicting task name and clojure.core var</a></h4>
 <div class="paragraph">
-<p>You can name a task <code>format</code> which is also a clojure core var. If you
-want to refer to the core var, it is recommended to use the fully
-qualified <code>clojure.core/format</code> in this case, to avoid conflicts in
-<code>:enter</code> and <code>:leave</code> expressions.</p>
+<p>You can name a task <code>format</code> which is also a clojure core var. If you want to
+refer to the core var, it is recommended to use the fully qualified
+<code>clojure.core/format</code> in this case, to avoid conflicts in <code>:enter</code> and <code>:leave</code>
+expressions.</p>
 </div>
 </div>
 </div>
