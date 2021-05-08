@@ -1,0 +1,66 @@
+[[project-setup]]
+== Project setup
+
+=== bb.edn
+
+Since version 0.3.1, babashka supports a local `bb.edn` file to manage a project.
+
+=== :paths and :deps
+
+You can declare one or multiple paths and dependencies so they are automatically
+added to the classpath:
+
+[source,clojure]
+----
+{:paths ["script"]
+ :deps {medley/medley {:mvn/version "1.3.0"}}}
+----
+
+If we have a main function in a file called `script/my_project/main.clj` like:
+
+----
+(ns my-project.main
+  (:require [medley.core :as m]))
+
+(defn -main [& _args]
+  (prn (m/index-by :id [{:id 1} {:id 2}])))
+----
+
+we can invoke it like:
+
+[source,clojure]
+----
+$ bb -m my-project.main
+{1 {:id 1}, 2 {:id 2}}
+----
+
+See <<main-function>> for more details on how to invoke a function from the command line.
+
+The `:deps` entry is managed by https://github.com/borkdude/deps.clj[deps.clj]
+and requires a `java` installation to resolve and download dependencies.
+
+=== :min-bb-version
+
+Since version 0.3.6, babashka supports the `:min-bb-version` where the minimal
+babashka version can be declared:
+
+[source,clojure]
+----
+{:paths ["src"]
+ :deps {medley/medley {:mvn/version "1.3.0"}}
+ :min-bb-version "0.3.7"}
+----
+
+When using an older bb version (that supports `:min-bb-version`), babashka will
+print a warning:
+
+[source]
+----
+WARNING: this project requires babashka 0.3.7 or newer, but you have: 0.3.6
+----
+
+=== :tasks
+
+Since babashka 0.4.0 the `bb.edn` file supports the `:tasks` entry which
+describes tasks that you can run in the current project. The tasks feature is
+similar to what people use `Makefile`, `Justfile` or `npm run` for. See <<tasks>> for more details.
