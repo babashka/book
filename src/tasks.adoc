@@ -118,11 +118,11 @@ Unlike scripts, babashka tasks do not print their return value.
 
 === Hooks
 
-Tasks exposes the following hooks:
+The task runner exposes the following hooks:
 
 ==== :init
 
-The `:init` hooks can contain top level which runs before any tasks are
+The `:init` is for expressions that are executed before any of the tasks are
 executed. It is typically used for defining helper functions and constants:
 
 [source,clojure]
@@ -157,26 +157,26 @@ the name of a task, which can be obtained using the `current-task` function:
 
 [source,bash]
 ----
-Entering: print-env
 $ FOO=1 bb print-env FOO
+Entering: print-env
 1
 ----
 
 The `:leave` hook is similar to `:enter` but it executed after each task.
 
-Both hooks can be overriden as task-local options. E.g. setting them to `nil`
-will disable them for specific tasks.
+Both hooks can be overriden as task-local options. Setting them to `nil` will
+disable them for specific tasks.
 
 === Command line arguments
 
-Babashka tasks is unopinionated when it comes to command line arguments.
-Arguments are available in the dynamic var `*command-line-args*`. You are free
-to use parse them using the built-in `tools.cli` library, use
+The task runner is unopinionated when it comes to command line arguments.
+Arguments are available in `*command-line-args*`. You are free
+to parse them using the built-in `tools.cli` library, use
 https://github.com/nubank/docopt.clj[docopt], convert them to EDN using `(map
-edn/read-string *command-line-args*)` or do whatever to handle them.
+edn/read-string *command-line-args*)` or do whatever you want to handle them.
 
-The same dynamic var can be rebound to ensure functions see a different
-set of arguments:
+You can re-bind `*command-line-args*` to ensure functions see a different set of
+arguments:
 
 [source,clojure]
 ----
@@ -197,7 +197,7 @@ foo ("1" "2" "3")
 bar ("2" "3")
 ----
 
-=== Task options
+=== Task-local options
 
 Instead of naked expressions, tasks can be defined as maps with options. The
 task expression should then be moved to the `:task` key:
@@ -213,9 +213,8 @@ task expression should then be moved to the `:task` key:
  }
 ----
 
-A task support the `:doc` option which gives them a docstring which is printed
-when invoking `bb tasks`, which lists all available tasks in the order found in
-the `bb.edn` file. Other options include:
+A task support the `:doc` option which gives it a docstring which is printed
+when invoking `bb tasks` on the command line. Other options include:
 
 - `:requires`: task-specific namespace requires.
 - `:extra-paths`: add paths to the classpath.
@@ -256,8 +255,7 @@ Tasks provide the `run` function to explicitly invoke another task:
 
 [source,clojure]
 ----
-{,,,
- :tasks
+{:tasks
  {:requires ([babashka.fs :as fs])
 
   clean (do
@@ -299,8 +297,7 @@ stdin/stdout/stderr from the babashka process.
 
 [source,clojure]
 ----
-{,,,
- :tasks
+{:tasks
  {
   ls (shell "ls foo")
  }
@@ -320,8 +317,7 @@ You can opt out of this behavior by using the `:continue` option:
 
 [source,clojure]
 ----
-{,,,
- :tasks
+{:tasks
  {
   ls (shell {:continue true} "ls foo")
  }
@@ -363,7 +359,9 @@ The `clojure` function starts a Clojure process using https://github.com/borkdud
 {:tasks {eval (clojure "-M -e '(+ 1 2 3)'")}}
 ----
 
-The function behaves similar to `shell` with respect to the exit code, and available options, except when it comes to features that do not start a process, but only do some printing. E.g.:
+The function behaves similar to `shell` with respect to the exit code, return
+value and supported options, except when it comes to features that do not start
+a process, but only do some printing. E.g.:
 
 ```clojure
 (clojure "-Spath")
@@ -497,7 +495,7 @@ at Doctor Evidence]
 
 ==== Valid names
 
-When runnning a task, babashka assembles a small program which defines vars
+When running a task, babashka assembles a small program which defines vars
 bound to the return values of tasks. This brings the limitation that you can
 only choose names for your tasks that are valid as var names. You can't name
 your task `foo/bar` for this reason. If you want to use delimiters to indicate
@@ -505,7 +503,7 @@ some sort of grouping, you can do it like `foo-bar`, `foo:bar` or `foo_bar`.
 
 ==== Conflicting file / task / subcommand names
 
-`bb <option>` is resolved in this order of file, task, subcommand.
+`bb <option>` is resolved in the order of file > task > subcommand.
 
 Escape hatches in case of conflicts:
 
@@ -515,10 +513,10 @@ Escape hatches in case of conflicts:
 
 ==== Conflicting task and clojure.core var names
 
-You can name a task `format` which is also a clojure core var. If you want to
+You can name a task similar to a core var, let's say: `format`. If you want to
 refer to the core var, it is recommended to use the fully qualified
-`clojure.core/format` in this case, to avoid conflicts in `:enter` and `:leave`
-expressions.
+`clojure.core/format` in that case, to avoid conflicts in `:enter` and `:leave`
+expressions and when using the `format` task as a dependency.
 
 === Syntax
 
@@ -527,5 +525,7 @@ expressions. Most notably:
 
 - You cannot use `#(foo %)`, but you can use `(fn [x] (foo x))`
 - You cannot use `@(foo)` but you can use `(deref foo)`
-- Single quotes are accidentally supported in some places, but are better avoided:
-  `{:task '(foo)}` does not work, but `{:task (quote (foo))` does work. When requiring namespaces, use the `:requires` feature in favor of doing it manually using `(require '[foo])`.
+- Single quotes are accidentally supported in some places, but are better
+  avoided: `{:task '(foo)}` does not work, but `{:task (quote (foo))` does
+  work. When requiring namespaces, use the `:requires` feature in favor of doing
+  it manually using `(require '[foo])`.
