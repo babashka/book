@@ -2620,10 +2620,10 @@ some sort of grouping, you can do it like <code>foo-bar</code>, <code>foo:bar</c
 <div class="sect3">
 <h4 id="_conflicting_task_and_clojure_core_var_names"><a class="link" href="#_conflicting_task_and_clojure_core_var_names">Conflicting task and clojure.core var names</a></h4>
 <div class="paragraph">
-<p>You can name a task <code>format</code> which is also a clojure core var. If you want to
+<p>You can name a task similar to a core var, let&#8217;s say: <code>format</code>. If you want to
 refer to the core var, it is recommended to use the fully qualified
-<code>clojure.core/format</code> in this case, to avoid conflicts in <code>:enter</code> and <code>:leave</code>
-expressions.</p>
+<code>clojure.core/format</code> in that case, to avoid conflicts in <code>:enter</code> and <code>:leave</code>
+expressions and when using the <code>format</code> task as a dependency.</p>
 </div>
 </div>
 </div>
