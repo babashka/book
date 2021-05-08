@@ -2642,8 +2642,10 @@ expressions. Most notably:</p>
 <p>You cannot use <code>@(foo)</code> but you can use <code>(deref foo)</code></p>
 </li>
 <li>
-<p>Single quotes are accidentally supported in some places, but are better avoided:
-<code>{:task '(foo)}</code> does not work, but <code>{:task (quote (foo))</code> does work. When requiring namespaces, use the <code>:requires</code> feature in favor of doing it manually using <code>(require '[foo])</code>.</p>
+<p>Single quotes are accidentally supported in some places, but are better
+avoided: <code>{:task '(foo)}</code> does not work, but <code>{:task (quote (foo))</code> does
+work. When requiring namespaces, use the <code>:requires</code> feature in favor of doing
+it manually using <code>(require '[foo])</code>.</p>
 </li>
 </ul>
 </div>
