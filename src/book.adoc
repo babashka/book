@@ -20,13 +20,15 @@ include::getting_started.adoc[]
 
 include::usage.adoc[]
 
-include::style.adoc[]
-
-include::libraries.adoc[]
+include::bb-edn.adoc[]
 
 include::tasks.adoc[]
 
+include::libraries.adoc[]
+
 include::pods.adoc[]
+
+include::style.adoc[]
 
 include::child_processes.adoc[]
 

@@ -1,12 +1,16 @@
 [[tasks]]
-== Tasks
+== Task runner
 
 === Introduction
 
 People often use a `Makefile`, `Justfile`, `npm scripts` or `lein` aliases in
 their (clojure) projects to remember complex invocations and to create shortcuts
 for them. Since version 0.4.0, babashka supports a similar feature as part of
-the `bb.edn` project configuration file, under the `:tasks` key:
+the `bb.edn` project configuration file. For a general overview of what's
+available in `bb.edn`, go to <<project-setup>>.
+
+The tasks configuration lives under the `:tasks` key and can be used together
+with `:paths` and `:deps`:
 
 [source,clojure]
 ----
@@ -15,7 +19,7 @@ the `bb.edn` project configuration file, under the `:tasks` key:
  :min-bb-version "0.4.0"
  :tasks
  {clean (shell "rm -rf target")
-  }
+ ...}
  }
 ----
 
@@ -485,7 +489,15 @@ at Doctor Evidence]
 * https://github.com/clj-commons/rewrite-clj/blob/main/bb.edn[rewrite-clj]
 * https://gist.github.com/delyada/9f50fa7466358e55f27e4e6b4314242f
 
-=== Naming conflicts
+=== Naming
+
+==== Valid names
+
+When runnning a task, babashka assembles a small program which defines vars
+bound to the return values of tasks. This brings the limitation that you can
+only choose names for your tasks that are valid as var names. You can't name
+your task `foo/bar` for this reason. If you want to use delimiters to indicate
+some sort of grouping, you can do it like `foo-bar`, `foo:bar` or `foo_bar`.
 
 ==== Conflicting file / task / subcommand names
 
@@ -497,9 +509,19 @@ Escape hatches in case of conflicts:
 - execute task as `bb run foo`
 - execute subcommand as `bb --foo`
 
-==== Conflicting task name and clojure.core var
+==== Conflicting task and clojure.core var names
 
 You can name a task `format` which is also a clojure core var. If you want to
 refer to the core var, it is recommended to use the fully qualified
 `clojure.core/format` in this case, to avoid conflicts in `:enter` and `:leave`
 expressions.
+
+=== Syntax
+
+Because `bb.edn` is an EDN file, you cannot use all of Clojure's syntax in
+expressions. Most notably:
+
+- You cannot use `#(foo %)`, but you can use `(fn [x] (foo x))`
+- You cannot use `@(foo)` but you can use `(deref foo)`
+- Single quotes are accidentally supported in some places, but are better avoided:
+  `{:task '(foo)}` does not work, but `{:task (quote (foo))` does work. When requiring namespaces, use the `:requires` feature in favor of doing it manually using `(require '[foo])`.
