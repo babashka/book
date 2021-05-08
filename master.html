@@ -2338,8 +2338,7 @@ stdin/stdout/stderr from the babashka process.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="clojure"><span class="p">{</span><span class="n">,,,</span><span class="w">
- </span><span class="no">:tasks</span><span class="w">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">{</span><span class="no">:tasks</span><span class="w">
  </span><span class="p">{</span><span class="w">
   </span><span class="n">ls</span><span class="w"> </span><span class="p">(</span><span class="nf">shell</span><span class="w"> </span><span class="s">"ls foo"</span><span class="p">)</span><span class="w">
  </span><span class="p">}</span><span class="w">
@@ -2360,8 +2359,7 @@ Error <span class="k">while </span>executing task: <span class="nb">ls</span>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="clojure"><span class="p">{</span><span class="n">,,,</span><span class="w">
- </span><span class="no">:tasks</span><span class="w">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">{</span><span class="no">:tasks</span><span class="w">
  </span><span class="p">{</span><span class="w">
   </span><span class="n">ls</span><span class="w"> </span><span class="p">(</span><span class="nf">shell</span><span class="w"> </span><span class="p">{</span><span class="no">:continue</span><span class="w"> </span><span class="n">true</span><span class="p">}</span><span class="w"> </span><span class="s">"ls foo"</span><span class="p">)</span><span class="w">
  </span><span class="p">}</span><span class="w">
@@ -2407,7 +2405,9 @@ directly instead.</p>
 </div>
 </div>
 <div class="paragraph">
-<p>The function behaves similar to <code>shell</code> with respect to the exit code, and available options, except when it comes to features that do not start a process, but only do some printing. E.g.:</p>
+<p>The function behaves similar to <code>shell</code> with respect to the exit code, return
+value and supported options, except when it comes to features that do not start
+a process, but only do some printing. E.g.:</p>
 </div>
 <div class="listingblock">
 <div class="content">
