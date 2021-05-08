@@ -66,6 +66,52 @@ $ bb clean
 Removing target folder.
 ----
 
+=== Run
+
+The `run` subcommand accepts these additional options:
+
+- `--parallel`: invoke task dependencies in parallel.
++
+[source,clojure]
+----
+{:tasks
+ {:init (def log (Object.))
+  :enter (locking log
+           (println (str (:name (current-task))
+                         ":")
+                    (java.util.Date.)))
+  a (Thread/sleep 5000)
+  b (Thread/sleep 5000)
+  c {:depends [a b]}
+  d {:task (time (run 'c))}}}
+----
++
+[source,bash]
+----
+$ bb run --parallel d
+d: #inst "2021-05-08T14:14:56.322-00:00"
+a: #inst "2021-05-08T14:14:56.357-00:00"
+b: #inst "2021-05-08T14:14:56.360-00:00"
+c: #inst "2021-05-08T14:15:01.366-00:00"
+"Elapsed time: 5023.894512 msecs"
+----
++
+Also see <<parallel>>.
+- `--prn`: print the result from the task expression:
++
+[source,clojure]
+----
+{:tasks {sum (+ 1 2 3)}}
+----
++
+[source,bash]
+----
+$ bb run --prn sum
+6
+----
++
+Unlike scripts, babashka tasks do not print their return value.
+
 === Hooks
 
 Tasks exposes the following hooks:
@@ -164,11 +210,11 @@ ovsx-publish       Publishes vscode extension to ovsx thing
 publish            The mother of all tasks: publishes everything needed for new release
 ----
 
-=== Tasks API functions
+=== Tasks API
 
-The tasks feature exposes the following convenience functions: `run`, `shell`,
-`clojure` and `current-task`. They are implicitly imported from the
-`babashka.tasks` namespace.
+The `babashka.tasks` namespace exposes the following functions: `run`, `shell`,
+`clojure` and `current-task`. They are implicitly imported, thus available
+without a namespace prefix.
 
 ==== run
 
@@ -201,6 +247,13 @@ Making uberjar
 ----
 
 The `clojure` function in the above example executes a clojure process using https://github.com/borkdude/deps.clj[deps.clj]. See <<tasks:clojure>> for more info
+
+The `run` function accepts an additional map with options:
+
+===== :parallel
+
+The `:parallel` option executes dependencies of the invoked task in parallel
+(when possible). See <<parallel>>.
 
 ==== shell
 
@@ -336,6 +389,31 @@ It is common to define tasks that only serve as a helper to other tasks. To not
 expose these tasks in the output of `bb tasks`, you can start their name with a
 hyphen.
 
+[[parallel]]
+=== Parallel tasks
+
+The `:parallel` option executes dependencies of the invoked task in parallel
+(when possible). This can be used to speed up execution, but also to have
+multiple tasks running in parallel for development:
+
+[source,clojure]
+----
+dev         {:doc  "Runs app in dev mode. Compiles cljs, less and runs JVM app in parallel."
+             :task (run '-dev {:parallel true})}       ;; <1>
+-dev        {:depends [dev:cljs dev:less dev:backend]} ;; <2>
+dev:cljs    {:doc  "Runs front-end compilation"
+             :task (clojure "-M:frontend:cljs/dev")}
+dev:less    {:doc  "Compiles less"
+             :task (clojure "-M:frontend:less/dev")}
+dev:backend {:doc  "Runs backend in dev mode"
+             :task (clojure (str "-A:backend:backend/dev:" platform-alias)
+                            "-X" "dre.standalone/start")}
+----
+
+<1> The `dev` task invokes the (private) `-dev` task in parallel
+<2> The `-dev` task depends on three other tasks which are executed simultaneously.
+
+
 === Invoking a main function
 
 Invoking a main function can be done by providing a fully qualified
@@ -405,26 +483,3 @@ You can name a task `format` which is also a clojure core var. If you
 want to refer to the core var, it is recommended to use the fully
 qualified `clojure.core/format` in this case, to avoid conflicts in
 `:enter` and `:leave` expressions.
-
-// === TODO
-
-// * Make `fs/modified-since` lazy
-
-// * --prn
-
-// * --parallel
-
-
-// == ADR
-
-// * Do we need to support passing arguments to dependencies? No, see
-// discussion
-// * Does the list of dependencies need to be dynamic? No, see discussion
-// (same reason as args)
-// * bb is resolved as file > task > bb subcommand. Shadowing future
-// subcommand is a problem that a user can solve by renaming a task or
-// file. (same as lein aliases). Also see Conflicts.
-// * It is a feature that tasks are defined as top-level vars (instead of
-// local let-bound symbols). This plays well with the Gilardi scenario,
-// e.g. here:
-// https://github.com/babashka/babashka.github.io/blob/ad276625f6c41f269d19450f236cb54cab2591e1/bb.edn#L7.
