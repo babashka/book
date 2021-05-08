@@ -760,11 +760,13 @@ pre.rouge {
 <li><a href="#tasks">Tasks</a>
 <ul class="sectlevel2">
 <li><a href="#_introduction">Introduction</a></li>
+<li><a href="#_run">Run</a></li>
 <li><a href="#_hooks">Hooks</a></li>
 <li><a href="#_task_specific_options">Task-specific options</a></li>
 <li><a href="#_discoverability">Discoverability</a></li>
-<li><a href="#_tasks_api_functions">Tasks API functions</a></li>
+<li><a href="#_tasks_api">Tasks API</a></li>
 <li><a href="#_dependencies_between_tasks">Dependencies between tasks</a></li>
+<li><a href="#parallel">Parallel tasks</a></li>
 <li><a href="#_invoking_a_main_function">Invoking a main function</a></li>
 <li><a href="#_repl_2">REPL</a></li>
 <li><a href="#_real_world_examples">Real world examples</a></li>
@@ -2544,6 +2546,63 @@ Removing target folder.</code></pre>
 </div>
 </div>
 <div class="sect2">
+<h3 id="_run"><a class="link" href="#_run">Run</a></h3>
+<div class="paragraph">
+<p>The <code>run</code> subcommand accepts these additional options:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>--parallel</code>: invoke task dependencies in parallel.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">{</span><span class="no">:tasks</span><span class="w">
+ </span><span class="p">{</span><span class="no">:init</span><span class="w"> </span><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">log</span><span class="w"> </span><span class="p">(</span><span class="nf">Object.</span><span class="p">))</span><span class="w">
+  </span><span class="no">:enter</span><span class="w"> </span><span class="p">(</span><span class="nb">locking</span><span class="w"> </span><span class="n">log</span><span class="w">
+           </span><span class="p">(</span><span class="nb">println</span><span class="w"> </span><span class="p">(</span><span class="nb">str</span><span class="w"> </span><span class="p">(</span><span class="no">:name</span><span class="w"> </span><span class="p">(</span><span class="nf">current-task</span><span class="p">))</span><span class="w">
+                         </span><span class="s">":"</span><span class="p">)</span><span class="w">
+                    </span><span class="p">(</span><span class="nf">java.util.Date.</span><span class="p">)))</span><span class="w">
+  </span><span class="n">a</span><span class="w"> </span><span class="p">(</span><span class="nf">Thread/sleep</span><span class="w"> </span><span class="mi">5000</span><span class="p">)</span><span class="w">
+  </span><span class="n">b</span><span class="w"> </span><span class="p">(</span><span class="nf">Thread/sleep</span><span class="w"> </span><span class="mi">5000</span><span class="p">)</span><span class="w">
+  </span><span class="n">c</span><span class="w"> </span><span class="p">{</span><span class="no">:depends</span><span class="w"> </span><span class="p">[</span><span class="n">a</span><span class="w"> </span><span class="n">b</span><span class="p">]}</span><span class="w">
+  </span><span class="n">d</span><span class="w"> </span><span class="p">{</span><span class="no">:task</span><span class="w"> </span><span class="p">(</span><span class="nb">time</span><span class="w"> </span><span class="p">(</span><span class="nf">run</span><span class="w"> </span><span class="ss">'c</span><span class="p">))}}}</span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash"><span class="nv">$ </span>bb run <span class="nt">--parallel</span> d
+d: <span class="c">#inst "2021-05-08T14:14:56.322-00:00"</span>
+a: <span class="c">#inst "2021-05-08T14:14:56.357-00:00"</span>
+b: <span class="c">#inst "2021-05-08T14:14:56.360-00:00"</span>
+c: <span class="c">#inst "2021-05-08T14:15:01.366-00:00"</span>
+<span class="s2">"Elapsed time: 5023.894512 msecs"</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Also see <a href="#parallel">Parallel tasks</a>.</p>
+</div>
+</li>
+<li>
+<p><code>--prn</code>: print the result from the task expression:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">{</span><span class="no">:tasks</span><span class="w"> </span><span class="p">{</span><span class="n">sum</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">3</span><span class="p">)}}</span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash"><span class="nv">$ </span>bb run <span class="nt">--prn</span> <span class="nb">sum
+</span>6</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Unlike scripts, babashka tasks do not print their return value.</p>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
 <h3 id="_hooks"><a class="link" href="#_hooks">Hooks</a></h3>
 <div class="paragraph">
 <p>Tasks exposes the following hooks:</p>
@@ -2666,14 +2725,14 @@ publish            The mother of all tasks: publishes everything needed <span cl
 </div>
 </div>
 <div class="sect2">
-<h3 id="_tasks_api_functions"><a class="link" href="#_tasks_api_functions">Tasks API functions</a></h3>
+<h3 id="_tasks_api"><a class="link" href="#_tasks_api">Tasks API</a></h3>
 <div class="paragraph">
-<p>The tasks feature exposes the following convenience functions: <code>run</code>, <code>shell</code>,
-<code>clojure</code> and <code>current-task</code>. They are implicitly imported from the
-<code>babashka.tasks</code> namespace.</p>
+<p>The <code>babashka.tasks</code> namespace exposes the following functions: <code>run</code>, <code>shell</code>,
+<code>clojure</code> and <code>current-task</code>. They are implicitly imported, thus available
+without a namespace prefix.</p>
 </div>
 <div class="sect3">
-<h4 id="_run"><a class="link" href="#_run">run</a></h4>
+<h4 id="_run_2"><a class="link" href="#_run_2">run</a></h4>
 <div class="paragraph">
 <p>Tasks provide the <code>run</code> function to explicitly invoke another task:</p>
 </div>
@@ -2706,6 +2765,16 @@ Making uberjar</code></pre>
 </div>
 <div class="paragraph">
 <p>The <code>clojure</code> function in the above example executes a clojure process using <a href="https://github.com/borkdude/deps.clj">deps.clj</a>. See <a href="#tasks:clojure">clojure</a> for more info</p>
+</div>
+<div class="paragraph">
+<p>The <code>run</code> function accepts an additional map with options:</p>
+</div>
+<div class="sect4">
+<h5 id="_parallel"><a class="link" href="#_parallel">:parallel</a></h5>
+<div class="paragraph">
+<p>The <code>:parallel</code> option executes dependencies of the invoked task in parallel
+(when possible). See <a href="#parallel">Parallel tasks</a>.</p>
+</div>
 </div>
 </div>
 <div class="sect3">
@@ -2856,6 +2925,40 @@ etc.:</p>
 <p>It is common to define tasks that only serve as a helper to other tasks. To not
 expose these tasks in the output of <code>bb tasks</code>, you can start their name with a
 hyphen.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="parallel"><a class="link" href="#parallel">Parallel tasks</a></h3>
+<div class="paragraph">
+<p>The <code>:parallel</code> option executes dependencies of the invoked task in parallel
+(when possible). This can be used to speed up execution, but also to have
+multiple tasks running in parallel for development:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="n">dev</span><span class="w">         </span><span class="p">{</span><span class="no">:doc</span><span class="w">  </span><span class="s">"Runs app in dev mode. Compiles cljs, less and runs JVM app in parallel."</span><span class="w">
+             </span><span class="no">:task</span><span class="w"> </span><span class="p">(</span><span class="nf">run</span><span class="w"> </span><span class="ss">'-dev</span><span class="w"> </span><span class="p">{</span><span class="no">:parallel</span><span class="w"> </span><span class="n">true</span><span class="p">})}</span><span class="w">       <i class="conum" data-value="1"></i><b>(1)</b>
+</span><span class="n">-dev</span><span class="w">        </span><span class="p">{</span><span class="no">:depends</span><span class="w"> </span><span class="p">[</span><span class="n">dev</span><span class="no">:cljs</span><span class="w"> </span><span class="n">dev</span><span class="no">:less</span><span class="w"> </span><span class="n">dev</span><span class="no">:backend</span><span class="p">]}</span><span class="w"> <i class="conum" data-value="2"></i><b>(2)</b>
+</span><span class="n">dev</span><span class="no">:cljs</span><span class="w">    </span><span class="p">{</span><span class="no">:doc</span><span class="w">  </span><span class="s">"Runs front-end compilation"</span><span class="w">
+             </span><span class="no">:task</span><span class="w"> </span><span class="p">(</span><span class="nf">clojure</span><span class="w"> </span><span class="s">"-M:frontend:cljs/dev"</span><span class="p">)}</span><span class="w">
+</span><span class="n">dev</span><span class="no">:less</span><span class="w">    </span><span class="p">{</span><span class="no">:doc</span><span class="w">  </span><span class="s">"Compiles less"</span><span class="w">
+             </span><span class="no">:task</span><span class="w"> </span><span class="p">(</span><span class="nf">clojure</span><span class="w"> </span><span class="s">"-M:frontend:less/dev"</span><span class="p">)}</span><span class="w">
+</span><span class="n">dev</span><span class="no">:backend</span><span class="w"> </span><span class="p">{</span><span class="no">:doc</span><span class="w">  </span><span class="s">"Runs backend in dev mode"</span><span class="w">
+             </span><span class="no">:task</span><span class="w"> </span><span class="p">(</span><span class="nf">clojure</span><span class="w"> </span><span class="p">(</span><span class="nb">str</span><span class="w"> </span><span class="s">"-A:backend:backend/dev:"</span><span class="w"> </span><span class="n">platform-alias</span><span class="p">)</span><span class="w">
+                            </span><span class="s">"-X"</span><span class="w"> </span><span class="s">"dre.standalone/start"</span><span class="p">)}</span></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The <code>dev</code> task invokes the (private) <code>-dev</code> task in parallel</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The <code>-dev</code> task depends on three other tasks which are executed simultaneously.</td>
+</tr>
+</table>
 </div>
 </div>
 <div class="sect2">
