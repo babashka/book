@@ -68,7 +68,7 @@ Removing target folder.
 
 === Run
 
-The `run` subcommand accepts these additional options:
+The babashka `run` subcommand accepts these additional options:
 
 - `--parallel`: invoke task dependencies in parallel.
 +
@@ -163,7 +163,33 @@ The `:leave` hook is similar to `:enter` but it executed after each task.
 Both hooks can be overriden as task-local options. E.g. setting them to `nil`
 will disable them for specific tasks.
 
-=== Task-specific options
+=== Command line arguments
+
+Babashka tasks is unopinionated when it comes to command line
+arguments. Arguments are available in the dynamic var `*command-line-args*` at
+any time. The same dynamic var can be rebound to ensure functions see a
+different set of arguments:
+
+[source,clojure]
+----
+{:tasks
+ {:init (do (defn print-args []
+              (prn (:name (current-task))
+                   *command-line-args*)))
+  bar (print-args)
+  foo (do (print-args)
+          (binding [*command-line-args* (next *command-line-args*)]
+            (run 'bar)))}}
+----
+
+[source,bash]
+----
+$ bb foo 1 2 3
+foo ("1" "2" "3")
+bar ("2" "3")
+----
+
+=== Task ptions
 
 Instead of naked expressions, tasks can be defined as maps with options. The
 task expression should then be moved to the `:task` key:
