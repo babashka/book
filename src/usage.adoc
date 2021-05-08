@@ -161,13 +161,91 @@ library that is compatible with babashka.
 
 === Project setup
 
+==== bb.edn
+
+Since version 0.3.1, babashka supports a local `bb.edn` file to manage a project.
+
+You can declare one or multiple paths and dependencies so they are automatically
+added to the classpath:
+
+[source,clojure]
+----
+{:paths ["script"]
+ :deps {medley/medley {:mvn/version "1.3.0"}}}
+----
+
+If we have a main function in a file called `script/my_project/main.clj` like:
+
+----
+(ns my-project.main
+  (:require [medley.core :as m]))
+
+(defn -main [& _args]
+  (prn (m/index-by :id [{:id 1} {:id 2}])))
+----
+
+we can invoke it like:
+
+[source,clojure]
+----
+$ bb -m my-project.main
+{1 {:id 1}, 2 {:id 2}}
+----
+
+See <<main-function>> for more details on how to invoke a function from the command line.
+
+===== :min-bb-version
+
+Since version 0.3.6, babashka supports the `:min-bb-version` where the minimal
+babashka version can be declared:
+
+[source,clojure]
+----
+{:paths ["src"]
+ :deps {medley/medley {:mvn/version "1.3.0"}}
+ :min-bb-version "0.3.7"}
+----
+
+When using an older bb version (that supports `:min-bb-version`), babashka will
+print a warning:
+
+[source]
+----
+WARNING: this project requires babashka 0.3.7 or newer, but you have: 0.3.6
+----
+
+===== :tasks
+
+Since babashka 0.4.0 the `bb.edn` file supports the `:tasks` entry which
+describes tasks that you can run in the current project. The tasks feature is
+similar to what people use `Makefile`, `Justfile` or `npm run` for. See <<tasks>> for more details.
+
+[[main-function]]
+==== Invoking a main function
+
+A main function can be invoked with `-m` or `--main` like shown above. When
+given the argument `foo.bar`, the namespace `foo.bar` will be required and the
+function `foo.bar/-main` will be called with command line arguments as strings.
+
+Since babashka 0.3.1 you may pass a fully qualified symbol to `-m`:
+
+[source,clojure]
+----
+$ bb -m clojure.core/prn 1 2 3
+"1" "2" "3"
+----
+
+so you can execute any function as a main function, as long as it accepts
+varargs arguments.
+
+When invoking `bb` with a main function, the expression `(System/getProperty
+"babashka.main")` will return the name of the main function.
+
 ==== Classpath
 
-When you want to organize babashka scripts like a regular Clojure project, you
-will need to set a classpath.
-
-Babashka accepts a `--classpath` option that will be used to search for
-namespaces when requiring them. Say we have a file `src/my/namespace.clj`:
+If you want a lower level to control babashka's classpath, without the usage of
+`bb.edn` you can use the `--classpath` option that will override the classpath.
+Say we have a file `script/my/namespace.clj`:
 
 [source,clojure]
 ----
@@ -180,7 +258,7 @@ Now we can execute this main function with:
 
 [source,clojure]
 ----
-$ bb --classpath src --main my.namespace 1 2 3
+$ bb --classpath script --main my.namespace 1 2 3
 Hello from my namespace! 1 2 3
 ----
 
@@ -210,7 +288,8 @@ $ bb --classpath src:test socket-repl 1666
 ----
 
 If there is no `--classpath` argument, the `BABASHKA_CLASSPATH` environment
-variable will be used.
+variable will be used. If that variable isn't set either, babashka will use
+`:deps` and `:paths` from `bb.edn`.
 
 Also see the link:#babashka_classpath[babashka.classpath]
 namespace which allows dynamically adding to the classpath.
@@ -218,68 +297,6 @@ namespace which allows dynamically adding to the classpath.
 The namespace link:#babashkadeps[babashka.deps] integrates
 https://github.com/clojure/tools.deps.alpha[tools.deps] with babashka and allows
 you to set the classpath using a `deps.edn` map.
-
-==== bb.edn
-
-Since version 0.3.1, babashka supports a local `bb.edn` file to manage a project.
-
-===== Classpath
-
-You can declare one or multiple paths and dependencies so they are automatically
-added to the classpath:
-
-[source,clojure]
-----
-{:paths ["src"]
- :deps {medley/medley {:mvn/version "1.3.0"}}}
-----
-
-[source,clojure]
-----
-$ bb -e "(require '[medley.core :as m]) (m/index-by :id [{:id 1} {:id 2}])"
-{1 {:id 1}, 2 {:id 2}}
-----
-
-===== :min-bb-version
-
-Since version 0.3.6, babashka supports the `:min-bb-version` where the minimal
-babashka version can be declared:
-
-[source,clojure]
-----
-{:paths ["src"]
- :deps {medley/medley {:mvn/version "1.3.0"}}
- :min-bb-version "1.0.0"}
-----
-
-When using an older bb version (that supports `:min-bb-version`), babashka will
-print a warning:
-
-[source]
----
-WARNING: this project requires babashka 1.0.0 or newer, but you have: 0.3.6
----
-[source]
-
-==== Invoking a main function
-
-A main function can be invoked with `-m` or `--main` like shown above. When
-given the argument `foo.bar`, the namespace `foo.bar` will be required and the
-function `foo.bar/-main` will be called with command line arguments as strings.
-
-Since babashka 0.3.1 you may pass a fully qualified symbol to `-m`:
-
-[source,clojure]
-----
-$ bb -m clojure.core/prn 1 2 3
-"1" "2" "3"
-----
-
-so you can execute any function as a main function, as long as it accepts
-varargs arguments.
-
-When invoking `bb` with a main function, the expression `(System/getProperty
-"babashka.main")` will return the name of the main function.
 
 === Preloads
 

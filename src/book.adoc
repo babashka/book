@@ -24,6 +24,8 @@ include::style.adoc[]
 
 include::libraries.adoc[]
 
+include::tasks.adoc[]
+
 include::pods.adoc[]
 
 include::child_processes.adoc[]

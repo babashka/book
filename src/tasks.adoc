@@ -1,0 +1,430 @@
+[[tasks]]
+== Tasks
+
+=== Introduction
+
+People often use a `Makefile`, `Justfile`, `npm scripts` or `lein` aliases in
+their (clojure) projects to remember complex invocations and to create shortcuts
+for them. Since version 0.4.0, babashka supports a similar feature as part of
+the `bb.edn` project configuration file, under the `:tasks` key:
+
+[source,clojure]
+----
+{:paths ["script"]
+ :deps {medley/medley {:mvn/version "1.3.0"}}
+ :min-bb-version "0.4.0"
+ :tasks
+ {clean (shell "rm -rf target")
+  }
+ }
+----
+
+In the above example we see a simple task called `clean` which invokes the
+`shell` command, to remove the `target` directory. You can invoke this task from
+the command line with:
+
+[source,bash]
+----
+$ bb run clean
+----
+
+Babashka also accepts a task name without explicitly mentioning `run`:
+
+[source,bash]
+----
+$ bb clean
+----
+
+To make your tasks more cross-platform friendly, you can use the built-in
+https://github.com/babashka/fs[babashka.fs] library. To use libraries in tasks,
+use the `:requires` option:
+
+[source,clojure]
+----
+{:tasks
+ {:requires ([babashka.fs :as fs])
+  clean (fs/delete-tree "target")
+  }
+ }
+----
+
+Tasks accept arbitrary Clojure expressions. E.g. you can print something when executing the task:
+
+[source,clojure]
+----
+{:tasks
+ {:requires ([babashka.fs :as fs])
+  clean (do (println "Removing target folder.")
+            (fs/delete-tree "target"))
+  }
+ }
+----
+
+[source,bash]
+----
+$ bb clean
+Removing target folder.
+----
+
+=== Hooks
+
+Tasks exposes the following hooks:
+
+==== :init
+
+The `:init` hooks can contain top level which runs before any tasks are
+executed. It is typically used for defining helper functions and constants:
+
+[source,clojure]
+----
+{:tasks
+ {:init (defn env [s] (System/getenv s))
+  print-env (println (env (first *command-line-args*)))
+  }
+ }
+----
+
+[source,bash]
+----
+$ FOO=1 bb print-env FOO
+1
+----
+
+==== :enter, :leave
+
+The `:enter` hook is executed before each task. This is typically used to print
+the name of a task, which can be obtained using the `current-task` function:
+
+[source,clojure]
+----
+{:tasks
+ {:init (defn env [s] (System/getenv s))
+  :enter (println "Entering:" (:name (current-task)))
+  print-env (println (env (first *command-line-args*)))
+  }
+ }
+----
+
+[source,bash]
+----
+Entering: print-env
+$ FOO=1 bb print-env FOO
+1
+----
+
+The `:leave` hook is similar to `:enter` but it executed after each task.
+
+Both hooks can be overriden as task-local options. E.g. setting them to `nil`
+will disable them for specific tasks.
+
+=== Task-specific options
+
+Instead of naked expressions, tasks can be defined as maps with options. The
+task expression should then be moved to the `:task` key:
+
+[source,clojure]
+----
+{:tasks
+ {
+  clean {:doc "Removes target folder"
+         :requires ([babashka.fs :as fs])
+         :task (fs/delete-tree "target")}
+  }
+ }
+----
+
+A task support the `:doc` option which gives them a docstring which is printed
+when invoking `bb tasks`, which lists all available tasks in the order found in
+the `bb.edn` file. Other options include:
+
+- `:requires`: task-specific namespace requires.
+- `:extra-paths`: add paths to the classpath.
+- `:extra-deps`: add extra dependencies to the classpath.
+- `:enter`, `:leave`: override the global `:enter`/`:leave` hook.
+
+=== Discoverability
+
+When invoking `bb tasks`, babashka prints a list of all tasks found in `bb.edn` in the order of appearance. E.g. in the https://github.com/clj-kondo/clj-kondo.lsp[clj-kondo.lsp] project it prints:
+
+[source,bash]
+----
+$ bb tasks
+The following tasks are available:
+
+recent-clj-kondo   Detects most recent clj-kondo version from clojars
+update-project-clj Updates project.clj with most recent clj-kondo version
+java1.8            Asserts that we are using java 1.8
+build-server       Produces lsp server standalone jar
+lsp-jar            Copies renamed jar for upload to clj-kondo repo
+upload-jar         Uploads standalone lsp server jar to clj-kondo repo
+vscode-server      Copied lsp server jar to vscode extension
+vscode-version     Prepares package.json with up to date clj-kondo version
+vscode-publish     Publishes vscode extension to marketplace
+ovsx-publish       Publishes vscode extension to ovsx thing
+publish            The mother of all tasks: publishes everything needed for new release
+----
+
+=== Tasks API functions
+
+The tasks feature exposes the following convenience functions: `run`, `shell`,
+`clojure` and `current-task`. They are implicitly imported from the
+`babashka.tasks` namespace.
+
+==== run
+
+Tasks provide the `run` function to explicitly invoke another task:
+
+[source,clojure]
+----
+{,,,
+ :tasks
+ {:requires ([babashka.fs :as fs])
+
+  clean (do
+          (println "Removing target folder.")
+          (fs/delete-tree "target"))
+  uberjar (do
+            (println "Making uberjar")
+            (clojure "-X:uberjar"))
+  uberjar:clean (do (run 'clean)
+                    (run 'uberjar))}
+ }
+----
+
+When running `bb uberjar:clean`, first the `clean` task is executed and the `uberjar`:
+
+[source,bash]
+----
+$ bb uberjar:clean
+Removing target folder.
+Making uberjar
+----
+
+The `clojure` function in the above example executes a clojure process using https://github.com/borkdude/deps.clj[deps.clj]. See <<tasks:clojure>> for more info
+
+==== shell
+
+Both `shell` and `clojure` return a
+https://github.com/babashka/babashka.process[process] object which returns the
+`:exit` code among other info. By default these function will exit the babashka
+process when a non-zero exit code was returned and they will inherit the
+stdin/stdout/stderr from the babashka process.
+
+[source,clojure]
+----
+{,,,
+ :tasks
+ {
+  ls (shell "ls foo")
+ }
+}
+----
+
+[source,bash]
+----
+$ bb ls
+ls: foo: No such file or directory
+Error while executing task: ls
+$ echo $?
+1
+----
+
+You can opt out of this behavior by using the `:continue` option:
+
+[source,clojure]
+----
+{,,,
+ :tasks
+ {
+  ls (shell {:continue true} "ls foo")
+ }
+}
+----
+
+[source,bash]
+----
+$ bb ls
+ls: foo: No such file or directory
+$ echo $?
+0
+----
+
+When you want to redirect output to a file instead, you can provide the `:out` option.
+
+[source,clojure]
+----
+(shell {:out "file.txt"} "echo hello")
+----
+
+Other supported options are similar to those of
+https://github.com/babashka/babashka.process[`babashka.process/process`].
+
+The process is executed synchronously: i.e. babashka will wait for the process
+to finish before executing the next expression. If this doesn't fit your use
+case, you can use
+https://github.com/babashka/babashka.process[`babashka.process/process`]
+directly instead.
+
+
+[[tasks:clojure]]
+==== clojure
+
+The `clojure` function starts a Clojure process using https://github.com/borkdude/deps.clj[deps.clj].
+
+[source,clojure]
+----
+{:tasks {eval (clojure "-M -e '(+ 1 2 3)'")}}
+----
+
+The function behaves similar to `shell` with respect to the exit code, and available options, except when it comes to features that do not start a process, but only do some printing. E.g.:
+
+```clojure
+(clojure "-Spath")
+```
+
+does not return a process, but simply prints output to `*out*`, so you are able to capture it with `with-out-str`.
+
+[[current-task]]
+==== current-task
+
+The `current-task` function returns a map representing the currently running task. This function is typically used in the `:enter` and `:leave` hooks.
+
+=== Dependencies between tasks
+
+Dependencies between tasks can be declared using `:depends`:
+
+[source,clojure]
+----
+{:tasks {:requires ([babashka.fs :as fs])
+         -target-dir "target"
+         -target {:depends [-target-dir]
+                  :task (fs/create-dirs -target-dir)}
+         -jar-file {:depends [-target]
+                    :task "target/foo.jar"}
+
+         jar {:depends [-target -jar-file]
+              :task (when (seq (fs/modified-since -jar-file
+                                             (fs/glob "src" "**.clj")))
+                      (spit -jar-file "test")
+                      (println "made jar!"))}
+         uberjar {:depends [jar]
+                  :task (println "creating uberjar!")}}}
+----
+
+The `fs/modified-since` function returns a seq of all newer files compared to a
+target, which can be used to prevent rebuilding artifacts when not necessary.
+
+Alternatively you can use the `:init` hook to define vars, require namespaces,
+etc.:
+
+[source,clojure]
+----
+{:tasks {:requires ([babashka.fs :as fs])
+         :init (do (def target-dir  "target")
+                   (def jar-file "target/foo.jar"))
+         -target {:task (fs/create-dirs target-dir)}
+         jar {:depends [-target]
+              :task (when (seq (fs/modified-since jar-file
+                                             (fs/glob "src" "**.clj")))
+                      (spit jar-file "test")
+                      (println "made jar!"))}
+         uberjar {:depends [jar]
+                  :task (println "creating uberjar!")}}}
+----
+
+It is common to define tasks that only serve as a helper to other tasks. To not
+expose these tasks in the output of `bb tasks`, you can start their name with a
+hyphen.
+
+=== Invoking a main function
+
+Invoking a main function can be done by providing a fully qualified
+symbol:
+
+[source,clojure]
+----
+{:tasks
+  {foo-bar foo.bar}}
+----
+
+or using a fully qualified symbol `foo.bar/baz` so you can accommodate
+multiple main functions in one namespace.
+
+The namespace `foo.bar` will be automatically required and the function
+will be invoked with `*command-line-args*`:
+
+[source,clojure]
+----
+$ bb foo-bar 1 2 3
+----
+
+=== REPL
+
+To get a REPL within a task, you can use `clojure.main/repl`:
+
+[source,clojure]
+----
+{:tasks {repl (clojure.main/repl)}}
+----
+
+Alternatively, you can use `babashka.tasks/run` to invoke a task from a REPL.
+
+=== Real world examples
+
+* https://github.com/borkdude/antq/blob/bb-run/bb.edn[antq]
+* https://github.com/borkdude/mach/blob/bb-run/examples/app/bb.edn[mach]
+* https://gist.github.com/borkdude/35bc0a20bd4c112dec2c5645f67250e3[bb.edn
+at Doctor Evidence]
+* https://github.com/clj-kondo/clj-kondo.lsp/blob/master/bb.edn[clj-kondo.lsp]
+* https://github.com/wilkerlucio/pathom-viz/blob/master/bb.edn[pathom]
+* https://github.com/redstarssystems/rssyslib/blob/develop/bb.edn[rssyslib]
+* https://github.com/clj-commons/rewrite-clj/blob/main/bb.edn[rewrite-clj]
+* https://gist.github.com/delyada/9f50fa7466358e55f27e4e6b4314242f
+
+=== Naming conflicts
+
+==== Conflicting file / task / subcommand names
+
+`bb foo` is resolved in this order: 1) execute the relative file `foo`
+if it exists 2) execute the task `foo` if it exists 3) execute the
+subcommand `foo` if it exists
+
+Resolving a conflict with a subcommand can be done by renaming a file or
+task.
+
+Escape hatches:
+
+[arabic]
+. execute relative file as `bb ./foo`
+. execute task as `bb run foo`
+. execute subcommand as `bb --foo`
+
+==== Conflicting task name and clojure.core var
+
+You can name a task `format` which is also a clojure core var. If you
+want to refer to the core var, it is recommended to use the fully
+qualified `clojure.core/format` in this case, to avoid conflicts in
+`:enter` and `:leave` expressions.
+
+// === TODO
+
+// * Make `fs/modified-since` lazy
+
+// * --prn
+
+// * --parallel
+
+
+// == ADR
+
+// * Do we need to support passing arguments to dependencies? No, see
+// discussion
+// * Does the list of dependencies need to be dynamic? No, see discussion
+// (same reason as args)
+// * bb is resolved as file > task > bb subcommand. Shadowing future
+// subcommand is a problem that a user can solve by renaming a task or
+// file. (same as lein aliases). Also see Conflicts.
+// * It is a feature that tasks are defined as top-level vars (instead of
+// local let-bound symbols). This plays well with the Gilardi scenario,
+// e.g. here:
+// https://github.com/babashka/babashka.github.io/blob/ad276625f6c41f269d19450f236cb54cab2591e1/bb.edn#L7.
