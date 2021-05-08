@@ -762,7 +762,8 @@ pre.rouge {
 <li><a href="#_introduction">Introduction</a></li>
 <li><a href="#_run">Run</a></li>
 <li><a href="#_hooks">Hooks</a></li>
-<li><a href="#_task_specific_options">Task-specific options</a></li>
+<li><a href="#_command_line_arguments">Command line arguments</a></li>
+<li><a href="#_task_ptions">Task ptions</a></li>
 <li><a href="#_discoverability">Discoverability</a></li>
 <li><a href="#_tasks_api">Tasks API</a></li>
 <li><a href="#_dependencies_between_tasks">Dependencies between tasks</a></li>
@@ -2548,7 +2549,7 @@ Removing target folder.</code></pre>
 <div class="sect2">
 <h3 id="_run"><a class="link" href="#_run">Run</a></h3>
 <div class="paragraph">
-<p>The <code>run</code> subcommand accepts these additional options:</p>
+<p>The babashka <code>run</code> subcommand accepts these additional options:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -2662,7 +2663,35 @@ will disable them for specific tasks.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_task_specific_options"><a class="link" href="#_task_specific_options">Task-specific options</a></h3>
+<h3 id="_command_line_arguments"><a class="link" href="#_command_line_arguments">Command line arguments</a></h3>
+<div class="paragraph">
+<p>Babashka tasks is unopinionated when it comes to command line
+arguments. Arguments are available in the dynamic var <code>*command-line-args*</code> at
+any time. The same dynamic var can be rebound to ensure functions see a
+different set of arguments:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">{</span><span class="no">:tasks</span><span class="w">
+ </span><span class="p">{</span><span class="no">:init</span><span class="w"> </span><span class="p">(</span><span class="nf">do</span><span class="w"> </span><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">print-args</span><span class="w"> </span><span class="p">[]</span><span class="w">
+              </span><span class="p">(</span><span class="nb">prn</span><span class="w"> </span><span class="p">(</span><span class="no">:name</span><span class="w"> </span><span class="p">(</span><span class="nf">current-task</span><span class="p">))</span><span class="w">
+                   </span><span class="n">*command-line-args*</span><span class="p">)))</span><span class="w">
+  </span><span class="n">bar</span><span class="w"> </span><span class="p">(</span><span class="nf">print-args</span><span class="p">)</span><span class="w">
+  </span><span class="n">foo</span><span class="w"> </span><span class="p">(</span><span class="nf">do</span><span class="w"> </span><span class="p">(</span><span class="nf">print-args</span><span class="p">)</span><span class="w">
+          </span><span class="p">(</span><span class="nb">binding</span><span class="w"> </span><span class="p">[</span><span class="n">*command-line-args*</span><span class="w"> </span><span class="p">(</span><span class="nb">next</span><span class="w"> </span><span class="n">*command-line-args*</span><span class="p">)]</span><span class="w">
+            </span><span class="p">(</span><span class="nf">run</span><span class="w"> </span><span class="ss">'bar</span><span class="p">)))}}</span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash"><span class="nv">$ </span>bb foo 1 2 3
+foo <span class="o">(</span><span class="s2">"1"</span> <span class="s2">"2"</span> <span class="s2">"3"</span><span class="o">)</span>
+bar <span class="o">(</span><span class="s2">"2"</span> <span class="s2">"3"</span><span class="o">)</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_task_ptions"><a class="link" href="#_task_ptions">Task ptions</a></h3>
 <div class="paragraph">
 <p>Instead of naked expressions, tasks can be defined as maps with options. The
 task expression should then be moved to the <code>:task</code> key:</p>
