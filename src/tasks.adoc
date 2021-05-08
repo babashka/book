@@ -169,10 +169,14 @@ will disable them for specific tasks.
 
 === Command line arguments
 
-Babashka tasks is unopinionated when it comes to command line
-arguments. Arguments are available in the dynamic var `*command-line-args*` at
-any time. The same dynamic var can be rebound to ensure functions see a
-different set of arguments:
+Babashka tasks is unopinionated when it comes to command line arguments.
+Arguments are available in the dynamic var `*command-line-args*`. You are free
+to use parse them using the built-in `tools.cli` library, use
+https://github.com/nubank/docopt.clj[docopt], convert them to EDN using `(map
+edn/read-string *command-line-args*)` or do whatever to handle them.
+
+The same dynamic var can be rebound to ensure functions see a different
+set of arguments:
 
 [source,clojure]
 ----
