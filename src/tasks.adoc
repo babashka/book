@@ -243,6 +243,20 @@ ovsx-publish       Publishes vscode extension to ovsx thing
 publish            The mother of all tasks: publishes everything needed for new release
 ----
 
+==== Terminal tab-complete on `zsh`
+
+Add this to your `.zshrc` to get tab-complete feature on ZSH.
+
+[source,bash]
+----
+_bb_tasks() {
+    local matches=(`bb tasks |tail -n +3 |cut -f1 -d ' '`)
+    compadd -a matches
+    _files # autocomplete filenames as well
+}
+compdef _bb_tasks bb
+----
+
 === Tasks API
 
 The `babashka.tasks` namespace exposes the following functions: `run`, `shell`,
