@@ -2275,7 +2275,9 @@ publish            The mother of all tasks: publishes everything needed <span cl
 </div>
 </div>
 <div class="sect3">
-<h4 id="_terminal_tab_complete_on_zsh"><a class="link" href="#_terminal_tab_complete_on_zsh">Terminal tab-complete on <code>zsh</code></a></h4>
+<h4 id="_terminal_tab_completion"><a class="link" href="#_terminal_tab_completion">Terminal tab-completion</a></h4>
+<div class="sect4">
+<h5 id="_zsh"><a class="link" href="#_zsh">zsh</a></h5>
 <div class="paragraph">
 <p>Add this to your <code>.zshrc</code> to get tab-complete feature on ZSH.</p>
 </div>
@@ -2290,8 +2292,8 @@ compdef _bb_tasks bb</code></pre>
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_terminal_tab_complete_on_fish_shell"><a class="link" href="#_terminal_tab_complete_on_fish_shell">Terminal tab-complete on <code>Fish shell</code></a></h4>
+<div class="sect4">
+<h5 id="_fish"><a class="link" href="#_fish">fish</a></h5>
 <div class="paragraph">
 <p>Add this to your <code>.config/fish/completions/bb.fish</code> to get tab-complete feature on Fish shell.</p>
 </div>
@@ -2305,7 +2307,8 @@ compdef _bb_tasks bb</code></pre>
   <span class="nb">printf</span> <span class="s2">"%s</span><span class="se">\n</span><span class="s2">"</span> <span class="nv">$__bb_tasks</span>
 end
 
-<span class="nb">complete</span> <span class="nt">-f</span> <span class="nt">-c</span> bb <span class="nt">-a</span> <span class="s2">"(__bb_complete_tasks)"</span> <span class="nt">-d</span> <span class="s1">'List tasks'</span></code></pre>
+<span class="nb">complete</span> <span class="nt">-c</span> bb <span class="nt">-a</span> <span class="s2">"(__bb_complete_tasks)"</span> <span class="nt">-d</span> <span class="s1">'tasks'</span></code></pre>
+</div>
 </div>
 </div>
 </div>
