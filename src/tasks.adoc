@@ -257,6 +257,23 @@ _bb_tasks() {
 compdef _bb_tasks bb
 ----
 
+==== Terminal tab-complete on `Fish shell`
+
+Add this to your `.config/fish/completions/bb.fish` to get tab-complete feature on Fish shell.
+
+[source,bash]
+----
+function __bb_complete_tasks
+  if not test "$__bb_tasks"
+    set -g __bb_tasks (bb tasks |tail -n +3 |cut -f1 -d ' ')
+  end
+
+  printf "%s\n" $__bb_tasks
+end
+
+complete -f -c bb -a "(__bb_complete_tasks)" -d 'List tasks'
+----
+
 === Tasks API
 
 The `babashka.tasks` namespace exposes the following functions: `run`, `shell`,
