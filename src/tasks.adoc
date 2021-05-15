@@ -243,7 +243,9 @@ ovsx-publish       Publishes vscode extension to ovsx thing
 publish            The mother of all tasks: publishes everything needed for new release
 ----
 
-==== Terminal tab-complete on `zsh`
+==== Terminal tab-completion
+
+===== zsh
 
 Add this to your `.zshrc` to get tab-complete feature on ZSH.
 
@@ -257,7 +259,7 @@ _bb_tasks() {
 compdef _bb_tasks bb
 ----
 
-==== Terminal tab-complete on `Fish shell`
+===== fish
 
 Add this to your `.config/fish/completions/bb.fish` to get tab-complete feature on Fish shell.
 
@@ -271,7 +273,7 @@ function __bb_complete_tasks
   printf "%s\n" $__bb_tasks
 end
 
-complete -f -c bb -a "(__bb_complete_tasks)" -d 'List tasks'
+complete -c bb -a "(__bb_complete_tasks)" -d 'tasks'
 ----
 
 === Tasks API
