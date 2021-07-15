@@ -68,6 +68,8 @@ as `transit`
  - `rewrite-clj.paredit`
 * https://github.com/yogthos/Selmer[`Selmer`]:
  - `selmer.parser`
+* https://github.com/clojure/tools.logging[`clojure.tools.logging`]
+* https://github.com/ptaoussanis/timbre[`timbre`]
 
 See the
 https://github.com/borkdude/babashka/blob/master/doc/projects.md[projects]
