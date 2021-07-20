@@ -956,20 +956,22 @@ babashka.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash">Usage: bb <span class="o">[</span>classpath opts] <span class="o">[</span><span class="nb">eval </span>opts] <span class="o">[</span>cmdline args]
-or:    bb <span class="o">[</span>classpath opts] file <span class="o">[</span>cmdline args]
-or:    bb <span class="o">[</span>classpath opts] subcommand <span class="o">[</span>subcommand opts] <span class="o">[</span>cmdline args]
+<pre class="rouge highlight"><code data-lang="bash">Babashka v0.5.1-SNAPSHOT
 
-Classpath:
+Usage: bb <span class="o">[</span>svm-opts] <span class="o">[</span>global-opts] <span class="o">[</span><span class="nb">eval </span>opts] <span class="o">[</span>cmdline args]
+or:    bb <span class="o">[</span>svm-opts] <span class="o">[</span>global-opts] file <span class="o">[</span>cmdline args]
+or:    bb <span class="o">[</span>svm-opts] <span class="o">[</span>global-opts] subcommand <span class="o">[</span>subcommand opts] <span class="o">[</span>cmdline args]
 
-  <span class="nt">-cp</span>, <span class="nt">--classpath</span>     Classpath to use. Overrides bb.edn classpath.
+Substrate VM opts:
 
-Evaluation:
+  <span class="nt">-Xmx</span>&lt;size&gt;[g|G|m|M|k|K]  Set a maximum heap size <span class="o">(</span>e.g. <span class="nt">-Xmx256M</span> to limit the heap to 256MB<span class="o">)</span><span class="nb">.</span>
+  <span class="nt">-XX</span>:PrintFlags<span class="o">=</span>          Print all Substrate VM options.
 
-  <span class="nt">-e</span>, <span class="nt">--eval</span> &lt;<span class="nb">expr</span><span class="o">&gt;</span>    Evaluate an expression.
-  <span class="nt">-f</span>, <span class="nt">--file</span> &lt;path&gt;    Evaluate a file.
-  <span class="nt">-m</span>, <span class="nt">--main</span> &lt;ns|var&gt;  Call the <span class="nt">-main</span> <span class="k">function </span>from a namespace or call a fully qualified var.
-  <span class="nt">--verbose</span>            Print debug information and entire stacktrace <span class="k">in case</span> of exception.
+Global opts:
+
+  <span class="nt">-cp</span>, <span class="nt">--classpath</span>  Classpath to use. Overrides bb.edn classpath.
+  <span class="nt">--debug</span>           Print debug information and internal stacktrace <span class="k">in case</span> of exception.
+  <span class="nt">--force</span>           Passes <span class="nt">-Sforce</span> to deps.clj, forcing recalculation of the classpath.
 
 Help:
 
@@ -978,11 +980,22 @@ Help:
   describe           Print an EDN map with information about this version of babashka.
   doc &lt;var|ns&gt;       Print docstring of var or namespace. Requires namespace <span class="k">if </span>necessary.
 
+Evaluation:
+
+  <span class="nt">-e</span>, <span class="nt">--eval</span> &lt;<span class="nb">expr</span><span class="o">&gt;</span>    Evaluate an expression.
+  <span class="nt">-f</span>, <span class="nt">--file</span> &lt;path&gt;    Evaluate a file.
+  <span class="nt">-m</span>, <span class="nt">--main</span> &lt;ns|var&gt;  Call the <span class="nt">-main</span> <span class="k">function </span>from a namespace or call a fully qualified var.
+
 REPL:
 
   repl                 Start REPL. Use rlwrap <span class="k">for </span>history.
   socket-repl  <span class="o">[</span>addr]  Start a socket REPL. Address defaults to localhost:1666.
   nrepl-server <span class="o">[</span>addr]  Start nREPL server. Address defaults to localhost:1667.
+
+Tasks:
+
+  tasks       Print list of available tasks.
+  run &lt;task&gt;  Run task. See run <span class="nt">--help</span> <span class="k">for </span>more details.
 
 Clojure:
 
@@ -1222,7 +1235,7 @@ function <code>foo.bar/-main</code> will be called with command line arguments a
 </div>
 <div class="paragraph">
 <p>so you can execute any function as a main function, as long as it accepts
-varargs arguments.</p>
+the number of provided arguments.</p>
 </div>
 <div class="paragraph">
 <p>When invoking <code>bb</code> with a main function, the expression <code>(System/getProperty
@@ -2172,11 +2185,11 @@ Entering: print-env
 </div>
 </div>
 <div class="paragraph">
-<p>The <code>:leave</code> hook is similar to <code>:enter</code> but it executed after each task.</p>
+<p>The <code>:leave</code> hook is similar to <code>:enter</code> but is executed after each task.</p>
 </div>
 <div class="paragraph">
 <p>Both hooks can be overriden as task-local options. Setting them to <code>nil</code> will
-disable them for specific tasks.</p>
+disable them for specific tasks (see <a href="#_task_local_options">Task-local options</a>).</p>
 </div>
 </div>
 </div>
@@ -2231,7 +2244,7 @@ task expression should then be moved to the <code>:task</code> key:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>A task support the <code>:doc</code> option which gives it a docstring which is printed
+<p>Tasks support the <code>:doc</code> option which gives it a docstring which is printed
 when invoking <code>bb tasks</code> on the command line. Other options include:</p>
 </div>
 <div class="ulist">
@@ -2618,6 +2631,9 @@ at Doctor Evidence</a></p>
 <li>
 <p><a href="https://gist.github.com/delyada/9f50fa7466358e55f27e4e6b4314242f" class="bare">https://gist.github.com/delyada/9f50fa7466358e55f27e4e6b4314242f</a></p>
 </li>
+<li>
+<p><a href="https://github.com/rwstauner/jirazzz/blob/main/bb.edn">jirazzz</a></p>
+</li>
 </ul>
 </div>
 </div>
@@ -2678,6 +2694,9 @@ expressions. Most notably:</p>
 </li>
 <li>
 <p>You cannot use <code>@(foo)</code> but you can use <code>(deref foo)</code></p>
+</li>
+<li>
+<p>You cannot use <code>#"re"</code> but you can use <code>(re-pattern "re")</code></p>
 </li>
 <li>
 <p>Single quotes are accidentally supported in some places, but are better
