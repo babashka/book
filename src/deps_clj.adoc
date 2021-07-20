@@ -69,6 +69,6 @@ $ tree -L 3
 ----
 
 you should now be able to
-`(require '[multi-machine-rsync.utilities :as util])` in your REPL and
-the source code in `/src/multi_machine_rsync/utilities.clj` will be
+`(require '[project-namespace.utilities :as util])` in your REPL and
+the source code in `/src/project_namespace/utilities.clj` will be
 evaluated and made available through the symbol `util`.
