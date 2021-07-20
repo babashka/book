@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+script/update-help.clj
 script/compile.clj
 cd gh-pages
 touch .nojekyll
