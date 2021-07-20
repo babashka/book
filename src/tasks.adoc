@@ -162,7 +162,7 @@ Entering: print-env
 1
 ----
 
-The `:leave` hook is similar to `:enter` but it executed after each task.
+The `:leave` hook is similar to `:enter` but is executed after each task.
 
 Both hooks can be overriden as task-local options. Setting them to `nil` will
 disable them for specific tasks.
@@ -213,7 +213,7 @@ task expression should then be moved to the `:task` key:
  }
 ----
 
-A task support the `:doc` option which gives it a docstring which is printed
+Tasks support the `:doc` option which gives it a docstring which is printed
 when invoking `bb tasks` on the command line. Other options include:
 
 - `:requires`: task-specific namespace requires.
