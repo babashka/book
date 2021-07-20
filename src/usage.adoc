@@ -236,7 +236,7 @@ $ bb -m clojure.core/prn 1 2 3
 ----
 
 so you can execute any function as a main function, as long as it accepts
-varargs arguments.
+the number of provided arguments.
 
 When invoking `bb` with a main function, the expression `(System/getProperty
 "babashka.main")` will return the name of the main function.
