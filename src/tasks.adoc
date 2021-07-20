@@ -523,6 +523,7 @@ at Doctor Evidence]
 * https://github.com/redstarssystems/rssyslib/blob/develop/bb.edn[rssyslib]
 * https://github.com/clj-commons/rewrite-clj/blob/main/bb.edn[rewrite-clj]
 * https://gist.github.com/delyada/9f50fa7466358e55f27e4e6b4314242f
+* https://github.com/rwstauner/jirazzz/blob/main/bb.edn[jirazzz]
 
 === Naming
 
