@@ -558,6 +558,7 @@ expressions. Most notably:
 
 - You cannot use `#(foo %)`, but you can use `(fn [x] (foo x))`
 - You cannot use `@(foo)` but you can use `(deref foo)`
+- You cannot use `#"re"` but you can use `(re-pattern "re")`
 - Single quotes are accidentally supported in some places, but are better
   avoided: `{:task '(foo)}` does not work, but `{:task (quote (foo))` does
   work. When requiring namespaces, use the `:requires` feature in favor of doing
