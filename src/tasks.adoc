@@ -165,7 +165,7 @@ Entering: print-env
 The `:leave` hook is similar to `:enter` but is executed after each task.
 
 Both hooks can be overriden as task-local options. Setting them to `nil` will
-disable them for specific tasks.
+disable them for specific tasks (see <<_task_local_options>>).
 
 === Command line arguments
 
