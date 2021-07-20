@@ -162,10 +162,10 @@ Entering: print-env
 1
 ----
 
-The `:leave` hook is similar to `:enter` but it executed after each task.
+The `:leave` hook is similar to `:enter` but is executed after each task.
 
 Both hooks can be overriden as task-local options. Setting them to `nil` will
-disable them for specific tasks.
+disable them for specific tasks (see <<_task_local_options>>).
 
 === Command line arguments
 
@@ -213,7 +213,7 @@ task expression should then be moved to the `:task` key:
  }
 ----
 
-A task support the `:doc` option which gives it a docstring which is printed
+Tasks support the `:doc` option which gives it a docstring which is printed
 when invoking `bb tasks` on the command line. Other options include:
 
 - `:requires`: task-specific namespace requires.
@@ -523,6 +523,7 @@ at Doctor Evidence]
 * https://github.com/redstarssystems/rssyslib/blob/develop/bb.edn[rssyslib]
 * https://github.com/clj-commons/rewrite-clj/blob/main/bb.edn[rewrite-clj]
 * https://gist.github.com/delyada/9f50fa7466358e55f27e4e6b4314242f
+* https://github.com/rwstauner/jirazzz/blob/main/bb.edn[jirazzz]
 
 === Naming
 
@@ -558,6 +559,7 @@ expressions. Most notably:
 
 - You cannot use `#(foo %)`, but you can use `(fn [x] (foo x))`
 - You cannot use `@(foo)` but you can use `(deref foo)`
+- You cannot use `#"re"` but you can use `(re-pattern "re")`
 - Single quotes are accidentally supported in some places, but are better
   avoided: `{:task '(foo)}` does not work, but `{:task (quote (foo))` does
   work. When requiring namespaces, use the `:requires` feature in favor of doing
