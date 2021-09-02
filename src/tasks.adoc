@@ -535,6 +535,9 @@ only choose names for your tasks that are valid as var names. You can't name
 your task `foo/bar` for this reason. If you want to use delimiters to indicate
 some sort of grouping, you can do it like `foo-bar`, `foo:bar` or `foo_bar`.
 
+Names starting with a `-` are considered "private" and not listed in the
+`bb tasks` output.
+
 ==== Conflicting file / task / subcommand names
 
 `bb <option>` is resolved in the order of file > task > subcommand.
