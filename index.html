@@ -956,7 +956,7 @@ babashka.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash">Babashka v0.5.0
+<pre class="rouge highlight"><code data-lang="bash">Babashka v0.6.0
 
 Usage: bb <span class="o">[</span>svm-opts] <span class="o">[</span>global-opts] <span class="o">[</span><span class="nb">eval </span>opts] <span class="o">[</span>cmdline args]
 or:    bb <span class="o">[</span>svm-opts] <span class="o">[</span>global-opts] file <span class="o">[</span>cmdline args]
@@ -1013,6 +1013,11 @@ In- and output flags <span class="o">(</span>only to be used with <span class="n
   <span class="nt">-o</span>                 Write lines to stdout.
   <span class="nt">-O</span>                 Write EDN values to stdout.
   <span class="nt">--stream</span>           Stream over lines or EDN values from stdin. Combined with <span class="nt">-i</span> or <span class="nt">-I</span> <span class="k">*</span>input<span class="k">*</span> becomes a single value per iteration.
+
+Tooling:
+
+  print-deps <span class="o">[</span><span class="nt">--format</span> &lt;deps | classpath&gt;]: prints a deps.edn map or classpath
+    with built-in deps and deps from bb.edn.
 
 File names take precedence over subcommand names.
 Remaining arguments are bound to <span class="k">*</span>command-line-args<span class="k">*</span><span class="nb">.</span>
@@ -2647,6 +2652,10 @@ bound to the return values of tasks. This brings the limitation that you can
 only choose names for your tasks that are valid as var names. You can&#8217;t name
 your task <code>foo/bar</code> for this reason. If you want to use delimiters to indicate
 some sort of grouping, you can do it like <code>foo-bar</code>, <code>foo:bar</code> or <code>foo_bar</code>.</p>
+</div>
+<div class="paragraph">
+<p>Names starting with a <code>-</code> are considered "private" and not listed in the
+<code>bb tasks</code> output.</p>
 </div>
 </div>
 <div class="sect3">
