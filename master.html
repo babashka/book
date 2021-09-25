@@ -956,20 +956,22 @@ babashka.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash">Usage: bb <span class="o">[</span>classpath opts] <span class="o">[</span><span class="nb">eval </span>opts] <span class="o">[</span>cmdline args]
-or:    bb <span class="o">[</span>classpath opts] file <span class="o">[</span>cmdline args]
-or:    bb <span class="o">[</span>classpath opts] subcommand <span class="o">[</span>subcommand opts] <span class="o">[</span>cmdline args]
+<pre class="rouge highlight"><code data-lang="bash">Babashka v0.6.0
 
-Classpath:
+Usage: bb <span class="o">[</span>svm-opts] <span class="o">[</span>global-opts] <span class="o">[</span><span class="nb">eval </span>opts] <span class="o">[</span>cmdline args]
+or:    bb <span class="o">[</span>svm-opts] <span class="o">[</span>global-opts] file <span class="o">[</span>cmdline args]
+or:    bb <span class="o">[</span>svm-opts] <span class="o">[</span>global-opts] subcommand <span class="o">[</span>subcommand opts] <span class="o">[</span>cmdline args]
 
-  <span class="nt">-cp</span>, <span class="nt">--classpath</span>     Classpath to use. Overrides bb.edn classpath.
+Substrate VM opts:
 
-Evaluation:
+  <span class="nt">-Xmx</span>&lt;size&gt;[g|G|m|M|k|K]  Set a maximum heap size <span class="o">(</span>e.g. <span class="nt">-Xmx256M</span> to limit the heap to 256MB<span class="o">)</span><span class="nb">.</span>
+  <span class="nt">-XX</span>:PrintFlags<span class="o">=</span>          Print all Substrate VM options.
 
-  <span class="nt">-e</span>, <span class="nt">--eval</span> &lt;<span class="nb">expr</span><span class="o">&gt;</span>    Evaluate an expression.
-  <span class="nt">-f</span>, <span class="nt">--file</span> &lt;path&gt;    Evaluate a file.
-  <span class="nt">-m</span>, <span class="nt">--main</span> &lt;ns|var&gt;  Call the <span class="nt">-main</span> <span class="k">function </span>from a namespace or call a fully qualified var.
-  <span class="nt">--verbose</span>            Print debug information and entire stacktrace <span class="k">in case</span> of exception.
+Global opts:
+
+  <span class="nt">-cp</span>, <span class="nt">--classpath</span>  Classpath to use. Overrides bb.edn classpath.
+  <span class="nt">--debug</span>           Print debug information and internal stacktrace <span class="k">in case</span> of exception.
+  <span class="nt">--force</span>           Passes <span class="nt">-Sforce</span> to deps.clj, forcing recalculation of the classpath.
 
 Help:
 
@@ -978,11 +980,22 @@ Help:
   describe           Print an EDN map with information about this version of babashka.
   doc &lt;var|ns&gt;       Print docstring of var or namespace. Requires namespace <span class="k">if </span>necessary.
 
+Evaluation:
+
+  <span class="nt">-e</span>, <span class="nt">--eval</span> &lt;<span class="nb">expr</span><span class="o">&gt;</span>    Evaluate an expression.
+  <span class="nt">-f</span>, <span class="nt">--file</span> &lt;path&gt;    Evaluate a file.
+  <span class="nt">-m</span>, <span class="nt">--main</span> &lt;ns|var&gt;  Call the <span class="nt">-main</span> <span class="k">function </span>from a namespace or call a fully qualified var.
+
 REPL:
 
   repl                 Start REPL. Use rlwrap <span class="k">for </span>history.
   socket-repl  <span class="o">[</span>addr]  Start a socket REPL. Address defaults to localhost:1666.
   nrepl-server <span class="o">[</span>addr]  Start nREPL server. Address defaults to localhost:1667.
+
+Tasks:
+
+  tasks       Print list of available tasks.
+  run &lt;task&gt;  Run task. See run <span class="nt">--help</span> <span class="k">for </span>more details.
 
 Clojure:
 
@@ -1000,6 +1013,11 @@ In- and output flags <span class="o">(</span>only to be used with <span class="n
   <span class="nt">-o</span>                 Write lines to stdout.
   <span class="nt">-O</span>                 Write EDN values to stdout.
   <span class="nt">--stream</span>           Stream over lines or EDN values from stdin. Combined with <span class="nt">-i</span> or <span class="nt">-I</span> <span class="k">*</span>input<span class="k">*</span> becomes a single value per iteration.
+
+Tooling:
+
+  print-deps <span class="o">[</span><span class="nt">--format</span> &lt;deps | classpath&gt;]: prints a deps.edn map or classpath
+    with built-in deps and deps from bb.edn.
 
 File names take precedence over subcommand names.
 Remaining arguments are bound to <span class="k">*</span>command-line-args<span class="k">*</span><span class="nb">.</span>
@@ -1222,7 +1240,7 @@ function <code>foo.bar/-main</code> will be called with command line arguments a
 </div>
 <div class="paragraph">
 <p>so you can execute any function as a main function, as long as it accepts
-varargs arguments.</p>
+the number of provided arguments.</p>
 </div>
 <div class="paragraph">
 <p>When invoking <code>bb</code> with a main function, the expression <code>(System/getProperty
@@ -1429,31 +1447,22 @@ Java property option in Clojure:</p>
 </ul>
 </div>
 <div class="paragraph">
-<p>The babashka nREPL server does not write an <code>.nrepl-port</code> file at
-startup, but you can easily write a script that launches the server and
-writes the file:</p>
+<p>The babashka nREPL server currently does not write an <code>.nrepl-port</code> file at
+startup. Using the following <code>nrepl</code> task, defined in a <code>bb.edn</code>, you can
+accomplish the same:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="clojure"><span class="o">#</span><span class="n">!/usr/bin/env</span><span class="w"> </span><span class="n">bb</span><span class="w">
-
-</span><span class="p">(</span><span class="nb">import</span><span class="w"> </span><span class="p">[</span><span class="n">java.net</span><span class="w"> </span><span class="n">ServerSocket</span><span class="p">]</span><span class="w">
-        </span><span class="p">[</span><span class="n">java.io</span><span class="w"> </span><span class="n">File</span><span class="p">]</span><span class="w">
-        </span><span class="p">[</span><span class="n">java.lang</span><span class="w"> </span><span class="n">ProcessBuilder$Redirect</span><span class="p">])</span><span class="w">
-
-</span><span class="p">(</span><span class="nf">require</span><span class="w"> </span><span class="o">'</span><span class="p">[</span><span class="n">babashka.wait</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">wait</span><span class="p">])</span><span class="w">
-
-</span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[</span><span class="n">nrepl-port</span><span class="w"> </span><span class="p">(</span><span class="nb">with-open</span><span class="w"> </span><span class="p">[</span><span class="n">sock</span><span class="w"> </span><span class="p">(</span><span class="nf">ServerSocket.</span><span class="w"> </span><span class="mi">0</span><span class="p">)]</span><span class="w"> </span><span class="p">(</span><span class="nf">.getLocalPort</span><span class="w"> </span><span class="n">sock</span><span class="p">))</span><span class="w">
-      </span><span class="n">cp</span><span class="w"> </span><span class="p">(</span><span class="nf">str/join</span><span class="w"> </span><span class="n">File/pathSeparatorChar</span><span class="w"> </span><span class="p">[</span><span class="s">"src"</span><span class="w"> </span><span class="s">"test"</span><span class="p">])</span><span class="w">
-      </span><span class="n">pb</span><span class="w"> </span><span class="p">(</span><span class="nb">doto</span><span class="w"> </span><span class="p">(</span><span class="nf">ProcessBuilder.</span><span class="w"> </span><span class="p">(</span><span class="nb">into</span><span class="w"> </span><span class="p">[</span><span class="s">"bb"</span><span class="w"> </span><span class="s">"--nrepl-server"</span><span class="w"> </span><span class="p">(</span><span class="nb">str</span><span class="w"> </span><span class="n">nrepl-port</span><span class="p">)</span><span class="w">
-                                       </span><span class="s">"--classpath"</span><span class="w"> </span><span class="n">cp</span><span class="p">]</span><span class="w">
-                                      </span><span class="n">*command-line-args*</span><span class="p">))</span><span class="w">
-           </span><span class="p">(</span><span class="nf">.redirectOutput</span><span class="w"> </span><span class="n">ProcessBuilder$Redirect/INHERIT</span><span class="p">))</span><span class="w">
-      </span><span class="n">proc</span><span class="w"> </span><span class="p">(</span><span class="nf">.start</span><span class="w"> </span><span class="n">pb</span><span class="p">)]</span><span class="w">
-  </span><span class="p">(</span><span class="nf">wait/wait-for-port</span><span class="w"> </span><span class="s">"localhost"</span><span class="w"> </span><span class="n">nrepl-port</span><span class="p">)</span><span class="w">
-  </span><span class="p">(</span><span class="nf">spit</span><span class="w"> </span><span class="s">".nrepl-port"</span><span class="w"> </span><span class="n">nrepl-port</span><span class="p">)</span><span class="w">
-  </span><span class="p">(</span><span class="nf">.deleteOnExit</span><span class="w"> </span><span class="p">(</span><span class="nf">File.</span><span class="w"> </span><span class="s">".nrepl-port"</span><span class="p">))</span><span class="w">
-  </span><span class="p">(</span><span class="nf">.waitFor</span><span class="w"> </span><span class="n">proc</span><span class="p">))</span></code></pre>
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">{</span><span class="no">:tasks</span><span class="w">
+ </span><span class="p">{</span><span class="no">:requires</span><span class="w"> </span><span class="p">([</span><span class="n">babashka.fs</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">fs</span><span class="p">]</span><span class="w">
+             </span><span class="p">[</span><span class="n">babashka.process</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="no">:refer</span><span class="w"> </span><span class="p">[</span><span class="n">process</span><span class="p">]]</span><span class="w">
+             </span><span class="p">[</span><span class="n">babashka.wait</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">wait</span><span class="p">])</span><span class="w">
+  </span><span class="n">nrepl</span><span class="w"> </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[</span><span class="n">port</span><span class="w"> </span><span class="p">(</span><span class="nb">with-open</span><span class="w"> </span><span class="p">[</span><span class="n">sock</span><span class="w"> </span><span class="p">(</span><span class="nf">java.net.ServerSocket.</span><span class="w"> </span><span class="mi">0</span><span class="p">)]</span><span class="w"> </span><span class="p">(</span><span class="nf">.getLocalPort</span><span class="w"> </span><span class="n">sock</span><span class="p">))</span><span class="w">
+              </span><span class="n">proc</span><span class="w"> </span><span class="p">(</span><span class="nf">process</span><span class="w"> </span><span class="p">(</span><span class="nb">str</span><span class="w"> </span><span class="s">"bb nrepl-server "</span><span class="w"> </span><span class="n">port</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="no">:inherit</span><span class="w"> </span><span class="n">true</span><span class="p">})]</span><span class="w">
+          </span><span class="p">(</span><span class="nf">wait/wait-for-port</span><span class="w"> </span><span class="s">"localhost"</span><span class="w"> </span><span class="n">port</span><span class="p">)</span><span class="w">
+          </span><span class="p">(</span><span class="nf">spit</span><span class="w"> </span><span class="s">".nrepl-port"</span><span class="w"> </span><span class="n">port</span><span class="p">)</span><span class="w">
+          </span><span class="p">(</span><span class="nf">fs/delete-on-exit</span><span class="w"> </span><span class="s">".nrepl-port"</span><span class="p">)</span><span class="w">
+          </span><span class="p">(</span><span class="nb">deref</span><span class="w"> </span><span class="n">proc</span><span class="p">))}}</span></code></pre>
 </div>
 </div>
 <div class="sect4">
@@ -2172,11 +2181,11 @@ Entering: print-env
 </div>
 </div>
 <div class="paragraph">
-<p>The <code>:leave</code> hook is similar to <code>:enter</code> but it executed after each task.</p>
+<p>The <code>:leave</code> hook is similar to <code>:enter</code> but is executed after each task.</p>
 </div>
 <div class="paragraph">
 <p>Both hooks can be overriden as task-local options. Setting them to <code>nil</code> will
-disable them for specific tasks.</p>
+disable them for specific tasks (see <a href="#_task_local_options">Task-local options</a>).</p>
 </div>
 </div>
 </div>
@@ -2231,7 +2240,7 @@ task expression should then be moved to the <code>:task</code> key:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>A task support the <code>:doc</code> option which gives it a docstring which is printed
+<p>Tasks support the <code>:doc</code> option which gives it a docstring which is printed
 when invoking <code>bb tasks</code> on the command line. Other options include:</p>
 </div>
 <div class="ulist">
@@ -2618,6 +2627,9 @@ at Doctor Evidence</a></p>
 <li>
 <p><a href="https://gist.github.com/delyada/9f50fa7466358e55f27e4e6b4314242f" class="bare">https://gist.github.com/delyada/9f50fa7466358e55f27e4e6b4314242f</a></p>
 </li>
+<li>
+<p><a href="https://github.com/rwstauner/jirazzz/blob/main/bb.edn">jirazzz</a></p>
+</li>
 </ul>
 </div>
 </div>
@@ -2631,6 +2643,10 @@ bound to the return values of tasks. This brings the limitation that you can
 only choose names for your tasks that are valid as var names. You can&#8217;t name
 your task <code>foo/bar</code> for this reason. If you want to use delimiters to indicate
 some sort of grouping, you can do it like <code>foo-bar</code>, <code>foo:bar</code> or <code>foo_bar</code>.</p>
+</div>
+<div class="paragraph">
+<p>Names starting with a <code>-</code> are considered "private" and not listed in the
+<code>bb tasks</code> output.</p>
 </div>
 </div>
 <div class="sect3">
@@ -2678,6 +2694,9 @@ expressions. Most notably:</p>
 </li>
 <li>
 <p>You cannot use <code>@(foo)</code> but you can use <code>(deref foo)</code></p>
+</li>
+<li>
+<p>You cannot use <code>#"re"</code> but you can use <code>(re-pattern "re")</code></p>
 </li>
 <li>
 <p>Single quotes are accidentally supported in some places, but are better
@@ -2864,6 +2883,12 @@ as <code>transit</code></p>
 </li>
 </ul>
 </div>
+</li>
+<li>
+<p><a href="https://github.com/clojure/tools.logging"><code>clojure.tools.logging</code></a></p>
+</li>
+<li>
+<p><a href="https://github.com/ptaoussanis/timbre"><code>timbre</code></a></p>
 </li>
 </ul>
 </div>
