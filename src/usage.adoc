@@ -418,7 +418,7 @@ $ bb -e "#?(:bb :hello :clj :bye)"
 :hello
 
 $ bb -e "#?(:clj :bye :bb :hello)"
-:bye
+:hello
 
 $ bb -e "[1 2 #?@(:bb [] :clj [1])]"
 [1 2]
