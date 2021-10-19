@@ -259,6 +259,19 @@ _bb_tasks() {
 compdef _bb_tasks bb
 ----
 
+===== bash
+
+Add this to your `.bashrc` to get tab-complete feature on bash.
+
+[source,bash]
+----
+_bb_tasks() {
+    COMPREPLY+=(`bb tasks |tail -n +3 |cut -f1 -d ' '`)
+}
+# autocomplete filenames as well
+complete -f -F _bb_tasks bb
+----
+
 ===== fish
 
 Add this to your `.config/fish/completions/bb.fish` to get tab-complete feature on Fish shell.
