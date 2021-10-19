@@ -956,7 +956,7 @@ babashka.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash">Babashka v0.6.0
+<pre class="rouge highlight"><code data-lang="bash">Babashka v0.6.2
 
 Usage: bb <span class="o">[</span>svm-opts] <span class="o">[</span>global-opts] <span class="o">[</span><span class="nb">eval </span>opts] <span class="o">[</span>cmdline args]
 or:    bb <span class="o">[</span>svm-opts] <span class="o">[</span>global-opts] file <span class="o">[</span>cmdline args]
@@ -2298,6 +2298,21 @@ publish            The mother of all tasks: publishes everything needed <span cl
     _files <span class="c"># autocomplete filenames as well</span>
 <span class="o">}</span>
 compdef _bb_tasks bb</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_bash"><a class="link" href="#_bash">bash</a></h5>
+<div class="paragraph">
+<p>Add this to your <code>.bashrc</code> to get tab-complete feature on bash.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash">_bb_tasks<span class="o">()</span> <span class="o">{</span>
+    COMPREPLY+<span class="o">=(</span><span class="sb">`</span>bb tasks |tail <span class="nt">-n</span> +3 |cut <span class="nt">-f1</span> <span class="nt">-d</span> <span class="s1">' '</span><span class="sb">`</span><span class="o">)</span>
+<span class="o">}</span>
+<span class="c"># autocomplete filenames as well</span>
+<span class="nb">complete</span> <span class="nt">-f</span> <span class="nt">-F</span> _bb_tasks bb</code></pre>
 </div>
 </div>
 </div>
