@@ -337,8 +337,8 @@ The `:parallel` option executes dependencies of the invoked task in parallel
 
 Both `shell` and `clojure` return a
 https://github.com/babashka/babashka.process[process] object which returns the
-`:exit` code among other info. By default these function will exit the babashka
-process when a non-zero exit code was returned and they will inherit the
+`:exit` code among other info. By default these functions will throw an
+exception when a non-zero exit code was returned and they will inherit the
 stdin/stdout/stderr from the babashka process.
 
 [source,clojure]
@@ -385,6 +385,13 @@ When you want to redirect output to a file instead, you can provide the `:out` o
 (shell {:out "file.txt"} "echo hello")
 ----
 
+To run a program in another directory, you can use the `:dir` option:
+
+[source,clojure]
+----
+(shell {:dir "subproject"} "ls")
+----
+
 Other supported options are similar to those of
 https://github.com/babashka/babashka.process[`babashka.process/process`].
 
@@ -392,28 +399,55 @@ The process is executed synchronously: i.e. babashka will wait for the process
 to finish before executing the next expression. If this doesn't fit your use
 case, you can use
 https://github.com/babashka/babashka.process[`babashka.process/process`]
-directly instead.
+directly instead. These two invocations are roughly equivalent:
 
+[source,clojure]
+----
+(require '[babashka.process :as p :refer [process]]
+         '[babashka.tasks :as tasks])
+
+(tasks/shell {:dir "subproject"} "npm install")
+
+(-> (process "npm install" {:dir "subproject" :inherit true})
+    (p/check))
+----
 
 [[tasks:clojure]]
 ==== clojure
 
-The `clojure` function starts a Clojure process using https://github.com/borkdude/deps.clj[deps.clj].
+The `clojure` function starts a Clojure process using
+https://github.com/borkdude/deps.clj[deps.clj]. The interface is exactly the
+same as the clojure CLI. E.g. to evaluate an expression:
 
 [source,clojure]
 ----
 {:tasks {eval (clojure "-M -e '(+ 1 2 3)'")}}
 ----
 
-The function behaves similar to `shell` with respect to the exit code, return
-value and supported options, except when it comes to features that do not start
-a process, but only do some printing. E.g.:
+or to invoke clj-kondo as a library:
+
+[source,clojure]
+----
+{:tasks {eval (clojure {:dir "subproject"} "-M:clj-kondo")}}
+----
+
+The `clojure` task function behaves similar to `shell` with respect to the exit
+code, return value and supported options, except when it comes to features that
+do not start a process, but only do some printing. E.g. you can capture the
+classpath using:
 
 ```clojure
-(clojure "-Spath")
+(with-out-str (clojure "-Spath"))
 ```
 
-does not return a process, but simply prints output to `*out*`, so you are able to capture it with `with-out-str`.
+because this operation doesn't start a process but prints to `*out*`.
+
+To run a `clojure` task in another directory:
+
+[source,clojure]
+----
+{:tasks {eval (clojure {:dir "subproject"} "-M:clj-kondo")}}
+----
 
 [[current-task]]
 ==== current-task
