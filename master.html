@@ -846,7 +846,7 @@ list of beginner resources.</p>
 <div class="sect2">
 <h3 id="_setting_expectations"><a class="link" href="#_setting_expectations">Setting expectations</a></h3>
 <div class="paragraph">
-<p>Babashka uses <a href="https://github.com/borkdude/sci">sci</a> for interpreting Clojure. Sci
+<p>Babashka uses <a href="https://github.com/babashka/SCI">SCI</a> for interpreting Clojure. Sci
 implements a substantial subset of Clojure. Interpreting code is in general not
 as performant as executing compiled code. If your script takes more than a few
 seconds to run or has lots of loops, Clojure on the JVM may be a better fit, as
@@ -956,7 +956,7 @@ babashka.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash">Babashka v0.6.0
+<pre class="rouge highlight"><code data-lang="bash">Babashka v0.6.2
 
 Usage: bb <span class="o">[</span>svm-opts] <span class="o">[</span>global-opts] <span class="o">[</span><span class="nb">eval </span>opts] <span class="o">[</span>cmdline args]
 or:    bb <span class="o">[</span>svm-opts] <span class="o">[</span>global-opts] file <span class="o">[</span>cmdline args]
@@ -2302,6 +2302,21 @@ compdef _bb_tasks bb</code></pre>
 </div>
 </div>
 <div class="sect4">
+<h5 id="_bash"><a class="link" href="#_bash">bash</a></h5>
+<div class="paragraph">
+<p>Add this to your <code>.bashrc</code> to get tab-complete feature on bash.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash">_bb_tasks<span class="o">()</span> <span class="o">{</span>
+    COMPREPLY+<span class="o">=(</span><span class="sb">`</span>bb tasks |tail <span class="nt">-n</span> +3 |cut <span class="nt">-f1</span> <span class="nt">-d</span> <span class="s1">' '</span><span class="sb">`</span><span class="o">)</span>
+<span class="o">}</span>
+<span class="c"># autocomplete filenames as well</span>
+<span class="nb">complete</span> <span class="nt">-f</span> <span class="nt">-F</span> _bb_tasks bb</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
 <h5 id="_fish"><a class="link" href="#_fish">fish</a></h5>
 <div class="paragraph">
 <p>Add this to your <code>.config/fish/completions/bb.fish</code> to get tab-complete feature on Fish shell.</p>
@@ -2379,8 +2394,8 @@ Making uberjar</code></pre>
 <div class="paragraph">
 <p>Both <code>shell</code> and <code>clojure</code> return a
 <a href="https://github.com/babashka/babashka.process">process</a> object which returns the
-<code>:exit</code> code among other info. By default these function will exit the babashka
-process when a non-zero exit code was returned and they will inherit the
+<code>:exit</code> code among other info. By default these functions will throw an
+exception when a non-zero exit code was returned and they will inherit the
 stdin/stdout/stderr from the babashka process.</p>
 </div>
 <div class="listingblock">
@@ -2430,6 +2445,14 @@ ls</span>: foo: No such file or directory
 </div>
 </div>
 <div class="paragraph">
+<p>To run a program in another directory, you can use the <code>:dir</code> option:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">(</span><span class="nf">shell</span><span class="w"> </span><span class="p">{</span><span class="no">:dir</span><span class="w"> </span><span class="s">"subproject"</span><span class="p">}</span><span class="w"> </span><span class="s">"ls"</span><span class="p">)</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
 <p>Other supported options are similar to those of
 <a href="https://github.com/babashka/babashka.process"><code>babashka.process/process</code></a>.</p>
 </div>
@@ -2438,13 +2461,26 @@ ls</span>: foo: No such file or directory
 to finish before executing the next expression. If this doesn&#8217;t fit your use
 case, you can use
 <a href="https://github.com/babashka/babashka.process"><code>babashka.process/process</code></a>
-directly instead.</p>
+directly instead. These two invocations are roughly equivalent:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">(</span><span class="nf">require</span><span class="w"> </span><span class="o">'</span><span class="p">[</span><span class="n">babashka.process</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="no">:refer</span><span class="w"> </span><span class="p">[</span><span class="n">process</span><span class="p">]]</span><span class="w">
+         </span><span class="o">'</span><span class="p">[</span><span class="n">babashka.tasks</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">tasks</span><span class="p">])</span><span class="w">
+
+</span><span class="p">(</span><span class="nf">tasks/shell</span><span class="w"> </span><span class="p">{</span><span class="no">:dir</span><span class="w"> </span><span class="s">"subproject"</span><span class="p">}</span><span class="w"> </span><span class="s">"npm install"</span><span class="p">)</span><span class="w">
+
+</span><span class="p">(</span><span class="nb">-&gt;</span><span class="w"> </span><span class="p">(</span><span class="nf">process</span><span class="w"> </span><span class="s">"npm install"</span><span class="w"> </span><span class="p">{</span><span class="no">:dir</span><span class="w"> </span><span class="s">"subproject"</span><span class="w"> </span><span class="no">:inherit</span><span class="w"> </span><span class="n">true</span><span class="p">})</span><span class="w">
+    </span><span class="p">(</span><span class="nf">p/check</span><span class="p">))</span></code></pre>
+</div>
 </div>
 </div>
 <div class="sect3">
 <h4 id="tasks:clojure"><a class="link" href="#tasks:clojure">clojure</a></h4>
 <div class="paragraph">
-<p>The <code>clojure</code> function starts a Clojure process using <a href="https://github.com/borkdude/deps.clj">deps.clj</a>.</p>
+<p>The <code>clojure</code> function starts a Clojure process using
+<a href="https://github.com/borkdude/deps.clj">deps.clj</a>. The interface is exactly the
+same as the clojure CLI. E.g. to evaluate an expression:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -2452,17 +2488,34 @@ directly instead.</p>
 </div>
 </div>
 <div class="paragraph">
-<p>The function behaves similar to <code>shell</code> with respect to the exit code, return
-value and supported options, except when it comes to features that do not start
-a process, but only do some printing. E.g.:</p>
+<p>or to invoke clj-kondo as a library:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="clojure"><span class="p">(</span><span class="nf">clojure</span><span class="w"> </span><span class="s">"-Spath"</span><span class="p">)</span></code></pre>
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">{</span><span class="no">:tasks</span><span class="w"> </span><span class="p">{</span><span class="nb">eval</span><span class="w"> </span><span class="p">(</span><span class="nf">clojure</span><span class="w"> </span><span class="p">{</span><span class="no">:dir</span><span class="w"> </span><span class="s">"subproject"</span><span class="p">}</span><span class="w"> </span><span class="s">"-M:clj-kondo"</span><span class="p">)}}</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>does not return a process, but simply prints output to <code>*out*</code>, so you are able to capture it with <code>with-out-str</code>.</p>
+<p>The <code>clojure</code> task function behaves similar to <code>shell</code> with respect to the exit
+code, return value and supported options, except when it comes to features that
+do not start a process, but only do some printing. E.g. you can capture the
+classpath using:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">(</span><span class="nb">with-out-str</span><span class="w"> </span><span class="p">(</span><span class="nf">clojure</span><span class="w"> </span><span class="s">"-Spath"</span><span class="p">))</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>because this operation doesn&#8217;t start a process but prints to <code>*out*</code>.</p>
+</div>
+<div class="paragraph">
+<p>To run a <code>clojure</code> task in another directory:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">{</span><span class="no">:tasks</span><span class="w"> </span><span class="p">{</span><span class="nb">eval</span><span class="w"> </span><span class="p">(</span><span class="nf">clojure</span><span class="w"> </span><span class="p">{</span><span class="no">:dir</span><span class="w"> </span><span class="s">"subproject"</span><span class="p">}</span><span class="w"> </span><span class="s">"-M:clj-kondo"</span><span class="p">)}}</span></code></pre>
+</div>
 </div>
 </div>
 <div class="sect3">
@@ -3892,9 +3945,8 @@ info <a href="#core_async">here</a>.</p>
 <h2 id="contributing"><a class="link" href="#contributing">Contributing</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Visit Babashka book&#8217;s <a href="https://github.com/babashka/book">Github repository</a> and read
-<a href="https://github.com/babashka/book/blob/master/CONTRIBUTING.md">CONTRIBUTING.md</a>
-on how to contribute.</p>
+<p>Visit Babashka book&#8217;s <a href="https://github.com/babashka/book">Github repository</a> and
+make an issue and/or PR.</p>
 </div>
 </div>
 </div>
@@ -3904,19 +3956,8 @@ on how to contribute.</p>
 <div class="paragraph">
 <p>Copyright © 2020-2021 Michiel Borkent</p>
 </div>
-<div class="imageblock">
-<div class="content">
-<a class="image" href="https://creativecommons.org/licenses/by-nc-nd/3.0/deed.en_US"><img src="https://i.creativecommons.org/l/by-nc-nd/3.0/88x31.png" alt="Creative Commons License"></a>
-</div>
-</div>
 <div class="paragraph">
-<p>This book is licensed under a
-<a href="https://creativecommons.org/licenses/by-nc-nd/3.0/deed.en_US">Creative Commons
-License</a>.</p>
-</div>
-<div class="paragraph">
-<p>Please note that because this is a <strong>No Derivatives</strong> license, you may <strong>not</strong> use
-this repository as a basis for creating your own book based on this one.</p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>.</p>
 </div>
 </div>
 </div>
