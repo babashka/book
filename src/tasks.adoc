@@ -392,6 +392,13 @@ To run a program in another directory, you can use the `:dir` option:
 (shell {:dir "subproject"} "ls")
 ----
 
+To set environment variables with `shell` or `clojure`:
+
+[source,clojure]
+----
+(shell {:extra-env {"FOO" "BAR"}} "printenv FOO")
+----
+
 Other supported options are similar to those of
 https://github.com/babashka/babashka.process[`babashka.process/process`].
 
