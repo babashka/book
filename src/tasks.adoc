@@ -266,7 +266,7 @@ Add this to your `.bashrc` to get tab-complete feature on bash.
 [source,bash]
 ----
 _bb_tasks() {
-    COMPREPLY+=(`bb tasks |tail -n +3 |cut -f1 -d ' '`)
+    COMPREPLY=( $(compgen -W "$(bb tasks |tail -n +3 |cut -f1 -d ' ')" -- ${COMP_WORDS[COMP_CWORD]}) );
 }
 # autocomplete filenames as well
 complete -f -F _bb_tasks bb
