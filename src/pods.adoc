@@ -39,27 +39,24 @@ Since bb 0.8.0 pods can be declared in `bb.edn`:
 [source,clojure]
 ----
 {:paths ["bb"]
- :pods {retrogradeorbit/bootleg {:version "0.1.9"}}}
+ :pods {org.babashka/go-sqlite3 {:version "0.1.0"}}}
 ----
 
-Given the file `bb/my_project/bootleg.clj`:
+Given the file `bb/my_project/db.clj`:
 
 [source,clojure]
 ----
-(ns my-project.bootleg
-  (:require [pod.retrogradeorbit.bootleg.utils :as utils]))
+(ns my-project.db
+  (:require [pod.babashka.go-sqlite3 :as sqlite]))
 
 (defn -main [& _args]
-  (prn (-> [:div
-            [:h1 "Using Bootleg From Babashka"]
-            [:p "This is a demo"]]
-           (utils/convert-to :html))))
+  (prn (sqlite/query ":memory:" ["SELECT 1 + 1 AS sum"])))
 ----
 
 you can then execute the main function, without calling `load-pod` manually:
 
 [source,shell]
 ----
-$ bb -m my-project.bootleg
-"<div><h1>Using Bootleg From Babashka</h1><p>This is a demo</p></div>"
+$ bb -m my-project.db
+[{:sum 2}]
 ----
