@@ -31,3 +31,35 @@ to HTML.
      [:p "This is a demo"]]
     (utils/convert-to :html))
 ----
+
+=== Pods in bb.edn
+
+Since bb 0.8.0 pods can be declared in `bb.edn`:
+
+[source,clojure]
+----
+{:paths ["bb"]
+ :pods {retrogradeorbit/bootleg {:version "0.1.9"}}}
+----
+
+Given the file `bb/my_project/bootleg.clj`:
+
+[source,clojure]
+----
+(ns my-project.bootleg
+  (:require [pod.retrogradeorbit.bootleg.utils :as utils]))
+
+(defn -main [& _args]
+  (prn (-> [:div
+            [:h1 "Using Bootleg From Babashka"]
+            [:p "This is a demo"]]
+           (utils/convert-to :html))))
+----
+
+you can then execute the main function, without calling `load-pod` manually:
+
+[source,shell]
+----
+$ bb -m my-project.bootleg
+"<div><h1>Using Bootleg From Babashka</h1><p>This is a demo</p></div>"
+----

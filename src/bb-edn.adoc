@@ -12,18 +12,18 @@ added to the classpath:
 
 [source,clojure]
 ----
-{:paths ["script"]
+{:paths ["bb"]
  :deps {medley/medley {:mvn/version "1.3.0"}}}
 ----
 
-If we have a project that has a deps.edn and would like to reuse those deps in bb.edn:
+If we have a project that has a `deps.edn` and would like to reuse those deps in `bb.edn`:
 
 [source, clojure]
 ----
 {:deps {local/deps {:local/root "."}}}
 ----
 
-If we have a main function in a file called `script/my_project/main.clj` like:
+If we have a main function in a file called `bb/my_project/main.clj` like:
 
 ----
 (ns my-project.main
