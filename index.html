@@ -2321,7 +2321,7 @@ compdef _bb_tasks bb</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="bash">_bb_tasks<span class="o">()</span> <span class="o">{</span>
-    COMPREPLY+<span class="o">=(</span><span class="sb">`</span>bb tasks |tail <span class="nt">-n</span> +3 |cut <span class="nt">-f1</span> <span class="nt">-d</span> <span class="s1">' '</span><span class="sb">`</span><span class="o">)</span>
+    <span class="nv">COMPREPLY</span><span class="o">=(</span> <span class="si">$(</span><span class="nb">compgen</span> <span class="nt">-W</span> <span class="s2">"</span><span class="si">$(</span>bb tasks |tail <span class="nt">-n</span> +3 |cut <span class="nt">-f1</span> <span class="nt">-d</span> <span class="s1">' '</span><span class="si">)</span><span class="s2">"</span> <span class="nt">--</span> <span class="k">${</span><span class="nv">COMP_WORDS</span><span class="p">[COMP_CWORD]</span><span class="k">}</span><span class="si">)</span> <span class="o">)</span><span class="p">;</span>
 <span class="o">}</span>
 <span class="c"># autocomplete filenames as well</span>
 <span class="nb">complete</span> <span class="nt">-f</span> <span class="nt">-F</span> _bb_tasks bb</code></pre>
