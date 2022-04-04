@@ -3284,22 +3284,19 @@ to HTML.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="clojure"><span class="p">{</span><span class="no">:paths</span><span class="w"> </span><span class="p">[</span><span class="s">"bb"</span><span class="p">]</span><span class="w">
- </span><span class="no">:pods</span><span class="w"> </span><span class="p">{</span><span class="n">retrogradeorbit/bootleg</span><span class="w"> </span><span class="p">{</span><span class="no">:version</span><span class="w"> </span><span class="s">"0.1.9"</span><span class="p">}}}</span></code></pre>
+ </span><span class="no">:pods</span><span class="w"> </span><span class="p">{</span><span class="n">org.babashka/go-sqlite3</span><span class="w"> </span><span class="p">{</span><span class="no">:version</span><span class="w"> </span><span class="s">"0.1.0"</span><span class="p">}}}</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Given the file <code>bb/my_project/bootleg.clj</code>:</p>
+<p>Given the file <code>bb/my_project/db.clj</code>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="clojure"><span class="p">(</span><span class="nf">ns</span><span class="w"> </span><span class="n">my-project.bootleg</span><span class="w">
-  </span><span class="p">(</span><span class="no">:require</span><span class="w"> </span><span class="p">[</span><span class="n">pod.retrogradeorbit.bootleg.utils</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">utils</span><span class="p">]))</span><span class="w">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">(</span><span class="nf">ns</span><span class="w"> </span><span class="n">my-project.db</span><span class="w">
+  </span><span class="p">(</span><span class="no">:require</span><span class="w"> </span><span class="p">[</span><span class="n">pod.babashka.go-sqlite3</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">sqlite</span><span class="p">]))</span><span class="w">
 
 </span><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">-main</span><span class="w"> </span><span class="p">[</span><span class="o">&amp;</span><span class="w"> </span><span class="n">_args</span><span class="p">]</span><span class="w">
-  </span><span class="p">(</span><span class="nb">prn</span><span class="w"> </span><span class="p">(</span><span class="nb">-&gt;</span><span class="w"> </span><span class="p">[</span><span class="no">:div</span><span class="w">
-            </span><span class="p">[</span><span class="no">:h1</span><span class="w"> </span><span class="s">"Using Bootleg From Babashka"</span><span class="p">]</span><span class="w">
-            </span><span class="p">[</span><span class="no">:p</span><span class="w"> </span><span class="s">"This is a demo"</span><span class="p">]]</span><span class="w">
-           </span><span class="p">(</span><span class="nf">utils/convert-to</span><span class="w"> </span><span class="no">:html</span><span class="p">))))</span></code></pre>
+  </span><span class="p">(</span><span class="nb">prn</span><span class="w"> </span><span class="p">(</span><span class="nf">sqlite/query</span><span class="w"> </span><span class="s">":memory:"</span><span class="w"> </span><span class="p">[</span><span class="s">"SELECT 1 + 1 AS sum"</span><span class="p">])))</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -3307,8 +3304,8 @@ to HTML.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>bb <span class="nt">-m</span> my-project.bootleg
-<span class="s2">"&lt;div&gt;&lt;h1&gt;Using Bootleg From Babashka&lt;/h1&gt;&lt;p&gt;This is a demo&lt;/p&gt;&lt;/div&gt;"</span></code></pre>
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>bb <span class="nt">-m</span> my-project.db
+<span class="o">[{</span>:sum 2<span class="o">}]</span></code></pre>
 </div>
 </div>
 </div>
