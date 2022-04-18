@@ -957,7 +957,7 @@ babashka.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash">Babashka v0.7.8
+<pre class="rouge highlight"><code data-lang="bash">Babashka v0.8.0
 
 Usage: bb <span class="o">[</span>svm-opts] <span class="o">[</span>global-opts] <span class="o">[</span><span class="nb">eval </span>opts] <span class="o">[</span>cmdline args]
 or:    bb <span class="o">[</span>svm-opts] <span class="o">[</span>global-opts] file <span class="o">[</span>cmdline args]
@@ -1778,61 +1778,13 @@ main method:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="clojure"><span class="n">$</span><span class="w"> </span><span class="n">cat</span><span class="w"> </span><span class="n">src/foo.clj</span><span class="w">
-</span><span class="p">(</span><span class="nf">ns</span><span class="w"> </span><span class="n">foo</span><span class="w"> </span><span class="p">(</span><span class="no">:gen-class</span><span class="p">))</span><span class="w"> </span><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">-main</span><span class="w"> </span><span class="p">[</span><span class="o">&amp;</span><span class="w"> </span><span class="n">args</span><span class="p">]</span><span class="w"> </span><span class="p">(</span><span class="nb">prn</span><span class="w"> </span><span class="no">:hello</span><span class="p">))</span><span class="w">
-</span><span class="n">$</span><span class="w"> </span><span class="n">bb</span><span class="w"> </span><span class="n">-cp</span><span class="w"> </span><span class="n">$</span><span class="p">(</span><span class="nf">clojure</span><span class="w"> </span><span class="n">-Spath</span><span class="p">)</span><span class="w"> </span><span class="n">uberjar</span><span class="w"> </span><span class="n">foo.jar</span><span class="w"> </span><span class="n">-m</span><span class="w"> </span><span class="n">foo</span><span class="w">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="n">$</span><span class="w"> </span><span class="n">cat</span><span class="w"> </span><span class="n">bb/foo.clj</span><span class="w">
+</span><span class="p">(</span><span class="nf">ns</span><span class="w"> </span><span class="n">foo</span><span class="p">)</span><span class="w">
+</span><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">-main</span><span class="w"> </span><span class="p">[</span><span class="o">&amp;</span><span class="w"> </span><span class="n">args</span><span class="p">]</span><span class="w"> </span><span class="p">(</span><span class="nb">prn</span><span class="w"> </span><span class="no">:hello</span><span class="p">))</span><span class="w">
+</span><span class="n">$</span><span class="w"> </span><span class="n">cat</span><span class="w"> </span><span class="n">bb.edn</span><span class="w">
+</span><span class="p">{</span><span class="no">:paths</span><span class="w"> </span><span class="p">[</span><span class="s">"bb"</span><span class="p">]}</span><span class="w">
+</span><span class="n">$</span><span class="w"> </span><span class="n">bb</span><span class="w"> </span><span class="n">uberjar</span><span class="w"> </span><span class="n">foo.jar</span><span class="w"> </span><span class="n">-m</span><span class="w"> </span><span class="n">foo</span><span class="w">
 </span><span class="n">$</span><span class="w"> </span><span class="n">bb</span><span class="w"> </span><span class="n">foo.jar</span><span class="w">
-</span><span class="no">:hello</span></code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>When producing a classpath using the <code>clojure</code> or <code>deps.clj</code> tool,
-Clojure itself, spec and the core specs will be on the classpath and
-will therefore be included in your uberjar, which makes it bigger than
-necessary:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-lh</span> foo.jar
-<span class="nt">-rw-r--r--</span>  1 borkdude  staff   4.5M Aug 19 17:04 foo.jar</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>To exclude these dependencies, you can use the following
-<code>:classpath-overrides</code> in your <code>deps.edn</code>:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="clojure"><span class="p">{</span><span class="no">:aliases</span><span class="w"> </span><span class="p">{</span><span class="no">:remove-clojure</span><span class="w"> </span><span class="p">{</span><span class="no">:classpath-overrides</span><span class="w"> </span><span class="p">{</span><span class="n">org.clojure/clojure</span><span class="w"> </span><span class="n">nil</span><span class="w">
-                                                  </span><span class="n">org.clojure/spec.alpha</span><span class="w"> </span><span class="n">nil</span><span class="w">
-                                                  </span><span class="n">org.clojure/core.specs.alpha</span><span class="w"> </span><span class="n">nil</span><span class="p">}}}}</span></code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="clojure"><span class="n">$</span><span class="w"> </span><span class="n">rm</span><span class="w"> </span><span class="n">foo.jar</span><span class="w">
-</span><span class="n">$</span><span class="w"> </span><span class="n">bb</span><span class="w"> </span><span class="n">-cp</span><span class="w"> </span><span class="n">$</span><span class="p">(</span><span class="nf">clojure</span><span class="w"> </span><span class="n">-A</span><span class="no">:remove-clojure</span><span class="w"> </span><span class="n">-Spath</span><span class="p">)</span><span class="w"> </span><span class="n">uberjar</span><span class="w"> </span><span class="n">foo.jar</span><span class="w"> </span><span class="n">-m</span><span class="w"> </span><span class="n">foo</span><span class="w">
-</span><span class="n">$</span><span class="w"> </span><span class="n">bb</span><span class="w"> </span><span class="n">foo.jar</span><span class="w">
-</span><span class="no">:hello</span><span class="w">
-</span><span class="n">$</span><span class="w"> </span><span class="n">ls</span><span class="w"> </span><span class="n">-lh</span><span class="w"> </span><span class="n">foo.jar</span><span class="w">
-</span><span class="n">-rw-r--r--</span><span class="w">  </span><span class="mi">1</span><span class="w"> </span><span class="n">borkdude</span><span class="w">  </span><span class="n">staff</span><span class="w">   </span><span class="mi">871</span><span class="n">B</span><span class="w"> </span><span class="n">Aug</span><span class="w"> </span><span class="mi">19</span><span class="w"> </span><span class="mi">17</span><span class="no">:07</span><span class="w"> </span><span class="n">foo.jar</span></code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>If you want your uberjar to be compatible with the JVM, you&#8217;ll need to
-compile the main namespace. Babashka does not do compilation, so we use
-Clojure on the JVM for that part:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="clojure"><span class="n">$</span><span class="w"> </span><span class="n">rm</span><span class="w"> </span><span class="n">foo.jar</span><span class="w">
-</span><span class="n">$</span><span class="w"> </span><span class="n">mkdir</span><span class="w"> </span><span class="n">classes</span><span class="w">
-</span><span class="n">$</span><span class="w"> </span><span class="n">clojure</span><span class="w"> </span><span class="n">-e</span><span class="w"> </span><span class="s">"(require 'foo) (compile 'foo)"</span><span class="w">
-</span><span class="n">foo</span><span class="w">
-</span><span class="n">$</span><span class="w"> </span><span class="n">bb</span><span class="w"> </span><span class="n">-cp</span><span class="w"> </span><span class="n">$</span><span class="p">(</span><span class="nf">clojure</span><span class="w"> </span><span class="n">-Spath</span><span class="p">)</span><span class="no">:classes</span><span class="w"> </span><span class="n">uberjar</span><span class="w"> </span><span class="n">foo.jar</span><span class="w"> </span><span class="n">-m</span><span class="w"> </span><span class="n">foo</span><span class="w">
-</span><span class="n">$</span><span class="w"> </span><span class="n">bb</span><span class="w"> </span><span class="n">foo.jar</span><span class="w">
-</span><span class="no">:hello</span><span class="w">
-</span><span class="n">$</span><span class="w"> </span><span class="n">java</span><span class="w"> </span><span class="n">-jar</span><span class="w"> </span><span class="n">foo.jar</span><span class="w">
 </span><span class="no">:hello</span></code></pre>
 </div>
 </div>
