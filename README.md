@@ -56,6 +56,14 @@ git commit -m "update build"
 git push
 ```
 
+After cloning this repo to a new dir/computer:
+
+``` shell
+git fetch origin gh-pages
+git worktree prune
+git worktree add gh-pages gh-pages
+```
+
 ## License
 
 Copyright © 2020-2021 Michiel Borkent
