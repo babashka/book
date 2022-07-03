@@ -1462,10 +1462,14 @@ accomplish the same:</p>
 <div class="content">
 <pre class="rouge highlight"><code data-lang="clojure"><span class="p">{</span><span class="no">:tasks</span><span class="w">
  </span><span class="p">{</span><span class="n">nrepl</span><span class="w">
-  </span><span class="p">{</span><span class="no">:requires</span><span class="w"> </span><span class="p">([</span><span class="n">babashka.nrepl.server</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">srv</span><span class="p">])</span><span class="w">
+  </span><span class="p">{</span><span class="no">:requires</span><span class="w"> </span><span class="p">([</span><span class="n">babashka.fs</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">fs</span><span class="p">]</span><span class="w">
+              </span><span class="p">[</span><span class="n">babashka.nrepl.server</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">srv</span><span class="p">])</span><span class="w">
    </span><span class="no">:task</span><span class="w"> </span><span class="p">(</span><span class="nf">do</span><span class="w"> </span><span class="p">(</span><span class="nf">srv/start-server!</span><span class="w"> </span><span class="p">{</span><span class="no">:host</span><span class="w"> </span><span class="s">"localhost"</span><span class="w">
                                  </span><span class="no">:port</span><span class="w"> </span><span class="mi">1339</span><span class="p">})</span><span class="w">
              </span><span class="p">(</span><span class="nf">spit</span><span class="w"> </span><span class="s">".nrepl-port"</span><span class="w"> </span><span class="s">"1339"</span><span class="p">)</span><span class="w">
+             </span><span class="p">(</span><span class="nb">-&gt;</span><span class="w"> </span><span class="p">(</span><span class="nf">Runtime/getRuntime</span><span class="p">)</span><span class="w">
+                 </span><span class="p">(</span><span class="nf">.addShutdownHook</span><span class="w">
+                  </span><span class="p">(</span><span class="nf">Thread.</span><span class="w"> </span><span class="p">(</span><span class="k">fn</span><span class="w"> </span><span class="p">[]</span><span class="w"> </span><span class="p">(</span><span class="nf">fs/delete</span><span class="w"> </span><span class="s">".nrepl-port"</span><span class="p">)))))</span><span class="w">
              </span><span class="p">(</span><span class="nb">deref</span><span class="w"> </span><span class="p">(</span><span class="nf">promise</span><span class="p">)))}}}</span></code></pre>
 </div>
 </div>
