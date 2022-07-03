@@ -959,7 +959,7 @@ babashka.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash">Babashka v0.8.0
+<pre class="rouge highlight"><code data-lang="bash">Babashka v0.8.157
 
 Usage: bb <span class="o">[</span>svm-opts] <span class="o">[</span>global-opts] <span class="o">[</span><span class="nb">eval </span>opts] <span class="o">[</span>cmdline args]
 or:    bb <span class="o">[</span>svm-opts] <span class="o">[</span>global-opts] file <span class="o">[</span>cmdline args]
@@ -1011,6 +1011,7 @@ Packaging:
 
   uberscript &lt;file&gt; <span class="o">[</span>eval-opt]  Collect all required namespaces from the classpath into a single file. Accepts additional <span class="nb">eval </span>opts, like <span class="sb">`</span><span class="nt">-m</span><span class="sb">`</span><span class="nb">.</span>
   uberjar    &lt;jar&gt;  <span class="o">[</span>eval-opt]  Similar to uberscript but creates jar file.
+  prepare                       Download deps &amp; pods defined <span class="k">in </span>bb.edn and cache their metadata. Only an optimization, this will happen on demand when needed.
 
 In- and output flags <span class="o">(</span>only to be used with <span class="nt">-e</span> one-liners<span class="p">)</span>:
 
