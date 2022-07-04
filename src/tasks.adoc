@@ -419,6 +419,24 @@ directly instead. These two invocations are roughly equivalent:
     (p/check))
 ----
 
+Note that the first string argument to `shell` it tokenized (broken into multiple parts) and the trailing arguments are not:
+
+Correct:
+
+[source,clojure]
+----
+(shell "npm install" "-g" "nbb")
+----
+
+Not correct (`-g nbb` within the same string):
+[source,clojure]
+----
+(shell "npm install" "-g nbb"")
+----
+
+Also see the docstring of `shell`
+https://github.com/babashka/process/blob/master/API.md#shell[here].
+
 [[tasks:clojure]]
 ==== clojure
 
