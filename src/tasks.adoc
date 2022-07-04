@@ -434,6 +434,13 @@ Not correct (`-g nbb` within the same string):
 (shell "npm install" "-g nbb")
 ----
 
+Note that the varargs signature plays well with feeding `*command-line-args*`:
+
+[source,clojure]
+----
+(apply shell "npm install" *command-line-args*)
+----
+
 Also see the docstring of `shell`
 https://github.com/babashka/process/blob/master/API.md#shell[here].
 
