@@ -2473,6 +2473,14 @@ directly instead. These two invocations are roughly equivalent:</p>
 </div>
 </div>
 <div class="paragraph">
+<p>Note that the varargs signature plays well with feeding <code>*command-line-args*</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">(</span><span class="nb">apply</span><span class="w"> </span><span class="n">shell</span><span class="w"> </span><span class="s">"npm install"</span><span class="w"> </span><span class="n">*command-line-args*</span><span class="p">)</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
 <p>Also see the docstring of <code>shell</code>
 <a href="https://github.com/babashka/process/blob/master/API.md#shell">here</a>.</p>
 </div>
