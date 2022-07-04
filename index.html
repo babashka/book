@@ -2453,6 +2453,29 @@ directly instead. These two invocations are roughly equivalent:</p>
     </span><span class="p">(</span><span class="nf">p/check</span><span class="p">))</span></code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>Note that the first string argument to <code>shell</code> it tokenized (broken into multiple parts) and the trailing arguments are not:</p>
+</div>
+<div class="paragraph">
+<p>Correct:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">(</span><span class="nf">shell</span><span class="w"> </span><span class="s">"npm install"</span><span class="w"> </span><span class="s">"-g"</span><span class="w"> </span><span class="s">"nbb"</span><span class="p">)</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Not correct (<code>-g nbb</code> within the same string):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">(</span><span class="nf">shell</span><span class="w"> </span><span class="s">"npm install"</span><span class="w"> </span><span class="s">"-g nbb"</span><span class="err">"</span><span class="p">)</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Also see the docstring of <code>shell</code>
+<a href="https://github.com/babashka/process/blob/master/API.md#shell">here</a>.</p>
+</div>
 </div>
 <div class="sect3">
 <h4 id="tasks:clojure"><a class="link" href="#tasks:clojure">clojure</a></h4>
