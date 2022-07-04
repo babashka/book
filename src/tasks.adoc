@@ -431,7 +431,7 @@ Correct:
 Not correct (`-g nbb` within the same string):
 [source,clojure]
 ----
-(shell "npm install" "-g nbb"")
+(shell "npm install" "-g nbb")
 ----
 
 Also see the docstring of `shell`
