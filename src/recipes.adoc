@@ -60,7 +60,7 @@ be implemented with:
 Combining this with a conditional invocation of `-main` creates a script file that is safe to load at a REPL, and easy to invoke at the CLI.
 
 [source,clojure]
----
+----
 #!/usr/bin/env bb
 
 ;; Various functions defined here
@@ -71,7 +71,7 @@ Combining this with a conditional invocation of `-main` creates a script file th
 
 (when (= *file* (System/getProperty "babashka.file"))
   (apply -main *command-line-args*))
----
+----
 
 This can be exceedingly handy for complex writing complex scripts while not being able to adjust how they are invoked by other tools.
 
