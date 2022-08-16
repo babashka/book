@@ -959,7 +959,7 @@ babashka.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash">Babashka v0.8.157
+<pre class="rouge highlight"><code data-lang="bash">Babashka v0.9.161
 
 Usage: bb <span class="o">[</span>svm-opts] <span class="o">[</span>global-opts] <span class="o">[</span><span class="nb">eval </span>opts] <span class="o">[</span>cmdline args]
 or:    bb <span class="o">[</span>svm-opts] <span class="o">[</span>global-opts] file <span class="o">[</span>cmdline args]
@@ -3685,6 +3685,31 @@ be implemented with:</p>
 <div class="content">
 <pre class="rouge highlight"><code data-lang="clojure"><span class="p">(</span><span class="nb">=</span><span class="w"> </span><span class="n">*file*</span><span class="w"> </span><span class="p">(</span><span class="nf">System/getProperty</span><span class="w"> </span><span class="s">"babashka.file"</span><span class="p">))</span></code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>Combining this with a conditional invocation of <code>-main</code> creates a script file that is safe to load at a REPL, and easy to invoke at the CLI.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="n">---</span><span class="w">
+</span><span class="o">#</span><span class="n">!/usr/bin/env</span><span class="w"> </span><span class="n">bb</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>;; Various functions defined here</p>
+</div>
+<div class="paragraph">
+<p>(defn -main [&amp; args]
+;; Implementation of main
+)</p>
+</div>
+<div class="paragraph">
+<p>(when (= <strong>file</strong> (System/getProperty "babashka.file"))
+  (apply -main <strong>command-line-args</strong>))
+---</p>
+</div>
+<div class="paragraph">
+<p>This can be exceedingly handy for complex writing complex scripts while not being able to adjust how they are invoked by other tools.</p>
 </div>
 </div>
 <div class="sect2">
