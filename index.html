@@ -3691,22 +3691,17 @@ be implemented with:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="clojure"><span class="n">---</span><span class="w">
-</span><span class="o">#</span><span class="n">!/usr/bin/env</span><span class="w"> </span><span class="n">bb</span></code></pre>
+<pre class="rouge highlight"><code data-lang="clojure"><span class="o">#</span><span class="n">!/usr/bin/env</span><span class="w"> </span><span class="n">bb</span><span class="w">
+
+</span><span class="c1">;; Various functions defined here</span><span class="w">
+
+</span><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">-main</span><span class="w"> </span><span class="p">[</span><span class="o">&amp;</span><span class="w"> </span><span class="n">args</span><span class="p">]</span><span class="w">
+</span><span class="c1">;; Implementation of main</span><span class="w">
+</span><span class="p">)</span><span class="w">
+
+</span><span class="p">(</span><span class="nb">when</span><span class="w"> </span><span class="p">(</span><span class="nb">=</span><span class="w"> </span><span class="n">*file*</span><span class="w"> </span><span class="p">(</span><span class="nf">System/getProperty</span><span class="w"> </span><span class="s">"babashka.file"</span><span class="p">))</span><span class="w">
+  </span><span class="p">(</span><span class="nb">apply</span><span class="w"> </span><span class="n">-main</span><span class="w"> </span><span class="n">*command-line-args*</span><span class="p">))</span></code></pre>
 </div>
-</div>
-<div class="paragraph">
-<p>;; Various functions defined here</p>
-</div>
-<div class="paragraph">
-<p>(defn -main [&amp; args]
-;; Implementation of main
-)</p>
-</div>
-<div class="paragraph">
-<p>(when (= <strong>file</strong> (System/getProperty "babashka.file"))
-  (apply -main <strong>command-line-args</strong>))
----</p>
 </div>
 <div class="paragraph">
 <p>This can be exceedingly handy for complex writing complex scripts while not being able to adjust how they are invoked by other tools.</p>
