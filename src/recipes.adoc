@@ -32,7 +32,7 @@ Babashka bundles `clojure.test`. To run tests you can write a test runner script
   (t/run-tests 'your.test-a 'your.test-b))           ;; <3>
 
 (def failures-and-errors
-  (let [{:keys [:fail :error]} test-results]
+  (let [{:keys [fail error]} test-results]
     (+ fail error)))                                 ;; <4>
 
 (System/exit failures-and-errors)                    ;; <5>
