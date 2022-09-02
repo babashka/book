@@ -73,7 +73,7 @@ Combining this with a conditional invocation of `-main` creates a script file th
   (apply -main *command-line-args*))
 ----
 
-This can be exceedingly handy for complex writing complex scripts while not being able to adjust how they are invoked by other tools.
+This can be exceedingly handy for editing complex scripts interactively, while not being able to adjust how they are invoked by other tools.
 
 === Shutdown hook
 
