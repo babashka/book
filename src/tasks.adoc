@@ -591,6 +591,9 @@ To get a REPL within a task, you can use `clojure.main/repl`:
 
 Alternatively, you can use `babashka.tasks/run` to invoke a task from a REPL.
 
+For REPL- and linting-friendliness, it's recommended to move task code longer
+than a couple of lines to a `.clj` or `.bb` file.
+
 === Real world examples
 
 * https://github.com/borkdude/antq/blob/bb-run/bb.edn[antq]

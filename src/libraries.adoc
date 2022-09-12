@@ -19,6 +19,7 @@ From Clojure:
 * `clojure.data`
 * `clojure.datafy`
 * `clojure.edn` aliased as `edn`
+* `clojure.math`
 * `clojure.java.browse`
 * `clojure.java.io` aliased as `io`:
 ** `as-relative-path`, `as-url`, `copy`, `delete-file`, `file`,
@@ -35,9 +36,10 @@ From Clojure:
 
 Additional libraries:
 
+* https://github.com/babashka/cli[`babashka.cli`]
 * https://github.com/borkdude/babashka.curl[`babashka.curl`]
-* https://github.com/babashka/process[`babashka/process`]
-* https://github.com/babashka/fs[`babashka/fs`]
+* https://github.com/babashka/process[`babashka.process`]
+* https://github.com/babashka/fs[`babashka.fs`]
 * https://github.com/nrepl/bencode[`bencode.core`] aliased as `bencode`:
 `read-bencode`, `write-bencode`
 * https://github.com/dakrone/cheshire[`cheshire.core`] aliased as `json`
@@ -70,6 +72,8 @@ as `transit`
  - `selmer.parser`
 * https://github.com/clojure/tools.logging[`clojure.tools.logging`]
 * https://github.com/ptaoussanis/timbre[`timbre`]
+* https://github.com/borkdude/edamame[`edamame`]
+* https://github.com/clojure/core.rrb-vector[`core.rrb-vector`]
 
 See the
 https://github.com/borkdude/babashka/blob/master/doc/projects.md[projects]

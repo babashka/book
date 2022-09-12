@@ -1,0 +1,83 @@
+== Babashka CLI
+
+In version `0.9.160` of babashka, the https://github.com/babashka/cli[babashka
+CLI] added as a built-in library together with task integration.
+
+=== -x
+
+For invoking functions from the command line, you can use the new `-x`
+flag (a pun to Clojure’s `-X` of course!):
+
+[source,clojure]
+----
+bb -x clojure.core/identity --hello there
+{:hello "there"}
+----
+
+What we see in the above snippet is that a map `{:hello "there"}` is
+constructed by babashka CLI and then fed to the `identity` function.
+After that the result is printed to the console.
+
+What if we want to influence how things are parsed by babashka CLI and
+provide some defaults? This can be done using metadata. Let’s create a
+`bb.edn` and make a file available on the classpath:
+
+`bb.edn`:
+
+[source,clojure]
+----
+{:paths ["."]}
+----
+
+`tasks.clj`:
+
+[source,clojure]
+----
+(ns tasks
+  {:org.babashka/cli {:exec-args {:ns-data 1}}})
+
+(defn my-function
+  {:org.babashka/cli {:exec-args {:fn-data 1}
+                      :coerce {:num [:int]}
+                      :alias {:n :num}}}
+  [m]
+  m)
+----
+
+Now let’s invoke:
+
+[source,clojure]
+----
+$ bb -x tasks/my-function -n 1 2
+{:ns-data 1, :fn-data 1, :num [1 2]}
+----
+
+As you can see, the namespace options are merged with the function
+options. Defaults can be provided with `:exec-args`, like you’re used
+to from the clojure CLI.
+
+=== exec
+
+What about task integration? Let’s adapt our `bb.edn`:
+
+[source,clojure]
+----
+{:paths ["."]
+ :tasks {doit {:task (let [x (exec 'tasks/my-function)]
+                       (prn :x x))
+               :exec-args {:task-data 1234}}
+         }}
+----
+
+and invoke the task:
+
+[source,clojure]
+----
+$ bb doit --cli-option :yeah -n 1 2 3
+:x {:ns-data 1, :fn-data 1, :task-data 1234, :cli-option :yeah, :num [1 2 3]}
+----
+
+As you can see it works similar to `-x`, but you can provide another
+set of defaults on the task level with `:exec-args`. Executing a
+function through babashka CLI is done using the `babashka.task/exec`
+function, available by default in tasks.

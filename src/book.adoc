@@ -24,6 +24,8 @@ include::bb-edn.adoc[]
 
 include::tasks.adoc[]
 
+include::cli.adoc[]
+
 include::libraries.adoc[]
 
 include::pods.adoc[]

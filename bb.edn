@@ -1,0 +1,2 @@
+{:tasks {watch {:doc "Watch adoc sources and build them"
+                :task (shell "bb script/watch.clj")}}}
