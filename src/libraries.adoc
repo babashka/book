@@ -276,6 +276,14 @@ https://github.com/babashka/process[process] repo for API docs.
 The `babashka.fs` library offers file system utilities. See the
 https://github.com/babashka/fs[fs] repo for API docs.
 
+[[babashkacli]]
+==== babashka.cli
+
+The `babashka.cli` library allows you to turn functions into CLIs. See the
+https://github.com/babashka/cli[cli] repo for API docs and check out the
+https://book.babashka.org/#_babashka_cli[babashka CLI] chapter on how to use it
+from the command line or with https://book.babashka.org/#tasks[tasks].
+
 === Projects
 
 Babashka is able to run Clojure projects from source, if they are compatible
