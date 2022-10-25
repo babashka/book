@@ -777,7 +777,7 @@ pre.rouge {
 <li><a href="#_babashka_cli">Babashka CLI</a>
 <ul class="sectlevel2">
 <li><a href="#_x">-x</a></li>
-<li><a href="#_exec">exec</a></li>
+<li><a href="#cli:exec">exec</a></li>
 </ul>
 </li>
 <li><a href="#libraries">Libraries</a>
@@ -965,7 +965,7 @@ babashka.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash">Babashka v0.9.162
+<pre class="rouge highlight"><code data-lang="bash">Babashka v1.0.164
 
 Usage: bb <span class="o">[</span>svm-opts] <span class="o">[</span>global-opts] <span class="o">[</span><span class="nb">eval </span>opts] <span class="o">[</span>cmdline args]
 or:    bb <span class="o">[</span>svm-opts] <span class="o">[</span>global-opts] file <span class="o">[</span>cmdline args]
@@ -980,62 +980,64 @@ Global opts:
 
   <span class="nt">-cp</span>, <span class="nt">--classpath</span>  Classpath to use. Overrides bb.edn classpath.
   <span class="nt">--debug</span>           Print debug information and internal stacktrace <span class="k">in case</span> of exception.
-  <span class="nt">--force</span>           Passes <span class="nt">-Sforce</span> to deps.clj, forcing recalculation of the classpath.
   <span class="nt">--init</span> &lt;file&gt;     Load file after any preloads and prior to evaluation/subcommands.
   <span class="nt">--config</span> &lt;file&gt;   Replacing bb.edn with file. Relative paths are resolved relative to file.
   <span class="nt">--deps-root</span> &lt;<span class="nb">dir</span><span class="o">&gt;</span> Treat <span class="nb">dir </span>as root of relative paths <span class="k">in </span>config.
+  <span class="nt">-Sforce</span>           Force recalculation of the classpath <span class="o">(</span>don<span class="s1">'t use the cache)
+  -Sdeps            Deps data to use as the last deps file to be merged
 
 Help:
 
-  <span class="nb">help</span>, <span class="nt">-h</span> or -?     Print this <span class="nb">help </span>text.
+  help, -h or -?     Print this help text.
   version            Print the current version of babashka.
   describe           Print an EDN map with information about this version of babashka.
-  doc &lt;var|ns&gt;       Print docstring of var or namespace. Requires namespace <span class="k">if </span>necessary.
+  doc &lt;var|ns&gt;       Print docstring of var or namespace. Requires namespace if necessary.
 
 Evaluation:
 
-  <span class="nt">-e</span>, <span class="nt">--eval</span> &lt;<span class="nb">expr</span><span class="o">&gt;</span>    Evaluate an expression.
-  <span class="nt">-f</span>, <span class="nt">--file</span> &lt;path&gt;    Evaluate a file.
-  <span class="nt">-m</span>, <span class="nt">--main</span> &lt;ns|var&gt;  Call the <span class="nt">-main</span> <span class="k">function </span>from a namespace or call a fully qualified var.
+  -e, --eval &lt;expr&gt;    Evaluate an expression.
+  -f, --file &lt;path&gt;    Evaluate a file.
+  -m, --main &lt;ns|var&gt;  Call the -main function from a namespace or call a fully qualified var.
+  -x, --exec &lt;var&gt;     Call the fully qualified var. Args are parsed by babashka CLI.
 
 REPL:
 
-  repl                 Start REPL. Use rlwrap <span class="k">for </span>history.
-  socket-repl  <span class="o">[</span>addr]  Start a socket REPL. Address defaults to localhost:1666.
-  nrepl-server <span class="o">[</span>addr]  Start nREPL server. Address defaults to localhost:1667.
+  repl                 Start REPL. Use rlwrap for history.
+  socket-repl  [addr]  Start a socket REPL. Address defaults to localhost:1666.
+  nrepl-server [addr]  Start nREPL server. Address defaults to localhost:1667.
 
 Tasks:
 
   tasks       Print list of available tasks.
-  run &lt;task&gt;  Run task. See run <span class="nt">--help</span> <span class="k">for </span>more details.
+  run &lt;task&gt;  Run task. See run --help for more details.
 
 Clojure:
 
-  clojure <span class="o">[</span>args...]  Invokes clojure. Takes same args as the official clojure CLI.
+  clojure [args...]  Invokes clojure. Takes same args as the official clojure CLI.
 
 Packaging:
 
-  uberscript &lt;file&gt; <span class="o">[</span>eval-opt]  Collect all required namespaces from the classpath into a single file. Accepts additional <span class="nb">eval </span>opts, like <span class="sb">`</span><span class="nt">-m</span><span class="sb">`</span><span class="nb">.</span>
-  uberjar    &lt;jar&gt;  <span class="o">[</span>eval-opt]  Similar to uberscript but creates jar file.
-  prepare                       Download deps &amp; pods defined <span class="k">in </span>bb.edn and cache their metadata. Only an optimization, this will happen on demand when needed.
+  uberscript &lt;file&gt; [eval-opt]  Collect all required namespaces from the classpath into a single file. Accepts additional eval opts, like `-m`.
+  uberjar    &lt;jar&gt;  [eval-opt]  Similar to uberscript but creates jar file.
+  prepare                       Download deps &amp; pods defined in bb.edn and cache their metadata. Only an optimization, this will happen on demand when needed.
 
-In- and output flags <span class="o">(</span>only to be used with <span class="nt">-e</span> one-liners<span class="p">)</span>:
+In- and output flags (only to be used with -e one-liners):
 
-  <span class="nt">-i</span>                 Bind <span class="k">*</span>input<span class="k">*</span> to a lazy <span class="nb">seq </span>of lines from stdin.
-  <span class="nt">-I</span>                 Bind <span class="k">*</span>input<span class="k">*</span> to a lazy <span class="nb">seq </span>of EDN values from stdin.
-  <span class="nt">-o</span>                 Write lines to stdout.
-  <span class="nt">-O</span>                 Write EDN values to stdout.
-  <span class="nt">--stream</span>           Stream over lines or EDN values from stdin. Combined with <span class="nt">-i</span> or <span class="nt">-I</span> <span class="k">*</span>input<span class="k">*</span> becomes a single value per iteration.
+  -i                 Bind *input* to a lazy seq of lines from stdin.
+  -I                 Bind *input* to a lazy seq of EDN values from stdin.
+  -o                 Write lines to stdout.
+  -O                 Write EDN values to stdout.
+  --stream           Stream over lines or EDN values from stdin. Combined with -i or -I *input* becomes a single value per iteration.
 
 Tooling:
 
-  print-deps <span class="o">[</span><span class="nt">--format</span> &lt;deps | classpath&gt;]: prints a deps.edn map or classpath
+  print-deps [--format &lt;deps | classpath&gt;]: prints a deps.edn map or classpath
     with built-in deps and deps from bb.edn.
 
 File names take precedence over subcommand names.
-Remaining arguments are bound to <span class="k">*</span>command-line-args<span class="k">*</span><span class="nb">.</span>
-Use <span class="nt">--</span> to separate script <span class="nb">command </span>line args from bb <span class="nb">command </span>line args.
-When no <span class="nb">eval </span>opts or subcommand is provided, the implicit subcommand is repl.</code></pre>
+Remaining arguments are bound to *command-line-args*.
+Use -- to separate script command line args from bb command line args.
+When no eval opts or subcommand is provided, the implicit subcommand is repl.</span></code></pre>
 </div>
 </div>
 <div class="sect2">
@@ -2169,11 +2171,14 @@ disable them for specific tasks (see <a href="#_task_local_options">Task-local o
 <div class="sect2">
 <h3 id="_command_line_arguments"><a class="link" href="#_command_line_arguments">Command line arguments</a></h3>
 <div class="paragraph">
-<p>The task runner is unopinionated when it comes to command line arguments.
-Arguments are available in <code>*command-line-args*</code>. You are free
-to parse them using the built-in <code>tools.cli</code> library, use
-<a href="https://github.com/nubank/docopt.clj">docopt</a>, convert them to EDN using <code>(map
-edn/read-string *command-line-args*)</code> or do whatever you want to handle them.</p>
+<p>Command line arguments are available as <code>*command-line-args*</code>, just like in
+Clojure. Since version <code>0.9.160</code>, you can use
+<a href="https://github.com/babashka/cli">babashka.cli</a> in tasks via the <a href="#cli:exec">exec</a>
+function.</p>
+</div>
+<div class="paragraph">
+<p>Of course, you are free to parse command line arguments using the built-in
+<code>tools.cli</code> library or just handle them manually.</p>
 </div>
 <div class="paragraph">
 <p>You can re-bind <code>*command-line-args*</code> to ensure functions see a different set of
@@ -2851,7 +2856,7 @@ to from the clojure CLI.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_exec"><a class="link" href="#_exec">exec</a></h3>
+<h3 id="cli:exec"><a class="link" href="#cli:exec">exec</a></h3>
 <div class="paragraph">
 <p>What about task integration? Let’s adapt our <code>bb.edn</code>:</p>
 </div>
