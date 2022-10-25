@@ -70,9 +70,134 @@ $ bb clean
 Removing target folder.
 ----
 
+=== Task-local options
+
+Instead of naked expressions, tasks can be defined as maps with options. The
+task expression should then be moved to the `:task` key:
+
+[source,clojure]
+----
+{:tasks
+ {
+  clean {:doc "Removes target folder"
+         :requires ([babashka.fs :as fs])
+         :task (fs/delete-tree "target")}
+  }
+ }
+----
+
+Tasks support the `:doc` option which gives it a docstring which is printed
+when invoking `bb tasks` on the command line. Other options include:
+
+- `:requires`: task-specific namespace requires.
+- `:extra-paths`: add paths to the classpath.
+- `:extra-deps`: add extra dependencies to the classpath.
+- `:enter`, `:leave`: override the global `:enter`/`:leave` hook.
+
+=== Discoverability
+
+When invoking `bb tasks`, babashka prints a list of all tasks found in `bb.edn` in the order of appearance. E.g. in the https://github.com/clj-kondo/clj-kondo.lsp[clj-kondo.lsp] project it prints:
+
+[source,bash]
+----
+$ bb tasks
+The following tasks are available:
+
+recent-clj-kondo   Detects most recent clj-kondo version from clojars
+update-project-clj Updates project.clj with most recent clj-kondo version
+java1.8            Asserts that we are using java 1.8
+build-server       Produces lsp server standalone jar
+lsp-jar            Copies renamed jar for upload to clj-kondo repo
+upload-jar         Uploads standalone lsp server jar to clj-kondo repo
+vscode-server      Copied lsp server jar to vscode extension
+vscode-version     Prepares package.json with up to date clj-kondo version
+vscode-publish     Publishes vscode extension to marketplace
+ovsx-publish       Publishes vscode extension to ovsx thing
+publish            The mother of all tasks: publishes everything needed for new release
+----
+
+=== Command line arguments
+
+Command line arguments are available as `*command-line-args*`, just like in
+Clojure. Since version `0.9.160`, you can use
+https://github.com/babashka/cli[babashka.cli] in tasks via the <<cli:exec>>
+function to deal with command line arguments in a concise way. See the chapter on <<cli,babashka CLI>>.
+
+Of course, you are free to parse command line arguments using the built-in
+`tools.cli` library or just handle them manually.
+
+You can re-bind `*command-line-args*` to ensure functions see a different set of
+arguments:
+
+[source,clojure]
+----
+{:tasks
+ {:init (do (defn print-args []
+              (prn (:name (current-task))
+                   *command-line-args*)))
+  bar (print-args)
+  foo (do (print-args)
+          (binding [*command-line-args* (next *command-line-args*)]
+            (run 'bar)))}}
+----
+
+[source,bash]
+----
+$ bb foo 1 2 3
+foo ("1" "2" "3")
+bar ("2" "3")
+----
+
+==== Terminal tab-completion
+
+===== zsh
+
+Add this to your `.zshrc` to get tab-complete feature on ZSH.
+
+[source,bash]
+----
+_bb_tasks() {
+    local matches=(`bb tasks |tail -n +3 |cut -f1 -d ' '`)
+    compadd -a matches
+    _files # autocomplete filenames as well
+}
+compdef _bb_tasks bb
+----
+
+===== bash
+
+Add this to your `.bashrc` to get tab-complete feature on bash.
+
+[source,bash]
+----
+_bb_tasks() {
+    COMPREPLY=( $(compgen -W "$(bb tasks |tail -n +3 |cut -f1 -d ' ')" -- ${COMP_WORDS[COMP_CWORD]}) );
+}
+# autocomplete filenames as well
+complete -f -F _bb_tasks bb
+----
+
+===== fish
+
+Add this to your `.config/fish/completions/bb.fish` to get tab-complete feature on Fish shell.
+
+[source,bash]
+----
+function __bb_complete_tasks
+  if not test "$__bb_tasks"
+    set -g __bb_tasks (bb tasks |tail -n +3 |cut -f1 -d ' ')
+  end
+
+  printf "%s\n" $__bb_tasks
+end
+
+complete -c bb -a "(__bb_complete_tasks)" -d 'tasks'
+----
+
 === Run
 
-The babashka `run` subcommand accepts these additional options:
+You can execute tasks using `bb <task-name>`. The babashka `run` subcommand can
+be used to execute with some additinoal options:
 
 - `--parallel`: invoke task dependencies in parallel.
 +
@@ -166,128 +291,6 @@ The `:leave` hook is similar to `:enter` but is executed after each task.
 
 Both hooks can be overriden as task-local options. Setting them to `nil` will
 disable them for specific tasks (see <<_task_local_options>>).
-
-=== Command line arguments
-
-The task runner is unopinionated when it comes to command line arguments.
-Arguments are available in `*command-line-args*`. You are free
-to parse them using the built-in `tools.cli` library, use
-https://github.com/nubank/docopt.clj[docopt], convert them to EDN using `(map
-edn/read-string *command-line-args*)` or do whatever you want to handle them.
-
-You can re-bind `*command-line-args*` to ensure functions see a different set of
-arguments:
-
-[source,clojure]
-----
-{:tasks
- {:init (do (defn print-args []
-              (prn (:name (current-task))
-                   *command-line-args*)))
-  bar (print-args)
-  foo (do (print-args)
-          (binding [*command-line-args* (next *command-line-args*)]
-            (run 'bar)))}}
-----
-
-[source,bash]
-----
-$ bb foo 1 2 3
-foo ("1" "2" "3")
-bar ("2" "3")
-----
-
-=== Task-local options
-
-Instead of naked expressions, tasks can be defined as maps with options. The
-task expression should then be moved to the `:task` key:
-
-[source,clojure]
-----
-{:tasks
- {
-  clean {:doc "Removes target folder"
-         :requires ([babashka.fs :as fs])
-         :task (fs/delete-tree "target")}
-  }
- }
-----
-
-Tasks support the `:doc` option which gives it a docstring which is printed
-when invoking `bb tasks` on the command line. Other options include:
-
-- `:requires`: task-specific namespace requires.
-- `:extra-paths`: add paths to the classpath.
-- `:extra-deps`: add extra dependencies to the classpath.
-- `:enter`, `:leave`: override the global `:enter`/`:leave` hook.
-
-=== Discoverability
-
-When invoking `bb tasks`, babashka prints a list of all tasks found in `bb.edn` in the order of appearance. E.g. in the https://github.com/clj-kondo/clj-kondo.lsp[clj-kondo.lsp] project it prints:
-
-[source,bash]
-----
-$ bb tasks
-The following tasks are available:
-
-recent-clj-kondo   Detects most recent clj-kondo version from clojars
-update-project-clj Updates project.clj with most recent clj-kondo version
-java1.8            Asserts that we are using java 1.8
-build-server       Produces lsp server standalone jar
-lsp-jar            Copies renamed jar for upload to clj-kondo repo
-upload-jar         Uploads standalone lsp server jar to clj-kondo repo
-vscode-server      Copied lsp server jar to vscode extension
-vscode-version     Prepares package.json with up to date clj-kondo version
-vscode-publish     Publishes vscode extension to marketplace
-ovsx-publish       Publishes vscode extension to ovsx thing
-publish            The mother of all tasks: publishes everything needed for new release
-----
-
-==== Terminal tab-completion
-
-===== zsh
-
-Add this to your `.zshrc` to get tab-complete feature on ZSH.
-
-[source,bash]
-----
-_bb_tasks() {
-    local matches=(`bb tasks |tail -n +3 |cut -f1 -d ' '`)
-    compadd -a matches
-    _files # autocomplete filenames as well
-}
-compdef _bb_tasks bb
-----
-
-===== bash
-
-Add this to your `.bashrc` to get tab-complete feature on bash.
-
-[source,bash]
-----
-_bb_tasks() {
-    COMPREPLY=( $(compgen -W "$(bb tasks |tail -n +3 |cut -f1 -d ' ')" -- ${COMP_WORDS[COMP_CWORD]}) );
-}
-# autocomplete filenames as well
-complete -f -F _bb_tasks bb
-----
-
-===== fish
-
-Add this to your `.config/fish/completions/bb.fish` to get tab-complete feature on Fish shell.
-
-[source,bash]
-----
-function __bb_complete_tasks
-  if not test "$__bb_tasks"
-    set -g __bb_tasks (bb tasks |tail -n +3 |cut -f1 -d ' ')
-  end
-
-  printf "%s\n" $__bb_tasks
-end
-
-complete -c bb -a "(__bb_complete_tasks)" -d 'tasks'
-----
 
 === Tasks API
 
@@ -485,6 +488,10 @@ To run a `clojure` task in another directory:
 ==== current-task
 
 The `current-task` function returns a map representing the currently running task. This function is typically used in the `:enter` and `:leave` hooks.
+
+==== exec
+
+See <<cli:exec>>.
 
 === Dependencies between tasks
 

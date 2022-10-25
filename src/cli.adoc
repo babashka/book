@@ -1,3 +1,4 @@
+[[cli]]
 == Babashka CLI
 
 In version `0.9.160` of babashka, the https://github.com/babashka/cli[babashka
@@ -56,6 +57,7 @@ As you can see, the namespace options are merged with the function
 options. Defaults can be provided with `:exec-args`, like you’re used
 to from the clojure CLI.
 
+[[cli:exec]]
 === exec
 
 What about task integration? Let’s adapt our `bb.edn`:
