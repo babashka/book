@@ -14,7 +14,7 @@ Since bb 0.2.6 pods can be obtained via the https://github.com/babashka/pod-regi
 
 This is an example script which uses the
 https://github.com/babashka/pod-babashka-fswatcher[fswatcher] pod to
-watch a directory for changes.
+watch a directory for changes:
 
 [source,clojure]
 ----
