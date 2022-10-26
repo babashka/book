@@ -3398,24 +3398,25 @@ babashka. Documentation is available in the
 <p>Since bb 0.2.6 pods can be obtained via the <a href="https://github.com/babashka/pod-registry">pod-registry</a>.</p>
 </div>
 <div class="paragraph">
-<p>This is an example script which uses
-<a href="https://github.com/retrogradeorbit/bootleg">bootleg</a> as a pod to convert hiccup
-to HTML.</p>
+<p>This is an example script which uses the
+<a href="https://github.com/babashka/pod-babashka-fswatcher">fswatcher</a> pod to
+watch a directory for changes.</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="clojure"><span class="o">#</span><span class="n">!/usr/bin/env</span><span class="w"> </span><span class="n">bb</span><span class="w">
 
 </span><span class="p">(</span><span class="nf">require</span><span class="w"> </span><span class="o">'</span><span class="p">[</span><span class="n">babashka.pods</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">pods</span><span class="p">])</span><span class="w">
+</span><span class="p">(</span><span class="nf">pods/load-pod</span><span class="w"> </span><span class="ss">'org.babashka/fswatcher</span><span class="w"> </span><span class="s">"0.0.3"</span><span class="p">)</span><span class="w">
 
-</span><span class="p">(</span><span class="nf">pods/load-pod</span><span class="w"> </span><span class="ss">'retrogradeorbit/bootleg</span><span class="w"> </span><span class="s">"0.1.9"</span><span class="p">)</span><span class="w">
+</span><span class="p">(</span><span class="nf">require</span><span class="w"> </span><span class="o">'</span><span class="p">[</span><span class="n">pod.babashka.fswatcher</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">fw</span><span class="p">])</span><span class="w">
 
-</span><span class="p">(</span><span class="nf">require</span><span class="w"> </span><span class="o">'</span><span class="p">[</span><span class="n">pod.retrogradeorbit.bootleg.utils</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">utils</span><span class="p">])</span><span class="w">
+</span><span class="p">(</span><span class="nf">fw/watch</span><span class="w"> </span><span class="s">"."</span><span class="w"> </span><span class="nb">prn</span><span class="w"> </span><span class="p">{</span><span class="no">:delay-ms</span><span class="w"> </span><span class="mi">5000</span><span class="p">})</span><span class="w">
 
-</span><span class="p">(</span><span class="nb">-&gt;</span><span class="w"> </span><span class="p">[</span><span class="no">:div</span><span class="w">
-     </span><span class="p">[</span><span class="no">:h1</span><span class="w"> </span><span class="s">"Using Bootleg From Babashka"</span><span class="p">]</span><span class="w">
-     </span><span class="p">[</span><span class="no">:p</span><span class="w"> </span><span class="s">"This is a demo"</span><span class="p">]]</span><span class="w">
-    </span><span class="p">(</span><span class="nf">utils/convert-to</span><span class="w"> </span><span class="no">:html</span><span class="p">))</span></code></pre>
+</span><span class="p">(</span><span class="nb">println</span><span class="w"> </span><span class="s">"Watching current directory for changes... Press Ctrl-C to quit."</span><span class="p">)</span><span class="w">
+
+</span><span class="o">@</span><span class="p">(</span><span class="nf">promise</span><span class="p">)</span><span class="w">
+</span></code></pre>
 </div>
 </div>
 </div>
