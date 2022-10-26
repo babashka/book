@@ -12,24 +12,25 @@ https://github.com/borkdude/babashka/blob/master/doc/projects.md#pods[here].
 
 Since bb 0.2.6 pods can be obtained via the https://github.com/babashka/pod-registry[pod-registry].
 
-This is an example script which uses
-https://github.com/retrogradeorbit/bootleg[bootleg] as a pod to convert hiccup
-to HTML.
+This is an example script which uses the
+https://github.com/babashka/pod-babashka-fswatcher[fswatcher] pod to
+watch a directory for changes.
 
 [source,clojure]
 ----
 #!/usr/bin/env bb
 
 (require '[babashka.pods :as pods])
+(pods/load-pod 'org.babashka/fswatcher "0.0.3")
 
-(pods/load-pod 'retrogradeorbit/bootleg "0.1.9")
+(require '[pod.babashka.fswatcher :as fw])
 
-(require '[pod.retrogradeorbit.bootleg.utils :as utils])
+(fw/watch "." prn {:delay-ms 5000})
 
-(-> [:div
-     [:h1 "Using Bootleg From Babashka"]
-     [:p "This is a demo"]]
-    (utils/convert-to :html))
+(println "Watching current directory for changes... Press Ctrl-C to quit.")
+
+@(promise)
+
 ----
 
 === Pods in bb.edn
