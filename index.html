@@ -2656,12 +2656,12 @@ symbol:</p>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="clojure"><span class="p">{</span><span class="no">:tasks</span><span class="w">
-  </span><span class="p">{</span><span class="n">foo-bar</span><span class="w"> </span><span class="n">foo.bar</span><span class="p">}}</span></code></pre>
+  </span><span class="p">{</span><span class="n">foo-bar</span><span class="w"> </span><span class="n">foo.bar/-main</span><span class="p">}}</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>or using a fully qualified symbol <code>foo.bar/baz</code> so you can accommodate
-multiple main functions in one namespace.</p>
+<p>You can use any fully qualified symbol, not just ones that end in <code>-main</code> (so e.g.
+<code>foo.bar/baz</code> is fine). You can also have multiple main functions in one namespace.</p>
 </div>
 <div class="paragraph">
 <p>The namespace <code>foo.bar</code> will be automatically required and the function
