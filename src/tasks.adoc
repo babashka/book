@@ -578,11 +578,11 @@ symbol:
 [source,clojure]
 ----
 {:tasks
-  {foo-bar foo.bar}}
+  {foo-bar foo.bar/-main}}
 ----
 
-or using a fully qualified symbol `foo.bar/baz` so you can accommodate
-multiple main functions in one namespace.
+You can use any fully qualified symbol, not just ones that end in `-main` (so e.g.
+`foo.bar/baz` is fine). You can also have multiple main functions in one namespace.
 
 The namespace `foo.bar` will be automatically required and the function
 will be invoked with `*command-line-args*`:
