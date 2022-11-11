@@ -966,25 +966,25 @@ babashka.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash">Babashka v1.0.164
+<pre>Babashka v1.0.164
 
-Usage: bb <span class="o">[</span>svm-opts] <span class="o">[</span>global-opts] <span class="o">[</span><span class="nb">eval </span>opts] <span class="o">[</span>cmdline args]
-or:    bb <span class="o">[</span>svm-opts] <span class="o">[</span>global-opts] file <span class="o">[</span>cmdline args]
-or:    bb <span class="o">[</span>svm-opts] <span class="o">[</span>global-opts] subcommand <span class="o">[</span>subcommand opts] <span class="o">[</span>cmdline args]
+Usage: bb [svm-opts] [global-opts] [eval opts] [cmdline args]
+or:    bb [svm-opts] [global-opts] file [cmdline args]
+or:    bb [svm-opts] [global-opts] subcommand [subcommand opts] [cmdline args]
 
 Substrate VM opts:
 
-  <span class="nt">-Xmx</span>&lt;size&gt;[g|G|m|M|k|K]  Set a maximum heap size <span class="o">(</span>e.g. <span class="nt">-Xmx256M</span> to limit the heap to 256MB<span class="o">)</span><span class="nb">.</span>
-  <span class="nt">-XX</span>:PrintFlags<span class="o">=</span>          Print all Substrate VM options.
+  -Xmx&lt;size&gt;[g|G|m|M|k|K]  Set a maximum heap size (e.g. -Xmx256M to limit the heap to 256MB).
+  -XX:PrintFlags=          Print all Substrate VM options.
 
 Global opts:
 
-  <span class="nt">-cp</span>, <span class="nt">--classpath</span>  Classpath to use. Overrides bb.edn classpath.
-  <span class="nt">--debug</span>           Print debug information and internal stacktrace <span class="k">in case</span> of exception.
-  <span class="nt">--init</span> &lt;file&gt;     Load file after any preloads and prior to evaluation/subcommands.
-  <span class="nt">--config</span> &lt;file&gt;   Replacing bb.edn with file. Relative paths are resolved relative to file.
-  <span class="nt">--deps-root</span> &lt;<span class="nb">dir</span><span class="o">&gt;</span> Treat <span class="nb">dir </span>as root of relative paths <span class="k">in </span>config.
-  <span class="nt">-Sforce</span>           Force recalculation of the classpath <span class="o">(</span>don<span class="s1">'t use the cache)
+  -cp, --classpath  Classpath to use. Overrides bb.edn classpath.
+  --debug           Print debug information and internal stacktrace in case of exception.
+  --init &lt;file&gt;     Load file after any preloads and prior to evaluation/subcommands.
+  --config &lt;file&gt;   Replacing bb.edn with file. Relative paths are resolved relative to file.
+  --deps-root &lt;dir&gt; Treat dir as root of relative paths in config.
+  -Sforce           Force recalculation of the classpath (don't use the cache)
   -Sdeps            Deps data to use as the last deps file to be merged
 
 Help:
@@ -1038,7 +1038,7 @@ Tooling:
 File names take precedence over subcommand names.
 Remaining arguments are bound to *command-line-args*.
 Use -- to separate script command line args from bb command line args.
-When no eval opts or subcommand is provided, the implicit subcommand is repl.</span></code></pre>
+When no eval opts or subcommand is provided, the implicit subcommand is repl.</pre>
 </div>
 </div>
 <div class="sect2">
