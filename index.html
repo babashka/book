@@ -1427,6 +1427,15 @@ Java property option in Clojure:</p>
 </div>
 </div>
 <div class="paragraph">
+<p>or programmatically:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="n">$</span><span class="w"> </span><span class="n">bb</span><span class="w"> </span><span class="n">-e</span><span class="w"> </span><span class="s">"(babashka.nrepl.server/start-server\!) (deref (promise))"</span><span class="w">
+</span><span class="n">Started</span><span class="w"> </span><span class="n">nREPL</span><span class="w"> </span><span class="n">server</span><span class="w"> </span><span class="n">at</span><span class="w"> </span><span class="mf">0.0</span><span class="n">.0.0</span><span class="no">:1667</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
 <p>Then connect with your favorite nREPL client:</p>
 </div>
 <div class="listingblock">
