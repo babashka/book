@@ -98,6 +98,14 @@ To start an nREPL server:
 $ bb nrepl-server 1667
 ----
 
+or programmatically:
+
+[source,clojure]
+----
+$ bb -e "(babashka.nrepl.server/start-server\!) (deref (promise))"
+Started nREPL server at 0.0.0.0:1667
+----
+
 Then connect with your favorite nREPL client:
 
 [source,clojure]
