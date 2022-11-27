@@ -167,3 +167,7 @@ $ git clone https://github.com/borkdude/babashka --recurse-submodules
 $ cd babashka
 $ BABASHKA_DEV=true clojure -A:main --nrepl-server 1667
 ----
+
+==== REPL server port
+
+For the socket REPL, pREPL, or nREPL, if a randomized port is needed, 0 can be used anywhere a port argument is accepted.
