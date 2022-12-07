@@ -2,5 +2,5 @@
 == Child processes
 
 For child processes, the babashka https://github.com/babashka/process[process]
-library is recommended. Check out the README which gives a good introduction
-into the library.
+library is recommended. It is built into babashka. Check out the README which
+gives a good introduction into the library.
