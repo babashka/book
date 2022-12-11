@@ -23,7 +23,7 @@ If we have a project that has a `deps.edn` and would like to reuse those deps in
 {:deps {your-org/your-project {:local/root "."}}}
 ----
 
-NOTE: Use a unique name to refer to your projec's `deps.edn`, the same name that
+NOTE: Use a unique name to refer to your project's `deps.edn`, the same name that
 you would otherwise use when referring to your project as a dependency.
 
 If we have a main function in a file called `bb/my_project/main.clj` like:
