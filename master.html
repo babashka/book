@@ -799,12 +799,7 @@ pre.rouge {
 <li><a href="#_explicit_requires">Explicit requires</a></li>
 </ul>
 </li>
-<li><a href="#child_processes">Child processes</a>
-<ul class="sectlevel2">
-<li><a href="#_clojure_java_shell">clojure.java.shell</a></li>
-<li><a href="#_babashka_process">babashka.process</a></li>
-</ul>
-</li>
+<li><a href="#child_processes">Child processes</a></li>
 <li><a href="#recipes">Recipes</a>
 <ul class="sectlevel2">
 <li><a href="#_running_tests">Running tests</a></li>
@@ -818,6 +813,11 @@ pre.rouge {
 </ul>
 </li>
 <li><a href="#differences-with-clojure">Differences with Clojure</a></li>
+<li><a href="#resources">Resources</a>
+<ul class="sectlevel2">
+<li><a href="#_books">Books</a></li>
+</ul>
+</li>
 <li><a href="#contributing">Contributing</a></li>
 <li><a href="#license">License</a></li>
 </ul>
@@ -856,7 +856,7 @@ list of beginner resources.</p>
 <div class="sect2">
 <h3 id="_setting_expectations"><a class="link" href="#_setting_expectations">Setting expectations</a></h3>
 <div class="paragraph">
-<p>Babashka uses <a href="https://github.com/babashka/SCI">SCI</a> for interpreting Clojure. Sci
+<p>Babashka uses <a href="https://github.com/babashka/SCI">SCI</a> for interpreting Clojure. SCI
 implements a substantial subset of Clojure. Interpreting code is in general not
 as performant as executing compiled code. If your script takes more than a few
 seconds to run or has lots of loops, Clojure on the JVM may be a better fit, as
@@ -966,25 +966,25 @@ babashka.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash">Babashka v1.0.164
+<pre>Babashka v1.0.167
 
-Usage: bb <span class="o">[</span>svm-opts] <span class="o">[</span>global-opts] <span class="o">[</span><span class="nb">eval </span>opts] <span class="o">[</span>cmdline args]
-or:    bb <span class="o">[</span>svm-opts] <span class="o">[</span>global-opts] file <span class="o">[</span>cmdline args]
-or:    bb <span class="o">[</span>svm-opts] <span class="o">[</span>global-opts] subcommand <span class="o">[</span>subcommand opts] <span class="o">[</span>cmdline args]
+Usage: bb [svm-opts] [global-opts] [eval opts] [cmdline args]
+or:    bb [svm-opts] [global-opts] file [cmdline args]
+or:    bb [svm-opts] [global-opts] subcommand [subcommand opts] [cmdline args]
 
 Substrate VM opts:
 
-  <span class="nt">-Xmx</span>&lt;size&gt;[g|G|m|M|k|K]  Set a maximum heap size <span class="o">(</span>e.g. <span class="nt">-Xmx256M</span> to limit the heap to 256MB<span class="o">)</span><span class="nb">.</span>
-  <span class="nt">-XX</span>:PrintFlags<span class="o">=</span>          Print all Substrate VM options.
+  -Xmx&lt;size&gt;[g|G|m|M|k|K]  Set a maximum heap size (e.g. -Xmx256M to limit the heap to 256MB).
+  -XX:PrintFlags=          Print all Substrate VM options.
 
 Global opts:
 
-  <span class="nt">-cp</span>, <span class="nt">--classpath</span>  Classpath to use. Overrides bb.edn classpath.
-  <span class="nt">--debug</span>           Print debug information and internal stacktrace <span class="k">in case</span> of exception.
-  <span class="nt">--init</span> &lt;file&gt;     Load file after any preloads and prior to evaluation/subcommands.
-  <span class="nt">--config</span> &lt;file&gt;   Replacing bb.edn with file. Relative paths are resolved relative to file.
-  <span class="nt">--deps-root</span> &lt;<span class="nb">dir</span><span class="o">&gt;</span> Treat <span class="nb">dir </span>as root of relative paths <span class="k">in </span>config.
-  <span class="nt">-Sforce</span>           Force recalculation of the classpath <span class="o">(</span>don<span class="s1">'t use the cache)
+  -cp, --classpath  Classpath to use. Overrides bb.edn classpath.
+  --debug           Print debug information and internal stacktrace in case of exception.
+  --init &lt;file&gt;     Load file after any preloads and prior to evaluation/subcommands.
+  --config &lt;file&gt;   Replacing bb.edn with file. Relative paths are resolved relative to file.
+  --deps-root &lt;dir&gt; Treat dir as root of relative paths in config.
+  -Sforce           Force recalculation of the classpath (don't use the cache)
   -Sdeps            Deps data to use as the last deps file to be merged
 
 Help:
@@ -1038,7 +1038,7 @@ Tooling:
 File names take precedence over subcommand names.
 Remaining arguments are bound to *command-line-args*.
 Use -- to separate script command line args from bb command line args.
-When no eval opts or subcommand is provided, the implicit subcommand is repl.</span></code></pre>
+When no eval opts or subcommand is provided, the implicit subcommand is repl.</pre>
 </div>
 </div>
 <div class="sect2">
@@ -1427,6 +1427,15 @@ Java property option in Clojure:</p>
 </div>
 </div>
 <div class="paragraph">
+<p>or programmatically:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="n">$</span><span class="w"> </span><span class="n">bb</span><span class="w"> </span><span class="n">-e</span><span class="w"> </span><span class="s">"(babashka.nrepl.server/start-server\!) (deref (promise))"</span><span class="w">
+</span><span class="n">Started</span><span class="w"> </span><span class="n">nREPL</span><span class="w"> </span><span class="n">server</span><span class="w"> </span><span class="n">at</span><span class="w"> </span><span class="mf">0.0</span><span class="n">.0.0</span><span class="no">:1667</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
 <p>Then connect with your favorite nREPL client:</p>
 </div>
 <div class="listingblock">
@@ -1508,6 +1517,12 @@ accomplish the same:</p>
 </span><span class="n">$</span><span class="w"> </span><span class="n">BABASHKA_DEV=true</span><span class="w"> </span><span class="n">clojure</span><span class="w"> </span><span class="n">-A</span><span class="no">:main</span><span class="w"> </span><span class="n">--nrepl-server</span><span class="w"> </span><span class="mi">1667</span></code></pre>
 </div>
 </div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_repl_server_port"><a class="link" href="#_repl_server_port">REPL server port</a></h4>
+<div class="paragraph">
+<p>For the socket REPL, pREPL, or nREPL, if a randomized port is needed, 0 can be used anywhere a port argument is accepted.</p>
 </div>
 </div>
 </div>
@@ -1909,8 +1924,21 @@ added to the classpath:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="clojure"><span class="p">{</span><span class="no">:deps</span><span class="w"> </span><span class="p">{</span><span class="n">local/deps</span><span class="w"> </span><span class="p">{</span><span class="no">:local/root</span><span class="w"> </span><span class="s">"."</span><span class="p">}}}</span></code></pre>
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">{</span><span class="no">:deps</span><span class="w"> </span><span class="p">{</span><span class="n">your-org/your-project</span><span class="w"> </span><span class="p">{</span><span class="no">:local/root</span><span class="w"> </span><span class="s">"."</span><span class="p">}}}</span></code></pre>
 </div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Use a unique name to refer to your project&#8217;s <code>deps.edn</code>, the same name that
+you would otherwise use when referring to your project as a dependency.
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>If we have a main function in a file called <code>bb/my_project/main.clj</code> like:</p>
@@ -2056,7 +2084,8 @@ Removing target folder.</code></pre>
 <div class="sect2">
 <h3 id="_talk"><a class="link" href="#_talk">Talk</a></h3>
 <div class="paragraph">
-<p>Go</p>
+<p>Go <a href="https://www.youtube.com/watch?v=u5ECoR7KT1Y&amp;ab_channel=LondonClojurians">here</a>
+if you would like to watch a talk on babashka tasks.</p>
 </div>
 </div>
 <div class="sect2">
@@ -2655,12 +2684,12 @@ symbol:</p>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="clojure"><span class="p">{</span><span class="no">:tasks</span><span class="w">
-  </span><span class="p">{</span><span class="n">foo-bar</span><span class="w"> </span><span class="n">foo.bar</span><span class="p">}}</span></code></pre>
+  </span><span class="p">{</span><span class="n">foo-bar</span><span class="w"> </span><span class="n">foo.bar/-main</span><span class="p">}}</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>or using a fully qualified symbol <code>foo.bar/baz</code> so you can accommodate
-multiple main functions in one namespace.</p>
+<p>You can use any fully qualified symbol, not just ones that end in <code>-main</code> (so e.g.
+<code>foo.bar/baz</code> is fine). You can also have multiple main functions in one namespace.</p>
 </div>
 <div class="paragraph">
 <p>The namespace <code>foo.bar</code> will be automatically required and the function
@@ -3397,24 +3426,25 @@ babashka. Documentation is available in the
 <p>Since bb 0.2.6 pods can be obtained via the <a href="https://github.com/babashka/pod-registry">pod-registry</a>.</p>
 </div>
 <div class="paragraph">
-<p>This is an example script which uses
-<a href="https://github.com/retrogradeorbit/bootleg">bootleg</a> as a pod to convert hiccup
-to HTML.</p>
+<p>This is an example script which uses the
+<a href="https://github.com/babashka/pod-babashka-fswatcher">fswatcher</a> pod to
+watch a directory for changes:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="clojure"><span class="o">#</span><span class="n">!/usr/bin/env</span><span class="w"> </span><span class="n">bb</span><span class="w">
 
 </span><span class="p">(</span><span class="nf">require</span><span class="w"> </span><span class="o">'</span><span class="p">[</span><span class="n">babashka.pods</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">pods</span><span class="p">])</span><span class="w">
+</span><span class="p">(</span><span class="nf">pods/load-pod</span><span class="w"> </span><span class="ss">'org.babashka/fswatcher</span><span class="w"> </span><span class="s">"0.0.3"</span><span class="p">)</span><span class="w">
 
-</span><span class="p">(</span><span class="nf">pods/load-pod</span><span class="w"> </span><span class="ss">'retrogradeorbit/bootleg</span><span class="w"> </span><span class="s">"0.1.9"</span><span class="p">)</span><span class="w">
+</span><span class="p">(</span><span class="nf">require</span><span class="w"> </span><span class="o">'</span><span class="p">[</span><span class="n">pod.babashka.fswatcher</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">fw</span><span class="p">])</span><span class="w">
 
-</span><span class="p">(</span><span class="nf">require</span><span class="w"> </span><span class="o">'</span><span class="p">[</span><span class="n">pod.retrogradeorbit.bootleg.utils</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">utils</span><span class="p">])</span><span class="w">
+</span><span class="p">(</span><span class="nf">fw/watch</span><span class="w"> </span><span class="s">"."</span><span class="w"> </span><span class="nb">prn</span><span class="w"> </span><span class="p">{</span><span class="no">:delay-ms</span><span class="w"> </span><span class="mi">5000</span><span class="p">})</span><span class="w">
 
-</span><span class="p">(</span><span class="nb">-&gt;</span><span class="w"> </span><span class="p">[</span><span class="no">:div</span><span class="w">
-     </span><span class="p">[</span><span class="no">:h1</span><span class="w"> </span><span class="s">"Using Bootleg From Babashka"</span><span class="p">]</span><span class="w">
-     </span><span class="p">[</span><span class="no">:p</span><span class="w"> </span><span class="s">"This is a demo"</span><span class="p">]]</span><span class="w">
-    </span><span class="p">(</span><span class="nf">utils/convert-to</span><span class="w"> </span><span class="no">:html</span><span class="p">))</span></code></pre>
+</span><span class="p">(</span><span class="nb">println</span><span class="w"> </span><span class="s">"Watching current directory for changes... Press Ctrl-C to quit."</span><span class="p">)</span><span class="w">
+
+</span><span class="o">@</span><span class="p">(</span><span class="nf">promise</span><span class="p">)</span><span class="w">
+</span></code></pre>
 </div>
 </div>
 </div>
@@ -3525,236 +3555,9 @@ with <code>clojure</code></p>
 <h2 id="child_processes"><a class="link" href="#child_processes">Child processes</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>by Michiel Borkent</p>
-</div>
-<div class="paragraph">
-<p>There are several ways of creating child processes in babashka. Let&#8217;s start with
-the easiest one.</p>
-</div>
-<div class="sect2">
-<h3 id="_clojure_java_shell"><a class="link" href="#_clojure_java_shell">clojure.java.shell</a></h3>
-<div class="paragraph">
-<p>A common way to shell out to another process is via <code>clojure.java.shell</code>:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="clojure"><span class="n">user=&gt;</span><span class="w"> </span><span class="p">(</span><span class="nf">require</span><span class="w"> </span><span class="o">'</span><span class="p">[</span><span class="n">clojure.java.shell</span><span class="w"> </span><span class="no">:refer</span><span class="w"> </span><span class="p">[</span><span class="n">sh</span><span class="p">]])</span><span class="w">
-</span><span class="n">nil</span><span class="w">
-</span><span class="n">user=&gt;</span><span class="w"> </span><span class="p">(</span><span class="nf">sh</span><span class="w"> </span><span class="s">"ls"</span><span class="p">)</span><span class="w">
-</span><span class="p">{</span><span class="no">:exit</span><span class="w"> </span><span class="mi">0</span><span class="n">,</span><span class="w"> </span><span class="no">:out</span><span class="w"> </span><span class="s">"README.md\ndist\ngh-pages\nscript\nsrc\n"</span><span class="n">,</span><span class="w"> </span><span class="no">:err</span><span class="w"> </span><span class="s">""</span><span class="p">}</span></code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>As you can see the result of <code>:out</code> are the lines of text produced by <code>ls</code>. The
-<code>:exit</code> code was <code>0</code> and there was no output on stderr.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="clojure"><span class="n">user=&gt;</span><span class="w"> </span><span class="p">(</span><span class="nf">sh</span><span class="w"> </span><span class="s">"ls"</span><span class="w"> </span><span class="s">"foo"</span><span class="p">)</span><span class="w">
-</span><span class="p">{</span><span class="no">:exit</span><span class="w"> </span><span class="mi">1</span><span class="n">,</span><span class="w"> </span><span class="no">:out</span><span class="w"> </span><span class="s">""</span><span class="n">,</span><span class="w"> </span><span class="no">:err</span><span class="w"> </span><span class="s">"ls: foo: No such file or directory\n"</span><span class="p">}</span></code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>If we invoke <code>ls</code> with a non-existing file, there is error output, but not
-output on stdout and the <code>:exit</code> code is <code>1</code>.</p>
-</div>
-<div class="paragraph">
-<p>For more information on <code>clojure.java.shell</code>, read the
-<a href="https://clojure.github.io/clojure/clojure.java.shell-api.html">API documentation</a></p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_babashka_process"><a class="link" href="#_babashka_process">babashka.process</a></h3>
-<div class="paragraph">
-<p>Creating a child process with <code>clojure.java.shell/sh</code> is convenient and
-sufficient in 90% of the scripts you&#8217;re going to write with babashka. For the
-remaining 10% you&#8217;re going to need something slightly more powerful. This is
-where the <code>babashka.process</code> library namespace comes in. The README and source
-code of this library is located <a href="https://github.com/babashka/process">here</a>.</p>
-</div>
-<div class="paragraph">
-<p>What if we wanted to start a Clojure pREPL in our script, send commands to it
-and read the evaluated output in a loop?  Using <code>clojure.java.shell/sh</code> for this
-has the limitation that we can only send input and read output once per process.
-Using <code>babashka.process</code> which leverages the <code>java.lang.ProcessBuilder</code> and
-<code>java.lang.Process</code> classes gives us the extra power we need to overcome this
-limitation.</p>
-</div>
-<div class="paragraph">
-<p>First we show how to use <code>process</code> to start a process that inherits stdout,
-stderr and stdin from the parent process. This is often useful when you want to
-hand over control to another process at the end of a script. The following code
-starts a pREPL process:</p>
-</div>
-<div class="listingblock">
-<div class="title">process/prepl_1.clj</div>
-<div class="content">
-<pre class="rouge highlight"><code data-lang="clojure"><span class="o">#</span><span class="n">!/usr/bin/env</span><span class="w"> </span><span class="n">bb</span><span class="w">
-
-</span><span class="p">(</span><span class="nf">require</span><span class="w"> </span><span class="o">'</span><span class="p">[</span><span class="n">babashka.process</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">p</span><span class="p">])</span><span class="w">
-
-</span><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">io-prepl</span><span class="w"> </span><span class="p">[]</span><span class="w">
-  </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[</span><span class="n">cmd</span><span class="w"> </span><span class="p">[</span><span class="s">"clojure"</span><span class="w"> </span><span class="s">"-M"</span><span class="w">
-             </span><span class="s">"-e"</span><span class="w"> </span><span class="s">"(require '[clojure.core.server :as s])"</span><span class="w">
-             </span><span class="s">"-e"</span><span class="w"> </span><span class="s">"(s/io-prepl)"</span><span class="p">]</span><span class="w">                           <i class="conum" data-value="1"></i><b>(1)</b>
-        </span><span class="n">proc</span><span class="w"> </span><span class="p">(</span><span class="nf">p/process</span><span class="w"> </span><span class="n">cmd</span><span class="w">                                 <i class="conum" data-value="2"></i><b>(2)</b>
-                        </span><span class="p">{</span><span class="no">:inherit</span><span class="w"> </span><span class="n">true</span><span class="w">                      <i class="conum" data-value="3"></i><b>(3)</b>
-                         </span><span class="no">:shutdown</span><span class="w"> </span><span class="n">p/destroy-tree</span><span class="p">})]</span><span class="w">        <i class="conum" data-value="4"></i><b>(4)</b>
-    </span><span class="n">proc</span><span class="p">))</span><span class="w">
-
-</span><span class="o">@</span><span class="p">(</span><span class="nf">io-prepl</span><span class="p">)</span><span class="w">                                                 <i class="conum" data-value="5"></i><b>(5)</b>
-</span></code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>The command and its arguments</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Creating the process</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>This option redirects stdout and stdin from the parent process to the child
-process.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>This line will destroy the child process and all of it&#8217;s children processes
-before the parent process exits.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="5"></i><b>5</b></td>
-<td>Dereferencing the process waits until it ends. If
-we would not include this, our script would end immediately.</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>When calling the script, we can interact with the pREPL</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>bb src/process/prepl_1.clj
-<span class="o">(</span>+ 1 2 3<span class="o">)</span>
-<span class="o">{</span>:tag :ret, :val <span class="s2">"6"</span>, :ns <span class="s2">"user"</span>, :ms 5, :form <span class="s2">"(+ 1 2 3)"</span><span class="o">}</span></code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Pressing ctrl-C or typing <code>:repl/quit</code> will make the script terminate.</p>
-</div>
-<div class="paragraph">
-<p>What if we want to parse the output of the prepl and reformat it to our own
-likings?  Instead of sending the output of the child process to stdout we will
-have to get a hold of it. We can grab the output by not using <code>:inherit</code> and
-getting the <code>:out</code> stream of the process. Similarly we will grab the <code>:in</code>
-stream of the process and handle reading ourselves.</p>
-</div>
-<div class="listingblock">
-<div class="title">process/prepl_2.clj</div>
-<div class="content">
-<pre class="rouge highlight"><code data-lang="clojure"><span class="o">#</span><span class="n">!/usr/bin/env</span><span class="w"> </span><span class="n">bb</span><span class="w">
-
-</span><span class="p">(</span><span class="nf">require</span><span class="w"> </span><span class="o">'</span><span class="p">[</span><span class="n">babashka.process</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">p</span><span class="p">])</span><span class="w">
-
-</span><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">io-prepl</span><span class="w"> </span><span class="p">[]</span><span class="w">
-  </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[</span><span class="n">cmd</span><span class="w"> </span><span class="p">[</span><span class="s">"clojure"</span><span class="w"> </span><span class="s">"-M"</span><span class="w">
-             </span><span class="s">"-e"</span><span class="w"> </span><span class="s">"(require '[clojure.core.server :as s])"</span><span class="w">
-             </span><span class="s">"-e"</span><span class="w"> </span><span class="s">"(s/io-prepl)"</span><span class="p">]</span><span class="w">
-        </span><span class="n">proc</span><span class="w"> </span><span class="p">(</span><span class="nf">p/process</span><span class="w"> </span><span class="n">cmd</span><span class="w">
-                        </span><span class="p">{</span><span class="no">:shutdown</span><span class="w"> </span><span class="n">p/destroy-tree</span><span class="p">})]</span><span class="w">
-    </span><span class="n">proc</span><span class="p">))</span><span class="w">
-
-</span><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">prepl-process</span><span class="w"> </span><span class="p">(</span><span class="nf">io-prepl</span><span class="p">))</span><span class="w">
-
-</span><span class="p">(</span><span class="nf">require</span><span class="w"> </span><span class="o">'</span><span class="p">[</span><span class="n">clojure.java.io</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">io</span><span class="p">])</span><span class="w">
-
-</span><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">input-writer</span><span class="w"> </span><span class="p">(</span><span class="nf">io/writer</span><span class="w"> </span><span class="p">(</span><span class="no">:in</span><span class="w"> </span><span class="n">prepl-process</span><span class="p">)))</span><span class="w">        <i class="conum" data-value="1"></i><b>(1)</b>
-</span><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">output-reader</span><span class="w"> </span><span class="p">(</span><span class="nf">java.io.PushbackReader.</span><span class="w">
-                    </span><span class="p">(</span><span class="nf">io/reader</span><span class="w"> </span><span class="p">(</span><span class="no">:out</span><span class="w"> </span><span class="n">prepl-process</span><span class="p">))))</span><span class="w">    <i class="conum" data-value="2"></i><b>(2)</b>
-
-</span><span class="p">(</span><span class="nf">require</span><span class="w"> </span><span class="o">'</span><span class="p">[</span><span class="n">clojure.edn</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">edn</span><span class="p">])</span><span class="w">
-
-</span><span class="p">(</span><span class="nb">loop</span><span class="w"> </span><span class="p">[]</span><span class="w">
-  </span><span class="p">(</span><span class="nb">println</span><span class="w"> </span><span class="s">"Type an expression to evaluate:"</span><span class="p">)</span><span class="w">
-  </span><span class="p">(</span><span class="nb">when-let</span><span class="w"> </span><span class="p">[</span><span class="n">v</span><span class="w"> </span><span class="p">(</span><span class="nb">read-line</span><span class="p">)]</span><span class="w">                               <i class="conum" data-value="3"></i><b>(3)</b>
-    </span><span class="p">(</span><span class="nb">binding</span><span class="w"> </span><span class="p">[</span><span class="n">*out*</span><span class="w"> </span><span class="n">input-writer</span><span class="p">]</span><span class="w">                         <i class="conum" data-value="4"></i><b>(4)</b>
-      </span><span class="p">(</span><span class="nb">println</span><span class="w"> </span><span class="n">v</span><span class="p">))</span><span class="w">
-    </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[</span><span class="n">next-val</span><span class="w"> </span><span class="p">(</span><span class="nf">edn/read</span><span class="w"> </span><span class="p">{</span><span class="no">:eof</span><span class="w"> </span><span class="no">::EOF</span><span class="p">}</span><span class="w"> </span><span class="n">output-reader</span><span class="p">)]</span><span class="w"> <i class="conum" data-value="5"></i><b>(5)</b>
-      </span><span class="p">(</span><span class="nb">when-not</span><span class="w"> </span><span class="p">(</span><span class="nb">identical?</span><span class="w"> </span><span class="no">::EOF</span><span class="w"> </span><span class="n">next-val</span><span class="p">)</span><span class="w">
-        </span><span class="p">(</span><span class="nb">println</span><span class="w"> </span><span class="p">(</span><span class="no">:form</span><span class="w"> </span><span class="n">next-val</span><span class="p">)</span><span class="w">                         <i class="conum" data-value="6"></i><b>(6)</b>
-                 </span><span class="s">"evaluates to"</span><span class="w">
-                 </span><span class="p">(</span><span class="no">:val</span><span class="w"> </span><span class="n">next-val</span><span class="p">))</span><span class="w">
-        </span><span class="p">(</span><span class="nf">recur</span><span class="p">)))))</span></code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>A writer that we will use to send input to the pREPL</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>A reader that reads from the pREPL output. pREPL returns EDN and
-<code>clojure.edn/read</code> needs a <code>PushbackReader</code>.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>We read user input via <code>clojure.core/read-line</code></td>
-</tr>
-<tr>
-<td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>Here we binding <code>*out*</code> to the input writer so we can use <code>println</code> to write
-to it.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="5"></i><b>5</b></td>
-<td>Read the next EDN value.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="6"></i><b>6</b></td>
-<td>Print the output using our custom formatting.</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>Here is an example run:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>bb src/process/prepl_2.clj
-Type an expression to evaluate:
-<span class="o">(</span>+ 1 2 3<span class="o">)</span>
-<span class="o">(</span>+ 1 2 3<span class="o">)</span> evaluates to 6
-:repl/quit</code></pre>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_real_world_examples_2"><a class="link" href="#_real_world_examples_2">Real world examples</a></h4>
-<div class="paragraph">
-<p>Prior to <code>babashka.process</code> people were using raw <code>ProcessBuilder</code> interop. Here are some real world examples. These might get updated to <code>babashka.process</code> in the future.</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>The <a href="https://github.com/borkdude/babashka/blob/5608f935cd28c777cf7d16243574558e2203872e/script/bump_version.clj#L9">babashka</a> repo uses <code>ProcessBuilder</code> to invoke git to make a commit after bumping the version.
-It redirects the output from <code>git</code> directly to stdout of the parent process.</p>
-</li>
-<li>
-<p><a href="https://github.com/borkdude/babashka.curl/blob/53b5b9d98f2e594384f628b0deee76b53bea5062/src/babashka/curl.clj#L17">babashka.curl</a> uses <code>ProcessBuilder</code> to interact with the <code>curl</code> executable</p>
-</li>
-<li>
-<p><a href="https://github.com/borkdude/deps.clj/blob/5d51b80176bdcb96927ce5e6aedb25581db0e2e0/deps.clj#L18">deps.clj</a>
-uses <code>ProcessBuilder</code> to interact with <code>java</code>, e.g. to start a Clojure REPL or
-compute a classpath using tools.deps</p>
-</li>
-</ul>
-</div>
-</div>
+<p>For child processes, the babashka <a href="https://github.com/babashka/process">process</a>
+library is recommended. It is built into babashka. Check out the README which
+gives a good introduction into the library.</p>
 </div>
 </div>
 </div>
@@ -4163,6 +3966,27 @@ info <a href="#core_async">here</a>.</p>
 </div>
 </div>
 <div class="sect1">
+<h2 id="resources"><a class="link" href="#resources">Resources</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Check out the list of resources in babashka&#8217;s <a href="https://github.com/babashka/babashka#articles-podcasts-and-videos">README.md</a>.</p>
+</div>
+<div class="sect2">
+<h3 id="_books"><a class="link" href="#_books">Books</a></h3>
+<div class="sect3">
+<h4 id="_babashka_babooka"><a class="link" href="#_babashka_babooka"><a href="https://www.braveclojure.com/quests/babooka/">Babashka Babooka</a></a></h4>
+<div class="paragraph">
+<p>If you’re a fan of
+<a href="https://www.braveclojure.com/clojure-for-the-brave-and-true/">Clojure for the
+Brave and True</a>, you might enjoy
+<a href="https://www.braveclojure.com/quests/babooka/">Babashka Babooka</a>, a book by the
+same author, Daniel Higginbotham!</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="contributing"><a class="link" href="#contributing">Contributing</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
@@ -4185,7 +4009,7 @@ make an issue and/or PR.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-09-12 13:18:37 +0200
+Last updated 2023-01-23 15:27:14 +0100
 </div>
 </div>
 <!-- see https://github.com/asciidoctor/asciidoctor/issues/699#issuecomment-321066006 -->
