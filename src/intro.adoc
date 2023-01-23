@@ -21,7 +21,7 @@ list of beginner resources.
 
 === Setting expectations
 
-Babashka uses https://github.com/babashka/SCI[SCI] for interpreting Clojure. Sci
+Babashka uses https://github.com/babashka/SCI[SCI] for interpreting Clojure. SCI
 implements a substantial subset of Clojure. Interpreting code is in general not
 as performant as executing compiled code. If your script takes more than a few
 seconds to run or has lots of loops, Clojure on the JVM may be a better fit, as

@@ -41,9 +41,12 @@ include::recipes.adoc[]
 
 include::differences.adoc[]
 
+include::resources.adoc[]
+
 include::contributing.adoc[]
 
 include::license.adoc[]
+
 
 //include::shell_integration.adoc[]
 

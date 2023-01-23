@@ -1,2 +1,3 @@
-{:tasks {watch {:doc "Watch adoc sources and build them"
+{:deps {etaoin/etaoin {:mvn/version "1.0.39"}}
+ :tasks {watch {:doc "Watch adoc sources and build them"
                 :task (shell "bb script/watch.clj")}}}

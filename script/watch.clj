@@ -5,8 +5,7 @@
 (pods/load-pod 'org.babashka/filewatcher "0.0.1")
 (require '[pod.babashka.filewatcher :as fw])
 
-(pods/load-pod 'org.babashka/etaoin "0.0.1")
-(require '[pod.babashka.etaoin :as eta])
+(require '[etaoin.api :as eta])
 
 (defn asciidoc []
   (load-file "script/compile.clj"))
