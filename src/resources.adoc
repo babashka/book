@@ -1,0 +1,15 @@
+[[resources]]
+== Resources
+
+Check out the list of resources in babashka's https://github.com/babashka/babashka#articles-podcasts-and-videos[README.md].
+
+=== Books
+
+==== https://www.braveclojure.com/quests/babooka/[Babashka Babooka]
+
+If you’re a fan of
+https://www.braveclojure.com/clojure-for-the-brave-and-true/[Clojure for the
+Brave and True], you might enjoy
+https://www.braveclojure.com/quests/babooka/[Babashka Babooka], a book by the
+same author, Daniel Higginbotham!
+
