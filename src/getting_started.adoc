@@ -45,7 +45,7 @@ or run a script:
 
 [source,clojure]
 ----
-$ bb -f script.clj
+$ bb --prn -f script.clj
 6
 ----
 
@@ -61,7 +61,7 @@ Similarly, the `-f` flag is optional when the argument is a filename:
 
 [source,clojure]
 ----
-$ bb script.clj
+$ bb --prn script.clj
 6
 ----
 
