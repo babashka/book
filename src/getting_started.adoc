@@ -40,7 +40,7 @@ or run a script:
 .script.clj
 [source,clojure]
 ----
-(+ 1 2 3)
+(println (+ 1 2 3))
 ----
 
 [source,clojure]
@@ -71,5 +71,5 @@ Commonly, scripts have shebangs so you can invoke them with their filename only:
 [source,clojure]
 ----
 #!/usr/bin/env bb
-(+ 1 2 3)
+(println (+ 1 2 3))
 ----
