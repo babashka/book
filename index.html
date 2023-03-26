@@ -966,7 +966,7 @@ babashka.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>Babashka v1.1.172
+<pre>Babashka v1.3.176
 
 Usage: bb [svm-opts] [global-opts] [eval opts] [cmdline args]
 or:    bb [svm-opts] [global-opts] file [cmdline args]
@@ -3596,11 +3596,9 @@ gives a good introduction into the library.</p>
 </span><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">test-results</span><span class="w">
   </span><span class="p">(</span><span class="nf">t/run-tests</span><span class="w"> </span><span class="ss">'your.test-a</span><span class="w"> </span><span class="ss">'your.test-b</span><span class="p">))</span><span class="w">           <i class="conum" data-value="3"></i><b>(3)</b>
 
-</span><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">failures-and-errors</span><span class="w">
-  </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[{</span><span class="no">:keys</span><span class="w"> </span><span class="p">[</span><span class="n">fail</span><span class="w"> </span><span class="n">error</span><span class="p">]}</span><span class="w"> </span><span class="n">test-results</span><span class="p">]</span><span class="w">
-    </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="n">fail</span><span class="w"> </span><span class="n">error</span><span class="p">)))</span><span class="w">                                 <i class="conum" data-value="4"></i><b>(4)</b>
-
-</span><span class="p">(</span><span class="nf">System/exit</span><span class="w"> </span><span class="n">failures-and-errors</span><span class="p">)</span><span class="w">                    <i class="conum" data-value="5"></i><b>(5)</b>
+</span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[{</span><span class="no">:keys</span><span class="w"> </span><span class="p">[</span><span class="n">fail</span><span class="w"> </span><span class="n">error</span><span class="p">]}</span><span class="w"> </span><span class="n">test-results</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nb">when</span><span class="w"> </span><span class="p">(</span><span class="nb">pos?</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="n">fail</span><span class="w"> </span><span class="n">error</span><span class="p">))</span><span class="w">
+    </span><span class="p">(</span><span class="nf">System/exit</span><span class="w"> </span><span class="mi">1</span><span class="p">)))</span><span class="w">                                <i class="conum" data-value="4"></i><b>(4)</b>
 </span></code></pre>
 </div>
 </div>
@@ -3620,10 +3618,6 @@ gives a good introduction into the library.</p>
 </tr>
 <tr>
 <td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>Extract failures and errors</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="5"></i><b>5</b></td>
 <td>Exit the test script with a non-zero exit code when there are failures or errors</td>
 </tr>
 </table>
