@@ -31,18 +31,15 @@ Babashka bundles `clojure.test`. To run tests you can write a test runner script
 (def test-results
   (t/run-tests 'your.test-a 'your.test-b))           ;; <3>
 
-(def failures-and-errors
-  (let [{:keys [fail error]} test-results]
-    (+ fail error)))                                 ;; <4>
-
-(System/exit failures-and-errors)                    ;; <5>
+(let [{:keys [fail error]} test-results]
+  (when (pos? (+ fail error))
+    (System/exit 1)))                                ;; <4>
 ----
 
 <1> Add sources and tests to the classpath
 <2> Require the test namespaces
 <3> Run all tests in the test namespaces
-<4> Extract failures and errors
-<5> Exit the test script with a non-zero exit code when there are failures or errors
+<4> Exit the test script with a non-zero exit code when there are failures or errors
 
 [[main_file]]
 === Main file
