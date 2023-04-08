@@ -2846,7 +2846,7 @@ flag (a pun to Clojure’s <code>-X</code> of course!):</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="clojure"><span class="n">bb</span><span class="w"> </span><span class="n">-x</span><span class="w"> </span><span class="n">clojure.core/identity</span><span class="w"> </span><span class="n">--hello</span><span class="w"> </span><span class="n">there</span><span class="w">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="n">bb</span><span class="w"> </span><span class="n">-x</span><span class="w"> </span><span class="n">clojure.core/prn</span><span class="w"> </span><span class="n">--hello</span><span class="w"> </span><span class="n">there</span><span class="w">
 </span><span class="p">{</span><span class="no">:hello</span><span class="w"> </span><span class="s">"there"</span><span class="p">}</span></code></pre>
 </div>
 </div>
@@ -2881,7 +2881,7 @@ provide some defaults? This can be done using metadata. Let’s create a
                       </span><span class="no">:coerce</span><span class="w"> </span><span class="p">{</span><span class="no">:num</span><span class="w"> </span><span class="p">[</span><span class="no">:int</span><span class="p">]}</span><span class="w">
                       </span><span class="no">:alias</span><span class="w"> </span><span class="p">{</span><span class="no">:n</span><span class="w"> </span><span class="no">:num</span><span class="p">}}}</span><span class="w">
   </span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="w">
-  </span><span class="n">m</span><span class="p">)</span></code></pre>
+  </span><span class="p">(</span><span class="nb">prn</span><span class="w"> </span><span class="n">m</span><span class="p">))</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
