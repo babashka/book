@@ -11,7 +11,7 @@ flag (a pun to Clojure’s `-X` of course!):
 
 [source,clojure]
 ----
-bb -x clojure.core/identity --hello there
+bb -x clojure.core/prn --hello there
 {:hello "there"}
 ----
 
@@ -42,7 +42,7 @@ provide some defaults? This can be done using metadata. Let’s create a
                       :coerce {:num [:int]}
                       :alias {:n :num}}}
   [m]
-  m)
+  (prn m))
 ----
 
 Now let’s invoke:
