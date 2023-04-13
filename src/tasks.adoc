@@ -423,7 +423,7 @@ directly instead. These two invocations are roughly equivalent:
 
 (tasks/shell {:dir "subproject"} "npm install")
 
-(-> (process "npm install" {:dir "subproject" :inherit true})
+(-> (process {:dir "subproject" :inherit true} "npm install")
     (p/check))
 ----
 
@@ -447,6 +447,14 @@ Note that the varargs signature plays well with feeding `*command-line-args*`:
 [source,clojure]
 ----
 (apply shell "npm install" *command-line-args*)
+----
+
+Note that `shell` does not invoke a shell but just shells out to an external program. As such, `shell` does not understand bash specific syntax.
+The following does not work: `(shell "rm -rf target/*")`. To invoke a specific shell, you should do that explicitly with:
+
+[source,clojure]
+----
+(shell "bash -c" "rm -rf target/*")
 ----
 
 Also see the docstring of `shell`
