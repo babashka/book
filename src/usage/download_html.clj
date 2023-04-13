@@ -1,10 +1,10 @@
 #!/usr/bin/env bb
 
-(require '[babashka.curl :as curl])
+(require '[babashka.http-client :as http])
 
 (defn get-url [url]
   (println "Downloading url:" url)
-  (curl/get url))
+  (http/get url))
 
 (defn write-html [file html]
   (println "Writing file:" file)

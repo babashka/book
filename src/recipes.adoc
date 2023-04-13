@@ -100,54 +100,6 @@ $
 
 If you really want to print the nil, you can use `(prn ..)` instead.
 
-=== HTTP requests
-
-For making HTTP requests you can use:
-
-* https://github.com/borkdude/babashka.curl[babashka.curl]. This library
-is included with babashka and aliased as `curl` in the user namespace.
-The interface is similar to that of
-https://github.com/dakrone/clj-http[clj-http] but it will shell out to
-`curl` to make requests.
-* https://github.com/http-kit/http-kit[org.httpkit.client]
-* `slurp` for simple `GET` requests
-* https://github.com/babashka/clj-http-lite[clj-http-lite] as a library.
-* `clojure.java.shell` or `babashka.process` for shelling out to your
-favorite command line http client
-
-==== Choosing the right client
-
-If memory usage is a concern and you are downloading big files, choose
-`babashka.curl` with `:as :stream` over `org.httpkit.client` since
-http-kit holds the entire response in memory at once. Let's download a
-200mb file with 10mb heap size:
-
-[source,clojure]
-----
-$ bb -Xmx10m -e '(io/copy (:body (curl/get "http://ipv4.download.thinkbroadband.com/200MB.zip" {:as :stream})) (io/file "/tmp/200mb.zip"))'
-----
-
-With `babashka.curl` this works fine. However with `org.httpkit.client`
-that won't work. Not even 190mb of heap will do:
-
-[source,clojure]
-----
-$ bb -Xmx190m -e '(io/copy (:body @(org.httpkit.client/get "http://ipv4.download.thinkbroadband.com/200MB.zip" {:as :stream})) (io/file "/tmp/200mb.zip"))'
-Sun Nov 08 23:01:46 CET 2020 [client-loop] ERROR - select exception, should not happen
-java.lang.OutOfMemoryError: Array allocation too large.
-----
-
-If your script creates many requests with relatively small payloads,
-choose `org.httpkit.client` over `babashka.curl` since `babashka.curl`
-creates a `curl` process for each request.
-
-In the future babashka (1.0.0?) may come with an HTTP client based on
-the JVM 11 `java.net.http` package that ticks all the boxes (async,
-HTTP/2, websockets, multi-part file uploads, sane memory usage) and is a
-suitable replacement for all of the above options. If you know about a
-GraalVM-friendly feature-complete well-maintained library, please reach
-out!
-
 ==== HTTP over Unix sockets
 
 This can be useful for talking to Docker:

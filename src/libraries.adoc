@@ -36,15 +36,15 @@ From Clojure:
 
 Additional libraries:
 
-* https://github.com/babashka/cli[`babashka.cli`]
-* https://github.com/borkdude/babashka.curl[`babashka.curl`]
-* https://github.com/babashka/process[`babashka.process`]
-* https://github.com/babashka/fs[`babashka.fs`]
+* https://github.com/babashka/cli[`babashka.cli`]: CLI arg parsing
+* https://github.com/babashka/http-client[`babashka.http-client`]: making HTTP requests
+* https://github.com/babashka/process[`babashka.process`]: shelling out to external processes
+* https://github.com/babashka/fs[`babashka.fs`]: file system manipulation
 * https://github.com/nrepl/bencode[`bencode.core`] aliased as `bencode`:
 `read-bencode`, `write-bencode`
-* https://github.com/dakrone/cheshire[`cheshire.core`] aliased as `json`
+* https://github.com/dakrone/cheshire[`cheshire.core`] aliased as `json`: dealing with JSON
 * https://clojure.github.io/core.async/[`clojure.core.async`] aliased as
-`async`. Also see https://github.com/borkdude/babashka#coreasync[docs].
+`async`.
 * https://github.com/clojure/data.csv[`clojure.data.csv`] aliased as
 `csv`
 * https://github.com/clojure/data.xml[`clojure.data.xml`] aliased as
@@ -71,11 +71,11 @@ as `transit`
 * https://github.com/yogthos/Selmer[`Selmer`]:
  - `selmer.parser`
 * https://github.com/clojure/tools.logging[`clojure.tools.logging`]
-* https://github.com/ptaoussanis/timbre[`timbre`]
-* https://github.com/borkdude/edamame[`edamame`]
+* https://github.com/ptaoussanis/timbre[`timbre`]: logging
+* https://github.com/borkdude/edamame[`edamame`]: Clojure parser
 * https://github.com/clojure/core.rrb-vector[`core.rrb-vector`]
 
-Check out the https://babashka.org/toolbox/[babashk toolbox] and
+Check out the https://babashka.org/toolbox/[babashka toolbox] and
 https://github.com/borkdude/babashka/blob/master/doc/projects.md[projects] page
 for libraries that are not built-in, but which you can load as an external
 dependency in https://book.babashka.org/#_bb_edn[`bb.edn`].
@@ -257,12 +257,11 @@ $ bb -e '((fn [x] (println x) (when (not (signal/pipe-signal-received?)) (recur 
 The namespace `babashka.signal` is aliased as `signal` in the `user`
 namespace.
 
-[[babashkacurl]]
-==== babashka.curl
+[[babashkahttpclient]]
+==== babashka.http-client
 
-The namespace `babashka.curl` is a tiny wrapper around curl. It's aliased as
-`curl` in the user namespace. See
-https://github.com/borkdude/babashka.curl[babashka.curl] for how to use it.
+The `babashka.http-client` library for making HTTP requests. See
+https://github.com/babashka/http-client[babashka.http-client] for how to use it.
 
 [[babashkaprocess]]
 ==== babashka.process
