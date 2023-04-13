@@ -2498,7 +2498,7 @@ directly instead. These two invocations are roughly equivalent:</p>
 
 </span><span class="p">(</span><span class="nf">tasks/shell</span><span class="w"> </span><span class="p">{</span><span class="no">:dir</span><span class="w"> </span><span class="s">"subproject"</span><span class="p">}</span><span class="w"> </span><span class="s">"npm install"</span><span class="p">)</span><span class="w">
 
-</span><span class="p">(</span><span class="nb">-&gt;</span><span class="w"> </span><span class="p">(</span><span class="nf">process</span><span class="w"> </span><span class="s">"npm install"</span><span class="w"> </span><span class="p">{</span><span class="no">:dir</span><span class="w"> </span><span class="s">"subproject"</span><span class="w"> </span><span class="no">:inherit</span><span class="w"> </span><span class="n">true</span><span class="p">})</span><span class="w">
+</span><span class="p">(</span><span class="nb">-&gt;</span><span class="w"> </span><span class="p">(</span><span class="nf">process</span><span class="w"> </span><span class="p">{</span><span class="no">:dir</span><span class="w"> </span><span class="s">"subproject"</span><span class="w"> </span><span class="no">:inherit</span><span class="w"> </span><span class="n">true</span><span class="p">}</span><span class="w"> </span><span class="s">"npm install"</span><span class="p">)</span><span class="w">
     </span><span class="p">(</span><span class="nf">p/check</span><span class="p">))</span></code></pre>
 </div>
 </div>
@@ -2527,6 +2527,15 @@ directly instead. These two invocations are roughly equivalent:</p>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="clojure"><span class="p">(</span><span class="nb">apply</span><span class="w"> </span><span class="n">shell</span><span class="w"> </span><span class="s">"npm install"</span><span class="w"> </span><span class="n">*command-line-args*</span><span class="p">)</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note that <code>shell</code> does not invoke a shell but just shells out to an external program. As such, <code>shell</code> does not understand bash specific syntax.
+The following does not work: <code>(shell "rm -rf target/*")</code>. To invoke a specific shell, you should do that explicitly with:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">(</span><span class="nf">shell</span><span class="w"> </span><span class="s">"bash -c"</span><span class="w"> </span><span class="s">"rm -rf target/*"</span><span class="p">)</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
