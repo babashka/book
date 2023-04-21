@@ -80,11 +80,61 @@ similar to what people use `Makefile`, `Justfile` or `npm run` for. See <<tasks>
 Since babashka 1.3.177 a `bb.edn` file relative to the invoked file is
 respected. This makes writing system-global scripts with dependencies easier.
 
+Given a `bb.edn`:
+
+[source,clojure]
+----
+{:deps {medley/medley {:mvn/version "1.3.0"}}}
+----
+
+and a script `medley.bb`:
+
+[source,clojure]
+----
+#!/usr/bin/env bb
+
+(ns medley
+  (:require [medley.core :as medley]))
+
+(prn (medley/index-by :id [{:id 1}]))
+----
+
+Given that `medley.bb` is executable, you can directly execute it in the current directory:
+
 [source,shell]
 ----
-~/my_project/bb.edn # dependencies, e.g. {:deps {medley/medley {:mvn/version "1.3.0"}}}
-~/my_project/script.bb # script that uses dependencies, e.g. `(require '[medley.core])`
-/tmp $ # not inside the bb project directory
+~/my_project $ ./medley.bb
+{1 {:id 1}}
+----
+
+To execute this script from anywhere on the system, you just have to add it to the `PATH`:
+
+[source,shell]
+----
 /tmp $ export PATH=$PATH:~/my_project # ensure script is on path
-/tmp $ script.bb # works, respects ~/my_project/bb.edn file with :deps
+/tmp $ medley.bb # works, respects ~/my_project/bb.edn file with :deps
+{1 {:id 1}}
+----
+
+Of course you can just call your script `medley` without the `.bb` extension.
+
+==== Windows
+
+On Windows bash shebangs are not supported. An alternative is to create a script-adjacent `.bat` file, e.g `medley.bat`:
+
+[source,shell]
+----
+@echo off
+set ARGS=%*
+set SCRIPT=%~dp0medley.bb
+bb %SCRIPT% %ARGS%
+----
+
+Then add this script to your `%PATH`:
+
+[source,shell]
+----
+C:\Temp> set PATH=%PATH%;c:\my_project
+C:\Temp> medley
+{1 {:id 1}}
 ----
