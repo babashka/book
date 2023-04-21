@@ -99,7 +99,7 @@ and a script `medley.bb`:
 (prn (medley/index-by :id [{:id 1}]))
 ----
 
-Given that `medley.bb` is executable, you can directly execute it in the current directory:
+Assuming that `medley.bb` is executable (`chmod +x medley.bb`), you can directly execute it in the current directory:
 
 [source,shell]
 ----
