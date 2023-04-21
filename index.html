@@ -2936,6 +2936,24 @@ set of defaults on the task level with <code>:exec-args</code>. Executing a
 function through babashka CLI is done using the <code>babashka.task/exec</code>
 function, available by default in tasks.</p>
 </div>
+<div class="paragraph">
+<p>To add <code>:exec-args</code> that should be evaluated you can pass an extra map to <code>exec</code> as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">{</span><span class="no">:paths</span><span class="w"> </span><span class="p">[</span><span class="s">"."</span><span class="p">]</span><span class="w">
+ </span><span class="no">:tasks</span><span class="w"> </span><span class="p">{</span><span class="n">doit</span><span class="w"> </span><span class="p">{</span><span class="no">:task</span><span class="w"> </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[</span><span class="n">x</span><span class="w"> </span><span class="p">(</span><span class="nf">exec</span><span class="w"> </span><span class="ss">'tasks/my-function</span><span class="w"> </span><span class="p">{</span><span class="no">:exec-args</span><span class="w"> </span><span class="p">{</span><span class="no">:foo</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">3</span><span class="p">)}})]</span><span class="w">
+                       </span><span class="p">(</span><span class="nb">prn</span><span class="w"> </span><span class="no">:x</span><span class="w"> </span><span class="n">x</span><span class="p">))</span><span class="w">
+               </span><span class="no">:exec-args</span><span class="w"> </span><span class="p">{</span><span class="no">:task-data</span><span class="w"> </span><span class="mi">1234</span><span class="p">}}</span><span class="w">
+         </span><span class="p">}}</span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="n">$</span><span class="w"> </span><span class="n">bb</span><span class="w"> </span><span class="n">doit</span><span class="w"> </span><span class="n">--cli-option</span><span class="w"> </span><span class="no">:yeah</span><span class="w"> </span><span class="n">-n</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">3</span><span class="w">
+</span><span class="no">:x</span><span class="w"> </span><span class="p">{</span><span class="no">:ns-data</span><span class="w"> </span><span class="mi">1</span><span class="n">,</span><span class="w"> </span><span class="no">:fn-data</span><span class="w"> </span><span class="mi">1</span><span class="n">,</span><span class="w"> </span><span class="no">:task-data</span><span class="w"> </span><span class="mi">1234</span><span class="n">,</span><span class="w"> </span><span class="no">:cli-option</span><span class="w"> </span><span class="no">:yeah,</span><span class="w"> </span><span class="no">:num</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="no">:foo</span><span class="w"> </span><span class="mi">6</span><span class="p">}</span></code></pre>
+</div>
+</div>
 </div>
 </div>
 </div>
