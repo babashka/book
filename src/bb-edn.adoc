@@ -131,7 +131,7 @@ set SCRIPT=%~dp0medley.bb
 bb %SCRIPT% %ARGS%
 ----
 
-Then add this script to your `%PATH`:
+Then add this script to your `%PATH%`:
 
 [source,shell]
 ----
