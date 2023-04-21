@@ -83,3 +83,20 @@ As you can see it works similar to `-x`, but you can provide another
 set of defaults on the task level with `:exec-args`. Executing a
 function through babashka CLI is done using the `babashka.task/exec`
 function, available by default in tasks.
+
+To add `:exec-args` that should be evaluated you can pass an extra map to `exec` as follows:
+
+[source,clojure]
+----
+{:paths ["."]
+ :tasks {doit {:task (let [x (exec 'tasks/my-function {:exec-args {:foo (+ 1 2 3)}})]
+                       (prn :x x))
+               :exec-args {:task-data 1234}}
+         }}
+----
+
+[source,clojure]
+----
+$ bb doit --cli-option :yeah -n 1 2 3
+:x {:ns-data 1, :fn-data 1, :task-data 1234, :cli-option :yeah, :num [1 2 3] :foo 6}
+----
