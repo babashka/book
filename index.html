@@ -754,6 +754,7 @@ pre.rouge {
 <li><a href="#_paths_and_deps">:paths and :deps</a></li>
 <li><a href="#_min_bb_version">:min-bb-version</a></li>
 <li><a href="#_tasks">:tasks</a></li>
+<li><a href="#_script_adjacent_bb_edn">Script-adjacent bb.edn</a></li>
 </ul>
 </li>
 <li><a href="#tasks">Task runner</a>
@@ -1998,6 +1999,22 @@ print a warning:</p>
 <p>Since babashka 0.4.0 the <code>bb.edn</code> file supports the <code>:tasks</code> entry which
 describes tasks that you can run in the current project. The tasks feature is
 similar to what people use <code>Makefile</code>, <code>Justfile</code> or <code>npm run</code> for. See <a href="#tasks">Task runner</a> for more details.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_script_adjacent_bb_edn"><a class="link" href="#_script_adjacent_bb_edn">Script-adjacent bb.edn</a></h3>
+<div class="paragraph">
+<p>Since babashka 1.3.177 a <code>bb.edn</code> file relative to the invoked file is
+respected. This makes writing system-global scripts with dependencies easier.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">~/my_project/bb.edn <span class="c"># dependencies, e.g. {:deps {medley/medley {:mvn/version "1.3.0"}}}</span>
+~/my_project/script.bb <span class="c"># script that uses dependencies, e.g. `(require '[medley.core])`</span>
+/tmp <span class="nv">$ </span><span class="c"># not inside the bb project directory</span>
+/tmp <span class="nv">$ </span><span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="nv">$PATH</span>:~/my_project <span class="c"># ensure script is on path</span>
+/tmp <span class="nv">$ </span>script.bb <span class="c"># works, respects ~/my_project/bb.edn file with :deps</span></code></pre>
+</div>
 </div>
 </div>
 </div>
