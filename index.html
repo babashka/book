@@ -2007,13 +2007,71 @@ similar to what people use <code>Makefile</code>, <code>Justfile</code> or <code
 <p>Since babashka 1.3.177 a <code>bb.edn</code> file relative to the invoked file is
 respected. This makes writing system-global scripts with dependencies easier.</p>
 </div>
+<div class="paragraph">
+<p>Given a <code>bb.edn</code>:</p>
+</div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="shell">~/my_project/bb.edn <span class="c"># dependencies, e.g. {:deps {medley/medley {:mvn/version "1.3.0"}}}</span>
-~/my_project/script.bb <span class="c"># script that uses dependencies, e.g. `(require '[medley.core])`</span>
-/tmp <span class="nv">$ </span><span class="c"># not inside the bb project directory</span>
-/tmp <span class="nv">$ </span><span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="nv">$PATH</span>:~/my_project <span class="c"># ensure script is on path</span>
-/tmp <span class="nv">$ </span>script.bb <span class="c"># works, respects ~/my_project/bb.edn file with :deps</span></code></pre>
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">{</span><span class="no">:deps</span><span class="w"> </span><span class="p">{</span><span class="n">medley/medley</span><span class="w"> </span><span class="p">{</span><span class="no">:mvn/version</span><span class="w"> </span><span class="s">"1.3.0"</span><span class="p">}}}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>and a script <code>medley.bb</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="o">#</span><span class="n">!/usr/bin/env</span><span class="w"> </span><span class="n">bb</span><span class="w">
+
+</span><span class="p">(</span><span class="nf">ns</span><span class="w"> </span><span class="n">medley</span><span class="w">
+  </span><span class="p">(</span><span class="no">:require</span><span class="w"> </span><span class="p">[</span><span class="n">medley.core</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">medley</span><span class="p">]))</span><span class="w">
+
+</span><span class="p">(</span><span class="nb">prn</span><span class="w"> </span><span class="p">(</span><span class="nf">medley/index-by</span><span class="w"> </span><span class="no">:id</span><span class="w"> </span><span class="p">[{</span><span class="no">:id</span><span class="w"> </span><span class="mi">1</span><span class="p">}]))</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Given that <code>medley.bb</code> is executable, you can directly execute it in the current directory:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">~/my_project <span class="nv">$ </span>./medley.bb
+<span class="o">{</span>1 <span class="o">{</span>:id 1<span class="o">}}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To execute this script from anywhere on the system, you just have to add it to the <code>PATH</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">/tmp <span class="nv">$ </span><span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="nv">$PATH</span>:~/my_project <span class="c"># ensure script is on path</span>
+/tmp <span class="nv">$ </span>medley.bb <span class="c"># works, respects ~/my_project/bb.edn file with :deps</span>
+<span class="o">{</span>1 <span class="o">{</span>:id 1<span class="o">}}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Of course you can just call your script <code>medley</code> without the <code>.bb</code> extension.</p>
+</div>
+<div class="sect3">
+<h4 id="_windows"><a class="link" href="#_windows">Windows</a></h4>
+<div class="paragraph">
+<p>On Windows bash shebangs are not supported. An alternative is to create a script-adjacent <code>.bat</code> file, e.g <code>medley.bat</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">@echo off
+<span class="nb">set </span><span class="nv">ARGS</span><span class="o">=</span>%<span class="k">*</span>
+<span class="nb">set </span><span class="nv">SCRIPT</span><span class="o">=</span>%~dp0medley.bb
+bb %SCRIPT% %ARGS%</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Then add this script to your <code>%PATH</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">C:<span class="se">\T</span>emp&gt; <span class="nb">set </span><span class="nv">PATH</span><span class="o">=</span>%PATH%<span class="p">;</span>c:<span class="se">\m</span>y_project
+C:<span class="se">\T</span>emp&gt; medley
+<span class="o">{</span>1 <span class="o">{</span>:id 1<span class="o">}}</span></code></pre>
+</div>
 </div>
 </div>
 </div>
