@@ -118,6 +118,7 @@ To execute this script from anywhere on the system, you just have to add it to t
 
 Of course you can just call your script `medley` without the `.bb` extension.
 
+[[script-adjacent-bb-edn-windows]]
 ==== Windows
 
 On Windows bash shebangs are not supported. An alternative is to create a script-adjacent `.bat` file, e.g `medley.bat`:
