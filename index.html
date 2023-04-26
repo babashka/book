@@ -966,10 +966,11 @@ babashka.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>Babashka v1.3.178
+<pre>Babashka v1.3.179
 
 Usage: bb [svm-opts] [global-opts] [eval opts] [cmdline args]
 or:    bb [svm-opts] [global-opts] file [cmdline args]
+or:    bb [svm-opts] [global-opts] task [cmdline args]
 or:    bb [svm-opts] [global-opts] subcommand [subcommand opts] [cmdline args]
 
 Substrate VM opts:
@@ -982,11 +983,13 @@ Global opts:
   -cp, --classpath  Classpath to use. Overrides bb.edn classpath.
   --debug           Print debug information and internal stacktrace in case of exception.
   --init &lt;file&gt;     Load file after any preloads and prior to evaluation/subcommands.
-  --config &lt;file&gt;   Replace bb.edn with file. Defaults to bb.edn adjacent to invoked file or bb.edn in current dir. Relative paths are resolved relative to file.
+  --config &lt;file&gt;   Replace bb.edn with file. Defaults to bb.edn adjacent to invoked file or bb.edn in current dir. Relative paths are resolved relative to bb.edn.
   --deps-root &lt;dir&gt; Treat dir as root of relative paths in config.
   --prn             Print result via clojure.core/prn
   -Sforce           Force recalculation of the classpath (don't use the cache)
   -Sdeps            Deps data to use as the last deps file to be merged
+  -f, --file &lt;path&gt; Run file
+  --jar &lt;path&gt;      Run uberjar
 
 Help:
 
@@ -998,7 +1001,6 @@ Help:
 Evaluation:
 
   -e, --eval &lt;expr&gt;    Evaluate an expression.
-  -f, --file &lt;path&gt;    Evaluate a file.
   -m, --main &lt;ns|var&gt;  Call the -main function from a namespace or call a fully qualified var.
   -x, --exec &lt;var&gt;     Call the fully qualified var. Args are parsed by babashka CLI.
 
