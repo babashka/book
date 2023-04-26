@@ -16,7 +16,7 @@ bb -x clojure.core/prn --hello there
 ----
 
 What we see in the above snippet is that a map `{:hello "there"}` is
-constructed by babashka CLI and then fed to the `identity` function.
+constructed by babashka CLI and then fed to the `prn` function.
 After that the result is printed to the console.
 
 What if we want to influence how things are parsed by babashka CLI and
