@@ -75,38 +75,30 @@ $ bb example.clj
 === Parsing command line arguments
 
 Command-line arguments can be retrieved using `*command-line-args*`. If you
-want to parse command line arguments, you may use the built-in
-`clojure.tools.cli` namespace:
-
-
-Babashka ships with `clojure.tools.cli`:
+want to parse command line arguments, you can use the built-in
+`babashka.cli` namespace:
 
 [source,clojure]
 ----
-(require '[clojure.tools.cli :refer [parse-opts]])
+(require '[babashka.cli :as cli])
 
-(def cli-options
-  ;; An option with a required argument
-  [["-p" "--port PORT" "Port number"
-    :default 80
-    :parse-fn #(Integer/parseInt %)
-    :validate [#(< 0 % 0x10000) "Must be a number between 0 and 65536"]]
-   ["-h" "--help"]])
+(def cli-options {:port {:default 80 :coerce :long}
+                  :help {:coerce :boolean}
 
-(:options (parse-opts *command-line-args* cli-options))
+(prn (:options (cli/parse-opts *command-line-args* {:spec cli-options})))
 ----
 
 [source,bash]
 ----
 $ bb script.clj
 {:port 80}
-$ bb script.clj -h
+$ bb script.clj --port 1223
+{:port 1223}
+$ bb script.clj --help
 {:port 80, :help true}
 ----
 
-There is also the
-https://github.com/borkdude/babashka/blob/master/doc/projects.md#nubankdocopt[nubank/docopt]
-library that is compatible with babashka.
+Note that https://github.com/clojure/tools.cli[clojure.tools.cli] is also built-in to babashka.
 
 === Classpath
 
