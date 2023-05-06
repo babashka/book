@@ -76,7 +76,7 @@ $ bb example.clj
 
 Command-line arguments can be retrieved using `*command-line-args*`. If you
 want to parse command line arguments, you can use the built-in
-`babashka.cli` namespace:
+https://github.com/babashka/cli[`babashka.cli`] namespace:
 
 [source,clojure]
 ----
