@@ -83,7 +83,7 @@ https://github.com/babashka/cli[`babashka.cli`] namespace:
 (require '[babashka.cli :as cli])
 
 (def cli-options {:port {:default 80 :coerce :long}
-                  :help {:coerce :boolean}
+                  :help {:coerce :boolean}})
 
 (prn (:options (cli/parse-opts *command-line-args* {:spec cli-options})))
 ----
