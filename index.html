@@ -1144,9 +1144,9 @@ want to parse command line arguments, you can use the built-in
 <pre class="rouge highlight"><code data-lang="clojure"><span class="p">(</span><span class="nf">require</span><span class="w"> </span><span class="o">'</span><span class="p">[</span><span class="n">babashka.cli</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">cli</span><span class="p">])</span><span class="w">
 
 </span><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">cli-options</span><span class="w"> </span><span class="p">{</span><span class="no">:port</span><span class="w"> </span><span class="p">{</span><span class="no">:default</span><span class="w"> </span><span class="mi">80</span><span class="w"> </span><span class="no">:coerce</span><span class="w"> </span><span class="no">:long</span><span class="p">}</span><span class="w">
-                  </span><span class="no">:help</span><span class="w"> </span><span class="p">{</span><span class="no">:coerce</span><span class="w"> </span><span class="no">:boolean</span><span class="p">}</span><span class="w">
+                  </span><span class="no">:help</span><span class="w"> </span><span class="p">{</span><span class="no">:coerce</span><span class="w"> </span><span class="no">:boolean</span><span class="p">}})</span><span class="w">
 
-</span><span class="p">(</span><span class="nb">prn</span><span class="w"> </span><span class="p">(</span><span class="no">:options</span><span class="w"> </span><span class="p">(</span><span class="nf">cli/parse-opts</span><span class="w"> </span><span class="n">*command-line-args*</span><span class="w"> </span><span class="p">{</span><span class="no">:spec</span><span class="w"> </span><span class="n">cli-options</span><span class="p">})))</span></code></pre>
+</span><span class="p">(</span><span class="nb">prn</span><span class="w"> </span><span class="p">(</span><span class="nf">cli/parse-opts</span><span class="w"> </span><span class="n">*command-line-args*</span><span class="w"> </span><span class="p">{</span><span class="no">:spec</span><span class="w"> </span><span class="n">cli-options</span><span class="p">}))</span></code></pre>
 </div>
 </div>
 <div class="listingblock">
