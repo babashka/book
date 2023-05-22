@@ -23,6 +23,11 @@ If we have a project that has a `deps.edn` and would like to reuse those deps in
 {:deps {your-org/your-project {:local/root "."}}}
 ----
 
+`bb.edn` applies to the local project, and dependencies defined in
+this files are never shared with other projects. This is typically
+what you want when writing a script or tool. By contrast, `deps.edn`
+is useful when creating libraries that are used by other projects.
+
 NOTE: Use a unique name to refer to your project's `deps.edn`, the same name that
 you would otherwise use when referring to your project as a dependency.
 
