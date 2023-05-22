@@ -1922,6 +1922,12 @@ added to the classpath:</p>
 <pre class="rouge highlight"><code data-lang="clojure"><span class="p">{</span><span class="no">:deps</span><span class="w"> </span><span class="p">{</span><span class="n">your-org/your-project</span><span class="w"> </span><span class="p">{</span><span class="no">:local/root</span><span class="w"> </span><span class="s">"."</span><span class="p">}}}</span></code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p><code>bb.edn</code> applies to the local project, and dependencies defined in
+this files are never shared with other projects. This is typically
+what you want when writing a script or tool. By contrast, <code>deps.edn</code>
+is useful when creating libraries that are used by other projects.</p>
+</div>
 <div class="admonitionblock note">
 <table>
 <tr>
