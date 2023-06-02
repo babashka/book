@@ -263,7 +263,7 @@ Producing an uberscript with all required code:
 
 [source,bash]
 ----
-$ bb uberscript glob-uberscript.clj -f glob.clj
+$ bb uberscript glob-uberscript.clj glob.clj
 ----
 
 To prove that we don't need the classpath anymore:
