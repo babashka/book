@@ -966,7 +966,7 @@ babashka.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>Babashka v1.3.179
+<pre>Babashka v1.3.181
 
 Usage: bb [svm-opts] [global-opts] [eval opts] [cmdline args]
 or:    bb [svm-opts] [global-opts] file [cmdline args]
@@ -2198,6 +2198,9 @@ when invoking <code>bb tasks</code> on the command line. Other options include:<
 <li>
 <p><code>:enter</code>, <code>:leave</code>: override the global <code>:enter</code>/<code>:leave</code> hook.</p>
 </li>
+<li>
+<p><code>:override-builtin</code>: override the name of a built-in babashka command.</p>
+</li>
 </ul>
 </div>
 </div>
@@ -2874,6 +2877,24 @@ some sort of grouping, you can do it like <code>foo-bar</code>, <code>foo:bar</c
 <p>execute subcommand as <code>bb --foo</code></p>
 </li>
 </ul>
+</div>
+<div class="paragraph">
+<p>When choosing a task name that overrides a babashka builtin subcommand, you have
+to provide the <code>:override-builtin</code> option to get rid of the warning that appears
+when running babashka:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="n">$</span><span class="w"> </span><span class="n">bb</span><span class="w"> </span><span class="n">-Sdeps</span><span class="w"> </span><span class="o">'</span><span class="p">{</span><span class="no">:tasks</span><span class="w"> </span><span class="p">{</span><span class="n">help</span><span class="w"> </span><span class="p">{</span><span class="no">:task</span><span class="w"> </span><span class="p">(</span><span class="nb">prn</span><span class="w"> </span><span class="no">:help</span><span class="p">)}}}</span><span class="o">'</span><span class="w"> </span><span class="n">help</span><span class="w">
+</span><span class="p">[</span><span class="n">babashka</span><span class="p">]</span><span class="w"> </span><span class="n">WARNING</span><span class="err">:</span><span class="w"> </span><span class="n">task</span><span class="p">(</span><span class="nf">s</span><span class="p">)</span><span class="w"> </span><span class="ss">'help</span><span class="o">'</span><span class="w"> </span><span class="n">override</span><span class="w"> </span><span class="n">built-in</span><span class="w"> </span><span class="n">command</span><span class="p">(</span><span class="nf">s</span><span class="p">)</span><span class="nb">.</span><span class="w">
+</span><span class="no">:help</span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="n">$</span><span class="w"> </span><span class="n">bb</span><span class="w"> </span><span class="n">-Sdeps</span><span class="w"> </span><span class="o">'</span><span class="p">{</span><span class="no">:tasks</span><span class="w"> </span><span class="p">{</span><span class="n">help</span><span class="w"> </span><span class="p">{</span><span class="no">:task</span><span class="w"> </span><span class="p">(</span><span class="nb">prn</span><span class="w"> </span><span class="no">:help</span><span class="p">)</span><span class="w"> </span><span class="no">:override-builtin</span><span class="w"> </span><span class="n">true</span><span class="p">}}}</span><span class="o">'</span><span class="w"> </span><span class="n">help</span><span class="w">
+</span><span class="no">:help</span></code></pre>
+</div>
 </div>
 </div>
 <div class="sect3">
