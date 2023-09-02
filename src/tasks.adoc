@@ -98,6 +98,7 @@ when invoking `bb tasks` on the command line. Other options include:
 - `:extra-paths`: add paths to the classpath.
 - `:extra-deps`: add extra dependencies to the classpath.
 - `:enter`, `:leave`: override the global `:enter`/`:leave` hook.
+- `:override-builtin`: override the name of a built-in babashka command.
 
 === Discoverability
 
@@ -649,6 +650,23 @@ Escape hatches in case of conflicts:
 - execute relative file as `bb ./foo`
 - execute task as `bb run foo`
 - execute subcommand as `bb --foo`
+
+When choosing a task name that overrides a babashka builtin subcommand, you have
+to provide the `:override-builtin` option to get rid of the warning that appears
+when running babashka:
+
+[source,clojure]
+----
+$ bb -Sdeps '{:tasks {help {:task (prn :help)}}}' help
+[babashka] WARNING: task(s) 'help' override built-in command(s).
+:help
+----
+
+[source,clojure]
+----
+$ bb -Sdeps '{:tasks {help {:task (prn :help) :override-builtin true}}}' help
+:help
+----
 
 ==== Conflicting task and clojure.core var names
 
