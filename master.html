@@ -754,6 +754,7 @@ pre.rouge {
 <li><a href="#_paths_and_deps">:paths and :deps</a></li>
 <li><a href="#_min_bb_version">:min-bb-version</a></li>
 <li><a href="#_tasks">:tasks</a></li>
+<li><a href="#_script_adjacent_bb_edn">Script-adjacent bb.edn</a></li>
 </ul>
 </li>
 <li><a href="#tasks">Task runner</a>
@@ -806,7 +807,6 @@ pre.rouge {
 <li><a href="#main_file">Main file</a></li>
 <li><a href="#_shutdown_hook">Shutdown hook</a></li>
 <li><a href="#_printing_returned_values">Printing returned values</a></li>
-<li><a href="#_http_requests">HTTP requests</a></li>
 <li><a href="#core_async">Core.async</a></li>
 <li><a href="#_interacting_with_an_nrepl_server">Interacting with an nREPL server</a></li>
 <li><a href="#_running_from_cygwingit_bash">Running from Cygwin/Git Bash</a></li>
@@ -966,10 +966,11 @@ babashka.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>Babashka v1.3.176
+<pre>Babashka v1.3.181
 
 Usage: bb [svm-opts] [global-opts] [eval opts] [cmdline args]
 or:    bb [svm-opts] [global-opts] file [cmdline args]
+or:    bb [svm-opts] [global-opts] task [cmdline args]
 or:    bb [svm-opts] [global-opts] subcommand [subcommand opts] [cmdline args]
 
 Substrate VM opts:
@@ -982,11 +983,13 @@ Global opts:
   -cp, --classpath  Classpath to use. Overrides bb.edn classpath.
   --debug           Print debug information and internal stacktrace in case of exception.
   --init &lt;file&gt;     Load file after any preloads and prior to evaluation/subcommands.
-  --config &lt;file&gt;   Replacing bb.edn with file. Relative paths are resolved relative to file.
+  --config &lt;file&gt;   Replace bb.edn with file. Defaults to bb.edn adjacent to invoked file or bb.edn in current dir. Relative paths are resolved relative to bb.edn.
   --deps-root &lt;dir&gt; Treat dir as root of relative paths in config.
   --prn             Print result via clojure.core/prn
   -Sforce           Force recalculation of the classpath (don't use the cache)
   -Sdeps            Deps data to use as the last deps file to be merged
+  -f, --file &lt;path&gt; Run file
+  --jar &lt;path&gt;      Run uberjar
 
 Help:
 
@@ -998,7 +1001,6 @@ Help:
 Evaluation:
 
   -e, --eval &lt;expr&gt;    Evaluate an expression.
-  -f, --file &lt;path&gt;    Evaluate a file.
   -m, --main &lt;ns|var&gt;  Call the -main function from a namespace or call a fully qualified var.
   -x, --exec &lt;var&gt;     Call the fully qualified var. Args are parsed by babashka CLI.
 
@@ -1067,11 +1069,11 @@ When no eval opts or subcommand is provided, the implicit subcommand is repl.</p
 <div class="content">
 <pre class="rouge highlight"><code data-lang="clojure"><span class="o">#</span><span class="n">!/usr/bin/env</span><span class="w"> </span><span class="n">bb</span><span class="w">
 
-</span><span class="p">(</span><span class="nf">require</span><span class="w"> </span><span class="o">'</span><span class="p">[</span><span class="n">babashka.curl</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">curl</span><span class="p">])</span><span class="w">
+</span><span class="p">(</span><span class="nf">require</span><span class="w"> </span><span class="o">'</span><span class="p">[</span><span class="n">babashka.http-client</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">http</span><span class="p">])</span><span class="w">
 
 </span><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">get-url</span><span class="w"> </span><span class="p">[</span><span class="n">url</span><span class="p">]</span><span class="w">
   </span><span class="p">(</span><span class="nb">println</span><span class="w"> </span><span class="s">"Downloading url:"</span><span class="w"> </span><span class="n">url</span><span class="p">)</span><span class="w">
-  </span><span class="p">(</span><span class="nf">curl/get</span><span class="w"> </span><span class="n">url</span><span class="p">))</span><span class="w">
+  </span><span class="p">(</span><span class="nf">http/get</span><span class="w"> </span><span class="n">url</span><span class="p">))</span><span class="w">
 
 </span><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">write-html</span><span class="w"> </span><span class="p">[</span><span class="n">file</span><span class="w"> </span><span class="n">html</span><span class="p">]</span><span class="w">
   </span><span class="p">(</span><span class="nb">println</span><span class="w"> </span><span class="s">"Writing file:"</span><span class="w"> </span><span class="n">file</span><span class="p">)</span><span class="w">
@@ -1134,39 +1136,31 @@ being executed:</p>
 <h3 id="_parsing_command_line_arguments"><a class="link" href="#_parsing_command_line_arguments">Parsing command line arguments</a></h3>
 <div class="paragraph">
 <p>Command-line arguments can be retrieved using <code>*command-line-args*</code>. If you
-want to parse command line arguments, you may use the built-in
-<code>clojure.tools.cli</code> namespace:</p>
-</div>
-<div class="paragraph">
-<p>Babashka ships with <code>clojure.tools.cli</code>:</p>
+want to parse command line arguments, you can use the built-in
+<a href="https://github.com/babashka/cli"><code>babashka.cli</code></a> namespace:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="clojure"><span class="p">(</span><span class="nf">require</span><span class="w"> </span><span class="o">'</span><span class="p">[</span><span class="n">clojure.tools.cli</span><span class="w"> </span><span class="no">:refer</span><span class="w"> </span><span class="p">[</span><span class="n">parse-opts</span><span class="p">]])</span><span class="w">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">(</span><span class="nf">require</span><span class="w"> </span><span class="o">'</span><span class="p">[</span><span class="n">babashka.cli</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">cli</span><span class="p">])</span><span class="w">
 
-</span><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">cli-options</span><span class="w">
-  </span><span class="c1">;; An option with a required argument</span><span class="w">
-  </span><span class="p">[[</span><span class="s">"-p"</span><span class="w"> </span><span class="s">"--port PORT"</span><span class="w"> </span><span class="s">"Port number"</span><span class="w">
-    </span><span class="no">:default</span><span class="w"> </span><span class="mi">80</span><span class="w">
-    </span><span class="no">:parse-fn</span><span class="w"> </span><span class="o">#</span><span class="p">(</span><span class="nf">Integer/parseInt</span><span class="w"> </span><span class="n">%</span><span class="p">)</span><span class="w">
-    </span><span class="no">:validate</span><span class="w"> </span><span class="p">[</span><span class="o">#</span><span class="p">(</span><span class="nb">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="n">%</span><span class="w"> </span><span class="mi">0</span><span class="n">x10000</span><span class="p">)</span><span class="w"> </span><span class="s">"Must be a number between 0 and 65536"</span><span class="p">]]</span><span class="w">
-   </span><span class="p">[</span><span class="s">"-h"</span><span class="w"> </span><span class="s">"--help"</span><span class="p">]])</span><span class="w">
+</span><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">cli-options</span><span class="w"> </span><span class="p">{</span><span class="no">:port</span><span class="w"> </span><span class="p">{</span><span class="no">:default</span><span class="w"> </span><span class="mi">80</span><span class="w"> </span><span class="no">:coerce</span><span class="w"> </span><span class="no">:long</span><span class="p">}</span><span class="w">
+                  </span><span class="no">:help</span><span class="w"> </span><span class="p">{</span><span class="no">:coerce</span><span class="w"> </span><span class="no">:boolean</span><span class="p">}})</span><span class="w">
 
-</span><span class="p">(</span><span class="no">:options</span><span class="w"> </span><span class="p">(</span><span class="nf">parse-opts</span><span class="w"> </span><span class="n">*command-line-args*</span><span class="w"> </span><span class="n">cli-options</span><span class="p">))</span></code></pre>
+</span><span class="p">(</span><span class="nb">prn</span><span class="w"> </span><span class="p">(</span><span class="nf">cli/parse-opts</span><span class="w"> </span><span class="n">*command-line-args*</span><span class="w"> </span><span class="p">{</span><span class="no">:spec</span><span class="w"> </span><span class="n">cli-options</span><span class="p">}))</span></code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="bash"><span class="nv">$ </span>bb script.clj
 <span class="o">{</span>:port 80<span class="o">}</span>
-<span class="nv">$ </span>bb script.clj <span class="nt">-h</span>
+<span class="nv">$ </span>bb script.clj <span class="nt">--port</span> 1223
+<span class="o">{</span>:port 1223<span class="o">}</span>
+<span class="nv">$ </span>bb script.clj <span class="nt">--help</span>
 <span class="o">{</span>:port 80, :help <span class="nb">true</span><span class="o">}</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>There is also the
-<a href="https://github.com/borkdude/babashka/blob/master/doc/projects.md#nubankdocopt">nubank/docopt</a>
-library that is compatible with babashka.</p>
+<p>Note that <a href="https://github.com/clojure/tools.cli">clojure.tools.cli</a> is also built-in to babashka.</p>
 </div>
 </div>
 <div class="sect2">
@@ -1739,7 +1733,7 @@ bb glob.clj <span class="s1">'*.md'</span>   0.03s  user 0.01s system 88% cpu 0.
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><span class="nv">$ </span>bb uberscript glob-uberscript.clj <span class="nt">-f</span> glob.clj</code></pre>
+<pre class="rouge highlight"><code data-lang="bash"><span class="nv">$ </span>bb uberscript glob-uberscript.clj glob.clj</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1928,6 +1922,12 @@ added to the classpath:</p>
 <pre class="rouge highlight"><code data-lang="clojure"><span class="p">{</span><span class="no">:deps</span><span class="w"> </span><span class="p">{</span><span class="n">your-org/your-project</span><span class="w"> </span><span class="p">{</span><span class="no">:local/root</span><span class="w"> </span><span class="s">"."</span><span class="p">}}}</span></code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p><code>bb.edn</code> applies to the local project, and dependencies defined in
+this files are never shared with other projects. This is typically
+what you want when writing a script or tool. By contrast, <code>deps.edn</code>
+is useful when creating libraries that are used by other projects.</p>
+</div>
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -1999,6 +1999,80 @@ print a warning:</p>
 <p>Since babashka 0.4.0 the <code>bb.edn</code> file supports the <code>:tasks</code> entry which
 describes tasks that you can run in the current project. The tasks feature is
 similar to what people use <code>Makefile</code>, <code>Justfile</code> or <code>npm run</code> for. See <a href="#tasks">Task runner</a> for more details.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_script_adjacent_bb_edn"><a class="link" href="#_script_adjacent_bb_edn">Script-adjacent bb.edn</a></h3>
+<div class="paragraph">
+<p>Since babashka 1.3.177 a <code>bb.edn</code> file relative to the invoked file is
+respected. This makes writing system-global scripts with dependencies easier.</p>
+</div>
+<div class="paragraph">
+<p>Given a <code>bb.edn</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">{</span><span class="no">:deps</span><span class="w"> </span><span class="p">{</span><span class="n">medley/medley</span><span class="w"> </span><span class="p">{</span><span class="no">:mvn/version</span><span class="w"> </span><span class="s">"1.3.0"</span><span class="p">}}}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>and a script <code>medley.bb</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="o">#</span><span class="n">!/usr/bin/env</span><span class="w"> </span><span class="n">bb</span><span class="w">
+
+</span><span class="p">(</span><span class="nf">ns</span><span class="w"> </span><span class="n">medley</span><span class="w">
+  </span><span class="p">(</span><span class="no">:require</span><span class="w"> </span><span class="p">[</span><span class="n">medley.core</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">medley</span><span class="p">]))</span><span class="w">
+
+</span><span class="p">(</span><span class="nb">prn</span><span class="w"> </span><span class="p">(</span><span class="nf">medley/index-by</span><span class="w"> </span><span class="no">:id</span><span class="w"> </span><span class="p">[{</span><span class="no">:id</span><span class="w"> </span><span class="mi">1</span><span class="p">}]))</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Assuming that <code>medley.bb</code> is executable (<code>chmod +x medley.bb</code>), you can directly execute it in the current directory:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">~/my_project <span class="nv">$ </span>./medley.bb
+<span class="o">{</span>1 <span class="o">{</span>:id 1<span class="o">}}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To execute this script from anywhere on the system, you just have to add it to the <code>PATH</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">/tmp <span class="nv">$ </span><span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="nv">$PATH</span>:~/my_project <span class="c"># ensure script is on path</span>
+/tmp <span class="nv">$ </span>medley.bb <span class="c"># works, respects ~/my_project/bb.edn file with :deps</span>
+<span class="o">{</span>1 <span class="o">{</span>:id 1<span class="o">}}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Of course you can just call your script <code>medley</code> without the <code>.bb</code> extension.</p>
+</div>
+<div class="sect3">
+<h4 id="script-adjacent-bb-edn-windows"><a class="link" href="#script-adjacent-bb-edn-windows">Windows</a></h4>
+<div class="paragraph">
+<p>On Windows bash shebangs are not supported. An alternative is to create a script-adjacent <code>.bat</code> file, e.g <code>medley.bat</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">@echo off
+<span class="nb">set </span><span class="nv">ARGS</span><span class="o">=</span>%<span class="k">*</span>
+<span class="nb">set </span><span class="nv">SCRIPT</span><span class="o">=</span>%~dp0medley.bb
+bb %SCRIPT% %ARGS%</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Then add this script to your <code>%PATH%</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">C:<span class="se">\T</span>emp&gt; <span class="nb">set </span><span class="nv">PATH</span><span class="o">=</span>%PATH%<span class="p">;</span>c:<span class="se">\m</span>y_project
+C:<span class="se">\T</span>emp&gt; medley
+<span class="o">{</span>1 <span class="o">{</span>:id 1<span class="o">}}</span></code></pre>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -2123,6 +2197,9 @@ when invoking <code>bb tasks</code> on the command line. Other options include:<
 </li>
 <li>
 <p><code>:enter</code>, <code>:leave</code>: override the global <code>:enter</code>/<code>:leave</code> hook.</p>
+</li>
+<li>
+<p><code>:override-builtin</code>: override the name of a built-in babashka command.</p>
 </li>
 </ul>
 </div>
@@ -2465,6 +2542,14 @@ ls</span>: foo: No such file or directory
 </div>
 </div>
 <div class="paragraph">
+<p>To capture output as a string, pass the special value <code>:string</code> and get the <code>:out</code> key from the resulting map. In most cases, you probably want to <code>trim</code> away the trailing newline as well:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">(</span><span class="nf">-&gt;&gt;</span><span class="w"> </span><span class="s">"echo hello"</span><span class="w"> </span><span class="p">(</span><span class="nf">shell</span><span class="w"> </span><span class="p">{</span><span class="no">:out</span><span class="w"> </span><span class="no">:string</span><span class="p">})</span><span class="w"> </span><span class="no">:out</span><span class="w"> </span><span class="n">clojure.string/trim</span><span class="p">)</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
 <p>To run a program in another directory, you can use the <code>:dir</code> option:</p>
 </div>
 <div class="listingblock">
@@ -2498,7 +2583,7 @@ directly instead. These two invocations are roughly equivalent:</p>
 
 </span><span class="p">(</span><span class="nf">tasks/shell</span><span class="w"> </span><span class="p">{</span><span class="no">:dir</span><span class="w"> </span><span class="s">"subproject"</span><span class="p">}</span><span class="w"> </span><span class="s">"npm install"</span><span class="p">)</span><span class="w">
 
-</span><span class="p">(</span><span class="nb">-&gt;</span><span class="w"> </span><span class="p">(</span><span class="nf">process</span><span class="w"> </span><span class="s">"npm install"</span><span class="w"> </span><span class="p">{</span><span class="no">:dir</span><span class="w"> </span><span class="s">"subproject"</span><span class="w"> </span><span class="no">:inherit</span><span class="w"> </span><span class="n">true</span><span class="p">})</span><span class="w">
+</span><span class="p">(</span><span class="nb">-&gt;</span><span class="w"> </span><span class="p">(</span><span class="nf">process</span><span class="w"> </span><span class="p">{</span><span class="no">:dir</span><span class="w"> </span><span class="s">"subproject"</span><span class="w"> </span><span class="no">:inherit</span><span class="w"> </span><span class="n">true</span><span class="p">}</span><span class="w"> </span><span class="s">"npm install"</span><span class="p">)</span><span class="w">
     </span><span class="p">(</span><span class="nf">p/check</span><span class="p">))</span></code></pre>
 </div>
 </div>
@@ -2527,6 +2612,15 @@ directly instead. These two invocations are roughly equivalent:</p>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="clojure"><span class="p">(</span><span class="nb">apply</span><span class="w"> </span><span class="n">shell</span><span class="w"> </span><span class="s">"npm install"</span><span class="w"> </span><span class="n">*command-line-args*</span><span class="p">)</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note that <code>shell</code> does not invoke a shell but just shells out to an external program. As such, <code>shell</code> does not understand bash specific syntax.
+The following does not work: <code>(shell "rm -rf target/*")</code>. To invoke a specific shell, you should do that explicitly with:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">(</span><span class="nf">shell</span><span class="w"> </span><span class="s">"bash -c"</span><span class="w"> </span><span class="s">"rm -rf target/*"</span><span class="p">)</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -2792,6 +2886,24 @@ some sort of grouping, you can do it like <code>foo-bar</code>, <code>foo:bar</c
 </li>
 </ul>
 </div>
+<div class="paragraph">
+<p>When choosing a task name that overrides a babashka builtin subcommand, you have
+to provide the <code>:override-builtin</code> option to get rid of the warning that appears
+when running babashka:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="n">$</span><span class="w"> </span><span class="n">bb</span><span class="w"> </span><span class="n">-Sdeps</span><span class="w"> </span><span class="o">'</span><span class="p">{</span><span class="no">:tasks</span><span class="w"> </span><span class="p">{</span><span class="n">help</span><span class="w"> </span><span class="p">{</span><span class="no">:task</span><span class="w"> </span><span class="p">(</span><span class="nb">prn</span><span class="w"> </span><span class="no">:help</span><span class="p">)}}}</span><span class="o">'</span><span class="w"> </span><span class="n">help</span><span class="w">
+</span><span class="p">[</span><span class="n">babashka</span><span class="p">]</span><span class="w"> </span><span class="n">WARNING</span><span class="err">:</span><span class="w"> </span><span class="n">task</span><span class="p">(</span><span class="nf">s</span><span class="p">)</span><span class="w"> </span><span class="ss">'help</span><span class="o">'</span><span class="w"> </span><span class="n">override</span><span class="w"> </span><span class="n">built-in</span><span class="w"> </span><span class="n">command</span><span class="p">(</span><span class="nf">s</span><span class="p">)</span><span class="nb">.</span><span class="w">
+</span><span class="no">:help</span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="n">$</span><span class="w"> </span><span class="n">bb</span><span class="w"> </span><span class="n">-Sdeps</span><span class="w"> </span><span class="o">'</span><span class="p">{</span><span class="no">:tasks</span><span class="w"> </span><span class="p">{</span><span class="n">help</span><span class="w"> </span><span class="p">{</span><span class="no">:task</span><span class="w"> </span><span class="p">(</span><span class="nb">prn</span><span class="w"> </span><span class="no">:help</span><span class="p">)</span><span class="w"> </span><span class="no">:override-builtin</span><span class="w"> </span><span class="n">true</span><span class="p">}}}</span><span class="o">'</span><span class="w"> </span><span class="n">help</span><span class="w">
+</span><span class="no">:help</span></code></pre>
+</div>
+</div>
 </div>
 <div class="sect3">
 <h4 id="_conflicting_task_and_clojure_core_var_names"><a class="link" href="#_conflicting_task_and_clojure_core_var_names">Conflicting task and clojure.core var names</a></h4>
@@ -2852,7 +2964,7 @@ flag (a pun to Clojure’s <code>-X</code> of course!):</p>
 </div>
 <div class="paragraph">
 <p>What we see in the above snippet is that a map <code>{:hello "there"}</code> is
-constructed by babashka CLI and then fed to the <code>identity</code> function.
+constructed by babashka CLI and then fed to the <code>prn</code> function.
 After that the result is printed to the console.</p>
 </div>
 <div class="paragraph">
@@ -2927,6 +3039,24 @@ to from the clojure CLI.</p>
 set of defaults on the task level with <code>:exec-args</code>. Executing a
 function through babashka CLI is done using the <code>babashka.task/exec</code>
 function, available by default in tasks.</p>
+</div>
+<div class="paragraph">
+<p>To add <code>:exec-args</code> that should be evaluated you can pass an extra map to <code>exec</code> as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">{</span><span class="no">:paths</span><span class="w"> </span><span class="p">[</span><span class="s">"."</span><span class="p">]</span><span class="w">
+ </span><span class="no">:tasks</span><span class="w"> </span><span class="p">{</span><span class="n">doit</span><span class="w"> </span><span class="p">{</span><span class="no">:task</span><span class="w"> </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[</span><span class="n">x</span><span class="w"> </span><span class="p">(</span><span class="nf">exec</span><span class="w"> </span><span class="ss">'tasks/my-function</span><span class="w"> </span><span class="p">{</span><span class="no">:exec-args</span><span class="w"> </span><span class="p">{</span><span class="no">:foo</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">3</span><span class="p">)}})]</span><span class="w">
+                       </span><span class="p">(</span><span class="nb">prn</span><span class="w"> </span><span class="no">:x</span><span class="w"> </span><span class="n">x</span><span class="p">))</span><span class="w">
+               </span><span class="no">:exec-args</span><span class="w"> </span><span class="p">{</span><span class="no">:task-data</span><span class="w"> </span><span class="mi">1234</span><span class="p">}}</span><span class="w">
+         </span><span class="p">}}</span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="n">$</span><span class="w"> </span><span class="n">bb</span><span class="w"> </span><span class="n">doit</span><span class="w"> </span><span class="n">--cli-option</span><span class="w"> </span><span class="no">:yeah</span><span class="w"> </span><span class="n">-n</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">3</span><span class="w">
+</span><span class="no">:x</span><span class="w"> </span><span class="p">{</span><span class="no">:ns-data</span><span class="w"> </span><span class="mi">1</span><span class="n">,</span><span class="w"> </span><span class="no">:fn-data</span><span class="w"> </span><span class="mi">1</span><span class="n">,</span><span class="w"> </span><span class="no">:task-data</span><span class="w"> </span><span class="mi">1234</span><span class="n">,</span><span class="w"> </span><span class="no">:cli-option</span><span class="w"> </span><span class="no">:yeah,</span><span class="w"> </span><span class="no">:num</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="no">:foo</span><span class="w"> </span><span class="mi">6</span><span class="p">}</span></code></pre>
+</div>
 </div>
 </div>
 </div>
@@ -3003,6 +3133,9 @@ PR is welcome.</p>
 <p><code>clojure.test</code></p>
 </li>
 <li>
+<p><code>clojure.walk</code></p>
+</li>
+<li>
 <p><code>clojure.zip</code></p>
 </li>
 </ul>
@@ -3013,27 +3146,27 @@ PR is welcome.</p>
 <div class="ulist">
 <ul>
 <li>
-<p><a href="https://github.com/babashka/cli"><code>babashka.cli</code></a></p>
+<p><a href="https://github.com/babashka/cli"><code>babashka.cli</code></a>: CLI arg parsing</p>
 </li>
 <li>
-<p><a href="https://github.com/borkdude/babashka.curl"><code>babashka.curl</code></a></p>
+<p><a href="https://github.com/babashka/http-client"><code>babashka.http-client</code></a>: making HTTP requests</p>
 </li>
 <li>
-<p><a href="https://github.com/babashka/process"><code>babashka.process</code></a></p>
+<p><a href="https://github.com/babashka/process"><code>babashka.process</code></a>: shelling out to external processes</p>
 </li>
 <li>
-<p><a href="https://github.com/babashka/fs"><code>babashka.fs</code></a></p>
+<p><a href="https://github.com/babashka/fs"><code>babashka.fs</code></a>: file system manipulation</p>
 </li>
 <li>
 <p><a href="https://github.com/nrepl/bencode"><code>bencode.core</code></a> aliased as <code>bencode</code>:
 <code>read-bencode</code>, <code>write-bencode</code></p>
 </li>
 <li>
-<p><a href="https://github.com/dakrone/cheshire"><code>cheshire.core</code></a> aliased as <code>json</code></p>
+<p><a href="https://github.com/dakrone/cheshire"><code>cheshire.core</code></a> aliased as <code>json</code>: dealing with JSON</p>
 </li>
 <li>
 <p><a href="https://clojure.github.io/core.async/"><code>clojure.core.async</code></a> aliased as
-<code>async</code>. Also see <a href="https://github.com/borkdude/babashka#coreasync">docs</a>.</p>
+<code>async</code>.</p>
 </li>
 <li>
 <p><a href="https://github.com/clojure/data.csv"><code>clojure.data.csv</code></a> aliased as
@@ -3116,10 +3249,10 @@ as <code>transit</code></p>
 <p><a href="https://github.com/clojure/tools.logging"><code>clojure.tools.logging</code></a></p>
 </li>
 <li>
-<p><a href="https://github.com/ptaoussanis/timbre"><code>timbre</code></a></p>
+<p><a href="https://github.com/ptaoussanis/timbre"><code>timbre</code></a>: logging</p>
 </li>
 <li>
-<p><a href="https://github.com/borkdude/edamame"><code>edamame</code></a></p>
+<p><a href="https://github.com/borkdude/edamame"><code>edamame</code></a>: Clojure parser</p>
 </li>
 <li>
 <p><a href="https://github.com/clojure/core.rrb-vector"><code>core.rrb-vector</code></a></p>
@@ -3127,7 +3260,7 @@ as <code>transit</code></p>
 </ul>
 </div>
 <div class="paragraph">
-<p>Check out the <a href="https://babashka.org/toolbox/">babashk toolbox</a> and
+<p>Check out the <a href="https://babashka.org/toolbox/">babashka toolbox</a> and
 <a href="https://github.com/borkdude/babashka/blob/master/doc/projects.md">projects</a> page
 for libraries that are not built-in, but which you can load as an external
 dependency in <a href="https://book.babashka.org/#_bb_edn"><code>bb.edn</code></a>.</p>
@@ -3357,11 +3490,10 @@ namespace.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="babashkacurl"><a class="link" href="#babashkacurl">babashka.curl</a></h4>
+<h4 id="babashkahttpclient"><a class="link" href="#babashkahttpclient">babashka.http-client</a></h4>
 <div class="paragraph">
-<p>The namespace <code>babashka.curl</code> is a tiny wrapper around curl. It&#8217;s aliased as
-<code>curl</code> in the user namespace. See
-<a href="https://github.com/borkdude/babashka.curl">babashka.curl</a> for how to use it.</p>
+<p>The <code>babashka.http-client</code> library for making HTTP requests. See
+<a href="https://github.com/babashka/http-client">babashka.http-client</a> for how to use it.</p>
 </div>
 </div>
 <div class="sect3">
@@ -3689,74 +3821,6 @@ something side-effecting.</p>
 </div>
 <div class="paragraph">
 <p>If you really want to print the nil, you can use <code>(prn ..)</code> instead.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_http_requests"><a class="link" href="#_http_requests">HTTP requests</a></h3>
-<div class="paragraph">
-<p>For making HTTP requests you can use:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="https://github.com/borkdude/babashka.curl">babashka.curl</a>. This library
-is included with babashka and aliased as <code>curl</code> in the user namespace.
-The interface is similar to that of
-<a href="https://github.com/dakrone/clj-http">clj-http</a> but it will shell out to
-<code>curl</code> to make requests.</p>
-</li>
-<li>
-<p><a href="https://github.com/http-kit/http-kit">org.httpkit.client</a></p>
-</li>
-<li>
-<p><code>slurp</code> for simple <code>GET</code> requests</p>
-</li>
-<li>
-<p><a href="https://github.com/babashka/clj-http-lite">clj-http-lite</a> as a library.</p>
-</li>
-<li>
-<p><code>clojure.java.shell</code> or <code>babashka.process</code> for shelling out to your
-favorite command line http client</p>
-</li>
-</ul>
-</div>
-<div class="sect3">
-<h4 id="_choosing_the_right_client"><a class="link" href="#_choosing_the_right_client">Choosing the right client</a></h4>
-<div class="paragraph">
-<p>If memory usage is a concern and you are downloading big files, choose
-<code>babashka.curl</code> with <code>:as :stream</code> over <code>org.httpkit.client</code> since
-http-kit holds the entire response in memory at once. Let&#8217;s download a
-200mb file with 10mb heap size:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="clojure"><span class="n">$</span><span class="w"> </span><span class="n">bb</span><span class="w"> </span><span class="n">-Xmx10m</span><span class="w"> </span><span class="n">-e</span><span class="w"> </span><span class="o">'</span><span class="p">(</span><span class="nf">io/copy</span><span class="w"> </span><span class="p">(</span><span class="no">:body</span><span class="w"> </span><span class="p">(</span><span class="nf">curl/get</span><span class="w"> </span><span class="s">"http://ipv4.download.thinkbroadband.com/200MB.zip"</span><span class="w"> </span><span class="p">{</span><span class="no">:as</span><span class="w"> </span><span class="no">:stream</span><span class="p">}))</span><span class="w"> </span><span class="p">(</span><span class="nf">io/file</span><span class="w"> </span><span class="s">"/tmp/200mb.zip"</span><span class="p">))</span><span class="o">'</span></code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>With <code>babashka.curl</code> this works fine. However with <code>org.httpkit.client</code>
-that won&#8217;t work. Not even 190mb of heap will do:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="clojure"><span class="n">$</span><span class="w"> </span><span class="n">bb</span><span class="w"> </span><span class="n">-Xmx190m</span><span class="w"> </span><span class="n">-e</span><span class="w"> </span><span class="o">'</span><span class="p">(</span><span class="nf">io/copy</span><span class="w"> </span><span class="p">(</span><span class="no">:body</span><span class="w"> </span><span class="o">@</span><span class="p">(</span><span class="nf">org.httpkit.client/get</span><span class="w"> </span><span class="s">"http://ipv4.download.thinkbroadband.com/200MB.zip"</span><span class="w"> </span><span class="p">{</span><span class="no">:as</span><span class="w"> </span><span class="no">:stream</span><span class="p">}))</span><span class="w"> </span><span class="p">(</span><span class="nf">io/file</span><span class="w"> </span><span class="s">"/tmp/200mb.zip"</span><span class="p">))</span><span class="o">'</span><span class="w">
-</span><span class="n">Sun</span><span class="w"> </span><span class="n">Nov</span><span class="w"> </span><span class="mi">08</span><span class="w"> </span><span class="mi">23</span><span class="no">:01:46</span><span class="w"> </span><span class="n">CET</span><span class="w"> </span><span class="mi">2020</span><span class="w"> </span><span class="p">[</span><span class="n">client-loop</span><span class="p">]</span><span class="w"> </span><span class="n">ERROR</span><span class="w"> </span><span class="nb">-</span><span class="w"> </span><span class="nb">select</span><span class="w"> </span><span class="n">exception,</span><span class="w"> </span><span class="n">should</span><span class="w"> </span><span class="nb">not</span><span class="w"> </span><span class="n">happen</span><span class="w">
-</span><span class="n">java.lang.OutOfMemoryError</span><span class="err">:</span><span class="w"> </span><span class="n">Array</span><span class="w"> </span><span class="n">allocation</span><span class="w"> </span><span class="n">too</span><span class="w"> </span><span class="n">large.</span></code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>If your script creates many requests with relatively small payloads,
-choose <code>org.httpkit.client</code> over <code>babashka.curl</code> since <code>babashka.curl</code>
-creates a <code>curl</code> process for each request.</p>
-</div>
-<div class="paragraph">
-<p>In the future babashka (1.0.0?) may come with an HTTP client based on
-the JVM 11 <code>java.net.http</code> package that ticks all the boxes (async,
-HTTP/2, websockets, multi-part file uploads, sane memory usage) and is a
-suitable replacement for all of the above options. If you know about a
-GraalVM-friendly feature-complete well-maintained library, please reach
-out!</p>
-</div>
 </div>
 <div class="sect3">
 <h4 id="_http_over_unix_sockets"><a class="link" href="#_http_over_unix_sockets">HTTP over Unix sockets</a></h4>
