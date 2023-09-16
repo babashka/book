@@ -394,6 +394,13 @@ When you want to redirect output to a file instead, you can provide the `:out` o
 (shell {:out "file.txt"} "echo hello")
 ----
 
+To capture output as a string, pass the special value `:string` and get the `:out` key from the resulting map. In most cases, you probably want to `trim` away the trailing newline as well:
+
+[source,clojure]
+----
+(->> "echo hello" (shell {:out :string}) :out clojure.string/trim)
+----
+
 To run a program in another directory, you can use the `:dir` option:
 
 [source,clojure]
