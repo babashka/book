@@ -31,6 +31,9 @@ is useful when creating libraries that are used by other projects.
 NOTE: Use a unique name to refer to your project's `deps.edn`, the same name that
 you would otherwise use when referring to your project as a dependency.
 
+NOTE: Only pure Clojure libraries are supported in the `bb.edn` `:deps` map.  Java 
+libraries cannot be included due to the closed nature of the GraalVM classpath.
+
 If we have a main function in a file called `bb/my_project/main.clj` like:
 
 ----
