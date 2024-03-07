@@ -437,7 +437,7 @@ directly instead. These two invocations are roughly equivalent:
     (p/check))
 ----
 
-Note that the first string argument to `shell` it tokenized (broken into multiple parts) and the trailing arguments are not:
+Note that the first string argument to `shell` is tokenized (broken into multiple parts) and the trailing arguments are not:
 
 Correct:
 
