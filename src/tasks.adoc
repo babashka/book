@@ -203,7 +203,7 @@ complete -c bb -a "(__bb_complete_tasks)" -d 'tasks'
 === Run
 
 You can execute tasks using `bb <task-name>`. The babashka `run` subcommand can
-be used to execute with some additinoal options:
+be used to execute with some additional options:
 
 - `--parallel`: invoke task dependencies in parallel.
 +
