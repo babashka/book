@@ -21,7 +21,7 @@ watch a directory for changes:
 #!/usr/bin/env bb
 
 (require '[babashka.pods :as pods])
-(pods/load-pod 'org.babashka/fswatcher "0.0.3")
+(pods/load-pod 'org.babashka/fswatcher "0.0.5")
 
 (require '[pod.babashka.fswatcher :as fw])
 
@@ -40,7 +40,7 @@ Since bb 0.8.0 pods can be declared in `bb.edn`:
 [source,clojure]
 ----
 {:paths ["bb"]
- :pods {org.babashka/go-sqlite3 {:version "0.1.0"}}}
+ :pods {org.babashka/go-sqlite3 {:version "0.2.3"}}}
 ----
 
 Given the file `bb/my_project/db.clj`:
