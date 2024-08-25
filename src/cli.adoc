@@ -41,15 +41,14 @@ provide some defaults? This can be done using metadata. Let’s create a
   {:org.babashka/cli {:exec-args {:fn-data 1}
                       :coerce {:num [:int]}
                       :alias {:n :num}}}
-  [m]
-  (prn m))
+  [m] m)
 ----
 
 Now let’s invoke:
 
 [source,clojure]
 ----
-$ bb -x tasks/my-function -n 1 2
+$ bb -o -x tasks/my-function -n 1 2
 {:ns-data 1, :fn-data 1, :num [1 2]}
 ----
 
