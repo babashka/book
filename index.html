@@ -966,7 +966,7 @@ babashka.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>Babashka v1.3.181
+<pre>Babashka v1.3.191
 
 Usage: bb [svm-opts] [global-opts] [eval opts] [cmdline args]
 or:    bb [svm-opts] [global-opts] file [cmdline args]
@@ -1941,6 +1941,19 @@ you would otherwise use when referring to your project as a dependency.
 </tr>
 </table>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Only pure Clojure libraries are supported in the <code>bb.edn</code> <code>:deps</code> map.  Java
+libraries cannot be included due to the closed nature of the GraalVM classpath.
+</td>
+</tr>
+</table>
+</div>
 <div class="paragraph">
 <p>If we have a main function in a file called <code>bb/my_project/main.clj</code> like:</p>
 </div>
@@ -2321,7 +2334,7 @@ end
 <h3 id="_run"><a class="link" href="#_run">Run</a></h3>
 <div class="paragraph">
 <p>You can execute tasks using <code>bb &lt;task-name&gt;</code>. The babashka <code>run</code> subcommand can
-be used to execute with some additinoal options:</p>
+be used to execute with some additional options:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -2542,6 +2555,16 @@ ls</span>: foo: No such file or directory
 </div>
 </div>
 <div class="paragraph">
+<p>To capture output as a string, set <code>:out</code> to <code>:string</code> and get the <code>:out</code> key
+from the resulting map. In most cases, you probably want to <code>trim</code> away the
+trailing newline as well:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">(</span><span class="nf">-&gt;&gt;</span><span class="w"> </span><span class="s">"echo hello"</span><span class="w"> </span><span class="p">(</span><span class="nf">shell</span><span class="w"> </span><span class="p">{</span><span class="no">:out</span><span class="w"> </span><span class="no">:string</span><span class="p">})</span><span class="w"> </span><span class="no">:out</span><span class="w"> </span><span class="n">clojure.string/trim</span><span class="p">)</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
 <p>To run a program in another directory, you can use the <code>:dir</code> option:</p>
 </div>
 <div class="listingblock">
@@ -2580,7 +2603,7 @@ directly instead. These two invocations are roughly equivalent:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>Note that the first string argument to <code>shell</code> it tokenized (broken into multiple parts) and the trailing arguments are not:</p>
+<p>Note that the first string argument to <code>shell</code> is tokenized (broken into multiple parts) and the trailing arguments are not:</p>
 </div>
 <div class="paragraph">
 <p>Correct:</p>
@@ -2984,8 +3007,7 @@ provide some defaults? This can be done using metadata. Let’s create a
   </span><span class="p">{</span><span class="no">:org.babashka/cli</span><span class="w"> </span><span class="p">{</span><span class="no">:exec-args</span><span class="w"> </span><span class="p">{</span><span class="no">:fn-data</span><span class="w"> </span><span class="mi">1</span><span class="p">}</span><span class="w">
                       </span><span class="no">:coerce</span><span class="w"> </span><span class="p">{</span><span class="no">:num</span><span class="w"> </span><span class="p">[</span><span class="no">:int</span><span class="p">]}</span><span class="w">
                       </span><span class="no">:alias</span><span class="w"> </span><span class="p">{</span><span class="no">:n</span><span class="w"> </span><span class="no">:num</span><span class="p">}}}</span><span class="w">
-  </span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="w">
-  </span><span class="p">(</span><span class="nb">prn</span><span class="w"> </span><span class="n">m</span><span class="p">))</span></code></pre>
+  </span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="w"> </span><span class="n">m</span><span class="p">)</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -2993,7 +3015,7 @@ provide some defaults? This can be done using metadata. Let’s create a
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="clojure"><span class="n">$</span><span class="w"> </span><span class="n">bb</span><span class="w"> </span><span class="n">-x</span><span class="w"> </span><span class="n">tasks/my-function</span><span class="w"> </span><span class="n">-n</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="w">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="n">$</span><span class="w"> </span><span class="n">bb</span><span class="w"> </span><span class="n">--prn</span><span class="w"> </span><span class="n">-x</span><span class="w"> </span><span class="n">tasks/my-function</span><span class="w"> </span><span class="n">-n</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="w">
 </span><span class="p">{</span><span class="no">:ns-data</span><span class="w"> </span><span class="mi">1</span><span class="n">,</span><span class="w"> </span><span class="no">:fn-data</span><span class="w"> </span><span class="mi">1</span><span class="n">,</span><span class="w"> </span><span class="no">:num</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="p">]}</span></code></pre>
 </div>
 </div>
@@ -3560,7 +3582,7 @@ watch a directory for changes:</p>
 <pre class="rouge highlight"><code data-lang="clojure"><span class="o">#</span><span class="n">!/usr/bin/env</span><span class="w"> </span><span class="n">bb</span><span class="w">
 
 </span><span class="p">(</span><span class="nf">require</span><span class="w"> </span><span class="o">'</span><span class="p">[</span><span class="n">babashka.pods</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">pods</span><span class="p">])</span><span class="w">
-</span><span class="p">(</span><span class="nf">pods/load-pod</span><span class="w"> </span><span class="ss">'org.babashka/fswatcher</span><span class="w"> </span><span class="s">"0.0.3"</span><span class="p">)</span><span class="w">
+</span><span class="p">(</span><span class="nf">pods/load-pod</span><span class="w"> </span><span class="ss">'org.babashka/fswatcher</span><span class="w"> </span><span class="s">"0.0.5"</span><span class="p">)</span><span class="w">
 
 </span><span class="p">(</span><span class="nf">require</span><span class="w"> </span><span class="o">'</span><span class="p">[</span><span class="n">pod.babashka.fswatcher</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">fw</span><span class="p">])</span><span class="w">
 
@@ -3581,7 +3603,7 @@ watch a directory for changes:</p>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="clojure"><span class="p">{</span><span class="no">:paths</span><span class="w"> </span><span class="p">[</span><span class="s">"bb"</span><span class="p">]</span><span class="w">
- </span><span class="no">:pods</span><span class="w"> </span><span class="p">{</span><span class="n">org.babashka/go-sqlite3</span><span class="w"> </span><span class="p">{</span><span class="no">:version</span><span class="w"> </span><span class="s">"0.1.0"</span><span class="p">}}}</span></code></pre>
+ </span><span class="no">:pods</span><span class="w"> </span><span class="p">{</span><span class="n">org.babashka/go-sqlite3</span><span class="w"> </span><span class="p">{</span><span class="no">:version</span><span class="w"> </span><span class="s">"0.2.3"</span><span class="p">}}}</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
