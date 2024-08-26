@@ -48,7 +48,7 @@ Now let’s invoke:
 
 [source,clojure]
 ----
-$ bb -o -x tasks/my-function -n 1 2
+$ bb --prn -x tasks/my-function -n 1 2
 {:ns-data 1, :fn-data 1, :num [1 2]}
 ----
 
