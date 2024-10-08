@@ -67,6 +67,12 @@ $ bb script.clj
 
 Commonly, scripts have shebangs so you can invoke them with their filename only:
 
+[source,clojure]
+----
+$ ./script.clj
+6
+----
+
 .script.clj
 [source,clojure]
 ----
