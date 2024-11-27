@@ -72,8 +72,8 @@ as `transit`
 * https://github.com/yogthos/Selmer[`Selmer`]:
  - `selmer.parser`
 * https://github.com/clojure/tools.logging[`clojure.tools.logging`]
-* https://github.com/ptaoussanis/timbre[`timbre`]: logging
-* https://github.com/borkdude/edamame[`edamame`]: Clojure parser
+* https://github.com/ptaoussanis/timbre[`taoensso.timbre`]: logging
+* https://github.com/borkdude/edamame[`edamame.core`]: Clojure parser
 * https://github.com/clojure/core.rrb-vector[`core.rrb-vector`]
 
 Check out the https://babashka.org/toolbox/[babashka toolbox] and
