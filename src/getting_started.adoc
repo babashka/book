@@ -19,6 +19,7 @@ https://leiningen.org[lein] installed. Then run:
 
 ```
 $ git clone https://github.com/borkdude/babashka --recursive
+$ cd babashka
 $ script/uberjar && script/compile
 ```
 
