@@ -6,3 +6,4 @@ gh-pages/
 /.clj-kondo/.cache
 .lsp
 .portal
+target
