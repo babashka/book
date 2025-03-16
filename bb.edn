@@ -1,3 +1,3 @@
-{:deps {etaoin/etaoin {:mvn/version "1.0.39"}}
+{:deps {etaoin/etaoin {:mvn/version "1.1.42"}}
  :tasks {watch {:doc "Watch adoc sources and build them"
                 :task (shell "bb script/watch.clj")}}}
