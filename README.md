@@ -6,12 +6,20 @@ See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Build
 
-``` shell
-$ script/compile
+For a single compile:
+```shell
+$ bb script/compile.clj
+```
+
+To watch and automatically update in a chrome:
+```shell
+% bb watch
 ```
 
 This uses `asciidoctor` to spit out an HTML file into the `gh-pages` directory.
 To install `asciidoctor`, check the documentation [here](https://asciidoctor.org/).
+You also need to install the ruby rouge gem if you want syntax highlighting to work locally. 
+The `bb watch` task requires `chromedriver` to be installed, download a version that matches your browser version [here](https://googlechromelabs.github.io/chrome-for-testing/#stable).
 
 ## Release
 
