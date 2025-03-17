@@ -782,11 +782,16 @@ pre.rouge {
 <li><a href="#cli:exec">exec</a></li>
 </ul>
 </li>
+<li><a href="#badges">Badges</a>
+<ul class="sectlevel2">
+<li><a href="#_adding_a_badge_to_your_project">Adding a Badge to your Project</a></li>
+</ul>
+</li>
 <li><a href="#libraries">Libraries</a>
 <ul class="sectlevel2">
 <li><a href="#built-in-namespaces">Built-in namespaces</a></li>
 <li><a href="#_babashka_namespaces">Babashka namespaces</a></li>
-<li><a href="#_projects">Projects</a></li>
+<li><a href="#projects">Projects</a></li>
 </ul>
 </li>
 <li><a href="#pods">Pods</a>
@@ -891,6 +896,7 @@ set the <code>GRAALVM_HOME</code> environment variable. Also make sure you have
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code>$ git clone https://github.com/borkdude/babashka --recursive
+$ cd babashka
 $ script/uberjar &amp;&amp; script/compile</code></pre>
 </div>
 </div>
@@ -972,7 +978,7 @@ babashka.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>Babashka v1.12.194
+<pre>Babashka v1.12.195
 
 Usage: bb [svm-opts] [global-opts] [eval opts] [cmdline args]
 or:    bb [svm-opts] [global-opts] file [cmdline args]
@@ -3082,6 +3088,96 @@ function, available by default in tasks.</p>
 </div>
 </div>
 <div class="sect1">
+<h2 id="badges"><a class="link" href="#badges">Badges</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You will notice babashka badges in some project READMEs.</p>
+</div>
+<div class="paragraph">
+<p><a href="#badges"><span class="image"><img src="https://raw.githubusercontent.com/babashka/babashka/master/logo/badge.svg" alt="bb compatible"></span></a>
+The babashka compatible badge means that a <a href="#projects">library can be used as a babashka dependency</a>.</p>
+</div>
+<div class="paragraph">
+<p><a href="#badges"><span class="image"><img src="https://raw.githubusercontent.com/babashka/babashka/master/logo/built-in-badge.svg" alt="bb built-in"></span></a>
+The babashka built-in badge indicates that a <a href="#built-in-namespaces">library has been built directly into babashka</a>, and requires no extra dependencies to use it.</p>
+</div>
+<div class="sect2">
+<h3 id="_adding_a_badge_to_your_project"><a class="link" href="#_adding_a_badge_to_your_project">Adding a Badge to your Project</a></h3>
+<div class="paragraph">
+<p>Help people who use babashka know that your library works with babashka.</p>
+</div>
+<div class="paragraph">
+<p><a href="#badges"><span class="image"><img src="https://raw.githubusercontent.com/babashka/babashka/master/logo/badge.svg" alt="bb compatible"></span></a> Add the babashka compatible badge if your library works as a babashka dependency.
+Let the world know by adding this badge to your project&#8217;s README:</p>
+</div>
+<details>
+<summary class="title">Markdown</summary>
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="markdown"><span class="p">[</span><span class="nv">![bb compatible</span><span class="p">](</span><span class="sx">https://raw.githubusercontent.com/babashka/babashka/master/logo/badge.svg</span><span class="p">)</span>](https://book.babashka.org#badges)</code></pre>
+</div>
+</div>
+</div>
+</details>
+<details>
+<summary class="title">AsciiDoc</summary>
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="adoc">https://book.babashka.org#badges[image:https://raw.githubusercontent.com/babashka/babashka/master/logo/badge.svg[bb compatible]]</code></pre>
+</div>
+</div>
+</div>
+</details>
+<details>
+<summary class="title">HTML</summary>
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="html"><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"https://book.babashka.org#badges"</span> <span class="na">rel=</span><span class="s">"nofollow"</span><span class="nt">&gt;&lt;img</span> <span class="na">src=</span><span class="s">"https://raw.githubusercontent.com/babashka/babashka/master/logo/badge.svg"</span> <span class="na">alt=</span><span class="s">"bb compatible"</span> <span class="na">style=</span><span class="s">"max-width: 100%;"</span><span class="nt">&gt;&lt;/a&gt;</span></code></pre>
+</div>
+</div>
+</div>
+</details>
+<div class="paragraph">
+<p><a href="#badges"><span class="image"><img src="https://raw.githubusercontent.com/babashka/babashka/master/logo/built-in-badge.svg" alt="bb built-in"></span></a> Add the babashka built-in badge if your library has the rare honor of being built into babashka.
+Add this badge to your project&#8217;s README:</p>
+</div>
+<details>
+<summary class="title">Markdown</summary>
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="markdown"><span class="p">[</span><span class="nv">![bb built-in</span><span class="p">](</span><span class="sx">https://raw.githubusercontent.com/babashka/babashka/master/logo/built-in-badge.svg</span><span class="p">)</span>](https://book.babashka.org#badges)</code></pre>
+</div>
+</div>
+</div>
+</details>
+<details>
+<summary class="title">AsciiDoc</summary>
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="adoc">https://book.babashka.org#badges[image:https://raw.githubusercontent.com/babashka/babashka/master/logo/built-in-badge.svg[bb built-in]]</code></pre>
+</div>
+</div>
+</div>
+</details>
+<details>
+<summary class="title">HTML</summary>
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="html"><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"https://book.babashka.org#badges"</span> <span class="na">rel=</span><span class="s">"nofollow"</span><span class="nt">&gt;&lt;img</span> <span class="na">src=</span><span class="s">"https://raw.githubusercontent.com/babashka/babashka/master/logo/built-in-badge.svg"</span> <span class="na">alt=</span><span class="s">"bb built-in"</span> <span class="na">style=</span><span class="s">"max-width: 100%;"</span><span class="nt">&gt;&lt;/a&gt;</span></code></pre>
+</div>
+</div>
+</div>
+</details>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="libraries"><a class="link" href="#libraries">Libraries</a></h2>
 <div class="sectionbody">
 <div class="sect2">
@@ -3278,6 +3374,20 @@ as <code>transit</code></p>
 <p><a href="https://github.com/clojure/core.rrb-vector"><code>core.rrb-vector</code></a></p>
 </li>
 </ul>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Is your library built into babashka?<br>
+<a href="#badges">Add the babashka built-in badge </a> to let the babashka community know!<br>
+<a href="#badges"><span class="image"><img src="https://raw.githubusercontent.com/babashka/babashka/master/logo/built-in-badge.svg" alt="bb built-in"></span></a>
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>Check out the <a href="https://babashka.org/toolbox/">babashka toolbox</a> and
@@ -3541,7 +3651,7 @@ from the command line or with <a href="https://book.babashka.org/#tasks">tasks</
 </div>
 </div>
 <div class="sect2">
-<h3 id="_projects"><a class="link" href="#_projects">Projects</a></h3>
+<h3 id="projects"><a class="link" href="#projects">Projects</a></h3>
 <div class="paragraph">
 <p>Babashka is able to run Clojure projects from source, if they are compatible
 with the subset of Clojure that sci is capable of running.</p>
@@ -3551,12 +3661,19 @@ with the subset of Clojure that sci is capable of running.</p>
 <a href="https://github.com/borkdude/babashka/blob/master/doc/projects.md">page</a> for
 projects that are known to work with babashka.</p>
 </div>
-<div class="paragraph">
-<p>Do you have a library that is compatible with babashka? Add the official badge
-to give some flair to your repo!</p>
-</div>
-<div class="paragraph">
-<p><span class="image"><a class="image" href="https://babashka.org"><img src="https://img.shields.io/badge/babashka-compatible-green?logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQiIGhlaWdodD0iMTQiIHZpZXdCb3g9IjAgMCAxNDcyIDE0NzIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNOTk1LjkxMSAxMTkzLjg5QzExMTAuOTMgMTExMi4zOCAxMTg2IDk3OC4yMDYgMTE4NiA4MjYuNUMxMTg2IDU3Ny45NzIgMTAxNCAyNTQuNSA3MzYgMTEzQzQ2MC41IDI2MiAyODYgNTc3Ljk3MiAyODYgODI2LjVDMjg2IDk3OC4yMDYgMzYxLjA3IDExMTIuMzggNDc2LjA4OSAxMTkzLjg5QzQ3MS45ODMgMTE5NC40NCA0NjcuOTQ5IDExOTUuMTQgNDY0IDExOTZDMzc2LjYxMSAxMjE1LjA3IDI3MCAxMzU5LjA1IDI3MCAxMzU5LjA1SDUzNEM1ODAuOTcyIDEzNTkuMDUgNjI1LjYzMSAxMzQxLjQxIDY2MC45NTYgMTMyMS42MkM2NzguMTE1IDEzNDQuMzIgNzA1LjM0NCAxMzU5IDczNiAxMzU5Qzc2Ni42NTYgMTM1OSA3OTMuODg1IDEzNDQuMzIgODExLjA0NCAxMzIxLjYyQzg0Ni4zNjkgMTM0MS40MSA4OTEuMDI4IDEzNTkuMDUgOTM4IDEzNTkuMDVIMTIwMkMxMjAyIDEzNTkuMDUgMTA5NS4zOSAxMjE1LjA3IDEwMDggMTE5NkMxMDA0LjA1IDExOTUuMTQgMTAwMC4wMiAxMTk0LjQ0IDk5NS45MTEgMTE5My44OVoiIGZpbGw9InVybCgjcGFpbnQwX2xpbmVhcikiLz4KPGNpcmNsZSBjeD0iNzM1LjUiIGN5PSI4NTIuNSIgcj0iMzExLjUiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik00NDMgNzUwLjQxN0M2NjIgNzY1Ljg2NiA3OTEuMzgyIDcxMi4zODggODgxIDU3OS44ODFDODgxIDU3OS44ODEgNzA4LjI5MyA1MjEuNjQ5IDYwMy4yNDQgNTc5Ljg4MUM0OTguNTUgNjM3LjkxNiA0NDMgNzUwLjQxNyA0NDMgNzUwLjQxN1oiIGZpbGw9IiNCNEI0QjQiLz4KPHBhdGggZD0iTTEwMzkuOTkgNzQ4LjI4MkM5MTQuODYyIDczNC43NDUgODAzLjI2NCA2OTQuMTM1IDc1MCA1NDFDNzUwIDU0MSA4NjAuNjMzIDU2Ni4yNzIgOTcyLjM1NSA2NjguMTAxQzEwODguMzkgNzczLjg1NyAxMDM5Ljk5IDc0OC4yODIgMTAzOS45OSA3NDguMjgyWiIgZmlsbD0iI0I0QjRCNCIvPgo8Y2lyY2xlIGN4PSI3MzUuNSIgY3k9Ijg1Mi41IiByPSIzMTEuNSIgc3Ryb2tlPSIjMEEwMDAwIiBzdHJva2Utd2lkdGg9IjQwIi8+CjxwYXRoIGQ9Ik03OTcgNzE5SDY3NEw3MDQgNzQ5VjgzOUM3MDguNSA4MDkuNSA3NjQuNSA4MDguNSA3NjcuNSA4MzlMNzc1IDc0OUw3OTcgNzE5WiIgZmlsbD0iYmxhY2siLz4KPHBhdGggZD0iTTM1MS4xMTcgNzU5QzM1MS4xMTcgNzM2LjkwOSAzNjkuMDI2IDcxOSAzOTEuMTE3IDcxOUg2NzYuMDE4QzcwMC4yIDcxOSA3MTguODUyIDc0MC4yOTIgNzE1LjY3IDc2NC4yNjRMNjkwLjkxIDk1MC43NjRDNjg4LjI3IDk3MC42NDYgNjcxLjMxNCA5ODUuNSA2NTEuMjU4IDk4NS41SDM5MS4xMTdDMzY5LjAyNiA5ODUuNSAzNTEuMTE3IDk2Ny41OTEgMzUxLjExNyA5NDUuNVY3NTlaIiBmaWxsPSJibGFjayIvPgo8cGF0aCBkPSJNNzU2LjAxMiA3NjQuMjY3Qzc1Mi44MjggNzQwLjI5NCA3NzEuNDgxIDcxOSA3OTUuNjY0IDcxOUgxMDgwQzExMDIuMDkgNzE5IDExMjAgNzM2LjkwOSAxMTIwIDc1OVY5NDUuMDk2QzExMjAgOTY3LjE4NyAxMTAyLjA5IDk4NS4wOTYgMTA4MCA5ODUuMDk2SDgyMC4zODFDODAwLjMyNSA5ODUuMDk2IDc4My4zNyA5NzAuMjQ0IDc4MC43MjkgOTUwLjM2Mkw3NTYuMDEyIDc2NC4yNjdaIiBmaWxsPSJibGFjayIvPgo8cGF0aCBkPSJNMTAyNCA5NTJWOTIxLjQ3SDEwMTMuNzFDMTAwNy4wMyA5MjEuNDcgMTAwMi41OCA5MTYuNzUyIDEwMDAuMzUgOTA5LjgxM0w5NTguMDY0IDc4Mi42OTdDOTU1LjI4MiA3NzQuNjQ5IDk1MS45NDQgNzY4LjgyIDk0Ny40OTIgNzY0LjM3OUM5MzkuMTQ2IDc1NS43NzUgOTI4LjI5NiA3NTMgOTE2LjA1NCA3NTNIOTAyLjdWNzg0LjkxOEg5MTEuNjAzQzkxOS4xMTUgNzg0LjkxOCA5MjQuOTU3IDc4Ny42OTMgOTI3LjQ2MSA3OTYuNTc1TDkzMy4zMDMgODE3LjExM0w4ODEgOTUySDkxOS4xMTVMOTUwLjU1MyA4NjMuMTg1TDk2Ny4yNDUgOTE2Ljc1MkM5NzMuNjQ0IDkzNy41NjggOTg0LjQ5NCA5NTIgMTAwOC45OCA5NTJIMTAyNFoiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik01OTAgOTUyVjkyMS40N0g1NzkuNzA2QzU3My4wMjkgOTIxLjQ3IDU2OC41NzggOTE2Ljc1MiA1NjYuMzUyIDkwOS44MTNMNTI0LjA2NCA3ODIuNjk3QzUyMS4yODIgNzc0LjY0OSA1MTcuOTQ0IDc2OC44MiA1MTMuNDkyIDc2NC4zNzlDNTA1LjE0NiA3NTUuNzc1IDQ5NC4yOTYgNzUzIDQ4Mi4wNTQgNzUzSDQ2OC43Vjc4NC45MThINDc3LjYwM0M0ODUuMTE1IDc4NC45MTggNDkwLjk1NyA3ODcuNjkzIDQ5My40NjEgNzk2LjU3NUw0OTkuMzAzIDgxNy4xMTNMNDQ3IDk1Mkg0ODUuMTE1TDUxNi41NTMgODYzLjE4NUw1MzMuMjQ1IDkxNi43NTJDNTM5LjY0NCA5MzcuNTY4IDU1MC40OTQgOTUyIDU3NC45NzcgOTUySDU5MFoiIGZpbGw9IndoaXRlIi8+CjxkZWZzPgo8bGluZWFyR3JhZGllbnQgaWQ9InBhaW50MF9saW5lYXIiIHgxPSI3NTIiIHkxPSIxMTMiIHgyPSI3NTIiIHkyPSIxMzU5LjUyIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+CjxzdG9wIHN0b3AtY29sb3I9IiNFNDFGMjYiLz4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjQjcwMDAwIi8+CjwvbGluZWFyR3JhZGllbnQ+CjwvZGVmcz4KPC9zdmc+Cg==" alt="svg+xml;base64,PHN2ZyB3aWR0aD0iMTQiIGhlaWdodD0iMTQiIHZpZXdCb3g9IjAgMCAxNDcyIDE0NzIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNOTk1LjkxMSAxMTkzLjg5QzExMTAuOTMgMTExMi4zOCAxMTg2IDk3OC4yMDYgMTE4NiA4MjYuNUMxMTg2IDU3Ny45NzIgMTAxNCAyNTQuNSA3MzYgMTEzQzQ2MC41IDI2MiAyODYgNTc3Ljk3MiAyODYgODI2LjVDMjg2IDk3OC4yMDYgMzYxLjA3IDExMTIuMzggNDc2LjA4OSAxMTkzLjg5QzQ3MS45ODMgMTE5NC40NCA0NjcuOTQ5IDExOTUuMTQgNDY0IDExOTZDMzc2LjYxMSAxMjE1LjA3IDI3MCAxMzU5LjA1IDI3MCAxMzU5LjA1SDUzNEM1ODAuOTcyIDEzNTkuMDUgNjI1LjYzMSAxMzQxLjQxIDY2MC45NTYgMTMyMS42MkM2NzguMTE1IDEzNDQuMzIgNzA1LjM0NCAxMzU5IDczNiAxMzU5Qzc2Ni42NTYgMTM1OSA3OTMuODg1IDEzNDQuMzIgODExLjA0NCAxMzIxLjYyQzg0Ni4zNjkgMTM0MS40MSA4OTEuMDI4IDEzNTkuMDUgOTM4IDEzNTkuMDVIMTIwMkMxMjAyIDEzNTkuMDUgMTA5NS4zOSAxMjE1LjA3IDEwMDggMTE5NkMxMDA0LjA1IDExOTUuMTQgMTAwMC4wMiAxMTk0LjQ0IDk5NS45MTEgMTE5My44OVoiIGZpbGw9InVybCgjcGFpbnQwX2xpbmVhcikiLz4KPGNpcmNsZSBjeD0iNzM1LjUiIGN5PSI4NTIuNSIgcj0iMzExLjUiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik00NDMgNzUwLjQxN0M2NjIgNzY1Ljg2NiA3OTEuMzgyIDcxMi4zODggODgxIDU3OS44ODFDODgxIDU3OS44ODEgNzA4LjI5MyA1MjEuNjQ5IDYwMy4yNDQgNTc5Ljg4MUM0OTguNTUgNjM3LjkxNiA0NDMgNzUwLjQxNyA0NDMgNzUwLjQxN1oiIGZpbGw9IiNCNEI0QjQiLz4KPHBhdGggZD0iTTEwMzkuOTkgNzQ4LjI4MkM5MTQuODYyIDczNC43NDUgODAzLjI2NCA2OTQuMTM1IDc1MCA1NDFDNzUwIDU0MSA4NjAuNjMzIDU2Ni4yNzIgOTcyLjM1NSA2NjguMTAxQzEwODguMzkgNzczLjg1NyAxMDM5Ljk5IDc0OC4yODIgMTAzOS45OSA3NDguMjgyWiIgZmlsbD0iI0I0QjRCNCIvPgo8Y2lyY2xlIGN4PSI3MzUuNSIgY3k9Ijg1Mi41IiByPSIzMTEuNSIgc3Ryb2tlPSIjMEEwMDAwIiBzdHJva2Utd2lkdGg9IjQwIi8+CjxwYXRoIGQ9Ik03OTcgNzE5SDY3NEw3MDQgNzQ5VjgzOUM3MDguNSA4MDkuNSA3NjQuNSA4MDguNSA3NjcuNSA4MzlMNzc1IDc0OUw3OTcgNzE5WiIgZmlsbD0iYmxhY2siLz4KPHBhdGggZD0iTTM1MS4xMTcgNzU5QzM1MS4xMTcgNzM2LjkwOSAzNjkuMDI2IDcxOSAzOTEuMTE3IDcxOUg2NzYuMDE4QzcwMC4yIDcxOSA3MTguODUyIDc0MC4yOTIgNzE1LjY3IDc2NC4yNjRMNjkwLjkxIDk1MC43NjRDNjg4LjI3IDk3MC42NDYgNjcxLjMxNCA5ODUuNSA2NTEuMjU4IDk4NS41SDM5MS4xMTdDMzY5LjAyNiA5ODUuNSAzNTEuMTE3IDk2Ny41OTEgMzUxLjExNyA5NDUuNVY3NTlaIiBmaWxsPSJibGFjayIvPgo8cGF0aCBkPSJNNzU2LjAxMiA3NjQuMjY3Qzc1Mi44MjggNzQwLjI5NCA3NzEuNDgxIDcxOSA3OTUuNjY0IDcxOUgxMDgwQzExMDIuMDkgNzE5IDExMjAgNzM2LjkwOSAxMTIwIDc1OVY5NDUuMDk2QzExMjAgOTY3LjE4NyAxMTAyLjA5IDk4NS4wOTYgMTA4MCA5ODUuMDk2SDgyMC4zODFDODAwLjMyNSA5ODUuMDk2IDc4My4zNyA5NzAuMjQ0IDc4MC43MjkgOTUwLjM2Mkw3NTYuMDEyIDc2NC4yNjdaIiBmaWxsPSJibGFjayIvPgo8cGF0aCBkPSJNMTAyNCA5NTJWOTIxLjQ3SDEwMTMuNzFDMTAwNy4wMyA5MjEuNDcgMTAwMi41OCA5MTYuNzUyIDEwMDAuMzUgOTA5LjgxM0w5NTguMDY0IDc4Mi42OTdDOTU1LjI4MiA3NzQuNjQ5IDk1MS45NDQgNzY4LjgyIDk0Ny40OTIgNzY0LjM3OUM5MzkuMTQ2IDc1NS43NzUgOTI4LjI5NiA3NTMgOTE2LjA1NCA3NTNIOTAyLjdWNzg0LjkxOEg5MTEuNjAzQzkxOS4xMTUgNzg0LjkxOCA5MjQuOTU3IDc4Ny42OTMgOTI3LjQ2MSA3OTYuNTc1TDkzMy4zMDMgODE3LjExM0w4ODEgOTUySDkxOS4xMTVMOTUwLjU1MyA4NjMuMTg1TDk2Ny4yNDUgOTE2Ljc1MkM5NzMuNjQ0IDkzNy41NjggOTg0LjQ5NCA5NTIgMTAwOC45OCA5NTJIMTAyNFoiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik01OTAgOTUyVjkyMS40N0g1NzkuNzA2QzU3My4wMjkgOTIxLjQ3IDU2OC41NzggOTE2Ljc1MiA1NjYuMzUyIDkwOS44MTNMNTI0LjA2NCA3ODIuNjk3QzUyMS4yODIgNzc0LjY0OSA1MTcuOTQ0IDc2OC44MiA1MTMuNDkyIDc2NC4zNzlDNTA1LjE0NiA3NTUuNzc1IDQ5NC4yOTYgNzUzIDQ4Mi4wNTQgNzUzSDQ2OC43Vjc4NC45MThINDc3LjYwM0M0ODUuMTE1IDc4NC45MTggNDkwLjk1NyA3ODcuNjkzIDQ5My40NjEgNzk2LjU3NUw0OTkuMzAzIDgxNy4xMTNMNDQ3IDk1Mkg0ODUuMTE1TDUxNi41NTMgODYzLjE4NUw1MzMuMjQ1IDkxNi43NTJDNTM5LjY0NCA5MzcuNTY4IDU1MC40OTQgOTUyIDU3NC45NzcgOTUySDU5MFoiIGZpbGw9IndoaXRlIi8+CjxkZWZzPgo8bGluZWFyR3JhZGllbnQgaWQ9InBhaW50MF9saW5lYXIiIHgxPSI3NTIiIHkxPSIxMTMiIHgyPSI3NTIiIHkyPSIxMzU5LjUyIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+CjxzdG9wIHN0b3AtY29sb3I9IiNFNDFGMjYiLz4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjQjcwMDAwIi8+CjwvbGluZWFyR3JhZGllbnQ+CjwvZGVmcz4KPC9zdmc+Cg==" title="bb compatible"></a></span></p>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Is your library compatible with babashka?<br>
+<a href="#badges">Add the babashka compatible badge</a>, the babashka community will appreciate it!<br>
+<a href="#badges"><span class="image"><img src="https://raw.githubusercontent.com/babashka/babashka/master/logo/badge.svg" alt="bb compatible"></span></a>
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
@@ -4088,7 +4205,7 @@ make an issue and/or PR.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-01-23 15:27:14 +0100
+Last updated 2025-03-17 10:49:29 +0100
 </div>
 </div>
 <!-- see https://github.com/asciidoctor/asciidoctor/issues/699#issuecomment-321066006 -->
