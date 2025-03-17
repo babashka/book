@@ -1,0 +1,73 @@
+
+[[badges]]
+== Badges
+You will notice babashka badges in some project READMEs.
+
+{badge-compatible}
+The babashka compatible badge means that a <<projects, library can be used as a babashka dependency>>.
+
+{badge-built-in}
+The babashka built-in badge indicates that a <<built-in-namespaces,library has been built directly into babashka>>, and requires no extra dependencies to use it.
+
+=== Adding a Badge to your Project
+Help people who use babashka know that your library works with babashka.
+
+{badge-compatible} Add the babashka compatible badge if your library works as a babashka dependency.
+Let the world know by adding this badge to your project's README:
+
+.Markdown
+[%collapsible]
+====
+[source,markdown,subs="attributes+"]
+....
+[![bb compatible]({badge-compatible-img-url})]({badge-target-url})
+....
+====
+
+.AsciiDoc
+[%collapsible]
+====
+[source,adoc,subs="attributes+"]
+....
+{badge-target-url}[image:{badge-compatible-img-url}[bb compatible]]
+....
+====
+
+.HTML
+[%collapsible]
+====
+[source,html,subs="attributes+"]
+....
+<a href="{badge-target-url}" rel="nofollow"><img src="{badge-compatible-img-url}" alt="bb compatible" style="max-width: 100%;"></a>
+....
+====
+
+{badge-built-in} Add the babashka built-in badge if your library has the rare honor of being built into babashka.
+Add this badge to your project's README:
+
+.Markdown
+[%collapsible]
+====
+[source,markdown,subs="attributes+"]
+....
+[![bb built-in]({badge-built-in-img-url})]({badge-target-url})
+....
+====
+
+.AsciiDoc
+[%collapsible]
+====
+[source,adoc,subs="attributes+"]
+....
+{badge-target-url}[image:{badge-built-in-img-url}[bb built-in]]
+....
+====
+
+.HTML
+[%collapsible]
+====
+[source,html,subs="attributes+"]
+....
+<a href="{badge-target-url}" rel="nofollow"><img src="{badge-built-in-img-url}" alt="bb built-in" style="max-width: 100%;"></a>
+....
+====

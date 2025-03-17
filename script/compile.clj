@@ -6,8 +6,7 @@
                    (or (System/getenv "BABASHKA_BOOK_MAIN")
                        "master")
                    ".html"))
-(-> (p/$ asciidoctor src/book.adoc -o ~out-page -a docinfo=shared)
-    (p/check))
+(p/shell "asciidoctor src/book.adoc -a docinfo=shared -o" out-page)
 
 (binding [*out* *err*]
   (println "Done writing to" out-page))

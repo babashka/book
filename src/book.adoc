@@ -9,6 +9,13 @@ Michiel Borkent
 :toclevels: 2
 :toc-collapsable:
 :sectlinks:
+:attribute-missing: warn
+// user attributes
+:badge-target-url: https://book.babashka.org#badges
+:badge-compatible-img-url: https://raw.githubusercontent.com/babashka/babashka/master/logo/badge.svg
+:badge-built-in-img-url: https://raw.githubusercontent.com/babashka/babashka/master/logo/built-in-badge.svg
+:badge-compatible: link:#badges[image:{badge-compatible-img-url}[bb compatible]]
+:badge-built-in: link:#badges[image:{badge-built-in-img-url}[bb built-in]]
 
 ++++
 <!--<script>alert('hello')</script>-->
@@ -25,6 +32,8 @@ include::bb-edn.adoc[]
 include::tasks.adoc[]
 
 include::cli.adoc[]
+
+include::badges.adoc[]
 
 include::libraries.adoc[]
 
