@@ -10,6 +10,7 @@ Michiel Borkent
 :toc-collapsable:
 :sectlinks:
 :attribute-missing: warn
+:favicon:
 // user attributes
 :badge-target-url: https://book.babashka.org#badges
 :badge-compatible-img-url: https://raw.githubusercontent.com/babashka/babashka/master/logo/badge.svg
