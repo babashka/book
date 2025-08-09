@@ -816,6 +816,7 @@ pre.rouge {
 <li><a href="#core_async">Core.async</a></li>
 <li><a href="#_interacting_with_an_nrepl_server">Interacting with an nREPL server</a></li>
 <li><a href="#_running_from_cygwingit_bash">Running from Cygwin/Git Bash</a></li>
+<li><a href="#_throwing_exception_to_exit_program">Throwing exception to exit program</a></li>
 </ul>
 </li>
 <li><a href="#differences-with-clojure">Differences with Clojure</a></li>
@@ -979,7 +980,7 @@ babashka.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>Babashka v1.12.195
+<pre>Babashka v1.12.207
 
 Usage: bb [svm-opts] [global-opts] [eval opts] [cmdline args]
 or:    bb [svm-opts] [global-opts] file [cmdline args]
@@ -4053,6 +4054,10 @@ started with <code>lein repl</code>:</p>
 </span><span class="p">(</span><span class="nf">nrepl-eval</span><span class="w"> </span><span class="mi">52054</span><span class="w"> </span><span class="s">"(+ 1 2 3)"</span><span class="p">)</span><span class="w"> </span><span class="c1">;;=&gt; "6"</span></code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>Note that the above is a bit low level. You can also use the
+<a href="https://github.com/babashka/nrepl-client">nrepl-client</a> library for this.</p>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_running_from_cygwingit_bash"><a class="link" href="#_running_from_cygwingit_bash">Running from Cygwin/Git Bash</a></h3>
@@ -4109,6 +4114,24 @@ directly:</p>
 <div class="content">
 <pre class="rouge highlight"><code data-lang="clojure"><span class="o">#</span><span class="n">!/usr/bin/env</span><span class="w"> </span><span class="n">bbwrap</span><span class="w">
 </span><span class="p">(</span><span class="nb">println</span><span class="w"> </span><span class="s">"Hello, world!"</span><span class="p">)</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_throwing_exception_to_exit_program"><a class="link" href="#_throwing_exception_to_exit_program">Throwing exception to exit program</a></h3>
+<div class="paragraph">
+<p>Babashka supports adding <code>:babashka/exit</code> metadata to an <code>ex-info</code> to indicate
+the exit code of babashka when this exception isn&#8217;t caught by any other parts of
+the program. The <code>:babashka/exit</code> code also indicates that no error report should be printed.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nt">---</span>
+<span class="nv">$ </span>bb <span class="nt">-e</span> <span class="s1">'(throw (ex-info "Error happened" {:babashka/exit 1}))'</span>
+Error happened
+<span class="nv">$ </span><span class="nb">echo</span> <span class="nv">$?</span>
+1
+<span class="nt">---</span></code></pre>
 </div>
 </div>
 </div>
