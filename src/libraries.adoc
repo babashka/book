@@ -75,6 +75,8 @@ as `transit`
 * https://github.com/ptaoussanis/timbre[`taoensso.timbre`]: logging
 * https://github.com/borkdude/edamame[`edamame.core`]: Clojure parser
 * https://github.com/clojure/core.rrb-vector[`core.rrb-vector`]
+* https://github.com/nextjournal/markdown[`nextjourna.markdown`]
+* https://github.com/jhy/jsoup[`Jsoup`]
 
 TIP:  Is your library built into babashka? +
 <<badges, Add the babashka built-in badge >> to let the babashka community know! +
