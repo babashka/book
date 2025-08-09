@@ -186,6 +186,8 @@ started with `lein repl`:
 (nrepl-eval 52054 "(+ 1 2 3)") ;;=> "6"
 ----
 
+Note that the above is a bit low level. You can also use the
+https://github.com/babashka/nrepl-client[nrepl-client] library for this.
 
 === Running from Cygwin/Git Bash
 
@@ -238,3 +240,18 @@ directly:
 #!/usr/bin/env bbwrap
 (println "Hello, world!")
 ----
+
+=== Throwing exception to exit program
+
+Babashka supports adding `:babashka/exit` metadata to an `ex-info` to indicate
+the exit code of babashka when this exception isn't caught by any other parts of
+the program. The `:babashka/exit` code also indicates that no error report should be printed.
+
+
+[source,shell]
+---
+$ bb -e '(throw (ex-info "Error happened" {:babashka/exit 1}))'
+Error happened
+$ echo $?
+1
+---
