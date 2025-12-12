@@ -980,7 +980,7 @@ babashka.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>Babashka v1.12.207
+<pre>Babashka v1.12.213
 
 Usage: bb [svm-opts] [global-opts] [eval opts] [cmdline args]
 or:    bb [svm-opts] [global-opts] file [cmdline args]
@@ -1000,6 +1000,7 @@ Global opts:
   --config &lt;file&gt;   Replace bb.edn with file. Defaults to bb.edn adjacent to invoked file or bb.edn in current dir. Relative paths are resolved relative to bb.edn.
   --deps-root &lt;dir&gt; Treat dir as root of relative paths in config.
   --prn             Print result via clojure.core/prn
+  --force-exit      Force exiting even when non-daemon threads are still running
   -Sforce           Force recalculation of the classpath (don't use the cache)
   -Sdeps            Deps data to use as the last deps file to be merged
   -f, --file &lt;path&gt; Run file
@@ -3376,7 +3377,7 @@ as <code>transit</code></p>
 <p><a href="https://github.com/clojure/core.rrb-vector"><code>core.rrb-vector</code></a></p>
 </li>
 <li>
-<p><a href="https://github.com/nextjournal/markdown"><code>nextjourna.markdown</code></a></p>
+<p><a href="https://github.com/nextjournal/markdown"><code>nextjournal.markdown</code></a></p>
 </li>
 <li>
 <p><a href="https://github.com/jhy/jsoup"><code>Jsoup</code></a></p>
