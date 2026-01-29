@@ -179,8 +179,9 @@ Add this to your `.bashrc` to get tab-complete feature on bash.
 _bb_tasks() {
     COMPREPLY=( $(compgen -W "$(bb tasks |tail -n +3 |cut -f1 -d ' ')" -- ${COMP_WORDS[COMP_CWORD]}) );
 }
-# autocomplete filenames as well
-complete -f -F _bb_tasks bb
+# uncomment only one of the following lines that start with 'complete'
+complete -f -F _bb_tasks bb # autocomplete both filenames and tasks
+# complete -F _bb_tasks bb # autocomplete only tasks
 ----
 
 ===== fish
