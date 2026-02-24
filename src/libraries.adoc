@@ -77,6 +77,7 @@ as `transit`
 * https://github.com/clojure/core.rrb-vector[`core.rrb-vector`]
 * https://github.com/nextjournal/markdown[`nextjournal.markdown`]
 * https://github.com/jhy/jsoup[`Jsoup`]
+* https://github.com/jline/jline3[`JLine`]: terminal input handling
 
 TIP:  Is your library built into babashka? +
 <<badges, Add the babashka built-in badge >> to let the babashka community know! +

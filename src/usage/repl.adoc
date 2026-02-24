@@ -12,7 +12,14 @@ To start a REPL, type:
 $ bb repl
 ----
 
-The REPL has built-in line editing and persistent history (saved to `~/.bb_repl_history` by default).
+The REPL uses https://github.com/jline/jline3[JLine] for line editing and provides:
+
+- Persistent history across sessions (saved to `~/.bb_repl_history` by default)
+- Tab completion for namespaces, vars and Java classes
+- Inline documentation with `C-x C-d`
+- Autosuggestions based on completions
+- Multi-line editing with automatic detection of incomplete forms
+- Force submit with `C-x C-m`
 
 To customize the history file location, set the `BABASHKA_REPL_HISTORY` environment variable to a file path. If it points to a directory, babashka writes `bb_repl_history` inside that directory.
 
