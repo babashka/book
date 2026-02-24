@@ -12,11 +12,13 @@ To start a REPL, type:
 $ bb repl
 ----
 
-To get history with up and down arrows, use https://github.com/hanslub42/rlwrap[rlwrap]:
+The REPL has built-in line editing and persistent history (saved to `~/.bb_repl_history` by default).
+
+To customize the history file location, set the `BABASHKA_REPL_HISTORY` environment variable to a file path. If it points to a directory, babashka writes `bb_repl_history` inside that directory.
 
 [source,shell]
 ----
-$ rlwrap bb repl
+$ BABASHKA_REPL_HISTORY=/path/to/my_history bb repl
 ----
 
 ==== Socket REPL
