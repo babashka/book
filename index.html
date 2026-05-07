@@ -980,7 +980,7 @@ babashka.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>Babashka v1.12.213
+<pre>Babashka v1.12.218
 
 Usage: bb [svm-opts] [global-opts] [eval opts] [cmdline args]
 or:    bb [svm-opts] [global-opts] file [cmdline args]
@@ -989,6 +989,7 @@ or:    bb [svm-opts] [global-opts] subcommand [subcommand opts] [cmdline args]
 
 Substrate VM opts:
 
+  -D&lt;property&gt;=&lt;value&gt;     Set a system property (e.g. -Dx.y=99).
   -Xmx&lt;size&gt;[g|G|m|M|k|K]  Set a maximum heap size (e.g. -Xmx256M to limit the heap to 256MB).
   -XX:PrintFlags=          Print all Substrate VM options.
 
@@ -1021,7 +1022,7 @@ Evaluation:
 
 REPL:
 
-  repl                 Start REPL. Use rlwrap for history.
+  repl                 Start REPL.
   socket-repl  [addr]  Start a socket REPL. Address defaults to localhost:1666.
   nrepl-server [addr]  Start nREPL server. Address defaults to localhost:1667.
 
@@ -1324,11 +1325,36 @@ these functions in babashka:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>To get history with up and down arrows, use <a href="https://github.com/hanslub42/rlwrap">rlwrap</a>:</p>
+<p>The REPL uses <a href="https://github.com/jline/jline3">JLine</a> for line editing and provides:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Persistent history across sessions (saved to <code>~/.bb_repl_history</code> by default)</p>
+</li>
+<li>
+<p>Tab completion for namespaces, vars and Java classes</p>
+</li>
+<li>
+<p>Inline documentation with <code>C-x C-d</code></p>
+</li>
+<li>
+<p>Autosuggestions based on completions</p>
+</li>
+<li>
+<p>Multi-line editing with automatic detection of incomplete forms</p>
+</li>
+<li>
+<p>Force submit with <code>C-x C-m</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>To customize the history file location, set the <code>BABASHKA_REPL_HISTORY</code> environment variable to a file path. If it points to a directory, babashka writes <code>bb_repl_history</code> inside that directory.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>rlwrap bb repl</code></pre>
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ BABASHKA_REPL_HISTORY</span><span class="o">=</span>/path/to/my_history bb repl</code></pre>
 </div>
 </div>
 </div>
@@ -3382,6 +3408,9 @@ as <code>transit</code></p>
 </li>
 <li>
 <p><a href="https://github.com/jhy/jsoup"><code>Jsoup</code></a></p>
+</li>
+<li>
+<p><a href="https://github.com/jline/jline3"><code>JLine</code></a>: terminal input handling</p>
 </li>
 </ul>
 </div>
