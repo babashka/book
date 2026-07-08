@@ -97,6 +97,15 @@ A selection of Java classes are available, see
 https://github.com/babashka/babashka/blob/master/src/babashka/impl/classes.clj[`babashka/impl/classes.clj`]
 in babashka's git repo.
 
+If you want to use another, typically newer, version of a built-in library,
+after declaring (e.g. `org.babashka/cli {:mvn/version "<latest-version>"}`) in
+`bb.edn` or other means, use `require`'s `:reload`:
+
+[source,clojure]
+----
+(require '[babashka.cli :as cli] :reload)
+----
+
 === Babashka namespaces
 
 [[babashka_classpath]]
