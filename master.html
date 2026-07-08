@@ -980,7 +980,7 @@ babashka.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>Babashka v1.12.205
+<pre>Babashka v1.12.218
 
 Usage: bb [svm-opts] [global-opts] [eval opts] [cmdline args]
 or:    bb [svm-opts] [global-opts] file [cmdline args]
@@ -989,6 +989,7 @@ or:    bb [svm-opts] [global-opts] subcommand [subcommand opts] [cmdline args]
 
 Substrate VM opts:
 
+  -D&lt;property&gt;=&lt;value&gt;     Set a system property (e.g. -Dx.y=99).
   -Xmx&lt;size&gt;[g|G|m|M|k|K]  Set a maximum heap size (e.g. -Xmx256M to limit the heap to 256MB).
   -XX:PrintFlags=          Print all Substrate VM options.
 
@@ -1000,6 +1001,7 @@ Global opts:
   --config &lt;file&gt;   Replace bb.edn with file. Defaults to bb.edn adjacent to invoked file or bb.edn in current dir. Relative paths are resolved relative to bb.edn.
   --deps-root &lt;dir&gt; Treat dir as root of relative paths in config.
   --prn             Print result via clojure.core/prn
+  --force-exit      Force exiting even when non-daemon threads are still running
   -Sforce           Force recalculation of the classpath (don't use the cache)
   -Sdeps            Deps data to use as the last deps file to be merged
   -f, --file &lt;path&gt; Run file
@@ -1020,7 +1022,7 @@ Evaluation:
 
 REPL:
 
-  repl                 Start REPL. Use rlwrap for history.
+  repl                 Start REPL.
   socket-repl  [addr]  Start a socket REPL. Address defaults to localhost:1666.
   nrepl-server [addr]  Start nREPL server. Address defaults to localhost:1667.
 
