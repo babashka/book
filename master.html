@@ -7,6 +7,7 @@
 <meta name="generator" content="Asciidoctor 2.0.17">
 <meta name="description" content="A book with scripting recipes for babashka">
 <meta name="author" content="Michiel Borkent">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
 <title>Babashka book</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -782,11 +783,16 @@ pre.rouge {
 <li><a href="#cli:exec">exec</a></li>
 </ul>
 </li>
+<li><a href="#badges">Badges</a>
+<ul class="sectlevel2">
+<li><a href="#_adding_a_badge_to_your_project">Adding a Badge to your Project</a></li>
+</ul>
+</li>
 <li><a href="#libraries">Libraries</a>
 <ul class="sectlevel2">
 <li><a href="#built-in-namespaces">Built-in namespaces</a></li>
 <li><a href="#_babashka_namespaces">Babashka namespaces</a></li>
-<li><a href="#_projects">Projects</a></li>
+<li><a href="#projects">Projects</a></li>
 </ul>
 </li>
 <li><a href="#pods">Pods</a>
@@ -810,6 +816,7 @@ pre.rouge {
 <li><a href="#core_async">Core.async</a></li>
 <li><a href="#_interacting_with_an_nrepl_server">Interacting with an nREPL server</a></li>
 <li><a href="#_running_from_cygwingit_bash">Running from Cygwin/Git Bash</a></li>
+<li><a href="#_throwing_exception_to_exit_program">Throwing exception to exit program</a></li>
 </ul>
 </li>
 <li><a href="#differences-with-clojure">Differences with Clojure</a></li>
@@ -891,6 +898,7 @@ set the <code>GRAALVM_HOME</code> environment variable. Also make sure you have
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code>$ git clone https://github.com/borkdude/babashka --recursive
+$ cd babashka
 $ script/uberjar &amp;&amp; script/compile</code></pre>
 </div>
 </div>
@@ -947,6 +955,12 @@ expression directly:</p>
 <p>Commonly, scripts have shebangs so you can invoke them with their filename only:</p>
 </div>
 <div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="n">$</span><span class="w"> </span><span class="n">./script.clj</span><span class="w">
+</span><span class="mi">6</span></code></pre>
+</div>
+</div>
+<div class="listingblock">
 <div class="title">script.clj</div>
 <div class="content">
 <pre class="rouge highlight"><code data-lang="clojure"><span class="o">#</span><span class="n">!/usr/bin/env</span><span class="w"> </span><span class="n">bb</span><span class="w">
@@ -966,7 +980,7 @@ babashka.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>Babashka v1.3.181
+<pre>Babashka v1.12.205
 
 Usage: bb [svm-opts] [global-opts] [eval opts] [cmdline args]
 or:    bb [svm-opts] [global-opts] file [cmdline args]
@@ -1309,11 +1323,36 @@ these functions in babashka:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>To get history with up and down arrows, use <a href="https://github.com/hanslub42/rlwrap">rlwrap</a>:</p>
+<p>The REPL uses <a href="https://github.com/jline/jline3">JLine</a> for line editing and provides:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Persistent history across sessions (saved to <code>~/.bb_repl_history</code> by default)</p>
+</li>
+<li>
+<p>Tab completion for namespaces, vars and Java classes</p>
+</li>
+<li>
+<p>Inline documentation with <code>C-x C-d</code></p>
+</li>
+<li>
+<p>Autosuggestions based on completions</p>
+</li>
+<li>
+<p>Multi-line editing with automatic detection of incomplete forms</p>
+</li>
+<li>
+<p>Force submit with <code>C-x C-m</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>To customize the history file location, set the <code>BABASHKA_REPL_HISTORY</code> environment variable to a file path. If it points to a directory, babashka writes <code>bb_repl_history</code> inside that directory.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>rlwrap bb repl</code></pre>
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ BABASHKA_REPL_HISTORY</span><span class="o">=</span>/path/to/my_history bb repl</code></pre>
 </div>
 </div>
 </div>
@@ -1941,6 +1980,19 @@ you would otherwise use when referring to your project as a dependency.
 </tr>
 </table>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Only pure Clojure libraries are supported in the <code>bb.edn</code> <code>:deps</code> map.  Java
+libraries cannot be included due to the closed nature of the GraalVM classpath.
+</td>
+</tr>
+</table>
+</div>
 <div class="paragraph">
 <p>If we have a main function in a file called <code>bb/my_project/main.clj</code> like:</p>
 </div>
@@ -2291,8 +2343,9 @@ compdef _bb_tasks bb</code></pre>
 <pre class="rouge highlight"><code data-lang="bash">_bb_tasks<span class="o">()</span> <span class="o">{</span>
     <span class="nv">COMPREPLY</span><span class="o">=(</span> <span class="si">$(</span><span class="nb">compgen</span> <span class="nt">-W</span> <span class="s2">"</span><span class="si">$(</span>bb tasks |tail <span class="nt">-n</span> +3 |cut <span class="nt">-f1</span> <span class="nt">-d</span> <span class="s1">' '</span><span class="si">)</span><span class="s2">"</span> <span class="nt">--</span> <span class="k">${</span><span class="nv">COMP_WORDS</span><span class="p">[COMP_CWORD]</span><span class="k">}</span><span class="si">)</span> <span class="o">)</span><span class="p">;</span>
 <span class="o">}</span>
-<span class="c"># autocomplete filenames as well</span>
-<span class="nb">complete</span> <span class="nt">-f</span> <span class="nt">-F</span> _bb_tasks bb</code></pre>
+<span class="c"># uncomment only one of the following lines that start with 'complete'</span>
+<span class="nb">complete</span> <span class="nt">-f</span> <span class="nt">-F</span> _bb_tasks bb <span class="c"># autocomplete both filenames and tasks</span>
+<span class="c"># complete -F _bb_tasks bb # autocomplete only tasks</span></code></pre>
 </div>
 </div>
 </div>
@@ -2321,7 +2374,7 @@ end
 <h3 id="_run"><a class="link" href="#_run">Run</a></h3>
 <div class="paragraph">
 <p>You can execute tasks using <code>bb &lt;task-name&gt;</code>. The babashka <code>run</code> subcommand can
-be used to execute with some additinoal options:</p>
+be used to execute with some additional options:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -2590,7 +2643,7 @@ directly instead. These two invocations are roughly equivalent:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>Note that the first string argument to <code>shell</code> it tokenized (broken into multiple parts) and the trailing arguments are not:</p>
+<p>Note that the first string argument to <code>shell</code> is tokenized (broken into multiple parts) and the trailing arguments are not:</p>
 </div>
 <div class="paragraph">
 <p>Correct:</p>
@@ -2994,8 +3047,7 @@ provide some defaults? This can be done using metadata. Let’s create a
   </span><span class="p">{</span><span class="no">:org.babashka/cli</span><span class="w"> </span><span class="p">{</span><span class="no">:exec-args</span><span class="w"> </span><span class="p">{</span><span class="no">:fn-data</span><span class="w"> </span><span class="mi">1</span><span class="p">}</span><span class="w">
                       </span><span class="no">:coerce</span><span class="w"> </span><span class="p">{</span><span class="no">:num</span><span class="w"> </span><span class="p">[</span><span class="no">:int</span><span class="p">]}</span><span class="w">
                       </span><span class="no">:alias</span><span class="w"> </span><span class="p">{</span><span class="no">:n</span><span class="w"> </span><span class="no">:num</span><span class="p">}}}</span><span class="w">
-  </span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="w">
-  </span><span class="p">(</span><span class="nb">prn</span><span class="w"> </span><span class="n">m</span><span class="p">))</span></code></pre>
+  </span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="w"> </span><span class="n">m</span><span class="p">)</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -3003,7 +3055,7 @@ provide some defaults? This can be done using metadata. Let’s create a
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="clojure"><span class="n">$</span><span class="w"> </span><span class="n">bb</span><span class="w"> </span><span class="n">-x</span><span class="w"> </span><span class="n">tasks/my-function</span><span class="w"> </span><span class="n">-n</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="w">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="n">$</span><span class="w"> </span><span class="n">bb</span><span class="w"> </span><span class="n">--prn</span><span class="w"> </span><span class="n">-x</span><span class="w"> </span><span class="n">tasks/my-function</span><span class="w"> </span><span class="n">-n</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="w">
 </span><span class="p">{</span><span class="no">:ns-data</span><span class="w"> </span><span class="mi">1</span><span class="n">,</span><span class="w"> </span><span class="no">:fn-data</span><span class="w"> </span><span class="mi">1</span><span class="n">,</span><span class="w"> </span><span class="no">:num</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="p">]}</span></code></pre>
 </div>
 </div>
@@ -3060,6 +3112,96 @@ function, available by default in tasks.</p>
 </span><span class="no">:x</span><span class="w"> </span><span class="p">{</span><span class="no">:ns-data</span><span class="w"> </span><span class="mi">1</span><span class="n">,</span><span class="w"> </span><span class="no">:fn-data</span><span class="w"> </span><span class="mi">1</span><span class="n">,</span><span class="w"> </span><span class="no">:task-data</span><span class="w"> </span><span class="mi">1234</span><span class="n">,</span><span class="w"> </span><span class="no">:cli-option</span><span class="w"> </span><span class="no">:yeah,</span><span class="w"> </span><span class="no">:num</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="no">:foo</span><span class="w"> </span><span class="mi">6</span><span class="p">}</span></code></pre>
 </div>
 </div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="badges"><a class="link" href="#badges">Badges</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You will notice babashka badges in some project READMEs.</p>
+</div>
+<div class="paragraph">
+<p><a href="#badges"><span class="image"><img src="https://raw.githubusercontent.com/babashka/babashka/master/logo/badge.svg" alt="bb compatible"></span></a>
+The babashka compatible badge means that a <a href="#projects">library can be used as a babashka dependency</a>.</p>
+</div>
+<div class="paragraph">
+<p><a href="#badges"><span class="image"><img src="https://raw.githubusercontent.com/babashka/babashka/master/logo/built-in-badge.svg" alt="bb built-in"></span></a>
+The babashka built-in badge indicates that a <a href="#built-in-namespaces">library has been built directly into babashka</a>, and requires no extra dependencies to use it.</p>
+</div>
+<div class="sect2">
+<h3 id="_adding_a_badge_to_your_project"><a class="link" href="#_adding_a_badge_to_your_project">Adding a Badge to your Project</a></h3>
+<div class="paragraph">
+<p>Help people who use babashka know that your library works with babashka.</p>
+</div>
+<div class="paragraph">
+<p><a href="#badges"><span class="image"><img src="https://raw.githubusercontent.com/babashka/babashka/master/logo/badge.svg" alt="bb compatible"></span></a> Add the babashka compatible badge if your library works as a babashka dependency.
+Let the world know by adding this badge to your project&#8217;s README:</p>
+</div>
+<details>
+<summary class="title">Markdown</summary>
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="markdown"><span class="p">[</span><span class="nv">![bb compatible</span><span class="p">](</span><span class="sx">https://raw.githubusercontent.com/babashka/babashka/master/logo/badge.svg</span><span class="p">)</span>](https://book.babashka.org#badges)</code></pre>
+</div>
+</div>
+</div>
+</details>
+<details>
+<summary class="title">AsciiDoc</summary>
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="adoc">https://book.babashka.org#badges[image:https://raw.githubusercontent.com/babashka/babashka/master/logo/badge.svg[bb compatible]]</code></pre>
+</div>
+</div>
+</div>
+</details>
+<details>
+<summary class="title">HTML</summary>
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="html"><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"https://book.babashka.org#badges"</span> <span class="na">rel=</span><span class="s">"nofollow"</span><span class="nt">&gt;&lt;img</span> <span class="na">src=</span><span class="s">"https://raw.githubusercontent.com/babashka/babashka/master/logo/badge.svg"</span> <span class="na">alt=</span><span class="s">"bb compatible"</span> <span class="na">style=</span><span class="s">"max-width: 100%;"</span><span class="nt">&gt;&lt;/a&gt;</span></code></pre>
+</div>
+</div>
+</div>
+</details>
+<div class="paragraph">
+<p><a href="#badges"><span class="image"><img src="https://raw.githubusercontent.com/babashka/babashka/master/logo/built-in-badge.svg" alt="bb built-in"></span></a> Add the babashka built-in badge if your library has the rare honor of being built into babashka.
+Add this badge to your project&#8217;s README:</p>
+</div>
+<details>
+<summary class="title">Markdown</summary>
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="markdown"><span class="p">[</span><span class="nv">![bb built-in</span><span class="p">](</span><span class="sx">https://raw.githubusercontent.com/babashka/babashka/master/logo/built-in-badge.svg</span><span class="p">)</span>](https://book.babashka.org#badges)</code></pre>
+</div>
+</div>
+</div>
+</details>
+<details>
+<summary class="title">AsciiDoc</summary>
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="adoc">https://book.babashka.org#badges[image:https://raw.githubusercontent.com/babashka/babashka/master/logo/built-in-badge.svg[bb built-in]]</code></pre>
+</div>
+</div>
+</div>
+</details>
+<details>
+<summary class="title">HTML</summary>
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="html"><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"https://book.babashka.org#badges"</span> <span class="na">rel=</span><span class="s">"nofollow"</span><span class="nt">&gt;&lt;img</span> <span class="na">src=</span><span class="s">"https://raw.githubusercontent.com/babashka/babashka/master/logo/built-in-badge.svg"</span> <span class="na">alt=</span><span class="s">"bb built-in"</span> <span class="na">style=</span><span class="s">"max-width: 100%;"</span><span class="nt">&gt;&lt;/a&gt;</span></code></pre>
+</div>
+</div>
+</div>
+</details>
 </div>
 </div>
 </div>
@@ -3251,15 +3393,38 @@ as <code>transit</code></p>
 <p><a href="https://github.com/clojure/tools.logging"><code>clojure.tools.logging</code></a></p>
 </li>
 <li>
-<p><a href="https://github.com/ptaoussanis/timbre"><code>timbre</code></a>: logging</p>
+<p><a href="https://github.com/ptaoussanis/timbre"><code>taoensso.timbre</code></a>: logging</p>
 </li>
 <li>
-<p><a href="https://github.com/borkdude/edamame"><code>edamame</code></a>: Clojure parser</p>
+<p><a href="https://github.com/borkdude/edamame"><code>edamame.core</code></a>: Clojure parser</p>
 </li>
 <li>
 <p><a href="https://github.com/clojure/core.rrb-vector"><code>core.rrb-vector</code></a></p>
 </li>
+<li>
+<p><a href="https://github.com/nextjournal/markdown"><code>nextjournal.markdown</code></a></p>
+</li>
+<li>
+<p><a href="https://github.com/jhy/jsoup"><code>Jsoup</code></a></p>
+</li>
+<li>
+<p><a href="https://github.com/jline/jline3"><code>JLine</code></a>: terminal input handling</p>
+</li>
 </ul>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Is your library built into babashka?<br>
+<a href="#badges">Add the babashka built-in badge </a> to let the babashka community know!<br>
+<a href="#badges"><span class="image"><img src="https://raw.githubusercontent.com/babashka/babashka/master/logo/built-in-badge.svg" alt="bb built-in"></span></a>
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>Check out the <a href="https://babashka.org/toolbox/">babashka toolbox</a> and
@@ -3277,6 +3442,16 @@ you want to compile babashka yourself.</p>
 <p>A selection of Java classes are available, see
 <a href="https://github.com/babashka/babashka/blob/master/src/babashka/impl/classes.clj"><code>babashka/impl/classes.clj</code></a>
 in babashka&#8217;s git repo.</p>
+</div>
+<div class="paragraph">
+<p>If you want to use another, typically newer, version of a built-in library,
+after declaring (e.g. <code>org.babashka/cli {:mvn/version "&lt;latest-version&gt;"}</code>) in
+<code>bb.edn</code> or other means, use <code>require</code>'s <code>:reload</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">(</span><span class="nf">require</span><span class="w"> </span><span class="o">'</span><span class="p">[</span><span class="n">babashka.cli</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">cli</span><span class="p">]</span><span class="w"> </span><span class="no">:reload</span><span class="p">)</span></code></pre>
+</div>
 </div>
 </div>
 <div class="sect2">
@@ -3523,7 +3698,7 @@ from the command line or with <a href="https://book.babashka.org/#tasks">tasks</
 </div>
 </div>
 <div class="sect2">
-<h3 id="_projects"><a class="link" href="#_projects">Projects</a></h3>
+<h3 id="projects"><a class="link" href="#projects">Projects</a></h3>
 <div class="paragraph">
 <p>Babashka is able to run Clojure projects from source, if they are compatible
 with the subset of Clojure that sci is capable of running.</p>
@@ -3533,12 +3708,19 @@ with the subset of Clojure that sci is capable of running.</p>
 <a href="https://github.com/borkdude/babashka/blob/master/doc/projects.md">page</a> for
 projects that are known to work with babashka.</p>
 </div>
-<div class="paragraph">
-<p>Do you have a library that is compatible with babashka? Add the official badge
-to give some flair to your repo!</p>
-</div>
-<div class="paragraph">
-<p><span class="image"><a class="image" href="https://babashka.org"><img src="https://img.shields.io/badge/babashka-compatible-green?logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQiIGhlaWdodD0iMTQiIHZpZXdCb3g9IjAgMCAxNDcyIDE0NzIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNOTk1LjkxMSAxMTkzLjg5QzExMTAuOTMgMTExMi4zOCAxMTg2IDk3OC4yMDYgMTE4NiA4MjYuNUMxMTg2IDU3Ny45NzIgMTAxNCAyNTQuNSA3MzYgMTEzQzQ2MC41IDI2MiAyODYgNTc3Ljk3MiAyODYgODI2LjVDMjg2IDk3OC4yMDYgMzYxLjA3IDExMTIuMzggNDc2LjA4OSAxMTkzLjg5QzQ3MS45ODMgMTE5NC40NCA0NjcuOTQ5IDExOTUuMTQgNDY0IDExOTZDMzc2LjYxMSAxMjE1LjA3IDI3MCAxMzU5LjA1IDI3MCAxMzU5LjA1SDUzNEM1ODAuOTcyIDEzNTkuMDUgNjI1LjYzMSAxMzQxLjQxIDY2MC45NTYgMTMyMS42MkM2NzguMTE1IDEzNDQuMzIgNzA1LjM0NCAxMzU5IDczNiAxMzU5Qzc2Ni42NTYgMTM1OSA3OTMuODg1IDEzNDQuMzIgODExLjA0NCAxMzIxLjYyQzg0Ni4zNjkgMTM0MS40MSA4OTEuMDI4IDEzNTkuMDUgOTM4IDEzNTkuMDVIMTIwMkMxMjAyIDEzNTkuMDUgMTA5NS4zOSAxMjE1LjA3IDEwMDggMTE5NkMxMDA0LjA1IDExOTUuMTQgMTAwMC4wMiAxMTk0LjQ0IDk5NS45MTEgMTE5My44OVoiIGZpbGw9InVybCgjcGFpbnQwX2xpbmVhcikiLz4KPGNpcmNsZSBjeD0iNzM1LjUiIGN5PSI4NTIuNSIgcj0iMzExLjUiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik00NDMgNzUwLjQxN0M2NjIgNzY1Ljg2NiA3OTEuMzgyIDcxMi4zODggODgxIDU3OS44ODFDODgxIDU3OS44ODEgNzA4LjI5MyA1MjEuNjQ5IDYwMy4yNDQgNTc5Ljg4MUM0OTguNTUgNjM3LjkxNiA0NDMgNzUwLjQxNyA0NDMgNzUwLjQxN1oiIGZpbGw9IiNCNEI0QjQiLz4KPHBhdGggZD0iTTEwMzkuOTkgNzQ4LjI4MkM5MTQuODYyIDczNC43NDUgODAzLjI2NCA2OTQuMTM1IDc1MCA1NDFDNzUwIDU0MSA4NjAuNjMzIDU2Ni4yNzIgOTcyLjM1NSA2NjguMTAxQzEwODguMzkgNzczLjg1NyAxMDM5Ljk5IDc0OC4yODIgMTAzOS45OSA3NDguMjgyWiIgZmlsbD0iI0I0QjRCNCIvPgo8Y2lyY2xlIGN4PSI3MzUuNSIgY3k9Ijg1Mi41IiByPSIzMTEuNSIgc3Ryb2tlPSIjMEEwMDAwIiBzdHJva2Utd2lkdGg9IjQwIi8+CjxwYXRoIGQ9Ik03OTcgNzE5SDY3NEw3MDQgNzQ5VjgzOUM3MDguNSA4MDkuNSA3NjQuNSA4MDguNSA3NjcuNSA4MzlMNzc1IDc0OUw3OTcgNzE5WiIgZmlsbD0iYmxhY2siLz4KPHBhdGggZD0iTTM1MS4xMTcgNzU5QzM1MS4xMTcgNzM2LjkwOSAzNjkuMDI2IDcxOSAzOTEuMTE3IDcxOUg2NzYuMDE4QzcwMC4yIDcxOSA3MTguODUyIDc0MC4yOTIgNzE1LjY3IDc2NC4yNjRMNjkwLjkxIDk1MC43NjRDNjg4LjI3IDk3MC42NDYgNjcxLjMxNCA5ODUuNSA2NTEuMjU4IDk4NS41SDM5MS4xMTdDMzY5LjAyNiA5ODUuNSAzNTEuMTE3IDk2Ny41OTEgMzUxLjExNyA5NDUuNVY3NTlaIiBmaWxsPSJibGFjayIvPgo8cGF0aCBkPSJNNzU2LjAxMiA3NjQuMjY3Qzc1Mi44MjggNzQwLjI5NCA3NzEuNDgxIDcxOSA3OTUuNjY0IDcxOUgxMDgwQzExMDIuMDkgNzE5IDExMjAgNzM2LjkwOSAxMTIwIDc1OVY5NDUuMDk2QzExMjAgOTY3LjE4NyAxMTAyLjA5IDk4NS4wOTYgMTA4MCA5ODUuMDk2SDgyMC4zODFDODAwLjMyNSA5ODUuMDk2IDc4My4zNyA5NzAuMjQ0IDc4MC43MjkgOTUwLjM2Mkw3NTYuMDEyIDc2NC4yNjdaIiBmaWxsPSJibGFjayIvPgo8cGF0aCBkPSJNMTAyNCA5NTJWOTIxLjQ3SDEwMTMuNzFDMTAwNy4wMyA5MjEuNDcgMTAwMi41OCA5MTYuNzUyIDEwMDAuMzUgOTA5LjgxM0w5NTguMDY0IDc4Mi42OTdDOTU1LjI4MiA3NzQuNjQ5IDk1MS45NDQgNzY4LjgyIDk0Ny40OTIgNzY0LjM3OUM5MzkuMTQ2IDc1NS43NzUgOTI4LjI5NiA3NTMgOTE2LjA1NCA3NTNIOTAyLjdWNzg0LjkxOEg5MTEuNjAzQzkxOS4xMTUgNzg0LjkxOCA5MjQuOTU3IDc4Ny42OTMgOTI3LjQ2MSA3OTYuNTc1TDkzMy4zMDMgODE3LjExM0w4ODEgOTUySDkxOS4xMTVMOTUwLjU1MyA4NjMuMTg1TDk2Ny4yNDUgOTE2Ljc1MkM5NzMuNjQ0IDkzNy41NjggOTg0LjQ5NCA5NTIgMTAwOC45OCA5NTJIMTAyNFoiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik01OTAgOTUyVjkyMS40N0g1NzkuNzA2QzU3My4wMjkgOTIxLjQ3IDU2OC41NzggOTE2Ljc1MiA1NjYuMzUyIDkwOS44MTNMNTI0LjA2NCA3ODIuNjk3QzUyMS4yODIgNzc0LjY0OSA1MTcuOTQ0IDc2OC44MiA1MTMuNDkyIDc2NC4zNzlDNTA1LjE0NiA3NTUuNzc1IDQ5NC4yOTYgNzUzIDQ4Mi4wNTQgNzUzSDQ2OC43Vjc4NC45MThINDc3LjYwM0M0ODUuMTE1IDc4NC45MTggNDkwLjk1NyA3ODcuNjkzIDQ5My40NjEgNzk2LjU3NUw0OTkuMzAzIDgxNy4xMTNMNDQ3IDk1Mkg0ODUuMTE1TDUxNi41NTMgODYzLjE4NUw1MzMuMjQ1IDkxNi43NTJDNTM5LjY0NCA5MzcuNTY4IDU1MC40OTQgOTUyIDU3NC45NzcgOTUySDU5MFoiIGZpbGw9IndoaXRlIi8+CjxkZWZzPgo8bGluZWFyR3JhZGllbnQgaWQ9InBhaW50MF9saW5lYXIiIHgxPSI3NTIiIHkxPSIxMTMiIHgyPSI3NTIiIHkyPSIxMzU5LjUyIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+CjxzdG9wIHN0b3AtY29sb3I9IiNFNDFGMjYiLz4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjQjcwMDAwIi8+CjwvbGluZWFyR3JhZGllbnQ+CjwvZGVmcz4KPC9zdmc+Cg==" alt="svg+xml;base64,PHN2ZyB3aWR0aD0iMTQiIGhlaWdodD0iMTQiIHZpZXdCb3g9IjAgMCAxNDcyIDE0NzIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNOTk1LjkxMSAxMTkzLjg5QzExMTAuOTMgMTExMi4zOCAxMTg2IDk3OC4yMDYgMTE4NiA4MjYuNUMxMTg2IDU3Ny45NzIgMTAxNCAyNTQuNSA3MzYgMTEzQzQ2MC41IDI2MiAyODYgNTc3Ljk3MiAyODYgODI2LjVDMjg2IDk3OC4yMDYgMzYxLjA3IDExMTIuMzggNDc2LjA4OSAxMTkzLjg5QzQ3MS45ODMgMTE5NC40NCA0NjcuOTQ5IDExOTUuMTQgNDY0IDExOTZDMzc2LjYxMSAxMjE1LjA3IDI3MCAxMzU5LjA1IDI3MCAxMzU5LjA1SDUzNEM1ODAuOTcyIDEzNTkuMDUgNjI1LjYzMSAxMzQxLjQxIDY2MC45NTYgMTMyMS42MkM2NzguMTE1IDEzNDQuMzIgNzA1LjM0NCAxMzU5IDczNiAxMzU5Qzc2Ni42NTYgMTM1OSA3OTMuODg1IDEzNDQuMzIgODExLjA0NCAxMzIxLjYyQzg0Ni4zNjkgMTM0MS40MSA4OTEuMDI4IDEzNTkuMDUgOTM4IDEzNTkuMDVIMTIwMkMxMjAyIDEzNTkuMDUgMTA5NS4zOSAxMjE1LjA3IDEwMDggMTE5NkMxMDA0LjA1IDExOTUuMTQgMTAwMC4wMiAxMTk0LjQ0IDk5NS45MTEgMTE5My44OVoiIGZpbGw9InVybCgjcGFpbnQwX2xpbmVhcikiLz4KPGNpcmNsZSBjeD0iNzM1LjUiIGN5PSI4NTIuNSIgcj0iMzExLjUiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik00NDMgNzUwLjQxN0M2NjIgNzY1Ljg2NiA3OTEuMzgyIDcxMi4zODggODgxIDU3OS44ODFDODgxIDU3OS44ODEgNzA4LjI5MyA1MjEuNjQ5IDYwMy4yNDQgNTc5Ljg4MUM0OTguNTUgNjM3LjkxNiA0NDMgNzUwLjQxNyA0NDMgNzUwLjQxN1oiIGZpbGw9IiNCNEI0QjQiLz4KPHBhdGggZD0iTTEwMzkuOTkgNzQ4LjI4MkM5MTQuODYyIDczNC43NDUgODAzLjI2NCA2OTQuMTM1IDc1MCA1NDFDNzUwIDU0MSA4NjAuNjMzIDU2Ni4yNzIgOTcyLjM1NSA2NjguMTAxQzEwODguMzkgNzczLjg1NyAxMDM5Ljk5IDc0OC4yODIgMTAzOS45OSA3NDguMjgyWiIgZmlsbD0iI0I0QjRCNCIvPgo8Y2lyY2xlIGN4PSI3MzUuNSIgY3k9Ijg1Mi41IiByPSIzMTEuNSIgc3Ryb2tlPSIjMEEwMDAwIiBzdHJva2Utd2lkdGg9IjQwIi8+CjxwYXRoIGQ9Ik03OTcgNzE5SDY3NEw3MDQgNzQ5VjgzOUM3MDguNSA4MDkuNSA3NjQuNSA4MDguNSA3NjcuNSA4MzlMNzc1IDc0OUw3OTcgNzE5WiIgZmlsbD0iYmxhY2siLz4KPHBhdGggZD0iTTM1MS4xMTcgNzU5QzM1MS4xMTcgNzM2LjkwOSAzNjkuMDI2IDcxOSAzOTEuMTE3IDcxOUg2NzYuMDE4QzcwMC4yIDcxOSA3MTguODUyIDc0MC4yOTIgNzE1LjY3IDc2NC4yNjRMNjkwLjkxIDk1MC43NjRDNjg4LjI3IDk3MC42NDYgNjcxLjMxNCA5ODUuNSA2NTEuMjU4IDk4NS41SDM5MS4xMTdDMzY5LjAyNiA5ODUuNSAzNTEuMTE3IDk2Ny41OTEgMzUxLjExNyA5NDUuNVY3NTlaIiBmaWxsPSJibGFjayIvPgo8cGF0aCBkPSJNNzU2LjAxMiA3NjQuMjY3Qzc1Mi44MjggNzQwLjI5NCA3NzEuNDgxIDcxOSA3OTUuNjY0IDcxOUgxMDgwQzExMDIuMDkgNzE5IDExMjAgNzM2LjkwOSAxMTIwIDc1OVY5NDUuMDk2QzExMjAgOTY3LjE4NyAxMTAyLjA5IDk4NS4wOTYgMTA4MCA5ODUuMDk2SDgyMC4zODFDODAwLjMyNSA5ODUuMDk2IDc4My4zNyA5NzAuMjQ0IDc4MC43MjkgOTUwLjM2Mkw3NTYuMDEyIDc2NC4yNjdaIiBmaWxsPSJibGFjayIvPgo8cGF0aCBkPSJNMTAyNCA5NTJWOTIxLjQ3SDEwMTMuNzFDMTAwNy4wMyA5MjEuNDcgMTAwMi41OCA5MTYuNzUyIDEwMDAuMzUgOTA5LjgxM0w5NTguMDY0IDc4Mi42OTdDOTU1LjI4MiA3NzQuNjQ5IDk1MS45NDQgNzY4LjgyIDk0Ny40OTIgNzY0LjM3OUM5MzkuMTQ2IDc1NS43NzUgOTI4LjI5NiA3NTMgOTE2LjA1NCA3NTNIOTAyLjdWNzg0LjkxOEg5MTEuNjAzQzkxOS4xMTUgNzg0LjkxOCA5MjQuOTU3IDc4Ny42OTMgOTI3LjQ2MSA3OTYuNTc1TDkzMy4zMDMgODE3LjExM0w4ODEgOTUySDkxOS4xMTVMOTUwLjU1MyA4NjMuMTg1TDk2Ny4yNDUgOTE2Ljc1MkM5NzMuNjQ0IDkzNy41NjggOTg0LjQ5NCA5NTIgMTAwOC45OCA5NTJIMTAyNFoiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik01OTAgOTUyVjkyMS40N0g1NzkuNzA2QzU3My4wMjkgOTIxLjQ3IDU2OC41NzggOTE2Ljc1MiA1NjYuMzUyIDkwOS44MTNMNTI0LjA2NCA3ODIuNjk3QzUyMS4yODIgNzc0LjY0OSA1MTcuOTQ0IDc2OC44MiA1MTMuNDkyIDc2NC4zNzlDNTA1LjE0NiA3NTUuNzc1IDQ5NC4yOTYgNzUzIDQ4Mi4wNTQgNzUzSDQ2OC43Vjc4NC45MThINDc3LjYwM0M0ODUuMTE1IDc4NC45MTggNDkwLjk1NyA3ODcuNjkzIDQ5My40NjEgNzk2LjU3NUw0OTkuMzAzIDgxNy4xMTNMNDQ3IDk1Mkg0ODUuMTE1TDUxNi41NTMgODYzLjE4NUw1MzMuMjQ1IDkxNi43NTJDNTM5LjY0NCA5MzcuNTY4IDU1MC40OTQgOTUyIDU3NC45NzcgOTUySDU5MFoiIGZpbGw9IndoaXRlIi8+CjxkZWZzPgo8bGluZWFyR3JhZGllbnQgaWQ9InBhaW50MF9saW5lYXIiIHgxPSI3NTIiIHkxPSIxMTMiIHgyPSI3NTIiIHkyPSIxMzU5LjUyIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+CjxzdG9wIHN0b3AtY29sb3I9IiNFNDFGMjYiLz4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjQjcwMDAwIi8+CjwvbGluZWFyR3JhZGllbnQ+CjwvZGVmcz4KPC9zdmc+Cg==" title="bb compatible"></a></span></p>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Is your library compatible with babashka?<br>
+<a href="#badges">Add the babashka compatible badge</a>, the babashka community will appreciate it!<br>
+<a href="#badges"><span class="image"><img src="https://raw.githubusercontent.com/babashka/babashka/master/logo/badge.svg" alt="bb compatible"></span></a>
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
@@ -3570,7 +3752,7 @@ watch a directory for changes:</p>
 <pre class="rouge highlight"><code data-lang="clojure"><span class="o">#</span><span class="n">!/usr/bin/env</span><span class="w"> </span><span class="n">bb</span><span class="w">
 
 </span><span class="p">(</span><span class="nf">require</span><span class="w"> </span><span class="o">'</span><span class="p">[</span><span class="n">babashka.pods</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">pods</span><span class="p">])</span><span class="w">
-</span><span class="p">(</span><span class="nf">pods/load-pod</span><span class="w"> </span><span class="ss">'org.babashka/fswatcher</span><span class="w"> </span><span class="s">"0.0.3"</span><span class="p">)</span><span class="w">
+</span><span class="p">(</span><span class="nf">pods/load-pod</span><span class="w"> </span><span class="ss">'org.babashka/fswatcher</span><span class="w"> </span><span class="s">"0.0.5"</span><span class="p">)</span><span class="w">
 
 </span><span class="p">(</span><span class="nf">require</span><span class="w"> </span><span class="o">'</span><span class="p">[</span><span class="n">pod.babashka.fswatcher</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">fw</span><span class="p">])</span><span class="w">
 
@@ -3591,7 +3773,7 @@ watch a directory for changes:</p>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="clojure"><span class="p">{</span><span class="no">:paths</span><span class="w"> </span><span class="p">[</span><span class="s">"bb"</span><span class="p">]</span><span class="w">
- </span><span class="no">:pods</span><span class="w"> </span><span class="p">{</span><span class="n">org.babashka/go-sqlite3</span><span class="w"> </span><span class="p">{</span><span class="no">:version</span><span class="w"> </span><span class="s">"0.1.0"</span><span class="p">}}}</span></code></pre>
+ </span><span class="no">:pods</span><span class="w"> </span><span class="p">{</span><span class="n">org.babashka/go-sqlite3</span><span class="w"> </span><span class="p">{</span><span class="no">:version</span><span class="w"> </span><span class="s">"0.2.3"</span><span class="p">}}}</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -3917,6 +4099,10 @@ started with <code>lein repl</code>:</p>
 </span><span class="p">(</span><span class="nf">nrepl-eval</span><span class="w"> </span><span class="mi">52054</span><span class="w"> </span><span class="s">"(+ 1 2 3)"</span><span class="p">)</span><span class="w"> </span><span class="c1">;;=&gt; "6"</span></code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>Note that the above is a bit low level. You can also use the
+<a href="https://github.com/babashka/nrepl-client">nrepl-client</a> library for this.</p>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_running_from_cygwingit_bash"><a class="link" href="#_running_from_cygwingit_bash">Running from Cygwin/Git Bash</a></h3>
@@ -3973,6 +4159,24 @@ directly:</p>
 <div class="content">
 <pre class="rouge highlight"><code data-lang="clojure"><span class="o">#</span><span class="n">!/usr/bin/env</span><span class="w"> </span><span class="n">bbwrap</span><span class="w">
 </span><span class="p">(</span><span class="nb">println</span><span class="w"> </span><span class="s">"Hello, world!"</span><span class="p">)</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_throwing_exception_to_exit_program"><a class="link" href="#_throwing_exception_to_exit_program">Throwing exception to exit program</a></h3>
+<div class="paragraph">
+<p>Babashka supports adding <code>:babashka/exit</code> metadata to an <code>ex-info</code> to indicate
+the exit code of babashka when this exception isn&#8217;t caught by any other parts of
+the program. The <code>:babashka/exit</code> code also indicates that no error report should be printed.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nt">---</span>
+<span class="nv">$ </span>bb <span class="nt">-e</span> <span class="s1">'(throw (ex-info "Error happened" {:babashka/exit 1}))'</span>
+Error happened
+<span class="nv">$ </span><span class="nb">echo</span> <span class="nv">$?</span>
+1
+<span class="nt">---</span></code></pre>
 </div>
 </div>
 </div>
@@ -4070,7 +4274,7 @@ make an issue and/or PR.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-01-23 15:27:14 +0100
+Last updated 2025-03-18 10:37:32 +0100
 </div>
 </div>
 <!-- see https://github.com/asciidoctor/asciidoctor/issues/699#issuecomment-321066006 -->
