@@ -337,6 +337,8 @@ Babashka sets the following system properties:
 * `babashka.main`: the `--main` argument
 * `babashka.file`: the `--file` argument (normalized using
 `.getAbsolutePath`)
+* `babashka.config`: the absolute path to the `bb.edn` (or other
+config) file
 
 === Data readers
 
