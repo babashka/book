@@ -160,11 +160,11 @@ bar ("2" "3")
 === Command line interface
 
 Use `:exec-fn` or `:cmd` to configure a task with https://github.com/babashka/cli[babashka.cli].
-Tasks with these keys support `--help`, shell completion and subcommands.
+Tasks with these keys support automatic `--help`, shell completion and subcommands.
 
 ==== :exec-fn
 
-Use `:exec-fn` to name the function that handles the task:
+Use `:exec-fn` with a fully qualified symbol to refer to a function that handles the task:
 
 [source,clojure]
 ----
@@ -251,6 +251,21 @@ Use a vector of command-name and option-map pairs to preserve the order of subco
 ----
 {:tasks {deploy {:cmd [["lock" {:exec-fn tasks/lock}]
                        ["unlock" {:exec-fn tasks/unlock}]]}}}
+----
+
+Set `:cmd` to a fully qualified symbol to read the command tree from a var:
+
+[source,clojure]
+----
+{:tasks {db {:doc "Manage the database"
+             :cmd tasks/db-cmds}}}
+----
+
+[source,clojure]
+----
+(def db-cmds
+  {"migrate" {:exec-fn 'tasks/db-migrate}
+   "seed"    {:exec-fn 'tasks/db-seed}})
 ----
 
 ==== :cli
