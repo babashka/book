@@ -753,6 +753,7 @@ pre.rouge {
 <ul class="sectlevel2">
 <li><a href="#_bb_edn">bb.edn</a></li>
 <li><a href="#_paths_and_deps">:paths and :deps</a></li>
+<li><a href="#deps-resolution">Dependency resolution</a></li>
 <li><a href="#_min_bb_version">:min-bb-version</a></li>
 <li><a href="#_tasks">:tasks</a></li>
 <li><a href="#_script_adjacent_bb_edn">Script-adjacent bb.edn</a></li>
@@ -765,6 +766,7 @@ pre.rouge {
 <li><a href="#_task_local_options">Task-local options</a></li>
 <li><a href="#_discoverability">Discoverability</a></li>
 <li><a href="#_command_line_arguments">Command line arguments</a></li>
+<li><a href="#tasks-cli">Command line interface</a></li>
 <li><a href="#_run">Run</a></li>
 <li><a href="#_hooks">Hooks</a></li>
 <li><a href="#_tasks_api">Tasks API</a></li>
@@ -980,7 +982,7 @@ babashka.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>Babashka v1.12.218
+<pre>Babashka v1.13.223
 
 Usage: bb [svm-opts] [global-opts] [eval opts] [cmdline args]
 or:    bb [svm-opts] [global-opts] file [cmdline args]
@@ -1023,6 +1025,7 @@ Evaluation:
 REPL:
 
   repl                 Start REPL.
+  repl --connect [addr] Connect to an nREPL server. Reads .nrepl-port by default.
   socket-repl  [addr]  Start a socket REPL. Address defaults to localhost:1666.
   nrepl-server [addr]  Start nREPL server. Address defaults to localhost:1667.
 
@@ -1245,7 +1248,7 @@ namespace which allows dynamically adding to the classpath.</p>
 </div>
 <div class="paragraph">
 <p>The namespace <a href="#babashkadeps">babashka.deps</a> integrates
-<a href="https://github.com/clojure/tools.deps.alpha">tools.deps</a> with babashka and allows
+<a href="https://github.com/clojure/tools.deps">tools.deps</a> with babashka and allows
 you to set the classpath using a <code>deps.edn</code> map.</p>
 </div>
 </div>
@@ -1337,6 +1340,9 @@ these functions in babashka:</p>
 </li>
 <li>
 <p>Inline documentation with <code>C-x C-d</code></p>
+</li>
+<li>
+<p>The arglist of the function at the cursor</p>
 </li>
 <li>
 <p>Autosuggestions based on completions</p>
@@ -1467,9 +1473,21 @@ Java property option in Clojure:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="clojure"><span class="n">$</span><span class="w"> </span><span class="n">bb</span><span class="w"> </span><span class="n">-e</span><span class="w"> </span><span class="s">"(babashka.nrepl.server/start-server\!) (deref (promise))"</span><span class="w">
-</span><span class="n">Started</span><span class="w"> </span><span class="n">nREPL</span><span class="w"> </span><span class="n">server</span><span class="w"> </span><span class="n">at</span><span class="w"> </span><span class="mf">0.0</span><span class="n">.0.0</span><span class="no">:1667</span></code></pre>
+<pre class="rouge highlight"><code data-lang="clojure"><span class="n">$</span><span class="w"> </span><span class="n">bb</span><span class="w"> </span><span class="n">-e</span><span class="w"> </span><span class="s">"(babashka.nrepl.server/start-server\!) nil"</span><span class="w">
+</span><span class="n">Started</span><span class="w"> </span><span class="n">nREPL</span><span class="w"> </span><span class="n">server</span><span class="w"> </span><span class="n">at</span><span class="w"> </span><span class="mf">127.0</span><span class="n">.0.1</span><span class="no">:1667</span></code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>The server binds to <code>127.0.0.1</code> by default.
+To accept connections from other hosts, pass <code>0.0.0.0</code> as the host:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>bb nrepl-server 0.0.0.0:1667</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>bb nrepl-server</code> writes the port to <code>.nrepl-port</code> and removes the file on exit.</p>
 </div>
 <div class="paragraph">
 <p>Then connect with your favorite nREPL client:</p>
@@ -1508,27 +1526,40 @@ Java property option in Clojure:</p>
 </ul>
 </div>
 <div class="paragraph">
-<p>The babashka nREPL server currently does not write an <code>.nrepl-port</code> file at
-startup. Using the following <code>nrepl</code> task, defined in a <code>bb.edn</code>, you can
-accomplish the same:</p>
+<p>Use <code>bb repl --connect</code> to connect to an nREPL server from the terminal.
+The command reads the port from <code>.nrepl-port</code>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="clojure"><span class="p">{</span><span class="no">:tasks</span><span class="w">
- </span><span class="p">{</span><span class="n">nrepl</span><span class="w">
-  </span><span class="p">{</span><span class="no">:requires</span><span class="w"> </span><span class="p">([</span><span class="n">babashka.fs</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">fs</span><span class="p">]</span><span class="w">
-              </span><span class="p">[</span><span class="n">babashka.nrepl.server</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">srv</span><span class="p">])</span><span class="w">
-   </span><span class="no">:task</span><span class="w"> </span><span class="p">(</span><span class="nf">do</span><span class="w"> </span><span class="p">(</span><span class="nf">srv/start-server!</span><span class="w"> </span><span class="p">{</span><span class="no">:host</span><span class="w"> </span><span class="s">"localhost"</span><span class="w">
-                                 </span><span class="no">:port</span><span class="w"> </span><span class="mi">1339</span><span class="p">})</span><span class="w">
-             </span><span class="p">(</span><span class="nf">spit</span><span class="w"> </span><span class="s">".nrepl-port"</span><span class="w"> </span><span class="s">"1339"</span><span class="p">)</span><span class="w">
-             </span><span class="p">(</span><span class="nb">-&gt;</span><span class="w"> </span><span class="p">(</span><span class="nf">Runtime/getRuntime</span><span class="p">)</span><span class="w">
-                 </span><span class="p">(</span><span class="nf">.addShutdownHook</span><span class="w">
-                  </span><span class="p">(</span><span class="nf">Thread.</span><span class="w"> </span><span class="p">(</span><span class="k">fn</span><span class="w"> </span><span class="p">[]</span><span class="w"> </span><span class="p">(</span><span class="nf">fs/delete</span><span class="w"> </span><span class="s">".nrepl-port"</span><span class="p">)))))</span><span class="w">
-             </span><span class="p">(</span><span class="nb">deref</span><span class="w"> </span><span class="p">(</span><span class="nf">promise</span><span class="p">)))}}}</span></code></pre>
+<pre class="rouge highlight"><code data-lang="shell"><span class="nv">$ </span>bb repl <span class="nt">--connect</span>
+Connected to nREPL server at 127.0.0.1:1667, nREPL 1.7.0, Clojure 1.12.6-SCI
+Type :repl/help <span class="k">for </span><span class="nb">help
+</span><span class="nv">user</span><span class="o">=&gt;</span> <span class="o">(</span>+ 1 2 3<span class="o">)</span>
+6</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>The <code>babashka.nrepl.server</code> API is exposed since version 0.8.157.</p>
+<p>To connect to another server, pass <code>host:port</code>, a port or <code>unix://path</code> to <code>bb repl --connect</code>.</p>
+</div>
+<div class="paragraph">
+<p>Pass an options map to <code>babashka.nrepl.server/start-server!</code> to configure the server:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>:host</code>: the address to bind to, <code>127.0.0.1</code> by default.</p>
+</li>
+<li>
+<p><code>:port</code>: the port, <code>1667</code> by default.</p>
+</li>
+<li>
+<p><code>:socket</code>: the path of a Unix domain socket, instead of <code>:host</code> and <code>:port</code>.</p>
+</li>
+<li>
+<p><code>:middleware</code>: a vector of nREPL middleware vars, see
+<a href="https://github.com/babashka/babashka/blob/master/examples/nrepl_middleware.clj">nrepl_middleware.clj</a>.</p>
+</li>
+</ul>
 </div>
 <div class="sect4">
 <h5 id="_debugging_the_nrepl_server"><a class="link" href="#_debugging_the_nrepl_server">Debugging the nREPL server</a></h5>
@@ -1873,6 +1904,10 @@ main method:</p>
 <p><code>babashka.file</code>: the <code>--file</code> argument (normalized using
 <code>.getAbsolutePath</code>)</p>
 </li>
+<li>
+<p><code>babashka.config</code>: the absolute path to the <code>bb.edn</code> (or other
+config) file</p>
+</li>
 </ul>
 </div>
 </div>
@@ -2019,9 +2054,27 @@ libraries cannot be included due to the closed nature of the GraalVM classpath.
 <div class="paragraph">
 <p>See <a href="#main-function">Invoking a main function</a> for more details on how to invoke a function from the command line.</p>
 </div>
+</div>
+<div class="sect2">
+<h3 id="deps-resolution"><a class="link" href="#deps-resolution">Dependency resolution</a></h3>
 <div class="paragraph">
-<p>The <code>:deps</code> entry is managed by <a href="https://github.com/borkdude/deps.clj">deps.clj</a>
-and requires a <code>java</code> installation to resolve and download dependencies.</p>
+<p>Babashka resolves and downloads dependencies without a Java installation by default.</p>
+</div>
+<div class="paragraph">
+<p>Set <code>:deps-resolver :jvm</code> in <code>bb.edn</code> or <code>BABASHKA_DEPS_RESOLVER=jvm</code> in the
+shell environment to resolve dependencies with <code>java</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">{</span><span class="no">:deps-resolver</span><span class="w"> </span><span class="no">:jvm</span><span class="w">
+ </span><span class="no">:deps</span><span class="w"> </span><span class="p">{</span><span class="n">medley/medley</span><span class="w"> </span><span class="p">{</span><span class="no">:mvn/version</span><span class="w"> </span><span class="s">"1.3.0"</span><span class="p">}}}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For <code>add-deps</code>, set <code>:deps-resolver</code> in the dependency map.</p>
+</div>
+<div class="paragraph">
+<p>With the default (non-Java) dependency resolver, S3 repositories are not (yet) supported, so use the JVM resolver instead.</p>
 </div>
 </div>
 <div class="sect2">
@@ -2255,6 +2308,9 @@ when invoking <code>bb tasks</code> on the command line. Other options include:<
 <li>
 <p><code>:override-builtin</code>: override the name of a built-in babashka command.</p>
 </li>
+<li>
+<p><code>:exec-fn</code>, <code>:cmd</code>, <code>:cli</code>, <code>:exec-args</code>: see <a href="#tasks-cli">Command line interface</a>.</p>
+</li>
 </ul>
 </div>
 </div>
@@ -2288,7 +2344,8 @@ publish            The mother of all tasks: publishes everything needed <span cl
 <p>Command line arguments are available as <code>*command-line-args*</code>, just like in
 Clojure. Since version <code>0.9.160</code>, you can use
 <a href="https://github.com/babashka/cli">babashka.cli</a> in tasks via the <a href="#cli:exec">exec</a>
-function to deal with command line arguments in a concise way. See the chapter on <a href="#cli">babashka CLI</a>.</p>
+function to deal with command line arguments in a concise way. See the chapter on <a href="#cli">babashka CLI</a>.
+Use <a href="#tasks-cli">task CLI options</a> to add <code>--help</code> and shell completion.</p>
 </div>
 <div class="paragraph">
 <p>Of course, you are free to parse command line arguments using the built-in
@@ -2317,58 +2374,220 @@ foo <span class="o">(</span><span class="s2">"1"</span> <span class="s2">"2"</sp
 bar <span class="o">(</span><span class="s2">"2"</span> <span class="s2">"3"</span><span class="o">)</span></code></pre>
 </div>
 </div>
+</div>
+<div class="sect2">
+<h3 id="tasks-cli"><a class="link" href="#tasks-cli">Command line interface</a></h3>
+<div class="paragraph">
+<p>Use <code>:exec-fn</code> or <code>:cmd</code> to configure a task with <a href="https://github.com/babashka/cli">babashka.cli</a>.
+Tasks with these keys support automatic <code>--help</code>, shell completion and subcommands.</p>
+</div>
 <div class="sect3">
-<h4 id="_terminal_tab_completion"><a class="link" href="#_terminal_tab_completion">Terminal tab-completion</a></h4>
-<div class="sect4">
-<h5 id="_zsh"><a class="link" href="#_zsh">zsh</a></h5>
+<h4 id="_exec_fn"><a class="link" href="#_exec_fn">:exec-fn</a></h4>
 <div class="paragraph">
-<p>Add this to your <code>.zshrc</code> to get tab-complete feature on ZSH.</p>
+<p>Use <code>:exec-fn</code> with a fully qualified symbol to refer to a function that handles the task:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash">_bb_tasks<span class="o">()</span> <span class="o">{</span>
-    <span class="nb">local </span><span class="nv">matches</span><span class="o">=(</span><span class="sb">`</span>bb tasks |tail <span class="nt">-n</span> +3 |cut <span class="nt">-f1</span> <span class="nt">-d</span> <span class="s1">' '</span><span class="sb">`</span><span class="o">)</span>
-    compadd <span class="nt">-a</span> matches
-    _files <span class="c"># autocomplete filenames as well</span>
-<span class="o">}</span>
-compdef _bb_tasks bb</code></pre>
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">{</span><span class="no">:paths</span><span class="w"> </span><span class="p">[</span><span class="s">"bb"</span><span class="p">]</span><span class="w">
+ </span><span class="no">:tasks</span><span class="w"> </span><span class="p">{</span><span class="n">dev</span><span class="w"> </span><span class="p">{</span><span class="no">:exec-fn</span><span class="w"> </span><span class="n">tasks/dev</span><span class="p">}}}</span></code></pre>
 </div>
 </div>
-</div>
-<div class="sect4">
-<h5 id="_bash"><a class="link" href="#_bash">bash</a></h5>
 <div class="paragraph">
-<p>Add this to your <code>.bashrc</code> to get tab-complete feature on bash.</p>
+<p>The function receives the parsed options as a map. Declare the options in the
+<code>:org.babashka/cli</code> metadata of the function:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash">_bb_tasks<span class="o">()</span> <span class="o">{</span>
-    <span class="nv">COMPREPLY</span><span class="o">=(</span> <span class="si">$(</span><span class="nb">compgen</span> <span class="nt">-W</span> <span class="s2">"</span><span class="si">$(</span>bb tasks |tail <span class="nt">-n</span> +3 |cut <span class="nt">-f1</span> <span class="nt">-d</span> <span class="s1">' '</span><span class="si">)</span><span class="s2">"</span> <span class="nt">--</span> <span class="k">${</span><span class="nv">COMP_WORDS</span><span class="p">[COMP_CWORD]</span><span class="k">}</span><span class="si">)</span> <span class="o">)</span><span class="p">;</span>
-<span class="o">}</span>
-<span class="c"># uncomment only one of the following lines that start with 'complete'</span>
-<span class="nb">complete</span> <span class="nt">-f</span> <span class="nt">-F</span> _bb_tasks bb <span class="c"># autocomplete both filenames and tasks</span>
-<span class="c"># complete -F _bb_tasks bb # autocomplete only tasks</span></code></pre>
-</div>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_fish"><a class="link" href="#_fish">fish</a></h5>
-<div class="paragraph">
-<p>Add this to your <code>.config/fish/completions/bb.fish</code> to get tab-complete feature on Fish shell.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><span class="k">function </span>__bb_complete_tasks
-  <span class="k">if </span>not <span class="nb">test</span> <span class="s2">"</span><span class="nv">$__bb_tasks</span><span class="s2">"</span>
-    <span class="nb">set</span> <span class="nt">-g</span> __bb_tasks <span class="o">(</span>bb tasks |tail <span class="nt">-n</span> +3 |cut <span class="nt">-f1</span> <span class="nt">-d</span> <span class="s1">' '</span><span class="o">)</span>
-  end
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">(</span><span class="nf">ns</span><span class="w"> </span><span class="n">tasks</span><span class="p">)</span><span class="w">
 
-  <span class="nb">printf</span> <span class="s2">"%s</span><span class="se">\n</span><span class="s2">"</span> <span class="nv">$__bb_tasks</span>
-end
+</span><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">dev</span><span class="w">
+  </span><span class="s">"Start the dev system"</span><span class="w">
+  </span><span class="p">{</span><span class="no">:org.babashka/cli</span><span class="w"> </span><span class="p">{</span><span class="no">:spec</span><span class="w"> </span><span class="p">{</span><span class="no">:port</span><span class="w"> </span><span class="p">{</span><span class="no">:coerce</span><span class="w"> </span><span class="no">:int</span><span class="w">
+                                    </span><span class="no">:default</span><span class="w"> </span><span class="mi">8080</span><span class="w">
+                                    </span><span class="no">:desc</span><span class="w"> </span><span class="s">"HTTP port"</span><span class="p">}}}}</span><span class="w">
+  </span><span class="p">[</span><span class="n">opts</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nb">prn</span><span class="w"> </span><span class="n">opts</span><span class="p">))</span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash"><span class="nv">$ </span>bb dev <span class="nt">--port</span> 3000
+<span class="o">{</span>:port 3000<span class="o">}</span>
 
-<span class="nb">complete</span> <span class="nt">-c</span> bb <span class="nt">-a</span> <span class="s2">"(__bb_complete_tasks)"</span> <span class="nt">-d</span> <span class="s1">'tasks'</span></code></pre>
+<span class="nv">$ </span>bb dev <span class="nt">--help</span>
+Usage: bb dev <span class="o">[</span>options]
+
+Start the dev system
+
+Options:
+      <span class="nt">--port</span>  HTTP port <span class="o">(</span>default: 8080<span class="o">)</span>
+  <span class="nt">-h</span>, <span class="nt">--help</span>  Show this <span class="nb">help</span></code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p><code>bb tasks</code> uses the function docstring as the task description.
+If the task has a <code>:doc</code> entry, that entry overrides the docstring.</p>
+</div>
+<div class="paragraph">
+<p>Use <code>:exec-args</code> to set default arguments for the task function:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">{</span><span class="no">:tasks</span><span class="w"> </span><span class="p">{</span><span class="n">compile</span><span class="w"> </span><span class="p">{</span><span class="no">:exec-fn</span><span class="w"> </span><span class="n">tasks/compile</span><span class="w">
+                  </span><span class="no">:exec-args</span><span class="w"> </span><span class="p">{</span><span class="no">:target</span><span class="w"> </span><span class="s">"classes"</span><span class="p">}}}}</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_cmd"><a class="link" href="#_cmd">:cmd</a></h4>
+<div class="paragraph">
+<p>Use <code>:cmd</code> to add subcommands to a task:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">{</span><span class="no">:paths</span><span class="w"> </span><span class="p">[</span><span class="s">"bb"</span><span class="p">]</span><span class="w">
+ </span><span class="no">:tasks</span><span class="w"> </span><span class="p">{</span><span class="n">db</span><span class="w"> </span><span class="p">{</span><span class="no">:doc</span><span class="w"> </span><span class="s">"Manage the database"</span><span class="w">
+             </span><span class="no">:cmd</span><span class="w"> </span><span class="p">{</span><span class="s">"migrate"</span><span class="w"> </span><span class="p">{</span><span class="no">:exec-fn</span><span class="w"> </span><span class="n">tasks/db-migrate</span><span class="p">}</span><span class="w">
+                   </span><span class="s">"seed"</span><span class="w">    </span><span class="p">{</span><span class="no">:exec-fn</span><span class="w"> </span><span class="n">tasks/db-seed</span><span class="p">}}}}}</span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash"><span class="nv">$ </span>bb db <span class="nt">--help</span>
+Usage: bb db <span class="o">[</span>options] &lt;<span class="nb">command</span><span class="o">&gt;</span>
+
+Manage the database
+
+Commands:
+  migrate  Run pending migrations
+  seed     Seed the database
+
+Options:
+  <span class="nt">-h</span>, <span class="nt">--help</span>  Show this <span class="nb">help
+
+</span>Run <span class="s2">"bb db &lt;command&gt; --help"</span> <span class="k">for </span>more information on a command.</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Add <code>:exec-fn</code> to the task map to handle <code>bb db</code> without a subcommand.</p>
+</div>
+<div class="paragraph">
+<p>Use a vector of command-name and option-map pairs to preserve the order of subcommands:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">{</span><span class="no">:tasks</span><span class="w"> </span><span class="p">{</span><span class="n">deploy</span><span class="w"> </span><span class="p">{</span><span class="no">:cmd</span><span class="w"> </span><span class="p">[[</span><span class="s">"lock"</span><span class="w"> </span><span class="p">{</span><span class="no">:exec-fn</span><span class="w"> </span><span class="n">tasks/lock</span><span class="p">}]</span><span class="w">
+                       </span><span class="p">[</span><span class="s">"unlock"</span><span class="w"> </span><span class="p">{</span><span class="no">:exec-fn</span><span class="w"> </span><span class="n">tasks/unlock</span><span class="p">}]]}}}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Set <code>:cmd</code> to a fully qualified symbol to read the command tree from a var:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">{</span><span class="no">:tasks</span><span class="w"> </span><span class="p">{</span><span class="n">db</span><span class="w"> </span><span class="p">{</span><span class="no">:doc</span><span class="w"> </span><span class="s">"Manage the database"</span><span class="w">
+             </span><span class="no">:cmd</span><span class="w"> </span><span class="n">tasks/db-cmds</span><span class="p">}}}</span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">db-cmds</span><span class="w">
+  </span><span class="p">{</span><span class="s">"migrate"</span><span class="w"> </span><span class="p">{</span><span class="no">:exec-fn</span><span class="w"> </span><span class="ss">'tasks/db-migrate</span><span class="p">}</span><span class="w">
+   </span><span class="s">"seed"</span><span class="w">    </span><span class="p">{</span><span class="no">:exec-fn</span><span class="w"> </span><span class="ss">'tasks/db-seed</span><span class="p">}})</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_cli"><a class="link" href="#_cli">:cli</a></h4>
+<div class="paragraph">
+<p>Use <code>:cli</code> to set babashka.cli options for the task, such as <code>:epilog</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">{</span><span class="no">:tasks</span><span class="w"> </span><span class="p">{</span><span class="n">db</span><span class="w"> </span><span class="p">{</span><span class="no">:doc</span><span class="w"> </span><span class="s">"Manage the database"</span><span class="w">
+             </span><span class="no">:cli</span><span class="w"> </span><span class="p">{</span><span class="no">:epilog</span><span class="w"> </span><span class="s">"Migrations are in resources/migrations."</span><span class="p">}</span><span class="w">
+             </span><span class="no">:cmd</span><span class="w"> </span><span class="p">{</span><span class="s">"migrate"</span><span class="w"> </span><span class="p">{</span><span class="no">:exec-fn</span><span class="w"> </span><span class="n">tasks/db-migrate</span><span class="p">}}}}}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For function-valued options such as <code>:error-fn</code>, use a var that holds the <code>:cli</code> map.
+Set <code>:cli</code> to the var symbol:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">{</span><span class="no">:tasks</span><span class="w"> </span><span class="p">{</span><span class="n">db</span><span class="w"> </span><span class="p">{</span><span class="no">:cli</span><span class="w"> </span><span class="n">tasks/db-cli</span><span class="w">
+             </span><span class="no">:cmd</span><span class="w"> </span><span class="p">{</span><span class="s">"migrate"</span><span class="w"> </span><span class="p">{</span><span class="no">:exec-fn</span><span class="w"> </span><span class="n">tasks/db-migrate</span><span class="p">}}}}}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Set <code>:cli</code> in the <code>:tasks</code> map to apply options to every task with <code>:exec-fn</code> or <code>:cmd</code>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_doc"><a class="link" href="#_doc">:doc</a></h4>
+<div class="paragraph">
+<p>Write <code>:doc</code> as a vector of lines for a multi-line description. <code>bb tasks</code>
+prints the first line.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">{</span><span class="no">:tasks</span><span class="w"> </span><span class="p">{</span><span class="n">db</span><span class="w"> </span><span class="p">{</span><span class="no">:doc</span><span class="w"> </span><span class="p">[</span><span class="s">"Manage the database"</span><span class="w">
+                   </span><span class="s">"Migrations run in order."</span><span class="p">]</span><span class="w">
+             </span><span class="no">:cmd</span><span class="w"> </span><span class="p">{</span><span class="s">"migrate"</span><span class="w"> </span><span class="p">{</span><span class="no">:exec-fn</span><span class="w"> </span><span class="n">tasks/db-migrate</span><span class="p">}}}}}</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_depends"><a class="link" href="#_depends">:depends</a></h4>
+<div class="paragraph">
+<p>Use <code>:depends</code> to run another task first.
+The calling task also accepts options from dependencies with <code>:exec-fn</code>.
+The <code>--help</code> output lists these options under <code>Inherited options</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">{</span><span class="no">:tasks</span><span class="w"> </span><span class="p">{</span><span class="n">compile</span><span class="w"> </span><span class="p">{</span><span class="no">:exec-fn</span><span class="w"> </span><span class="n">tasks/compile</span><span class="p">}</span><span class="w">
+         </span><span class="n">jar</span><span class="w">     </span><span class="p">{</span><span class="no">:exec-fn</span><span class="w"> </span><span class="n">tasks/jar</span><span class="w">
+                  </span><span class="no">:depends</span><span class="w"> </span><span class="p">[</span><span class="n">compile</span><span class="p">]}}}</span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash"><span class="nv">$ </span>bb jar <span class="nt">--help</span>
+Usage: bb jar <span class="o">[</span>options]
+
+Build a jar
+
+Options:
+      <span class="nt">--version</span>  Jar version <span class="o">(</span>default: 0.1.0<span class="o">)</span>
+  <span class="nt">-h</span>, <span class="nt">--help</span>     Show this <span class="nb">help
+
+</span>Inherited options:
+  <span class="nt">--verbose</span>  Print each file</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>tasks/compile</code> function receives all parsed options.
+Set <code>:restrict true</code> in its <code>:org.babashka/cli</code> metadata to limit the map to options that the function declares.</p>
+</div>
+<div class="paragraph">
+<p><code>bb jar --help</code> does not run dependency tasks.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_shell_completion"><a class="link" href="#_shell_completion">Shell completion</a></h4>
+<div class="paragraph">
+<p>Add this command after <code>compinit</code> in <code>~/.zshrc</code> to complete task names and options:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash"><span class="nb">source</span> &lt;<span class="o">(</span>bb org.babashka.cli/completions snippet <span class="nt">--shell</span> zsh<span class="o">)</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For bash, fish, PowerShell and Nushell, see
+<a href="https://github.com/babashka/cli#completions">Completions</a> in the babashka.cli
+README.</p>
 </div>
 </div>
 </div>
@@ -3231,6 +3450,9 @@ PR is welcome.</p>
 <p><code>clojure.core.protocols</code>: <code>Datafiable</code>, <code>Navigable</code></p>
 </li>
 <li>
+<p><code>clojure.core.server</code></p>
+</li>
+<li>
 <p><code>clojure.data</code></p>
 </li>
 <li>
@@ -3240,10 +3462,19 @@ PR is welcome.</p>
 <p><code>clojure.edn</code> aliased as <code>edn</code></p>
 </li>
 <li>
+<p><code>clojure.instant</code></p>
+</li>
+<li>
 <p><code>clojure.math</code></p>
 </li>
 <li>
 <p><code>clojure.java.browse</code></p>
+</li>
+<li>
+<p><code>clojure.java.javadoc</code></p>
+</li>
+<li>
+<p><code>clojure.java.process</code></p>
 </li>
 <li>
 <p><code>clojure.java.io</code> aliased as <code>io</code>:</p>
@@ -3261,10 +3492,16 @@ PR is welcome.</p>
 <p><code>clojure.java.shell</code> aliased as <code>shell</code></p>
 </li>
 <li>
-<p><code>clojure.main</code>: <code>demunge</code>, <code>repl</code>, <code>repl-requires</code></p>
+<p><code>clojure.main</code>: <code>demunge</code>, <code>ex-triage</code>, <code>repl</code>, <code>repl-read</code>, <code>repl-requires</code></p>
 </li>
 <li>
 <p><code>clojure.pprint</code>: <code>pprint</code>, <code>cl-format</code></p>
+</li>
+<li>
+<p><code>clojure.reflect</code></p>
+</li>
+<li>
+<p><code>clojure.repl</code></p>
 </li>
 <li>
 <p><code>clojure.set</code> aliased as <code>set</code></p>
@@ -3277,6 +3514,9 @@ PR is welcome.</p>
 </li>
 <li>
 <p><code>clojure.test</code></p>
+</li>
+<li>
+<p><code>clojure.test.junit</code></p>
 </li>
 <li>
 <p><code>clojure.walk</code></p>
@@ -3323,8 +3563,27 @@ PR is welcome.</p>
 <code>xml</code></p>
 </li>
 <li>
+<p><a href="https://github.com/clojure/data.json"><code>clojure.data.json</code></a></p>
+</li>
+<li>
+<p><a href="https://github.com/clojure/data.priority-map"><code>clojure.data.priority-map</code></a></p>
+</li>
+<li>
 <p><a href="https://github.com/clojure/tools.cli"><code>clojure.tools.cli</code></a> aliased as
 <code>tools.cli</code></p>
+</li>
+<li>
+<p><a href="https://github.com/clojure/tools.reader"><code>clojure.tools.reader</code></a></p>
+</li>
+<li>
+<p><a href="https://github.com/clojure/tools.deps"><code>clojure.tools.deps</code></a></p>
+</li>
+<li>
+<p><a href="https://github.com/clojure/tools.build"><code>clojure.tools.build.api</code></a></p>
+</li>
+<li>
+<p><a href="https://github.com/nrepl/nrepl"><code>nrepl</code></a>: <code>nrepl.core</code>, <code>nrepl.server</code>,
+<code>nrepl.transport</code>, <code>nrepl.middleware</code>, <code>nrepl.misc</code></p>
 </li>
 <li>
 <p><a href="https://github.com/clj-commons/clj-yaml"><code>clj-yaml.core</code></a> alias as
@@ -3401,9 +3660,6 @@ as <code>transit</code></p>
 <p><a href="https://github.com/borkdude/edamame"><code>edamame.core</code></a>: Clojure parser</p>
 </li>
 <li>
-<p><a href="https://github.com/clojure/core.rrb-vector"><code>core.rrb-vector</code></a></p>
-</li>
-<li>
 <p><a href="https://github.com/nextjournal/markdown"><code>nextjournal.markdown</code></a></p>
 </li>
 <li>
@@ -3444,6 +3700,16 @@ you want to compile babashka yourself.</p>
 <p>A selection of Java classes are available, see
 <a href="https://github.com/babashka/babashka/blob/master/src/babashka/impl/classes.clj"><code>babashka/impl/classes.clj</code></a>
 in babashka&#8217;s git repo.</p>
+</div>
+<div class="paragraph">
+<p>If you want to use another, typically newer, version of a built-in library,
+after declaring (e.g. <code>org.babashka/cli {:mvn/version "&lt;latest-version&gt;"}</code>) in
+<code>bb.edn</code> or other means, use <code>require</code>'s <code>:reload</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">(</span><span class="nf">require</span><span class="w"> </span><span class="o">'</span><span class="p">[</span><span class="n">babashka.cli</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">cli</span><span class="p">]</span><span class="w"> </span><span class="no">:reload</span><span class="p">)</span></code></pre>
+</div>
 </div>
 </div>
 <div class="sect2">
@@ -3523,13 +3789,8 @@ classpath by the platform specific path separatator.</p>
 <div class="sect4">
 <h5 id="_add_deps"><a class="link" href="#_add_deps">add-deps</a></h5>
 <div class="paragraph">
-<p>The function <code>add-deps</code> takes a deps edn map like <code>{:deps {medley/medley
-{:mvn/version "1.3.0"}}}</code>, resolves it using
-<a href="https://github.com/borkdude/deps.clj">deps.clj</a> and then adds to the babashka
-classpath accordingly.</p>
-</div>
-<div class="paragraph">
-<p>Example:</p>
+<p>Use <code>add-deps</code> to resolve dependencies and add them to the babashka classpath.
+Pass a dependency map as the first argument:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -3542,8 +3803,27 @@ classpath accordingly.</p>
 </div>
 </div>
 <div class="paragraph">
-<p>Optionally, <code>add-deps</code> takes a second arg with options. Currently the only
-option is <code>:aliases</code> which will affect how deps are resolved:</p>
+<p><code>add-deps</code> returns a sorted vector of the added libraries, or <code>nil</code> if it adds none.
+It keeps the versions of libraries already on the classpath.</p>
+</div>
+<div class="paragraph">
+<p>Pass an optional map as the second argument to configure dependency resolution:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>:aliases</code>: a vector of alias keywords to use for dependency resolution.</p>
+</li>
+<li>
+<p><code>:force</code>: if <code>true</code>, resolve dependencies again instead of using the cached classpath.</p>
+</li>
+<li>
+<p><code>:env</code>: a map that replaces the environment for dependency resolution.</p>
+</li>
+<li>
+<p><code>:extra-env</code>: a map of environment variables to add.</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
 <p>Example:</p>
@@ -3686,6 +3966,38 @@ namespace.</p>
 <a href="https://github.com/babashka/cli">cli</a> repo for API docs and check out the
 <a href="https://book.babashka.org/#_babashka_cli">babashka CLI</a> chapter on how to use it
 from the command line or with <a href="https://book.babashka.org/#tasks">tasks</a>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="babashkaterminal"><a class="link" href="#babashkaterminal">babashka.terminal</a></h4>
+<div class="paragraph">
+<p>Use <code>tty?</code> to check if <code>:stdin</code>, <code>:stdout</code> or <code>:stderr</code> is a terminal:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="clojure"><span class="p">(</span><span class="nf">require</span><span class="w"> </span><span class="o">'</span><span class="p">[</span><span class="n">babashka.terminal</span><span class="w"> </span><span class="no">:refer</span><span class="w"> </span><span class="p">[</span><span class="n">tty?</span><span class="p">]])</span><span class="w">
+
+</span><span class="p">(</span><span class="nf">tty?</span><span class="w"> </span><span class="no">:stdout</span><span class="p">)</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="babashkaffi"><a class="link" href="#babashkaffi">babashka.ffi</a></h4>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<code>babashka.ffi</code> is experimental.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Use <code>babashka.ffi</code> to call C functions in shared libraries.
+See the <a href="https://github.com/babashka/ffi/blob/main/doc/guide.md">ffi guide</a> for examples.</p>
 </div>
 </div>
 </div>
@@ -4203,20 +4515,18 @@ Clojure on the JVM. In general interpretation yields slower programs
 than compiled programs.</p>
 </li>
 <li>
-<p>No <code>deftype</code>, <code>definterface</code> and unboxed math.</p>
+<p><code>deftype</code> support is limited to protocols, <code>Object</code> and <code>IPersistentMap</code>.</p>
+</li>
+<li>
+<p><code>definterface</code> is not supported</p>
 </li>
 <li>
 <p><code>defprotocol</code> and <code>defrecord</code> are implemented using multimethods and
 regular maps. Ostensibly they work the same, but under the hood there
-are no Java classes that correspond to them.</p>
+are no Java classes that correspond to them. Do not depend on this implementation detail since it may change in future version of babashka.</p>
 </li>
 <li>
 <p>Currently <code>reify</code> works only for one class at a time</p>
-</li>
-<li>
-<p>The <code>clojure.core.async/go</code> macro is not (yet) supported. For
-compatibility it currently maps to <code>clojure.core.async/thread</code>. More
-info <a href="#core_async">here</a>.</p>
 </li>
 </ul>
 </div>
