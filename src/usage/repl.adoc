@@ -17,6 +17,7 @@ The REPL uses https://github.com/jline/jline3[JLine] for line editing and provid
 - Persistent history across sessions (saved to `~/.bb_repl_history` by default)
 - Tab completion for namespaces, vars and Java classes
 - Inline documentation with `C-x C-d`
+- The arglist of the function at the cursor
 - Autosuggestions based on completions
 - Multi-line editing with automatic detection of incomplete forms
 - Force submit with `C-x C-m`
@@ -111,9 +112,19 @@ or programmatically:
 
 [source,clojure]
 ----
-$ bb -e "(babashka.nrepl.server/start-server\!) (deref (promise))"
-Started nREPL server at 0.0.0.0:1667
+$ bb -e "(babashka.nrepl.server/start-server\!) nil"
+Started nREPL server at 127.0.0.1:1667
 ----
+
+The server binds to `127.0.0.1` by default.
+To accept connections from other hosts, pass `0.0.0.0` as the host:
+
+[source,shell]
+----
+$ bb nrepl-server 0.0.0.0:1667
+----
+
+`bb nrepl-server` writes the port to `.nrepl-port` and removes the file on exit.
 
 Then connect with your favorite nREPL client:
 
@@ -136,26 +147,27 @@ Editor plugins and tools known to work with the babashka nREPL server:
 https://github.com/Olical/conjure[conjure],
 https://github.com/tpope/vim-fireplace[fireplace]
 
-The babashka nREPL server currently does not write an `.nrepl-port` file at
-startup. Using the following `nrepl` task, defined in a `bb.edn`, you can
-accomplish the same:
+Use `bb repl --connect` to connect to an nREPL server from the terminal.
+The command reads the port from `.nrepl-port`:
 
-[source,clojure]
+[source,shell]
 ----
-{:tasks
- {nrepl
-  {:requires ([babashka.fs :as fs]
-              [babashka.nrepl.server :as srv])
-   :task (do (srv/start-server! {:host "localhost"
-                                 :port 1339})
-             (spit ".nrepl-port" "1339")
-             (-> (Runtime/getRuntime)
-                 (.addShutdownHook
-                  (Thread. (fn [] (fs/delete ".nrepl-port")))))
-             (deref (promise)))}}}
+$ bb repl --connect
+Connected to nREPL server at 127.0.0.1:1667, nREPL 1.7.0, Clojure 1.12.6-SCI
+Type :repl/help for help
+user=> (+ 1 2 3)
+6
 ----
 
-The `babashka.nrepl.server` API is exposed since version 0.8.157.
+To connect to another server, pass `host:port`, a port or `unix://path` to `bb repl --connect`.
+
+Pass an options map to `babashka.nrepl.server/start-server!` to configure the server:
+
+- `:host`: the address to bind to, `127.0.0.1` by default.
+- `:port`: the port, `1667` by default.
+- `:socket`: the path of a Unix domain socket, instead of `:host` and `:port`.
+- `:middleware`: a vector of nREPL middleware vars, see
+https://github.com/babashka/babashka/blob/master/examples/nrepl_middleware.clj[nrepl_middleware.clj].
 
 ===== Debugging the nREPL server
 

@@ -158,7 +158,7 @@ Also see the link:#babashka_classpath[babashka.classpath]
 namespace which allows dynamically adding to the classpath.
 
 The namespace link:#babashkadeps[babashka.deps] integrates
-https://github.com/clojure/tools.deps.alpha[tools.deps] with babashka and allows
+https://github.com/clojure/tools.deps[tools.deps] with babashka and allows
 you to set the classpath using a `deps.edn` map.
 
 [[main-function]]

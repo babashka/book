@@ -54,8 +54,23 @@ $ bb -m my-project.main
 
 See <<main-function>> for more details on how to invoke a function from the command line.
 
-The `:deps` entry is managed by https://github.com/borkdude/deps.clj[deps.clj]
-and requires a `java` installation to resolve and download dependencies.
+[[deps-resolution]]
+=== Dependency resolution
+
+Babashka resolves and downloads dependencies without a Java installation by default.
+
+Set `:deps-resolver :jvm` in `bb.edn` or `BABASHKA_DEPS_RESOLVER=jvm` in the
+shell environment to resolve dependencies with `java`:
+
+[source,clojure]
+----
+{:deps-resolver :jvm
+ :deps {medley/medley {:mvn/version "1.3.0"}}}
+----
+
+For `add-deps`, set `:deps-resolver` in the dependency map.
+
+With the default (non-Java) dependency resolver, S3 repositories are not (yet) supported, so use the JVM resolver instead.
 
 === :min-bb-version
 

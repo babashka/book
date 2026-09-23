@@ -16,22 +16,29 @@ From Clojure:
 
 * `clojure.core`
 * `clojure.core.protocols`: `Datafiable`, `Navigable`
+* `clojure.core.server`
 * `clojure.data`
 * `clojure.datafy`
 * `clojure.edn` aliased as `edn`
+* `clojure.instant`
 * `clojure.math`
 * `clojure.java.browse`
+* `clojure.java.javadoc`
+* `clojure.java.process`
 * `clojure.java.io` aliased as `io`:
 ** `as-relative-path`, `as-url`, `copy`, `delete-file`, `file`,
 `input-stream`, `make-parents`, `output-stream`, `reader`, `resource`,
 `writer`
 * `clojure.java.shell` aliased as `shell`
-* `clojure.main`: `demunge`, `repl`, `repl-requires`
+* `clojure.main`: `demunge`, `ex-triage`, `repl`, `repl-read`, `repl-requires`
 * `clojure.pprint`: `pprint`, `cl-format`
+* `clojure.reflect`
+* `clojure.repl`
 * `clojure.set` aliased as `set`
 * `clojure.string` aliased as `str`
 * `clojure.stacktrace`
 * `clojure.test`
+* `clojure.test.junit`
 * `clojure.walk`
 * `clojure.zip`
 
@@ -50,8 +57,15 @@ Additional libraries:
 `csv`
 * https://github.com/clojure/data.xml[`clojure.data.xml`] aliased as
 `xml`
+* https://github.com/clojure/data.json[`clojure.data.json`]
+* https://github.com/clojure/data.priority-map[`clojure.data.priority-map`]
 * https://github.com/clojure/tools.cli[`clojure.tools.cli`] aliased as
 `tools.cli`
+* https://github.com/clojure/tools.reader[`clojure.tools.reader`]
+* https://github.com/clojure/tools.deps[`clojure.tools.deps`]
+* https://github.com/clojure/tools.build[`clojure.tools.build.api`]
+* https://github.com/nrepl/nrepl[`nrepl`]: `nrepl.core`, `nrepl.server`,
+`nrepl.transport`, `nrepl.middleware`, `nrepl.misc`
 * https://github.com/clj-commons/clj-yaml[`clj-yaml.core`] alias as
 `yaml`
 * https://github.com/cognitect/transit-clj[`cognitect.transit`] aliased
@@ -74,7 +88,6 @@ as `transit`
 * https://github.com/clojure/tools.logging[`clojure.tools.logging`]
 * https://github.com/ptaoussanis/timbre[`taoensso.timbre`]: logging
 * https://github.com/borkdude/edamame[`edamame.core`]: Clojure parser
-* https://github.com/clojure/core.rrb-vector[`core.rrb-vector`]
 * https://github.com/nextjournal/markdown[`nextjournal.markdown`]
 * https://github.com/jhy/jsoup[`Jsoup`]
 * https://github.com/jline/jline3[`JLine`]: terminal input handling
@@ -157,12 +170,8 @@ Available functions:
 
 ===== add-deps
 
-The function `add-deps` takes a deps edn map like `{:deps {medley/medley
-{:mvn/version "1.3.0"}}}`, resolves it using
-https://github.com/borkdude/deps.clj[deps.clj] and then adds to the babashka
-classpath accordingly.
-
-Example:
+Use `add-deps` to resolve dependencies and add them to the babashka classpath.
+Pass a dependency map as the first argument:
 
 [source,clojure]
 ----
@@ -174,8 +183,15 @@ Example:
 (m/index-by :id [{:id 1} {:id 2}])
 ----
 
-Optionally, `add-deps` takes a second arg with options. Currently the only
-option is `:aliases` which will affect how deps are resolved:
+`add-deps` returns a sorted vector of the added libraries, or `nil` if it adds none.
+It keeps the versions of libraries already on the classpath.
+
+Pass an optional map as the second argument to configure dependency resolution:
+
+- `:aliases`: a vector of alias keywords to use for dependency resolution.
+- `:force`: if `true`, resolve dependencies again instead of using the cached classpath.
+- `:env`: a map that replaces the environment for dependency resolution.
+- `:extra-env`: a map of environment variables to add.
 
 Example:
 
@@ -299,6 +315,26 @@ The `babashka.cli` library allows you to turn functions into CLIs. See the
 https://github.com/babashka/cli[cli] repo for API docs and check out the
 https://book.babashka.org/#_babashka_cli[babashka CLI] chapter on how to use it
 from the command line or with https://book.babashka.org/#tasks[tasks].
+
+[[babashkaterminal]]
+==== babashka.terminal
+
+Use `tty?` to check if `:stdin`, `:stdout` or `:stderr` is a terminal:
+
+[source,clojure]
+----
+(require '[babashka.terminal :refer [tty?]])
+
+(tty? :stdout)
+----
+
+[[babashkaffi]]
+==== babashka.ffi
+
+NOTE: `babashka.ffi` is experimental.
+
+Use `babashka.ffi` to call C functions in shared libraries.
+See the https://github.com/babashka/ffi/blob/main/doc/guide.md[ffi guide] for examples.
 
 [[projects]]
 === Projects

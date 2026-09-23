@@ -99,6 +99,7 @@ when invoking `bb tasks` on the command line. Other options include:
 - `:extra-deps`: add extra dependencies to the classpath.
 - `:enter`, `:leave`: override the global `:enter`/`:leave` hook.
 - `:override-builtin`: override the name of a built-in babashka command.
+- `:exec-fn`, `:cmd`, `:cli`, `:exec-args`: see <<tasks-cli>>.
 
 === Discoverability
 
@@ -128,6 +129,7 @@ Command line arguments are available as `*command-line-args*`, just like in
 Clojure. Since version `0.9.160`, you can use
 https://github.com/babashka/cli[babashka.cli] in tasks via the <<cli:exec>>
 function to deal with command line arguments in a concise way. See the chapter on <<cli,babashka CLI>>.
+Use <<tasks-cli,task CLI options>> to add `--help` and shell completion.
 
 Of course, you are free to parse command line arguments using the built-in
 `tools.cli` library or just handle them manually.
@@ -154,52 +156,197 @@ foo ("1" "2" "3")
 bar ("2" "3")
 ----
 
-==== Terminal tab-completion
+[[tasks-cli]]
+=== Command line interface
 
-===== zsh
+Use `:exec-fn` or `:cmd` to configure a task with https://github.com/babashka/cli[babashka.cli].
+Tasks with these keys support automatic `--help`, shell completion and subcommands.
 
-Add this to your `.zshrc` to get tab-complete feature on ZSH.
+==== :exec-fn
+
+Use `:exec-fn` with a fully qualified symbol to refer to a function that handles the task:
+
+[source,clojure]
+----
+{:paths ["bb"]
+ :tasks {dev {:exec-fn tasks/dev}}}
+----
+
+The function receives the parsed options as a map. Declare the options in the
+`:org.babashka/cli` metadata of the function:
+
+[source,clojure]
+----
+(ns tasks)
+
+(defn dev
+  "Start the dev system"
+  {:org.babashka/cli {:spec {:port {:coerce :int
+                                    :default 8080
+                                    :desc "HTTP port"}}}}
+  [opts]
+  (prn opts))
+----
 
 [source,bash]
 ----
-_bb_tasks() {
-    local matches=(`bb tasks |tail -n +3 |cut -f1 -d ' '`)
-    compadd -a matches
-    _files # autocomplete filenames as well
-}
-compdef _bb_tasks bb
+$ bb dev --port 3000
+{:port 3000}
+
+$ bb dev --help
+Usage: bb dev [options]
+
+Start the dev system
+
+Options:
+      --port  HTTP port (default: 8080)
+  -h, --help  Show this help
 ----
 
-===== bash
+`bb tasks` uses the function docstring as the task description.
+If the task has a `:doc` entry, that entry overrides the docstring.
 
-Add this to your `.bashrc` to get tab-complete feature on bash.
+Use `:exec-args` to set default arguments for the task function:
+
+[source,clojure]
+----
+{:tasks {compile {:exec-fn tasks/compile
+                  :exec-args {:target "classes"}}}}
+----
+
+==== :cmd
+
+Use `:cmd` to add subcommands to a task:
+
+[source,clojure]
+----
+{:paths ["bb"]
+ :tasks {db {:doc "Manage the database"
+             :cmd {"migrate" {:exec-fn tasks/db-migrate}
+                   "seed"    {:exec-fn tasks/db-seed}}}}}
+----
 
 [source,bash]
 ----
-_bb_tasks() {
-    COMPREPLY=( $(compgen -W "$(bb tasks |tail -n +3 |cut -f1 -d ' ')" -- ${COMP_WORDS[COMP_CWORD]}) );
-}
-# uncomment only one of the following lines that start with 'complete'
-complete -f -F _bb_tasks bb # autocomplete both filenames and tasks
-# complete -F _bb_tasks bb # autocomplete only tasks
+$ bb db --help
+Usage: bb db [options] <command>
+
+Manage the database
+
+Commands:
+  migrate  Run pending migrations
+  seed     Seed the database
+
+Options:
+  -h, --help  Show this help
+
+Run "bb db <command> --help" for more information on a command.
 ----
 
-===== fish
+Add `:exec-fn` to the task map to handle `bb db` without a subcommand.
 
-Add this to your `.config/fish/completions/bb.fish` to get tab-complete feature on Fish shell.
+Use a vector of command-name and option-map pairs to preserve the order of subcommands:
+
+[source,clojure]
+----
+{:tasks {deploy {:cmd [["lock" {:exec-fn tasks/lock}]
+                       ["unlock" {:exec-fn tasks/unlock}]]}}}
+----
+
+Set `:cmd` to a fully qualified symbol to read the command tree from a var:
+
+[source,clojure]
+----
+{:tasks {db {:doc "Manage the database"
+             :cmd tasks/db-cmds}}}
+----
+
+[source,clojure]
+----
+(def db-cmds
+  {"migrate" {:exec-fn 'tasks/db-migrate}
+   "seed"    {:exec-fn 'tasks/db-seed}})
+----
+
+==== :cli
+
+Use `:cli` to set babashka.cli options for the task, such as `:epilog`:
+
+[source,clojure]
+----
+{:tasks {db {:doc "Manage the database"
+             :cli {:epilog "Migrations are in resources/migrations."}
+             :cmd {"migrate" {:exec-fn tasks/db-migrate}}}}}
+----
+
+For function-valued options such as `:error-fn`, use a var that holds the `:cli` map.
+Set `:cli` to the var symbol:
+
+[source,clojure]
+----
+{:tasks {db {:cli tasks/db-cli
+             :cmd {"migrate" {:exec-fn tasks/db-migrate}}}}}
+----
+
+Set `:cli` in the `:tasks` map to apply options to every task with `:exec-fn` or `:cmd`.
+
+==== :doc
+
+Write `:doc` as a vector of lines for a multi-line description. `bb tasks`
+prints the first line.
+
+[source,clojure]
+----
+{:tasks {db {:doc ["Manage the database"
+                   "Migrations run in order."]
+             :cmd {"migrate" {:exec-fn tasks/db-migrate}}}}}
+----
+
+==== :depends
+
+Use `:depends` to run another task first.
+The calling task also accepts options from dependencies with `:exec-fn`.
+The `--help` output lists these options under `Inherited options`:
+
+[source,clojure]
+----
+{:tasks {compile {:exec-fn tasks/compile}
+         jar     {:exec-fn tasks/jar
+                  :depends [compile]}}}
+----
 
 [source,bash]
 ----
-function __bb_complete_tasks
-  if not test "$__bb_tasks"
-    set -g __bb_tasks (bb tasks |tail -n +3 |cut -f1 -d ' ')
-  end
+$ bb jar --help
+Usage: bb jar [options]
 
-  printf "%s\n" $__bb_tasks
-end
+Build a jar
 
-complete -c bb -a "(__bb_complete_tasks)" -d 'tasks'
+Options:
+      --version  Jar version (default: 0.1.0)
+  -h, --help     Show this help
+
+Inherited options:
+  --verbose  Print each file
 ----
+
+The `tasks/compile` function receives all parsed options.
+Set `:restrict true` in its `:org.babashka/cli` metadata to limit the map to options that the function declares.
+
+`bb jar --help` does not run dependency tasks.
+
+==== Shell completion
+
+Add this command after `compinit` in `~/.zshrc` to complete task names and options:
+
+[source,bash]
+----
+source <(bb org.babashka.cli/completions snippet --shell zsh)
+----
+
+For bash, fish, PowerShell and Nushell, see
+https://github.com/babashka/cli#completions[Completions] in the babashka.cli
+README.
 
 === Run
 
