@@ -230,7 +230,7 @@ Let's first set the classpath:
 
 [source,clojure]
 ----
-$ export BABASHKA_CLASSPATH=$(bb clojure -Spath -Sdeps '{:deps {clj-commons/fs {:mvn/version "1.6.307"}}}')
+$ export BABASHKA_CLASSPATH=$(clojure -Spath -Sdeps '{:deps {clj-commons/fs {:mvn/version "1.6.307"}}}')
 ----
 
 Write a little script, say `glob.clj`:
@@ -329,8 +329,6 @@ $ bb foo.jar
 :hello
 ----
 
-`bb uberjar` uses tools.build, see <<tools-build>>.
-
 [[tools-build]]
 === tools.build
 
@@ -351,8 +349,7 @@ Babashka includes https://github.com/clojure/tools.build[tools.build]. Use
         :basis basis})
 ----
 
-`b/javac` runs the `javac` from `JAVA_HOME` or the `PATH`. `b/compile-clj`
-runs `java`.
+`b/javac` and `b/compile-clj` need a Java installation.
 
 If tools.build is on the classpath as a dependency, babashka loads that version
 instead.
@@ -403,15 +400,14 @@ $ bb -e "[1 2 #?@(:bb [] :clj [1])]"
 
 === Invoking clojure
 
-Use `bb clojure` like the `clojure` command:
+Babashka bundles https://github.com/borkdude/deps.clj[deps.clj] for invoking a
+`clojure` JVM process:
 
 [source,clojure]
 ----
 $ bb clojure -M -e "*clojure-version*"
-{:major 1, :minor 12, :incremental 1, :qualifier nil}
+{:major 1, :minor 10, :incremental 1, :qualifier nil}
 ----
-
-`-M`, `-X` and `-T` start a `java` process. See <<deps-resolution>>.
 
 See the link:#_clojure[clojure] function in the
 link:#babashkadeps[babashka.deps] namespace for programmatically invoking

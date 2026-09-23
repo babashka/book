@@ -167,34 +167,8 @@ The `babashka.nrepl.server` API is exposed since version 0.8.157.
 - `:host`: the address to bind to, `127.0.0.1` by default.
 - `:port`: the port, `1667` by default.
 - `:socket`: the path of a Unix domain socket, instead of `:host` and `:port`.
-- `:middleware`: a vector of middleware vars with an nREPL descriptor.
-
-Add middleware with `:middleware`:
-
-[source,clojure]
-----
-(require '[babashka.nrepl.server :as nrepl-server]
-         '[nrepl.middleware :refer [set-descriptor!]])
-
-(defn wrap-log [handler]
-  (fn [msg]
-    (when (= "eval" (:op msg))
-      (println "eval:" (:code msg)))
-    (handler msg)))
-
-(set-descriptor! #'wrap-log {:requires #{"clone"}
-                             :expects #{"eval"}
-                             :handles {}})
-
-(nrepl-server/start-server! {:port 1667 :middleware [#'wrap-log]})
-----
-
-See
-https://github.com/babashka/babashka/blob/master/examples/nrepl_middleware.clj[nrepl_middleware.clj]
-for a middleware that changes replies.
-
-The server supports the CIDER inspector, the CIDER test runner and the
-`interrupt` op. Interrupting is cooperative and does not stop a tight loop.
+- `:middleware`: a vector of nREPL middleware vars, see
+https://github.com/babashka/babashka/blob/master/examples/nrepl_middleware.clj[nrepl_middleware.clj].
 
 ===== Debugging the nREPL server
 

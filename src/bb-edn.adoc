@@ -54,20 +54,11 @@ $ bb -m my-project.main
 
 See <<main-function>> for more details on how to invoke a function from the command line.
 
-Since version 1.13.221, babashka resolves and downloads `:deps` without a
-`java` installation. See <<deps-resolution>>.
-
 [[deps-resolution]]
 === Dependency resolution
 
-Babashka resolves dependencies with
-https://github.com/clojure/tools.deps[tools.deps], running in babashka itself.
-This applies to `:deps` in `bb.edn`, `-Sdeps`, `babashka.deps/add-deps` and
-`bb clojure -Spath` or `-Stree`. The dependencies go into `~/.m2/repository`,
-which babashka shares with the Clojure CLI.
-
-`bb clojure` with `-M`, `-X`, `-T` or `-Spom` still starts `java`. `-X` and `-T`
-also install the Clojure CLI tools first.
+Since version 1.13.221, babashka resolves `:deps` and `babashka.deps/add-deps`
+without `java`.
 
 Set `:deps-resolver :jvm` in `bb.edn` to resolve dependencies with `java`:
 
@@ -77,25 +68,11 @@ Set `:deps-resolver :jvm` in `bb.edn` to resolve dependencies with `java`:
  :deps {medley/medley {:mvn/version "1.3.0"}}}
 ----
 
-The environment variable `BABASHKA_DEPS_RESOLVER=jvm` does the same. The
-`:deps-resolver` key in the map passed to `add-deps` takes precedence over
-`bb.edn`, and `bb.edn` over the environment variable. The default is `:bb`.
+The environment variable `BABASHKA_DEPS_RESOLVER=jvm` does the same. The map
+passed to `add-deps` also accepts `:deps-resolver`.
 
-Babashka reads these parts of `~/.m2/settings.xml`:
+Differences with `:deps-resolver :jvm`:
 
-- mirrors
-- servers, including encrypted passwords and HTTP headers such as a GitLab
-`Private-Token`
-- proxies
-- `${env.NAME}` references
-
-It also reads the `http_proxy` and `no_proxy` environment variables, and
-`:mvn/repos` and `:mvn/local-repo` from the deps map. Set
-`CLOJURE_CLI_ALLOW_HTTP_REPO` to allow `http:` repositories.
-
-Differences with the Clojure CLI:
-
-- `deps.edn` files are not validated.
 - S3 repositories do not work. Use `:deps-resolver :jvm` for them.
 - `GIT_SSH_COMMAND` and `GITLIBS_COMMAND` in the `:extra-env` of `add-deps` do
 not reach `git`. Set them in the environment of the babashka process.

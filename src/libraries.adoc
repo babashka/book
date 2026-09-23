@@ -88,7 +88,6 @@ as `transit`
 * https://github.com/clojure/tools.logging[`clojure.tools.logging`]
 * https://github.com/ptaoussanis/timbre[`taoensso.timbre`]: logging
 * https://github.com/borkdude/edamame[`edamame.core`]: Clojure parser
-* https://github.com/clojure/core.rrb-vector[`core.rrb-vector`]
 * https://github.com/nextjournal/markdown[`nextjournal.markdown`]
 * https://github.com/jhy/jsoup[`Jsoup`]
 * https://github.com/jline/jline3[`JLine`]: terminal input handling
@@ -173,7 +172,7 @@ Available functions:
 
 The function `add-deps` takes a deps edn map like `{:deps {medley/medley
 {:mvn/version "1.3.0"}}}`, resolves it and then adds to the babashka
-classpath accordingly. See <<deps-resolution>>.
+classpath accordingly.
 
 `add-deps` returns a sorted vector of the added libs, or `nil` if none were
 added. It keeps the versions of libs already on the classpath.
@@ -210,8 +209,7 @@ Example:
 The function `clojure` takes a sequential collection of arguments, similar to
 the clojure CLI. The arguments are then passed to
 https://github.com/borkdude/deps.clj[deps.clj]. The `clojure` function returns
-`nil` and prints to `*out*` for commands like `-Stree`, and `-Spath`. These do
-not need `java`. For `-M`,
+`nil` and prints to `*out*` for commands like `-Stree`, and `-Spath`. For `-M`,
 `-X` and `-A` it invokes `java` with `babashka.process/process` (see
 link:#babashkaprocess[babashka.process]) and returns the associated record. For
 more details, read the docstring with:
