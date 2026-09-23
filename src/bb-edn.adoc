@@ -60,7 +60,7 @@ See <<main-function>> for more details on how to invoke a function from the comm
 Babashka resolves and downloads dependencies without a Java installation by default.
 
 Set `:deps-resolver :jvm` in `bb.edn` or `BABASHKA_DEPS_RESOLVER=jvm` in the
-environment to resolve dependencies with `java`:
+shell environment to resolve dependencies with `java`:
 
 [source,clojure]
 ----
@@ -70,11 +70,7 @@ environment to resolve dependencies with `java`:
 
 For `add-deps`, set `:deps-resolver` in the dependency map.
 
-With the default dependency resolver:
-
-- For S3 repositories, use `:deps-resolver :jvm`.
-- Set `GIT_SSH_COMMAND` and `GITLIBS_COMMAND` in the environment of the babashka process.
-The resolver ignores these variables in the `:extra-env` map of `add-deps`.
+With the default (non-Java) dependency resolver, S3 repositories are not (yet) supported, so use the JVM resolver instead.
 
 === :min-bb-version
 

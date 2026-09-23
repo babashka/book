@@ -18,12 +18,9 @@ classes at runtime.
 * Interpretation comes with overhead. Therefore loops are slower than in
 Clojure on the JVM. In general interpretation yields slower programs
 than compiled programs.
-* `deftype` supports protocols, `Object` and map interfaces such as
-`IPersistentMap`. Babashka does not support `definterface` or unboxed math.
+* `deftype` support is limited to protocols, `Object` and `IPersistentMap`.
+* `definterface` is not supported
 * `defprotocol` and `defrecord` are implemented using multimethods and
 regular maps. Ostensibly they work the same, but under the hood there
-are no Java classes that correspond to them.
+are no Java classes that correspond to them. Do not depend on this implementation detail since it may change in future version of babashka.
 * Currently `reify` works only for one class at a time
-* The `clojure.core.async/go` macro is not (yet) supported. For
-compatibility it currently maps to `clojure.core.async/thread`. More
-info link:#core_async[here].
