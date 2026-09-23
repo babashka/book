@@ -60,7 +60,8 @@ See <<main-function>> for more details on how to invoke a function from the comm
 Since version 1.13.221, babashka resolves `:deps` and `babashka.deps/add-deps`
 without `java`.
 
-Set `:deps-resolver :jvm` in `bb.edn` to resolve dependencies with `java`:
+Set `:deps-resolver :jvm` in `bb.edn` or `BABASHKA_DEPS_RESOLVER=jvm` in the
+environment to resolve dependencies with `java`:
 
 [source,clojure]
 ----
@@ -68,8 +69,7 @@ Set `:deps-resolver :jvm` in `bb.edn` to resolve dependencies with `java`:
  :deps {medley/medley {:mvn/version "1.3.0"}}}
 ----
 
-The environment variable `BABASHKA_DEPS_RESOLVER=jvm` does the same. The map
-passed to `add-deps` also accepts `:deps-resolver`.
+The map passed to `add-deps` also accepts `:deps-resolver`.
 
 Differences with `:deps-resolver :jvm`:
 
