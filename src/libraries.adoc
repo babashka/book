@@ -63,7 +63,7 @@ Additional libraries:
 `tools.cli`
 * https://github.com/clojure/tools.reader[`clojure.tools.reader`]
 * https://github.com/clojure/tools.deps[`clojure.tools.deps`]
-* https://github.com/clojure/tools.build[`clojure.tools.build.api`], see <<tools-build>>
+* https://github.com/clojure/tools.build[`clojure.tools.build.api`]
 * https://github.com/nrepl/nrepl[`nrepl`]: `nrepl.core`, `nrepl.server`,
 `nrepl.transport`, `nrepl.middleware`, `nrepl.misc`
 * https://github.com/clj-commons/clj-yaml[`clj-yaml.core`] alias as

@@ -329,27 +329,6 @@ $ bb foo.jar
 :hello
 ----
 
-[[tools-build]]
-=== tools.build
-
-Use the built-in https://github.com/clojure/tools.build[tools.build] library to build a jar:
-
-[source,clojure]
-----
-(require '[clojure.tools.build.api :as b])
-
-(def basis (b/create-basis {:project "deps.edn"}))
-
-(b/copy-dir {:src-dirs ["src"] :target-dir "target/classes"})
-(b/jar {:class-dir "target/classes"
-        :jar-file "target/foo.jar"
-        :lib 'my/foo
-        :version "0.1.0"
-        :basis basis})
-----
-
-`b/javac` and `b/compile-clj` need a Java installation.
-
 === System properties
 
 Babashka sets the following system properties:
