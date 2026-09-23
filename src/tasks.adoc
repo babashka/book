@@ -160,9 +160,6 @@ bar ("2" "3")
 [[tasks-cli]]
 === Command line interface
 
-NOTE: The `:exec-fn`, `:cmd` and `:cli` task keys are experimental and may
-change in a future version, depending on feedback from the community.
-
 Since version 1.13.219, a task with `:exec-fn` or `:cmd` gets `--help`, shell
 completion and subcommands from https://github.com/babashka/cli[babashka.cli].
 
