@@ -332,8 +332,7 @@ $ bb foo.jar
 [[tools-build]]
 === tools.build
 
-Babashka includes https://github.com/clojure/tools.build[tools.build]. Use
-`clojure.tools.build.api` in a script to build a jar:
+Use the built-in https://github.com/clojure/tools.build[tools.build] library to build a jar:
 
 [source,clojure]
 ----
@@ -350,9 +349,6 @@ Babashka includes https://github.com/clojure/tools.build[tools.build]. Use
 ----
 
 `b/javac` and `b/compile-clj` need a Java installation.
-
-If tools.build is on the classpath as a dependency, babashka loads that version
-instead.
 
 === System properties
 

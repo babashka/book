@@ -170,14 +170,8 @@ Available functions:
 
 ===== add-deps
 
-The function `add-deps` takes a deps edn map like `{:deps {medley/medley
-{:mvn/version "1.3.0"}}}`, resolves it and then adds to the babashka
-classpath accordingly.
-
-`add-deps` returns a sorted vector of the added libs, or `nil` if none were
-added. It keeps the versions of libs already on the classpath.
-
-Example:
+Use `add-deps` to resolve dependencies and add them to the babashka classpath.
+Pass a dependency map as the first argument:
 
 [source,clojure]
 ----
@@ -189,11 +183,14 @@ Example:
 (m/index-by :id [{:id 1} {:id 2}])
 ----
 
-Optionally, `add-deps` takes a second arg with options:
+`add-deps` returns a sorted vector of the added libraries, or `nil` if it adds none.
+It keeps the versions of libraries already on the classpath.
 
-- `:aliases`: a vector of alias keywords to resolve with.
-- `:force`: when `true`, resolve again instead of using the cached classpath.
-- `:env`: a map that replaces the environment for resolving.
+Pass an optional map as the second argument to configure dependency resolution:
+
+- `:aliases`: a vector of alias keywords to use for dependency resolution.
+- `:force`: if `true`, resolve dependencies again instead of using the cached classpath.
+- `:env`: a map that replaces the environment for dependency resolution.
 - `:extra-env`: a map of environment variables to add.
 
 Example:
@@ -336,9 +333,8 @@ Use `tty?` to check if `:stdin`, `:stdout` or `:stderr` is a terminal:
 
 NOTE: `babashka.ffi` is experimental.
 
-The `babashka.ffi` library calls C functions in shared libraries. See the
-https://github.com/babashka/ffi[ffi] repo and its
-https://github.com/babashka/ffi/blob/main/doc/guide.md[guide] for how to use it.
+Use `babashka.ffi` to call C functions in shared libraries.
+See the https://github.com/babashka/ffi/blob/main/doc/guide.md[ffi guide] for examples.
 
 [[projects]]
 === Projects

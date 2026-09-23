@@ -129,8 +129,7 @@ Command line arguments are available as `*command-line-args*`, just like in
 Clojure. Since version `0.9.160`, you can use
 https://github.com/babashka/cli[babashka.cli] in tasks via the <<cli:exec>>
 function to deal with command line arguments in a concise way. See the chapter on <<cli,babashka CLI>>.
-Since version 1.13.219, tasks can get `--help` and shell completion. See
-<<tasks-cli>>.
+Use <<tasks-cli,task CLI options>> to add `--help` and shell completion.
 
 Of course, you are free to parse command line arguments using the built-in
 `tools.cli` library or just handle them manually.
@@ -160,8 +159,8 @@ bar ("2" "3")
 [[tasks-cli]]
 === Command line interface
 
-Since version 1.13.219, a task with `:exec-fn` or `:cmd` gets `--help`, shell
-completion and subcommands from https://github.com/babashka/cli[babashka.cli].
+Use `:exec-fn` or `:cmd` to configure a task with https://github.com/babashka/cli[babashka.cli].
+Tasks with these keys support `--help`, shell completion and subcommands.
 
 ==== :exec-fn
 
@@ -204,10 +203,10 @@ Options:
   -h, --help  Show this help
 ----
 
-The docstring of the function is the task description in `bb tasks`, unless
-the task has a `:doc`.
+`bb tasks` uses the function docstring as the task description.
+If the task has a `:doc` entry, that entry overrides the docstring.
 
-Put `:exec-args` on the task to set defaults for the function:
+Use `:exec-args` to set default arguments for the task function:
 
 [source,clojure]
 ----
@@ -217,7 +216,7 @@ Put `:exec-args` on the task to set defaults for the function:
 
 ==== :cmd
 
-Use `:cmd` to give a task subcommands:
+Use `:cmd` to add subcommands to a task:
 
 [source,clojure]
 ----
@@ -244,9 +243,9 @@ Options:
 Run "bb db <command> --help" for more information on a command.
 ----
 
-Add an `:exec-fn` next to `:cmd` to handle `bb db` without a command.
+Add `:exec-fn` to the task map to handle `bb db` without a subcommand.
 
-Write `:cmd` as a vector of pairs to keep the order of more than 8 commands:
+Use a vector of command-name and option-map pairs to preserve the order of subcommands:
 
 [source,clojure]
 ----
@@ -256,7 +255,7 @@ Write `:cmd` as a vector of pairs to keep the order of more than 8 commands:
 
 ==== :cli
 
-Use `:cli` for other babashka.cli options of the task, such as `:epilog`:
+Use `:cli` to set babashka.cli options for the task, such as `:epilog`:
 
 [source,clojure]
 ----
@@ -265,8 +264,8 @@ Use `:cli` for other babashka.cli options of the task, such as `:epilog`:
              :cmd {"migrate" {:exec-fn tasks/db-migrate}}}}}
 ----
 
-For options with a function, such as `:error-fn`, set `:cli` to the symbol of a
-var that holds the map:
+For function-valued options such as `:error-fn`, use a var that holds the `:cli` map.
+Set `:cli` to the var symbol:
 
 [source,clojure]
 ----
@@ -274,8 +273,7 @@ var that holds the map:
              :cmd {"migrate" {:exec-fn tasks/db-migrate}}}}}
 ----
 
-A `:cli` entry at the `:tasks` level applies to every task with `:exec-fn` or
-`:cmd`.
+Set `:cli` in the `:tasks` map to apply options to every task with `:exec-fn` or `:cmd`.
 
 ==== :doc
 
@@ -291,8 +289,9 @@ prints the first line.
 
 ==== :depends
 
-A task with `:exec-fn` in `:depends` runs before the task. Its options also
-parse for the task, and `--help` lists them under `Inherited options`:
+Use `:depends` to run another task first.
+The calling task also accepts options from dependencies with `:exec-fn`.
+The `--help` output lists these options under `Inherited options`:
 
 [source,clojure]
 ----
@@ -316,14 +315,14 @@ Inherited options:
   --verbose  Print each file
 ----
 
-The function of `compile` receives all parsed options. Set `:restrict true` in
-its `:org.babashka/cli` metadata to pass it only the options it declares.
+The `tasks/compile` function receives all parsed options.
+Set `:restrict true` in its `:org.babashka/cli` metadata to limit the map to options that the function declares.
 
-`bb jar --help` does not run `:depends`.
+`bb jar --help` does not run dependency tasks.
 
 ==== Shell completion
 
-Add this to `~/.zshrc`, after `compinit`, to complete task names and options:
+Add this command after `compinit` in `~/.zshrc` to complete task names and options:
 
 [source,bash]
 ----

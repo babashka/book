@@ -19,7 +19,7 @@ classes at runtime.
 Clojure on the JVM. In general interpretation yields slower programs
 than compiled programs.
 * `deftype` supports protocols, `Object` and map interfaces such as
-`IPersistentMap`. No `definterface` and unboxed math.
+`IPersistentMap`. Babashka does not support `definterface` or unboxed math.
 * `defprotocol` and `defrecord` are implemented using multimethods and
 regular maps. Ostensibly they work the same, but under the hood there
 are no Java classes that correspond to them.

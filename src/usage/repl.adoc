@@ -116,8 +116,8 @@ $ bb -e "(babashka.nrepl.server/start-server\!) nil"
 Started nREPL server at 127.0.0.1:1667
 ----
 
-The server binds to `127.0.0.1`. To accept connections from other hosts, for
-example in Docker, pass the host:
+The server binds to `127.0.0.1` by default.
+To accept connections from other hosts, pass `0.0.0.0` as the host:
 
 [source,shell]
 ----
@@ -147,8 +147,8 @@ Editor plugins and tools known to work with the babashka nREPL server:
 https://github.com/Olical/conjure[conjure],
 https://github.com/tpope/vim-fireplace[fireplace]
 
-Use `bb repl --connect` to connect to an nREPL server from the terminal. It
-reads the port from `.nrepl-port`:
+Use `bb repl --connect` to connect to an nREPL server from the terminal.
+The command reads the port from `.nrepl-port`:
 
 [source,shell]
 ----
@@ -159,10 +159,9 @@ user=> (+ 1 2 3)
 6
 ----
 
-Pass `host:port`, a port or `unix://path` to connect elsewhere.
+To connect to another server, pass `host:port`, a port or `unix://path` to `bb repl --connect`.
 
-The `babashka.nrepl.server` API is exposed since version 0.8.157.
-`start-server!` accepts these options:
+Pass an options map to `babashka.nrepl.server/start-server!` to configure the server:
 
 - `:host`: the address to bind to, `127.0.0.1` by default.
 - `:port`: the port, `1667` by default.
