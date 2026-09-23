@@ -18,7 +18,8 @@ classes at runtime.
 * Interpretation comes with overhead. Therefore loops are slower than in
 Clojure on the JVM. In general interpretation yields slower programs
 than compiled programs.
-* No `deftype`, `definterface` and unboxed math.
+* `deftype` supports protocols, `Object` and map interfaces such as
+`IPersistentMap`. No `definterface` and unboxed math.
 * `defprotocol` and `defrecord` are implemented using multimethods and
 regular maps. Ostensibly they work the same, but under the hood there
 are no Java classes that correspond to them.

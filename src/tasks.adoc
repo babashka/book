@@ -99,6 +99,7 @@ when invoking `bb tasks` on the command line. Other options include:
 - `:extra-deps`: add extra dependencies to the classpath.
 - `:enter`, `:leave`: override the global `:enter`/`:leave` hook.
 - `:override-builtin`: override the name of a built-in babashka command.
+- `:exec-fn`, `:cmd`, `:cli`, `:exec-args`: see <<tasks-cli>>.
 
 === Discoverability
 
@@ -128,6 +129,8 @@ Command line arguments are available as `*command-line-args*`, just like in
 Clojure. Since version `0.9.160`, you can use
 https://github.com/babashka/cli[babashka.cli] in tasks via the <<cli:exec>>
 function to deal with command line arguments in a concise way. See the chapter on <<cli,babashka CLI>>.
+Since version 1.13.219, tasks can get `--help` and shell completion. See
+<<tasks-cli>>.
 
 Of course, you are free to parse command line arguments using the built-in
 `tools.cli` library or just handle them manually.
@@ -154,52 +157,298 @@ foo ("1" "2" "3")
 bar ("2" "3")
 ----
 
-==== Terminal tab-completion
+[[tasks-cli]]
+=== Command line interface
 
-===== zsh
+NOTE: The `:exec-fn`, `:cmd` and `:cli` task keys are experimental and may
+change in a future version, depending on feedback from the community.
 
-Add this to your `.zshrc` to get tab-complete feature on ZSH.
+Since version 1.13.219, a task with `:exec-fn` or `:cmd` gets `--help`, shell
+completion and subcommands from https://github.com/babashka/cli[babashka.cli].
+
+==== :exec-fn
+
+Use `:exec-fn` to name the function that handles the task:
+
+[source,clojure]
+----
+{:paths ["bb"]
+ :tasks {dev {:exec-fn tasks/dev}}}
+----
+
+The function receives the parsed options as a map, like with `bb -x`. Declare
+the options in the `:org.babashka/cli` metadata of the function:
+
+[source,clojure]
+----
+(ns tasks)
+
+(defn dev
+  "Start the dev system"
+  {:org.babashka/cli {:spec {:port {:coerce :int
+                                    :default 8080
+                                    :desc "HTTP port"}}}}
+  [opts]
+  (prn opts))
+----
 
 [source,bash]
 ----
-_bb_tasks() {
-    local matches=(`bb tasks |tail -n +3 |cut -f1 -d ' '`)
-    compadd -a matches
-    _files # autocomplete filenames as well
-}
-compdef _bb_tasks bb
+$ bb dev --port 3000
+{:port 3000}
+
+$ bb dev --help
+Usage: bb dev [options]
+
+Start the dev system
+
+Options:
+      --port  HTTP port (default: 8080)
+  -h, --help  Show this help
 ----
 
-===== bash
+The docstring of the function is the task description in `bb tasks`, unless
+the task has a `:doc`.
 
-Add this to your `.bashrc` to get tab-complete feature on bash.
+Use `:enum` to restrict an option to a fixed set of values:
+
+[source,clojure]
+----
+{:spec {:env {:desc "Environment"
+              :enum ["dev" "staging" "prod"]
+              :default "dev"}}}
+----
+
+Help lists the values, completion offers them and the parser rejects other
+values:
 
 [source,bash]
 ----
-_bb_tasks() {
-    COMPREPLY=( $(compgen -W "$(bb tasks |tail -n +3 |cut -f1 -d ' ')" -- ${COMP_WORDS[COMP_CWORD]}) );
-}
-# uncomment only one of the following lines that start with 'complete'
-complete -f -F _bb_tasks bb # autocomplete both filenames and tasks
-# complete -F _bb_tasks bb # autocomplete only tasks
+$ bb dev --env qa
+Error: Invalid value for option --env: qa. Expected one of: dev, staging, prod
 ----
 
-===== fish
+Put `:exec-args` on the task to set defaults for the function:
 
-Add this to your `.config/fish/completions/bb.fish` to get tab-complete feature on Fish shell.
+[source,clojure]
+----
+{:tasks {compile {:exec-fn tasks/compile
+                  :exec-args {:target "classes"}}}}
+----
+
+Options on the command line override `:exec-args`. The `:exec-args` of a task
+are merged over the `:exec-args` of the `:cli` entry at the `:tasks` level.
+
+==== :cmd
+
+Use `:cmd` to give a task subcommands:
+
+[source,clojure]
+----
+{:paths ["bb"]
+ :tasks {db {:doc "Manage the database"
+             :cmd {"migrate" {:exec-fn tasks/db-migrate}
+                   "seed"    {:exec-fn tasks/db-seed}}}}}
+----
 
 [source,bash]
 ----
-function __bb_complete_tasks
-  if not test "$__bb_tasks"
-    set -g __bb_tasks (bb tasks |tail -n +3 |cut -f1 -d ' ')
-  end
+$ bb db --help
+Usage: bb db [options] <command>
 
-  printf "%s\n" $__bb_tasks
-end
+Manage the database
 
-complete -c bb -a "(__bb_complete_tasks)" -d 'tasks'
+Commands:
+  migrate  Run pending migrations
+  seed     Seed the database
+
+Options:
+  -h, --help  Show this help
+
+Run "bb db <command> --help" for more information on a command.
 ----
+
+Running `bb db` without a command prints `No command given.` and exits with 1.
+Add an `:exec-fn` next to `:cmd` to handle `bb db` without a command.
+
+An EDN map keeps the order of its keys up to 8 entries. Write `:cmd` as a
+vector of pairs to keep the order of more commands in the help output:
+
+[source,clojure]
+----
+{:tasks {deploy {:cmd [["lock" {:exec-fn tasks/lock}]
+                       ["unlock" {:exec-fn tasks/unlock}]]}}}
+----
+
+`:cmd` can also be a symbol that names a var with the command tree.
+
+==== :cli
+
+Use `:cli` for babashka.cli options that belong to the task, such as an
+`:epilog` for the help output:
+
+[source,clojure]
+----
+{:tasks {db {:doc "Manage the database"
+             :cli {:epilog "Migrations are in resources/migrations."}
+             :cmd {"migrate" {:exec-fn tasks/db-migrate}
+                   "seed"    {:exec-fn tasks/db-seed}}}}}
+----
+
+EDN cannot hold functions. For options such as `:error-fn`, set `:cli` to a
+symbol that names a var:
+
+[source,clojure]
+----
+{:tasks {db {:doc "Manage the database"
+             :cli tasks/db-cli
+             :cmd {"migrate" {:exec-fn tasks/db-migrate}}}}}
+----
+
+[source,clojure]
+----
+(defn- report-error [{:keys [msg]}]
+  (binding [*out* *err*]
+    (println "db:" msg))
+  (System/exit 1))
+
+(def db-cli
+  {:epilog "Migrations are in resources/migrations."
+   :error-fn report-error})
+----
+
+[source,bash]
+----
+$ bb db migrate --env qa
+db: Invalid value for option --env: qa. Expected one of: dev, staging, prod
+----
+
+A `:cli` entry at the `:tasks` level applies to every task with `:exec-fn` or
+`:cmd`:
+
+[source,clojure]
+----
+{:tasks {:cli tasks/cli-defaults
+         ...}}
+----
+
+A spec in the `:cli` of a task adds to the spec at the `:tasks` level. Help
+lists the options from the `:tasks` level under `Inherited options`.
+
+==== :doc
+
+Write `:doc` as a vector of lines for a multi-line description:
+
+[source,clojure]
+----
+{:tasks {db {:doc ["Manage the database"
+                   "Migrations run in order."]
+             :cmd {"migrate" {:exec-fn tasks/db-migrate}}}}}
+----
+
+`--help` prints all lines. `bb tasks` prints the first line.
+
+==== :depends
+
+Name a task with `:exec-fn` in `:depends` to run it before the task:
+
+[source,clojure]
+----
+{:tasks {compile {:exec-fn tasks/compile
+                  :exec-args {:target "classes"}}
+         jar     {:exec-fn tasks/jar
+                  :depends [compile]}}}
+----
+
+The options of `compile` also parse for `jar`. Help lists them under
+`Inherited options`:
+
+[source,bash]
+----
+$ bb jar --help
+Usage: bb jar [options]
+
+Build a jar
+
+Options:
+      --version  Jar version (default: 0.1.0)
+  -h, --help     Show this help
+
+Inherited options:
+  --verbose  Print each file
+----
+
+The function of `compile` receives its own `:exec-args` and spec defaults,
+with the options from the command line over them. The `:exec-args` of `jar`
+do not reach `compile`, and the other way around.
+
+The function of a dependency receives all parsed options, including the ones
+only `jar` declares. Set `:restrict true` in its `:org.babashka/cli` metadata to
+receive only the options it declares:
+
+[source,bash]
+----
+$ bb jar --verbose --version 1.0.0
+{:verbose true, :target "classes"}
+{:version "1.0.0", :verbose true}
+----
+
+`bb jar --help` does not run `:depends`, `:enter` or `:leave`, except with
+`bb run --parallel`. The `:requires` of dependencies and the `:init` of the
+`:tasks` level still run.
+
+A task with `:exec-fn` or `:cmd` cannot depend on a task with only `:cmd`,
+because bb does not know which command to run.
+
+A dependency of a task with a `:task` body receives its own `:exec-args` and
+spec defaults, but no options from the command line.
+
+==== Shell completion
+
+Add this to `~/.zshrc`, after `compinit`, to complete task names and options:
+
+[source,bash]
+----
+source <(bb org.babashka.cli/completions snippet --shell zsh)
+----
+
+For bash, fish, PowerShell and Nushell, see
+https://github.com/babashka/cli#completions[Completions] in the babashka.cli
+README.
+
+Completion shows task descriptions and option descriptions:
+
+[source,bash]
+----
+$ bb <TAB>
+dev  -- Start the dev system
+db   -- Manage the database
+----
+
+Completing a task name loads the namespace of each `:exec-fn` without a
+`:doc`, to read its docstring. Give the task a `:doc` to skip that.
+
+Call the completions command directly to see its output:
+
+[source,bash]
+----
+$ bb org.babashka.cli/completions complete --shell zsh -- dev ''
+--port	HTTP port
+--help	Show this help
+-h	Show this help
+----
+
+==== Notes
+
+A task with `:task` and no `:exec-fn` or `:cmd` gets the arguments as strings in
+`*command-line-args*`.
+
+`bb -x` does not dispatch `:cmd`.
+
+An option of a command group given after the command needs `:inherit true` in
+its spec.
+
+Options from `:args->opts` and `:positional` show under `Arguments:` in help.
 
 === Run
 
